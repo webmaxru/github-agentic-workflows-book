@@ -12,6 +12,8 @@ driver prompt) that collaborate under an orchestrator in a wave-based pipeline.
 
 > 📖 **Read the playbook live:** <https://valentina-alto.github.io/microsoft-agent-framework-playbook-fleets-generated/>
 
+> 🤖 **See the fleet in action:** an [**interactive orchestration wireframe**](https://valentina-alto.github.io/microsoft-agent-framework-playbook-fleets-generated/orchestration.html) animates the exact pipeline (design → research → author → verify → review) that produced this playbook.
+
 ---
 
 ## The idea behind the fleet

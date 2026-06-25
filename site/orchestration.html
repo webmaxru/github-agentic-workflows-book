@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An interactive wireframe replicating the agent-orchestration pipeline that produced the Microsoft Agent Framework playbook: a fleet of GitHub Copilot primitives working in waves.">
+  <title>How the fleet built this | Agent Orchestration</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f7f8fb;
+      --surface: #ffffff;
+      --surface-strong: #eef3ff;
+      --text: #182033;
+      --muted: #5c667d;
+      --border: #d8deea;
+      --accent: #2563eb;
+      --accent-strong: #1d4ed8;
+      --good: #16a34a;
+      --warn: #d97706;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.10);
+      --radius: 1rem;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1020;
+        --surface: #121a2d;
+        --surface-strong: #17223a;
+        --text: #edf2ff;
+        --muted: #b7c2d8;
+        --border: #293653;
+        --accent: #78a6ff;
+        --accent-strong: #a8c4ff;
+        --good: #4ade80;
+        --warn: #fbbf24;
+        --shadow: 0 18px 45px rgba(0, 0, 0, 0.32);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 14%, transparent), transparent 32rem), var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-underline-offset: 0.18em; }
+    a:hover { color: var(--accent-strong); }
+    .container { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; }
+
+    header.hero {
+      padding: 3rem 0 2rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent);
+    }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 0 0 0.5rem;
+    }
+    h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0 0 0.6rem; line-height: 1.15; }
+    .lead { color: var(--muted); max-width: 60ch; margin: 0; font-size: 1.05rem; }
+    .crumbs { margin-top: 1.25rem; font-size: 0.9rem; }
+    .crumbs a { margin-right: 1rem; }
+
+    main { padding: 2.5rem 0 4rem; }
+
+    .controls {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;
+      margin: 0 0 2rem;
+    }
+    button.btn {
+      font: inherit; font-weight: 650;
+      border: 1px solid var(--accent);
+      background: var(--accent); color: #fff;
+      padding: 0.6rem 1.1rem; border-radius: 0.6rem; cursor: pointer;
+      transition: transform .08s ease, filter .15s ease;
+    }
+    button.btn:hover { filter: brightness(1.08); }
+    button.btn:active { transform: translateY(1px); }
+    button.btn.ghost { background: transparent; color: var(--accent); }
+    .status { color: var(--muted); font-size: 0.92rem; min-height: 1.2em; }
+    .status b { color: var(--text); }
+
+    /* Pipeline */
+    .pipeline { display: grid; gap: 0; position: relative; }
+    .stage {
+      display: grid; gap: 0.85rem; justify-items: center;
+    }
+    .connector {
+      width: 3px; height: 2.6rem; margin: 0.15rem 0;
+      background: linear-gradient(var(--border), var(--border));
+      position: relative; border-radius: 3px;
+      justify-self: center;
+    }
+    .connector::after {
+      content: ""; position: absolute; left: 50%; bottom: -2px; transform: translateX(-50%);
+      border-left: 6px solid transparent; border-right: 6px solid transparent;
+      border-top: 8px solid var(--border);
+    }
+    .connector.flow { background: linear-gradient(var(--accent), var(--accent-strong)); }
+    .connector.flow::after { border-top-color: var(--accent-strong); }
+
+    .node {
+      width: min(560px, 100%);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1rem 1.2rem;
+      position: relative;
+      transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease, background .2s ease;
+    }
+    .node .role { display: flex; align-items: center; gap: 0.6rem; font-weight: 700; }
+    .node .role .ico {
+      width: 2rem; height: 2rem; flex: none; display: grid; place-items: center;
+      border-radius: 0.55rem; background: var(--surface-strong); font-size: 1.1rem;
+    }
+    .node .kind {
+      margin-left: auto; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 0.15rem 0.55rem;
+    }
+    .node p { margin: 0.55rem 0 0; color: var(--muted); font-size: 0.93rem; }
+    .node.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent), var(--shadow);
+      transform: translateY(-2px);
+      background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+    }
+    .node.done .role .ico { background: color-mix(in srgb, var(--good) 22%, transparent); }
+    .node.done::after {
+      content: "✓"; position: absolute; top: 0.7rem; right: 0.8rem;
+      color: var(--good); font-weight: 800;
+    }
+
+    /* Wave grouping */
+    .wave {
+      width: min(720px, 100%);
+      border: 1.5px dashed var(--border);
+      border-radius: calc(var(--radius) + 0.25rem);
+      padding: 1.1rem 1.1rem 1.3rem;
+      background: color-mix(in srgb, var(--accent) 4%, transparent);
+    }
+    .wave > .wave-title {
+      font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--accent); font-weight: 700; margin: 0 0 0.9rem; text-align: center;
+    }
+    .wave.active { border-color: var(--accent); }
+    .wave-row { display: grid; gap: 0.85rem; }
+    .wave-row.two { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 620px) { .wave-row.two { grid-template-columns: 1fr; } }
+    .node.sm { width: 100%; padding: 0.8rem 0.95rem; }
+    .node.sm p { font-size: 0.85rem; }
+
+    .loop-note {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin: 0.9rem auto 0; font-size: 0.82rem; color: var(--warn);
+      border: 1px solid color-mix(in srgb, var(--warn) 45%, var(--border));
+      background: color-mix(in srgb, var(--warn) 10%, transparent);
+      padding: 0.35rem 0.7rem; border-radius: 999px;
+    }
+    .edge-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted); background: var(--surface); border: 1px solid var(--border);
+      padding: 0.1rem 0.5rem; border-radius: 999px; margin: -0.4rem 0;
+    }
+    .edge-label.flow { color: var(--good); border-color: color-mix(in srgb, var(--good) 45%, var(--border)); }
+
+    /* Legend */
+    .section-title { margin: 3rem 0 1rem; font-size: 1.35rem; }
+    .legend {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.85rem;
+    }
+    .legend .card {
+      border: 1px solid var(--border); border-radius: 0.8rem; background: var(--surface);
+      padding: 0.85rem 0.95rem;
+    }
+    .legend .card h3 { margin: 0 0 0.3rem; font-size: 0.98rem; display: flex; gap: 0.5rem; align-items: center; }
+    .legend .card p { margin: 0; color: var(--muted); font-size: 0.86rem; }
+    .legend .tag {
+      font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--accent);
+      border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border)); border-radius: 999px;
+      padding: 0.05rem 0.45rem; margin-left: auto;
+    }
+
+    footer { border-top: 1px solid var(--border); padding: 2rem 0; color: var(--muted); font-size: 0.9rem; }
+    .reduced-hint { font-size: 0.82rem; color: var(--muted); margin-top: 0.4rem; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <p class="eyebrow">Behind the scenes</p>
+      <h1>How a fleet of agents built this playbook</h1>
+      <p class="lead">An interactive wireframe of the orchestration pipeline. Press <strong>Run the fleet</strong> to watch the squad of GitHub Copilot primitives move through the waves — design, research, author, verify, review — exactly as it happened.</p>
+      <nav class="crumbs">
+        <a href="index.html">← Back to the playbook</a>
+        <a href="https://github.com/Valentina-Alto/microsoft-agent-framework-playbook-fleets-generated" target="_blank" rel="noopener">View the repo ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="controls">
+      <button class="btn" id="run">▶ Run the fleet</button>
+      <button class="btn ghost" id="reset">Reset</button>
+      <span class="status" id="status">Idle — press “Run the fleet” to start the orchestration.</span>
+    </div>
+
+    <div class="pipeline" id="pipeline">
+      <!-- Brief -->
+      <div class="stage">
+        <div class="node" data-step="0">
+          <div class="role"><span class="ico">📋</span> content/playbook-brief.md <span class="kind">input</span></div>
+          <p>The human-authored scope: theory-first, mid-level depth, Python, HTML chapter subpages.</p>
+        </div>
+      </div>
+      <div class="connector" data-conn="0"></div>
+
+      <!-- Orchestrator -->
+      <div class="stage">
+        <div class="node" data-step="1">
+          <div class="role"><span class="ico">🧭</span> Orchestrator <span class="kind">prompt</span></div>
+          <p><code>run-playbook</code> dispatches agents in waves and tracks state on a shared to-do board.</p>
+        </div>
+      </div>
+      <div class="connector" data-conn="1"></div>
+
+      <!-- Env -->
+      <div class="stage">
+        <div class="node" data-step="2">
+          <div class="role"><span class="ico">⚙️</span> Environment setup <span class="kind">skill</span></div>
+          <p>Creates the Python venv and installs <code>agent-framework</code> so the real API can be introspected and examples can run.</p>
+        </div>
+      </div>
+      <div class="connector" data-conn="2"></div>
+
+      <!-- Wave 0 -->
+      <div class="stage">
+        <div class="wave" data-wave="w0">
+          <p class="wave-title">Wave 0 — Design &amp; scaffold</p>
+          <div class="wave-row two">
+            <div class="node sm" data-step="3">
+              <div class="role"><span class="ico">🏛️</span> Architect</div>
+              <p>Turns the brief into <code>toc.yml</code> + outline.</p>
+            </div>
+            <div class="node sm" data-step="4">
+              <div class="role"><span class="ico">🎨</span> Frontend builder</div>
+              <p>Scaffolds the HTML shell + navigation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="connector" data-conn="3"></div>
+
+      <!-- Waves 1..N -->
+      <div class="stage">
+        <div class="wave" data-wave="wN">
+          <p class="wave-title">Waves 1…N — per chapter group</p>
+          <div class="wave-row two">
+            <div class="node sm" data-step="5">
+              <div class="role"><span class="ico">🔍</span> Library explorer</div>
+              <p>Introspects the <em>real</em> 1.9.0 API — no hallucinated names.</p>
+            </div>
+            <div class="node sm" data-step="6">
+              <div class="role"><span class="ico">📚</span> Theory researcher</div>
+              <p>Gathers concepts from Microsoft docs.</p>
+            </div>
+          </div>
+          <div class="connector" data-conn="x1" style="height:1.6rem"></div>
+          <div class="wave-row">
+            <div class="node sm" data-step="7">
+              <div class="role"><span class="ico">✍️</span> Chapter author</div>
+              <p>Fills the HTML slots and writes runnable example code.</p>
+            </div>
+          </div>
+          <div class="connector" data-conn="x2" style="height:1.6rem"></div>
+          <div class="wave-row">
+            <div class="node sm" data-step="8">
+              <div class="role"><span class="ico">✅</span> Code verifier</div>
+              <p>Runs every example in the venv — must exit 0 with no API keys.</p>
+            </div>
+          </div>
+          <div class="connector" data-conn="x3" style="height:1.6rem"></div>
+          <div class="wave-row">
+            <div class="node sm" data-step="9">
+              <div class="role"><span class="ico">🧐</span> Chapter reviewer</div>
+              <p>Verdict: <strong>ACCEPT</strong> or <strong>REVISE</strong> with concrete fixes.</p>
+            </div>
+          </div>
+          <div style="text-align:center">
+            <span class="loop-note" id="reviseNote">↺ REVISE → back to the author until ACCEPT</span>
+          </div>
+        </div>
+      </div>
+      <div class="edge-label flow">ACCEPT</div>
+      <div class="connector" data-conn="4"></div>
+
+      <!-- Commit -->
+      <div class="stage">
+        <div class="node" data-step="10">
+          <div class="role"><span class="ico">💾</span> Commit per wave <span class="kind">git</span></div>
+          <p>Each completed wave is committed, keeping a clean, auditable history.</p>
+        </div>
+      </div>
+      <div class="connector" data-conn="5"></div>
+
+      <!-- Integration -->
+      <div class="stage">
+        <div class="node" data-step="11">
+          <div class="role"><span class="ico">🔗</span> Integration pass <span class="kind">review</span></div>
+          <p>Cross-chapter check of navigation, terminology, progression, and API consistency.</p>
+        </div>
+      </div>
+      <div class="connector" data-conn="6"></div>
+
+      <!-- Site -->
+      <div class="stage">
+        <div class="node" data-step="12">
+          <div class="role"><span class="ico">🚀</span> Published playbook <span class="kind">output</span></div>
+          <p>10 chapters of verified content served as an interactive HTML site. <a href="index.html">Open it →</a></p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title">The actors (primitives)</h2>
+    <div class="legend">
+      <div class="card"><h3>🧭 Orchestrator <span class="tag">prompt</span></h3><p>The driver that runs the whole fleet in waves and tracks progress.</p></div>
+      <div class="card"><h3>🏛️ Architect <span class="tag">agent</span></h3><p>Designs the table of contents and chapter outline from the brief.</p></div>
+      <div class="card"><h3>📚 Theory researcher <span class="tag">agent</span></h3><p>Explains concepts grounded in Microsoft documentation.</p></div>
+      <div class="card"><h3>🔍 Library explorer <span class="tag">agent</span></h3><p>Introspects the installed MAF package for the exact, real API surface.</p></div>
+      <div class="card"><h3>✍️ Chapter author <span class="tag">agent</span></h3><p>Writes chapter prose and example code into the page slots.</p></div>
+      <div class="card"><h3>✅ Code verifier <span class="tag">agent</span></h3><p>Runs every example until it provably exits clean — no keys required.</p></div>
+      <div class="card"><h3>🧐 Chapter reviewer <span class="tag">agent</span></h3><p>Critiques for accuracy and consistency; routes fixes back to the author.</p></div>
+      <div class="card"><h3>🎨 Frontend builder <span class="tag">agent</span></h3><p>Scaffolds and finalizes the HTML shell, navigation, and styling.</p></div>
+      <div class="card"><h3>⚙️ Environment setup <span class="tag">skill</span></h3><p>Reproducible recipe to build the venv and install the MAF packages.</p></div>
+      <div class="card"><h3>🧱 Content &amp; code rules <span class="tag">instructions</span></h3><p>Auto-applied conventions every chapter and example must follow.</p></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      Inspired by <a href="https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch01-the-agentic-sdlc-thesis.html" target="_blank" rel="noopener">The Agentic SDLC Handbook</a>.
+      Built with a squad of GitHub Copilot primitives — agents · prompts · skills · instructions.
+    </div>
+  </footer>
+
+  <script>
+    const order = [
+      { step: 0,  msg: "Reading the brief — scope and intent locked in." },
+      { step: 1,  msg: "Orchestrator boots and plans the waves." },
+      { step: 2,  msg: "Environment ready — agent-framework installed, API introspectable." },
+      { wave: "w0", steps: [3, 4], msg: "Wave 0 — Architect drafts the TOC while the Frontend builder scaffolds the site." },
+      { wave: "wN", steps: [5, 6], msg: "Waves 1…N — Explorer extracts the real API; Researcher gathers theory." },
+      { wave: "wN", steps: [7], msg: "Author fills the chapter slots and writes runnable examples." },
+      { wave: "wN", steps: [8], msg: "Verifier runs every example — checking for EXIT 0 with no keys." },
+      { wave: "wN", steps: [9], revise: true, msg: "Reviewer evaluates… one chapter needs work → REVISE back to the author." },
+      { wave: "wN", steps: [7], msg: "Author applies the fixes from the reviewer." },
+      { wave: "wN", steps: [9], msg: "Reviewer re-checks → ACCEPT ✓" },
+      { step: 10, msg: "Wave committed to git — clean, auditable history." },
+      { step: 11, msg: "Integration pass — cross-chapter consistency confirmed CLEAN." },
+      { step: 12, done: true, msg: "Published: 10 verified chapters live as an interactive playbook. 🎉" }
+    ];
+
+    const q = (sel) => document.querySelector(sel);
+    const stepEl = (n) => q(`[data-step="${n}"]`);
+    const waveEl = (w) => q(`[data-wave="${w}"]`);
+    const connectors = [...document.querySelectorAll('[data-conn]')];
+    const statusEl = q('#status');
+    const runBtn = q('#run');
+    const resetBtn = q('#reset');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let timers = [];
+    let running = false;
+
+    function clearAll() {
+      timers.forEach(clearTimeout); timers = [];
+      document.querySelectorAll('.node').forEach(n => n.classList.remove('active', 'done'));
+      document.querySelectorAll('.wave').forEach(w => w.classList.remove('active'));
+      connectors.forEach(c => c.classList.remove('flow'));
+      q('#reviseNote').style.color = '';
+    }
+
+    function reset() {
+      running = false;
+      clearAll();
+      runBtn.disabled = false;
+      runBtn.textContent = '▶ Run the fleet';
+      statusEl.innerHTML = 'Idle — press “Run the fleet” to start the orchestration.';
+    }
+
+    function activate(item, connIndex) {
+      // dim previously-active (but keep done marks)
+      document.querySelectorAll('.node.active').forEach(n => {
+        n.classList.remove('active'); n.classList.add('done');
+      });
+      document.querySelectorAll('.wave.active').forEach(w => w.classList.remove('active'));
+
+      if (item.wave) waveEl(item.wave)?.classList.add('active');
+      const steps = item.steps || [item.step];
+      steps.forEach(s => {
+        const el = stepEl(s);
+        if (el) { el.classList.remove('done'); el.classList.add('active'); }
+      });
+      if (item.done) steps.forEach(s => stepEl(s)?.classList.add('done'));
+      if (item.revise) q('#reviseNote').style.color = 'var(--warn)';
+      statusEl.innerHTML = '<b>' + item.msg + '</b>';
+
+      // light the main connector that sits before "commit/integration/site" stages
+      if (typeof connIndex === 'number' && connectors[connIndex]) {
+        connectors[connIndex].classList.add('flow');
+      }
+    }
+
+    function run() {
+      if (running) return;
+      running = true;
+      clearAll();
+      runBtn.disabled = true;
+      runBtn.textContent = '● Running…';
+      const stepMs = reduceMotion ? 350 : 1100;
+      // Map top-level main connectors progressively: indices 0..6 are the trunk connectors
+      const mainConn = [0, 1, 2, 3, 3, 3, 3, 3, 3, 3, 4, 5, 6];
+      order.forEach((item, i) => {
+        timers.push(setTimeout(() => {
+          activate(item, i === 0 ? null : mainConn[i] - 1 >= 0 ? mainConn[i] - 1 : null);
+          // progressively fill trunk connectors as we pass each stage
+          for (let c = 0; c < mainConn[i]; c++) connectors[c]?.classList.add('flow');
+          if (i === order.length - 1) {
+            document.querySelectorAll('.node.active').forEach(n => n.classList.add('done'));
+            running = false;
+            runBtn.disabled = false;
+            runBtn.textContent = '↻ Run again';
+          }
+        }, i * stepMs));
+      });
+    }
+
+    runBtn.addEventListener('click', run);
+    resetBtn.addEventListener('click', reset);
+  </script>
+</body>
+</html>
