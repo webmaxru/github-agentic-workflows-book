@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Choose the right on: events so the Repo Assistant runs at exactly the right moments and no others.">
+  <title>Triggers: When Workflows Wake Up | GitHub Agentic Workflows: An Interactive Book</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a class="is-current" aria-current="page" href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 4</nav>
+        <p class="eyebrow">Chapter 4</p>
+        <h1>Triggers: When Workflows Wake Up</h1>
+        <p class="lead">Choose the right on: events so the Repo Assistant runs at exactly the right moments and no others.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#concept-event-driven-work-the-outer-loop-s-clock">Concept: event-driven work (the outer loop&#x27;s clock)</a></li>
+              <li><a href="#in-gh-aw-the-on-block-and-its-events">In gh-aw: the on: block and its events</a></li>
+              <li><a href="#when-to-use-which-trigger-and-safe-defaults">When to use which trigger (and safe defaults)</a></li>
+              <li><a href="#worked-example-repo-assistant-on-issues-plus-a-nightly-schedule">Worked example: Repo Assistant on issues plus a nightly schedule</a></li>
+              <li><a href="#recap-and-what-s-next">Recap &amp; what&#x27;s next</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>triggers (on:)</li>
+            <li>issues / pull_request events</li>
+            <li>schedule</li>
+            <li>workflow_dispatch</li>
+            <li>command / alias triggers</li>
+            <li>workflow_run</li>
+            </ul>
+          </aside>
+          <aside class="metadata-card" aria-labelledby="depends-heading">
+            <h2 id="depends-heading">Prerequisites</h2>
+            <ul>
+            <li><a href="anatomy-and-compile-model.html">Chapter 3: Anatomy &amp; the Compile Model</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="objective"</code> block in <code>content/chapters/triggers.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="concept-event-driven-work-the-outer-loop-s-clock">
+          <h2 id="concept-event-driven-work-the-outer-loop-s-clock"><a class="anchor-link" href="#concept-event-driven-work-the-outer-loop-s-clock" aria-label="Link to Concept: event-driven work (the outer loop&#x27;s clock) section">Concept: event-driven work (the outer loop&#x27;s clock)</a></h2>
+          <div class="section-content" data-content-slot="concept-event-driven-work-the-outer-loop-s-clock">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="concept-event-driven-work-the-outer-loop-s-clock"</code> block in <code>content/chapters/triggers.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-the-on-block-and-its-events">
+          <h2 id="in-gh-aw-the-on-block-and-its-events"><a class="anchor-link" href="#in-gh-aw-the-on-block-and-its-events" aria-label="Link to In gh-aw: the on: block and its events section">In gh-aw: the on: block and its events</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-the-on-block-and-its-events">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="in-gh-aw-the-on-block-and-its-events"</code> block in <code>content/chapters/triggers.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="when-to-use-which-trigger-and-safe-defaults">
+          <h2 id="when-to-use-which-trigger-and-safe-defaults"><a class="anchor-link" href="#when-to-use-which-trigger-and-safe-defaults" aria-label="Link to When to use which trigger (and safe defaults) section">When to use which trigger (and safe defaults)</a></h2>
+          <div class="section-content" data-content-slot="when-to-use-which-trigger-and-safe-defaults">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="when-to-use-which-trigger-and-safe-defaults"</code> block in <code>content/chapters/triggers.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-repo-assistant-on-issues-plus-a-nightly-schedule">
+          <h2 id="worked-example-repo-assistant-on-issues-plus-a-nightly-schedule"><a class="anchor-link" href="#worked-example-repo-assistant-on-issues-plus-a-nightly-schedule" aria-label="Link to Worked example: Repo Assistant on issues plus a nightly schedule section">Worked example: Repo Assistant on issues plus a nightly schedule</a></h2>
+          <div class="section-content" data-content-slot="worked-example-repo-assistant-on-issues-plus-a-nightly-schedule">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="worked-example-repo-assistant-on-issues-plus-a-nightly-schedule"</code> block in <code>content/chapters/triggers.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-what-s-next">
+          <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
+          <div class="section-content" data-content-slot="recap-and-what-s-next">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="recap-and-what-s-next"</code> block in <code>content/chapters/triggers.html</code>.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <a class="pager-link" rel="prev" href="anatomy-and-compile-model.html">← Chapter 3: Anatomy &amp; the Compile Model</a>
+          <a class="pager-link" rel="next" href="engines.html">Chapter 5: Engines: Choosing the Agent&#x27;s Brain →</a>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>Presentation generated by <code>site/generate.py</code>. Prose is injected from <code>content/chapters/triggers.html</code>.</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

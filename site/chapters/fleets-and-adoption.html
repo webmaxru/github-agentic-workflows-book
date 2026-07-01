@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Scale the Repo Assistant into a governed multi-repo fleet and follow an enterprise adoption playbook to roll it out.">
+  <title>Fleets &amp; Adoption: From One Repo to the Org | GitHub Agentic Workflows: An Interactive Book</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a class="is-current" aria-current="page" href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 14</nav>
+        <p class="eyebrow">Chapter 14</p>
+        <h1>Fleets &amp; Adoption: From One Repo to the Org</h1>
+        <p class="lead">Scale the Repo Assistant into a governed multi-repo fleet and follow an enterprise adoption playbook to roll it out.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#concept-from-one-assistant-to-a-governed-fleet">Concept: from one assistant to a governed fleet</a></li>
+              <li><a href="#in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout">In gh-aw: multi-repo fleets, the dispatcher pattern, rollout</a></li>
+              <li><a href="#when-to-scale-org-wide-a-readiness-checklist">When to scale org-wide (a readiness checklist)</a></li>
+              <li><a href="#worked-example-cloning-the-repo-assistant-across-a-fleet">Worked example: cloning the Repo Assistant across a fleet</a></li>
+              <li><a href="#recap-and-the-road-ahead">Recap &amp; the road ahead</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>multi-repo fleets</li>
+            <li>dispatcher agent pattern</li>
+            <li>cross-repo composition</li>
+            <li>enterprise adoption playbook</li>
+            <li>gh-aw-fleet (community)</li>
+            </ul>
+          </aside>
+          <aside class="metadata-card" aria-labelledby="depends-heading">
+            <h2 id="depends-heading">Prerequisites</h2>
+            <ul>
+            <li><a href="governance-and-finops.html">Chapter 13: Governance &amp; FinOps: Policy and Cost at Scale</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="objective"</code> block in <code>content/chapters/fleets-and-adoption.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="concept-from-one-assistant-to-a-governed-fleet">
+          <h2 id="concept-from-one-assistant-to-a-governed-fleet"><a class="anchor-link" href="#concept-from-one-assistant-to-a-governed-fleet" aria-label="Link to Concept: from one assistant to a governed fleet section">Concept: from one assistant to a governed fleet</a></h2>
+          <div class="section-content" data-content-slot="concept-from-one-assistant-to-a-governed-fleet">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="concept-from-one-assistant-to-a-governed-fleet"</code> block in <code>content/chapters/fleets-and-adoption.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout">
+          <h2 id="in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout"><a class="anchor-link" href="#in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout" aria-label="Link to In gh-aw: multi-repo fleets, the dispatcher pattern, rollout section">In gh-aw: multi-repo fleets, the dispatcher pattern, rollout</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout"</code> block in <code>content/chapters/fleets-and-adoption.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="when-to-scale-org-wide-a-readiness-checklist">
+          <h2 id="when-to-scale-org-wide-a-readiness-checklist"><a class="anchor-link" href="#when-to-scale-org-wide-a-readiness-checklist" aria-label="Link to When to scale org-wide (a readiness checklist) section">When to scale org-wide (a readiness checklist)</a></h2>
+          <div class="section-content" data-content-slot="when-to-scale-org-wide-a-readiness-checklist">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="when-to-scale-org-wide-a-readiness-checklist"</code> block in <code>content/chapters/fleets-and-adoption.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-cloning-the-repo-assistant-across-a-fleet">
+          <h2 id="worked-example-cloning-the-repo-assistant-across-a-fleet"><a class="anchor-link" href="#worked-example-cloning-the-repo-assistant-across-a-fleet" aria-label="Link to Worked example: cloning the Repo Assistant across a fleet section">Worked example: cloning the Repo Assistant across a fleet</a></h2>
+          <div class="section-content" data-content-slot="worked-example-cloning-the-repo-assistant-across-a-fleet">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="worked-example-cloning-the-repo-assistant-across-a-fleet"</code> block in <code>content/chapters/fleets-and-adoption.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-the-road-ahead">
+          <h2 id="recap-and-the-road-ahead"><a class="anchor-link" href="#recap-and-the-road-ahead" aria-label="Link to Recap &amp; the road ahead section">Recap &amp; the road ahead</a></h2>
+          <div class="section-content" data-content-slot="recap-and-the-road-ahead">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="recap-and-the-road-ahead"</code> block in <code>content/chapters/fleets-and-adoption.html</code>.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <a class="pager-link" rel="prev" href="governance-and-finops.html">← Chapter 13: Governance &amp; FinOps: Policy and Cost at Scale</a>
+          <span class="pager-link is-disabled">No next chapter →</span>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>Presentation generated by <code>site/generate.py</code>. Prose is injected from <code>content/chapters/fleets-and-adoption.html</code>.</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,8 +1,8 @@
 # Table of contents for the GitHub Agentic Workflows book.
 #
 # This file is the single source of truth consumed by site/generate.py to scaffold
-# the interactive site. It is intentionally EMPTY: the chapter map is designed by the
-# `playbook-architect` agent as the first wave of the orchestration, then populated here.
+# the interactive site. The chapter map below is designed by the `playbook-architect`
+# agent as the first wave of the orchestration.
 #
 # Per-chapter schema (all fields required unless noted):
 #   - id:          stable identifier, e.g. "ch01-intro"
@@ -14,22 +14,322 @@
 #     features:    (optional) list of gh-aw features/capabilities this chapter covers
 #     depends_on:  (optional) list of prerequisite chapter ids
 #
-# Example (remove when the architect designs the real path):
-#   - id: ch01-intro
-#     number: 1
-#     slug: what-are-agentic-workflows
-#     title: What Are GitHub Agentic Workflows?
-#     objective: Explain what gh-aw is and when to reach for it.
-#     sections:
-#       - Objective
-#       - The concept
-#       - In gh-aw
-#       - When to use
-#       - Worked example
-#       - Recap and next
-#     features:
-#       - Natural Language Workflows
-#     depends_on: []
+# Targets gh aw v0.81.6 (Public Preview). Each chapter keeps the fixed 6-part arc
+# (Objective -> Concept & theory -> In gh-aw -> When to use / when not to ->
+# Worked example -> Recap & next), lightly renamed per chapter for voice.
+# The optional top-level `parts:` and per-chapter `part:` are for grouping only;
+# site/generate.py reads the flat `chapters:` list.
 
 title: "GitHub Agentic Workflows: An Interactive Book"
-chapters: []
+
+parts:
+  - number: 1
+    title: "Part I — The Individual (one workflow)"
+    chapters: ["ch01-what-are-agentic-workflows", "ch02-your-first-workflow", "ch03-anatomy-and-compile-model", "ch04-triggers", "ch05-engines"]
+  - number: 2
+    title: "Part II — The Team (safe, reviewed, patterned)"
+    chapters: ["ch06-safe-outputs", "ch07-defense-in-depth", "ch08-tools-and-mcp", "ch09-continuous-triage-and-docs", "ch10-continuous-review-and-testing"]
+  - number: 3
+    title: "Part III — The Organization (fleet at scale)"
+    chapters: ["ch11-reuse-and-memory", "ch12-observability-and-debugging", "ch13-governance-and-finops", "ch14-fleets-and-adoption"]
+
+chapters:
+  # ------------------------------------------------------------------ Part I
+  - id: "ch01-what-are-agentic-workflows"
+    number: 1
+    slug: "what-are-agentic-workflows"
+    part: "Part I — The Individual"
+    title: "What Are Agentic Workflows?"
+    objective: "Explain what an agentic workflow is, why the outer loop matters, and when to reach for gh-aw instead of plain GitHub Actions."
+    sections:
+      - "Objective"
+      - "The outer loop: why CI/CD stops short"
+      - "In gh-aw: Continuous AI, from GitHub Next"
+      - "When agentic workflows fit (and when they don't)"
+      - "Worked example: reading the Repo Assistant's first mission"
+      - "Recap & what's next"
+    features:
+      - "Continuous AI (concept)"
+      - "inner-loop vs outer-loop automation"
+      - "natural-language Markdown workflows"
+      - "gh-aw vs GitHub Actions"
+    depends_on: []
+
+  - id: "ch02-your-first-workflow"
+    number: 2
+    slug: "your-first-workflow"
+    part: "Part I — The Individual"
+    title: "The 10-Minute Win: Your First Workflow"
+    objective: "Install the gh aw CLI and ship a first working Repo Assistant that triages a new issue end to end."
+    sections:
+      - "Objective"
+      - "The problem: the overnight teammate you don't have"
+      - "In gh-aw: init, new, compile, run"
+      - "When to ship a first workflow (and when to wait)"
+      - "Worked example: Repo Assistant triages a new issue"
+      - "Recap & what's next"
+    features:
+      - "gh aw init"
+      - "gh aw new"
+      - "gh aw compile"
+      - "gh aw run"
+      - "Copilot engine (default)"
+      - "safe-outputs (previewed)"
+    depends_on: ["ch01-what-are-agentic-workflows"]
+
+  - id: "ch03-anatomy-and-compile-model"
+    number: 3
+    slug: "anatomy-and-compile-model"
+    part: "Part I — The Individual"
+    title: "Anatomy & the Compile Model"
+    objective: "Read any workflow's frontmatter + Markdown, run the compile-and-iterate loop, and understand what the generated .lock.yml contains."
+    sections:
+      - "Objective"
+      - "Concept: natural language as reviewable source"
+      - "In gh-aw: frontmatter + Markdown to gh aw compile to .lock.yml"
+      - "The authoring loop: compile, status, run, iterate"
+      - "Worked example: reading a compiled .lock.yml side by side"
+      - "Recap & what's next"
+    features:
+      - "workflow file format (frontmatter + Markdown)"
+      - "gh aw compile"
+      - ".lock.yml artifact"
+      - "gh aw status"
+      - "the authoring loop"
+    depends_on: ["ch02-your-first-workflow"]
+
+  - id: "ch04-triggers"
+    number: 4
+    slug: "triggers"
+    part: "Part I — The Individual"
+    title: "Triggers: When Workflows Wake Up"
+    objective: "Choose the right on: events so the Repo Assistant runs at exactly the right moments and no others."
+    sections:
+      - "Objective"
+      - "Concept: event-driven work (the outer loop's clock)"
+      - "In gh-aw: the on: block and its events"
+      - "When to use which trigger (and safe defaults)"
+      - "Worked example: Repo Assistant on issues plus a nightly schedule"
+      - "Recap & what's next"
+    features:
+      - "triggers (on:)"
+      - "issues / pull_request events"
+      - "schedule"
+      - "workflow_dispatch"
+      - "command / alias triggers"
+      - "workflow_run"
+    depends_on: ["ch03-anatomy-and-compile-model"]
+
+  - id: "ch05-engines"
+    number: 5
+    slug: "engines"
+    part: "Part I — The Individual"
+    title: "Engines: Choosing the Agent's Brain"
+    objective: "Select and configure an engine (Copilot, Claude, Codex, or Gemini) and understand the portability that engine-neutral design buys you."
+    sections:
+      - "Objective"
+      - "Concept: engine-neutral by design"
+      - "In gh-aw: the engine: field and its options"
+      - "When to pick which engine (capability, cost, availability)"
+      - "Worked example: switching the Repo Assistant's engine"
+      - "Recap & what's next"
+    features:
+      - "engine: field"
+      - "Copilot engine"
+      - "Claude engine"
+      - "Codex engine"
+      - "Gemini engine"
+      - "model selection"
+    depends_on: ["ch04-triggers"]
+
+  # ----------------------------------------------------------------- Part II
+  - id: "ch06-safe-outputs"
+    number: 6
+    slug: "safe-outputs"
+    part: "Part II — The Team"
+    title: "Safe Outputs: Acting Without Overreach"
+    objective: "Let the Repo Assistant write to the repo — issues, comments, PRs — through the sanitized safe-outputs boundary instead of raw permissions."
+    sections:
+      - "Objective"
+      - "Concept: never trust the model's raw writes"
+      - "In gh-aw: the safe-outputs: block"
+      - "When to use each safe output (and why not raw write scopes)"
+      - "Worked example: Repo Assistant opens a PR through safe-outputs"
+      - "Recap & what's next"
+    features:
+      - "safe-outputs:"
+      - "create-issue"
+      - "add-comment"
+      - "create-pull-request"
+      - "add-labels"
+      - "sanitized write boundary"
+    depends_on: ["ch04-triggers", "ch05-engines"]
+
+  - id: "ch07-defense-in-depth"
+    number: 7
+    slug: "defense-in-depth"
+    part: "Part II — The Team"
+    title: "Defense in Depth: Permissions, Firewall & Strict Mode"
+    objective: "Harden a workflow with least-privilege permissions, an egress firewall, and strict mode so a compromised prompt can do little damage."
+    sections:
+      - "Objective"
+      - "Concept: the lethal trifecta and defense in depth"
+      - "In gh-aw: permissions, network firewall, strict mode, sandboxing"
+      - "When to lock down (and how much is enough)"
+      - "Worked example: a hardened, least-privilege Repo Assistant"
+      - "Recap & what's next"
+    features:
+      - "permissions:"
+      - "network: firewall (egress allowlist)"
+      - "strict mode"
+      - "sandbox isolation"
+      - "threat model (lethal trifecta)"
+    depends_on: ["ch06-safe-outputs"]
+
+  - id: "ch08-tools-and-mcp"
+    number: 8
+    slug: "tools-and-mcp"
+    part: "Part II — The Team"
+    title: "Tools & MCP: Real Capabilities, Governed"
+    objective: "Give the Repo Assistant real capabilities with the tools: block and MCP servers while keeping every capability governed."
+    sections:
+      - "Objective"
+      - "Concept: agents need tools, safely"
+      - "In gh-aw: the tools: block, MCP servers, the MCP gateway"
+      - "When to add a tool or MCP server (and when it's a risk)"
+      - "Worked example: Repo Assistant queries an MCP server"
+      - "Recap & what's next"
+    features:
+      - "tools:"
+      - "MCP servers"
+      - "MCP gateway (gh-aw-mcpg)"
+      - "built-in tools"
+      - "tool permissions"
+    depends_on: ["ch07-defense-in-depth"]
+
+  - id: "ch09-continuous-triage-and-docs"
+    number: 9
+    slug: "continuous-triage-and-docs"
+    part: "Part II — The Team"
+    title: "Continuous Triage & Docs: Reading the Room"
+    objective: "Ship two production-shaped patterns — Continuous Triage and Continuous Docs — as mini-products the Repo Assistant runs on its own."
+    sections:
+      - "Objective"
+      - "Concept: Continuous X — patterns as mini-products"
+      - "In gh-aw: the Triage and Docs recipes"
+      - "When these patterns pay off (and their failure modes)"
+      - "Worked example: the triage plus docs-sync duo"
+      - "Recap & what's next"
+    features:
+      - "Continuous Triage pattern"
+      - "Continuous Docs pattern"
+      - "scheduled + event triggers"
+      - "safe-outputs in patterns"
+      - "githubnext/agentics samples"
+    depends_on: ["ch06-safe-outputs", "ch08-tools-and-mcp"]
+
+  - id: "ch10-continuous-review-and-testing"
+    number: 10
+    slug: "continuous-review-and-testing"
+    part: "Part II — The Team"
+    title: "Continuous Review, Testing & CI-Doctor"
+    objective: "Close the quality loop with Review, Testing, CI-Doctor, and Refactoring patterns while keeping humans on the merge decision."
+    sections:
+      - "Objective"
+      - "Concept: closing the quality loop"
+      - "In gh-aw: the Review, Testing, CI-Doctor, and Refactoring recipes"
+      - "When to automate quality (and where humans stay in the loop)"
+      - "Worked example: a PR-review plus daily-test-improver pair"
+      - "Recap & what's next"
+    features:
+      - "Continuous Review pattern"
+      - "Continuous Testing pattern"
+      - "CI-Doctor pattern"
+      - "Continuous Refactoring pattern"
+      - "pull_request triggers"
+    depends_on: ["ch09-continuous-triage-and-docs"]
+
+  # ---------------------------------------------------------------- Part III
+  - id: "ch11-reuse-and-memory"
+    number: 11
+    slug: "reuse-and-memory"
+    part: "Part III — The Organization"
+    title: "Reuse & Memory: Shared Components and Repo Knowledge"
+    objective: "Factor common intent into imported shared components and give the Repo Assistant memory that persists across runs."
+    sections:
+      - "Objective"
+      - "Concept: don't repeat yourself across a fleet"
+      - "In gh-aw: imports, shared components, and repo memory"
+      - "When to extract a shared component (and when to inline)"
+      - "Worked example: importing a shared triage policy with memory"
+      - "Recap & what's next"
+    features:
+      - "imports:"
+      - "shared components"
+      - "memory / persistence"
+      - "AGENTS.md context"
+      - "DRY workflows"
+    depends_on: ["ch10-continuous-review-and-testing"]
+
+  - id: "ch12-observability-and-debugging"
+    number: 12
+    slug: "observability-and-debugging"
+    part: "Part III — The Organization"
+    title: "Trust & Operate: Observability and Debugging"
+    objective: "Inspect, debug, and audit runs with gh aw logs, gh aw audit, and OpenTelemetry so you can trust what the fleet does."
+    sections:
+      - "Objective"
+      - "Concept: you can't govern what you can't see"
+      - "In gh-aw: logs, audit, OpenTelemetry, run summaries"
+      - "When to inspect versus trust (human-in-the-loop)"
+      - "Worked example: debugging a failed run from its logs"
+      - "Recap & what's next"
+    features:
+      - "gh aw logs"
+      - "gh aw audit"
+      - "OpenTelemetry (OTel)"
+      - "Actions run summary"
+      - "human-in-the-loop review"
+    depends_on: ["ch11-reuse-and-memory"]
+
+  - id: "ch13-governance-and-finops"
+    number: 13
+    slug: "governance-and-finops"
+    part: "Part III — The Organization"
+    title: "Governance & FinOps: Policy and Cost at Scale"
+    objective: "Cap, meter, and gate agentic spend with AI Credits and max-ai-credits, and set org policy so the fleet stays affordable and compliant."
+    sections:
+      - "Objective"
+      - "Concept: agentic work has a budget and a policy surface"
+      - "In gh-aw: max-ai-credits, AI Credits, token efficiency, policy"
+      - "When to cap, meter, and gate (cost and risk trade-offs)"
+      - "Worked example: a budgeted, policy-compliant Repo Assistant"
+      - "Recap & what's next"
+    features:
+      - "max-ai-credits"
+      - "AI Credits billing"
+      - "token efficiency"
+      - "governance / policy"
+      - "cost controls (FinOps)"
+    depends_on: ["ch12-observability-and-debugging"]
+
+  - id: "ch14-fleets-and-adoption"
+    number: 14
+    slug: "fleets-and-adoption"
+    part: "Part III — The Organization"
+    title: "Fleets & Adoption: From One Repo to the Org"
+    objective: "Scale the Repo Assistant into a governed multi-repo fleet and follow an enterprise adoption playbook to roll it out."
+    sections:
+      - "Objective"
+      - "Concept: from one assistant to a governed fleet"
+      - "In gh-aw: multi-repo fleets, the dispatcher pattern, rollout"
+      - "When to scale org-wide (a readiness checklist)"
+      - "Worked example: cloning the Repo Assistant across a fleet"
+      - "Recap & the road ahead"
+    features:
+      - "multi-repo fleets"
+      - "dispatcher agent pattern"
+      - "cross-repo composition"
+      - "enterprise adoption playbook"
+      - "gh-aw-fleet (community)"
+    depends_on: ["ch13-governance-and-finops"]

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Cap, meter, and gate agentic spend with AI Credits and max-ai-credits, and set org policy so the fleet stays affordable and compliant.">
+  <title>Governance &amp; FinOps: Policy and Cost at Scale | GitHub Agentic Workflows: An Interactive Book</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a class="is-current" aria-current="page" href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 13</nav>
+        <p class="eyebrow">Chapter 13</p>
+        <h1>Governance &amp; FinOps: Policy and Cost at Scale</h1>
+        <p class="lead">Cap, meter, and gate agentic spend with AI Credits and max-ai-credits, and set org policy so the fleet stays affordable and compliant.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#concept-agentic-work-has-a-budget-and-a-policy-surface">Concept: agentic work has a budget and a policy surface</a></li>
+              <li><a href="#in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy">In gh-aw: max-ai-credits, AI Credits, token efficiency, policy</a></li>
+              <li><a href="#when-to-cap-meter-and-gate-cost-and-risk-trade-offs">When to cap, meter, and gate (cost and risk trade-offs)</a></li>
+              <li><a href="#worked-example-a-budgeted-policy-compliant-repo-assistant">Worked example: a budgeted, policy-compliant Repo Assistant</a></li>
+              <li><a href="#recap-and-what-s-next">Recap &amp; what&#x27;s next</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>max-ai-credits</li>
+            <li>AI Credits billing</li>
+            <li>token efficiency</li>
+            <li>governance / policy</li>
+            <li>cost controls (FinOps)</li>
+            </ul>
+          </aside>
+          <aside class="metadata-card" aria-labelledby="depends-heading">
+            <h2 id="depends-heading">Prerequisites</h2>
+            <ul>
+            <li><a href="observability-and-debugging.html">Chapter 12: Trust &amp; Operate: Observability and Debugging</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="objective"</code> block in <code>content/chapters/governance-and-finops.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="concept-agentic-work-has-a-budget-and-a-policy-surface">
+          <h2 id="concept-agentic-work-has-a-budget-and-a-policy-surface"><a class="anchor-link" href="#concept-agentic-work-has-a-budget-and-a-policy-surface" aria-label="Link to Concept: agentic work has a budget and a policy surface section">Concept: agentic work has a budget and a policy surface</a></h2>
+          <div class="section-content" data-content-slot="concept-agentic-work-has-a-budget-and-a-policy-surface">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="concept-agentic-work-has-a-budget-and-a-policy-surface"</code> block in <code>content/chapters/governance-and-finops.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy">
+          <h2 id="in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy"><a class="anchor-link" href="#in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy" aria-label="Link to In gh-aw: max-ai-credits, AI Credits, token efficiency, policy section">In gh-aw: max-ai-credits, AI Credits, token efficiency, policy</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy"</code> block in <code>content/chapters/governance-and-finops.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="when-to-cap-meter-and-gate-cost-and-risk-trade-offs">
+          <h2 id="when-to-cap-meter-and-gate-cost-and-risk-trade-offs"><a class="anchor-link" href="#when-to-cap-meter-and-gate-cost-and-risk-trade-offs" aria-label="Link to When to cap, meter, and gate (cost and risk trade-offs) section">When to cap, meter, and gate (cost and risk trade-offs)</a></h2>
+          <div class="section-content" data-content-slot="when-to-cap-meter-and-gate-cost-and-risk-trade-offs">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="when-to-cap-meter-and-gate-cost-and-risk-trade-offs"</code> block in <code>content/chapters/governance-and-finops.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-a-budgeted-policy-compliant-repo-assistant">
+          <h2 id="worked-example-a-budgeted-policy-compliant-repo-assistant"><a class="anchor-link" href="#worked-example-a-budgeted-policy-compliant-repo-assistant" aria-label="Link to Worked example: a budgeted, policy-compliant Repo Assistant section">Worked example: a budgeted, policy-compliant Repo Assistant</a></h2>
+          <div class="section-content" data-content-slot="worked-example-a-budgeted-policy-compliant-repo-assistant">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="worked-example-a-budgeted-policy-compliant-repo-assistant"</code> block in <code>content/chapters/governance-and-finops.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-what-s-next">
+          <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
+          <div class="section-content" data-content-slot="recap-and-what-s-next">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="recap-and-what-s-next"</code> block in <code>content/chapters/governance-and-finops.html</code>.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <a class="pager-link" rel="prev" href="observability-and-debugging.html">← Chapter 12: Trust &amp; Operate: Observability and Debugging</a>
+          <a class="pager-link" rel="next" href="fleets-and-adoption.html">Chapter 14: Fleets &amp; Adoption: From One Repo to the Org →</a>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>Presentation generated by <code>site/generate.py</code>. Prose is injected from <code>content/chapters/governance-and-finops.html</code>.</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

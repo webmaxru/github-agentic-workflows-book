@@ -16,21 +16,45 @@
     });
   }
 
+  // Mark code figures that require a live run / secret with an accessible badge.
+  document.querySelectorAll('figure.code.needs-secret').forEach((figure) => {
+    if (figure.querySelector('.code-badge')) return;
+    const badge = document.createElement('span');
+    badge.className = 'code-badge';
+    badge.textContent = '🔒 Requires a secret / live run';
+    const caption = figure.querySelector(':scope > figcaption');
+    if (caption) {
+      caption.insertBefore(badge, caption.firstChild);
+    } else {
+      figure.insertBefore(badge, figure.firstChild);
+    }
+  });
+
+  // Add a copy button to every code block, hosted by its figure or a wrapper div.
   document.querySelectorAll('pre > code').forEach((codeBlock) => {
     const pre = codeBlock.parentElement;
-    if (!pre || pre.parentElement.classList.contains('code-block')) return;
+    if (!pre) return;
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'code-block';
-    pre.parentNode.insertBefore(wrapper, pre);
-    wrapper.appendChild(pre);
+    const figure = pre.closest('figure.code');
+    let host;
+    if (figure) {
+      host = figure;
+    } else if (pre.parentElement.classList.contains('code-block')) {
+      host = pre.parentElement;
+    } else {
+      host = document.createElement('div');
+      host.className = 'code-block';
+      pre.parentNode.insertBefore(host, pre);
+      host.appendChild(pre);
+    }
+    if (host.querySelector(':scope > .copy-code')) return;
 
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'copy-code';
     button.textContent = 'Copy';
-    button.setAttribute('aria-label', 'Copy code block');
-    wrapper.appendChild(button);
+    button.setAttribute('aria-label', 'Copy code to clipboard');
+    host.appendChild(button);
 
     button.addEventListener('click', async () => {
       try {
@@ -59,7 +83,7 @@
   });
 
   if (window.hljs) {
-    window.hljs.configure({ languages: ['python', 'py', 'bash', 'shell', 'json', 'yaml'] });
+    window.hljs.configure({ languages: ['yaml', 'yml', 'bash', 'shell', 'json', 'markdown', 'python', 'javascript', 'http'] });
     window.hljs.highlightAll();
   }
 })();

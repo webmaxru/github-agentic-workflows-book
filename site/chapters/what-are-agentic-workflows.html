@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explain what an agentic workflow is, why the outer loop matters, and when to reach for gh-aw instead of plain GitHub Actions.">
+  <title>What Are Agentic Workflows? | GitHub Agentic Workflows: An Interactive Book</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a class="is-current" aria-current="page" href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 1</nav>
+        <p class="eyebrow">Chapter 1</p>
+        <h1>What Are Agentic Workflows?</h1>
+        <p class="lead">Explain what an agentic workflow is, why the outer loop matters, and when to reach for gh-aw instead of plain GitHub Actions.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#the-outer-loop-why-ci-cd-stops-short">The outer loop: why CI/CD stops short</a></li>
+              <li><a href="#in-gh-aw-continuous-ai-from-github-next">In gh-aw: Continuous AI, from GitHub Next</a></li>
+              <li><a href="#when-agentic-workflows-fit-and-when-they-don-t">When agentic workflows fit (and when they don&#x27;t)</a></li>
+              <li><a href="#worked-example-reading-the-repo-assistant-s-first-mission">Worked example: reading the Repo Assistant&#x27;s first mission</a></li>
+              <li><a href="#recap-and-what-s-next">Recap &amp; what&#x27;s next</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>Continuous AI (concept)</li>
+            <li>inner-loop vs outer-loop automation</li>
+            <li>natural-language Markdown workflows</li>
+            <li>gh-aw vs GitHub Actions</li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="objective"</code> block in <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="the-outer-loop-why-ci-cd-stops-short">
+          <h2 id="the-outer-loop-why-ci-cd-stops-short"><a class="anchor-link" href="#the-outer-loop-why-ci-cd-stops-short" aria-label="Link to The outer loop: why CI/CD stops short section">The outer loop: why CI/CD stops short</a></h2>
+          <div class="section-content" data-content-slot="the-outer-loop-why-ci-cd-stops-short">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="the-outer-loop-why-ci-cd-stops-short"</code> block in <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-continuous-ai-from-github-next">
+          <h2 id="in-gh-aw-continuous-ai-from-github-next"><a class="anchor-link" href="#in-gh-aw-continuous-ai-from-github-next" aria-label="Link to In gh-aw: Continuous AI, from GitHub Next section">In gh-aw: Continuous AI, from GitHub Next</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-continuous-ai-from-github-next">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="in-gh-aw-continuous-ai-from-github-next"</code> block in <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="when-agentic-workflows-fit-and-when-they-don-t">
+          <h2 id="when-agentic-workflows-fit-and-when-they-don-t"><a class="anchor-link" href="#when-agentic-workflows-fit-and-when-they-don-t" aria-label="Link to When agentic workflows fit (and when they don&#x27;t) section">When agentic workflows fit (and when they don&#x27;t)</a></h2>
+          <div class="section-content" data-content-slot="when-agentic-workflows-fit-and-when-they-don-t">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="when-agentic-workflows-fit-and-when-they-don-t"</code> block in <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-reading-the-repo-assistant-s-first-mission">
+          <h2 id="worked-example-reading-the-repo-assistant-s-first-mission"><a class="anchor-link" href="#worked-example-reading-the-repo-assistant-s-first-mission" aria-label="Link to Worked example: reading the Repo Assistant&#x27;s first mission section">Worked example: reading the Repo Assistant&#x27;s first mission</a></h2>
+          <div class="section-content" data-content-slot="worked-example-reading-the-repo-assistant-s-first-mission">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="worked-example-reading-the-repo-assistant-s-first-mission"</code> block in <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-what-s-next">
+          <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
+          <div class="section-content" data-content-slot="recap-and-what-s-next">
+<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="recap-and-what-s-next"</code> block in <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <span class="pager-link is-disabled">← No previous chapter</span>
+          <a class="pager-link" rel="next" href="your-first-workflow.html">Chapter 2: The 10-Minute Win: Your First Workflow →</a>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>Presentation generated by <code>site/generate.py</code>. Prose is injected from <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
