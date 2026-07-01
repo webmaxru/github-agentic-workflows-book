@@ -11,6 +11,8 @@ prompt) that collaborate under an orchestrator in a wave-based pipeline.
 
 > 💡 **Inspired by [*The Agentic SDLC Handbook* by Daniel Meppiel](https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch01-the-agentic-sdlc-thesis.html)** — in particular its [case study on agentic handbook writing](https://danielmeppiel.github.io/agentic-sdlc-handbook/case-study-handbook-writing.html). This project applies that thesis: composing **primitives** (agents + prompts + skills + instructions) into a squad that produces real software artifacts.
 
+> 🧬 **Built on the foundation of [`microsoft-agent-framework-playbook-fleets-generated` by Valentina Alto](https://github.com/Valentina-Alto/microsoft-agent-framework-playbook-fleets-generated)** — this project adapts that repository's fleet-of-primitives methodology and site tooling from the **Microsoft Agent Framework** to **GitHub Agentic Workflows**.
+
 > 🛠️ **Build & preview locally:** the site is generated from `content/toc.yml` by `site/generate.py`
 > and served from `site/` (see [Run the book locally](#run-the-book-locally)). A published URL is TBD.
 
@@ -217,7 +219,9 @@ placeholder home page.
 
 ## Credits & inspiration
 
-This repository is a direct application of **[*The Agentic SDLC Handbook* by Daniel Meppiel](https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch01-the-agentic-sdlc-thesis.html)** — the primary source of inspiration for the approach used here. The handbook's [case study on writing a handbook with agents](https://danielmeppiel.github.io/agentic-sdlc-handbook/case-study-handbook-writing.html) directly motivated the "fleet of primitives" model: encoding distinct roles as agents, prompts, skills, and instruction files, and orchestrating them in waves to produce verified artifacts.
+This repository is directly built upon **[`microsoft-agent-framework-playbook-fleets-generated` by Valentina Alto](https://github.com/Valentina-Alto/microsoft-agent-framework-playbook-fleets-generated)**, which served as the foundation for this project. That repository pioneered the "fleet of primitives" playbook applied to the **Microsoft Agent Framework**; this project adapts its orchestration methodology, fleet structure, and site tooling to teach **GitHub Agentic Workflows** instead.
+
+The approach itself is a direct application of **[*The Agentic SDLC Handbook* by Daniel Meppiel](https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch01-the-agentic-sdlc-thesis.html)** — the primary source of inspiration behind it. The handbook's [case study on writing a handbook with agents](https://danielmeppiel.github.io/agentic-sdlc-handbook/case-study-handbook-writing.html) directly motivated the "fleet of primitives" model: encoding distinct roles as agents, prompts, skills, and instruction files, and orchestrating them in waves to produce verified artifacts.
 
 The book content itself is grounded in the official **[GitHub Agentic Workflows documentation](https://github.github.com/gh-aw/)** and the installed **[`gh aw` CLI extension](https://github.com/github/gh-aw)**.
 
