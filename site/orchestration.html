@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="An interactive wireframe replicating the agent-orchestration pipeline that produced the Microsoft Agent Framework playbook: a fleet of GitHub Copilot primitives working in waves.">
+  <meta name="description" content="An interactive wireframe replicating the agent-orchestration pipeline that produces the GitHub Agentic Workflows book: a fleet of GitHub Copilot primitives working in waves.">
   <title>How the fleet built this | Agent Orchestration</title>
   <style>
     :root {
@@ -196,11 +196,11 @@
   <header class="hero">
     <div class="container">
       <p class="eyebrow">Behind the scenes</p>
-      <h1>How a fleet of agents built this playbook</h1>
+      <h1>How a fleet of agents built this book</h1>
       <p class="lead">An interactive wireframe of the orchestration pipeline. Press <strong>Run the fleet</strong> to watch the squad of GitHub Copilot primitives move through the waves — design, research, author, verify, review — exactly as it happened.</p>
       <nav class="crumbs">
-        <a href="index.html">← Back to the playbook</a>
-        <a href="https://github.com/Valentina-Alto/microsoft-agent-framework-playbook-fleets-generated" target="_blank" rel="noopener">View the repo ↗</a>
+        <a href="index.html">← Back to the book</a>
+        <a href="https://github.com/github/gh-aw" target="_blank" rel="noopener">View gh-aw ↗</a>
       </nav>
     </div>
   </header>
@@ -217,7 +217,7 @@
       <div class="stage">
         <div class="node" data-step="0">
           <div class="role"><span class="ico">📋</span> content/playbook-brief.md <span class="kind">input</span></div>
-          <p>The human-authored scope: theory-first, mid-level depth, Python, HTML chapter subpages.</p>
+          <p>The human-authored scope: theory-first, mid-level depth, Markdown workflows, HTML chapter subpages.</p>
         </div>
       </div>
       <div class="connector" data-conn="0"></div>
@@ -235,7 +235,7 @@
       <div class="stage">
         <div class="node" data-step="2">
           <div class="role"><span class="ico">⚙️</span> Environment setup <span class="kind">skill</span></div>
-          <p>Creates the Python venv and installs <code>agent-framework</code> so the real API can be introspected and examples can run.</p>
+          <p>Installs the <code>gh aw</code> CLI extension so the real command surface and frontmatter schema can be inspected and examples can be compiled.</p>
         </div>
       </div>
       <div class="connector" data-conn="2"></div>
@@ -264,26 +264,26 @@
           <p class="wave-title">Waves 1…N — per chapter group</p>
           <div class="wave-row two">
             <div class="node sm" data-step="5">
-              <div class="role"><span class="ico">🔍</span> Library explorer</div>
-              <p>Introspects the <em>real</em> 1.9.0 API — no hallucinated names.</p>
+              <div class="role"><span class="ico">🔍</span> gh-aw explorer</div>
+              <p>Inspects the <em>real</em> <code>gh aw</code> CLI + frontmatter schema — no hallucinated syntax.</p>
             </div>
             <div class="node sm" data-step="6">
               <div class="role"><span class="ico">📚</span> Theory researcher</div>
-              <p>Gathers concepts from Microsoft docs.</p>
+              <p>Gathers concepts from the gh-aw docs.</p>
             </div>
           </div>
           <div class="connector" data-conn="x1" style="height:1.6rem"></div>
           <div class="wave-row">
             <div class="node sm" data-step="7">
               <div class="role"><span class="ico">✍️</span> Chapter author</div>
-              <p>Fills the HTML slots and writes runnable example code.</p>
+              <p>Fills the HTML slots and writes compilable example workflows.</p>
             </div>
           </div>
           <div class="connector" data-conn="x2" style="height:1.6rem"></div>
           <div class="wave-row">
             <div class="node sm" data-step="8">
               <div class="role"><span class="ico">✅</span> Code verifier</div>
-              <p>Runs every example in the venv — must exit 0 with no API keys.</p>
+              <p>Compiles every example with <code>gh aw compile</code> — must compile clean with no secrets.</p>
             </div>
           </div>
           <div class="connector" data-conn="x3" style="height:1.6rem"></div>
@@ -314,7 +314,7 @@
       <div class="stage">
         <div class="node" data-step="11">
           <div class="role"><span class="ico">🔗</span> Integration pass <span class="kind">review</span></div>
-          <p>Cross-chapter check of navigation, terminology, progression, and API consistency.</p>
+          <p>Cross-chapter check of navigation, terminology, progression, and syntax consistency.</p>
         </div>
       </div>
       <div class="connector" data-conn="6"></div>
@@ -322,8 +322,8 @@
       <!-- Site -->
       <div class="stage">
         <div class="node" data-step="12">
-          <div class="role"><span class="ico">🚀</span> Published playbook <span class="kind">output</span></div>
-          <p>10 chapters of verified content served as an interactive HTML site. <a href="index.html">Open it →</a></p>
+          <div class="role"><span class="ico">🚀</span> Published book <span class="kind">output</span></div>
+          <p>Verified chapters served as an interactive HTML site. <a href="index.html">Open it →</a></p>
         </div>
       </div>
     </div>
@@ -332,13 +332,13 @@
     <div class="legend">
       <div class="card"><h3>🧭 Orchestrator <span class="tag">prompt</span></h3><p>The driver that runs the whole fleet in waves and tracks progress.</p></div>
       <div class="card"><h3>🏛️ Architect <span class="tag">agent</span></h3><p>Designs the table of contents and chapter outline from the brief.</p></div>
-      <div class="card"><h3>📚 Theory researcher <span class="tag">agent</span></h3><p>Explains concepts grounded in Microsoft documentation.</p></div>
-      <div class="card"><h3>🔍 Library explorer <span class="tag">agent</span></h3><p>Introspects the installed MAF package for the exact, real API surface.</p></div>
+      <div class="card"><h3>📚 Theory researcher <span class="tag">agent</span></h3><p>Explains concepts grounded in the gh-aw documentation.</p></div>
+      <div class="card"><h3>🔍 gh-aw explorer <span class="tag">agent</span></h3><p>Inspects the real <code>gh aw</code> CLI and frontmatter schema for the exact, real surface.</p></div>
       <div class="card"><h3>✍️ Chapter author <span class="tag">agent</span></h3><p>Writes chapter prose and example code into the page slots.</p></div>
-      <div class="card"><h3>✅ Code verifier <span class="tag">agent</span></h3><p>Runs every example until it provably exits clean — no keys required.</p></div>
+      <div class="card"><h3>✅ Code verifier <span class="tag">agent</span></h3><p>Compiles every example until it provably compiles clean — no secrets required.</p></div>
       <div class="card"><h3>🧐 Chapter reviewer <span class="tag">agent</span></h3><p>Critiques for accuracy and consistency; routes fixes back to the author.</p></div>
       <div class="card"><h3>🎨 Frontend builder <span class="tag">agent</span></h3><p>Scaffolds and finalizes the HTML shell, navigation, and styling.</p></div>
-      <div class="card"><h3>⚙️ Environment setup <span class="tag">skill</span></h3><p>Reproducible recipe to build the venv and install the MAF packages.</p></div>
+      <div class="card"><h3>⚙️ Environment setup <span class="tag">skill</span></h3><p>Reproducible recipe to install the <code>gh aw</code> CLI extension and verify it.</p></div>
       <div class="card"><h3>🧱 Content &amp; code rules <span class="tag">instructions</span></h3><p>Auto-applied conventions every chapter and example must follow.</p></div>
     </div>
   </main>
@@ -354,17 +354,17 @@
     const order = [
       { step: 0,  msg: "Reading the brief — scope and intent locked in." },
       { step: 1,  msg: "Orchestrator boots and plans the waves." },
-      { step: 2,  msg: "Environment ready — agent-framework installed, API introspectable." },
+      { step: 2,  msg: "Environment ready — gh aw CLI installed, command surface inspectable." },
       { wave: "w0", steps: [3, 4], msg: "Wave 0 — Architect drafts the TOC while the Frontend builder scaffolds the site." },
-      { wave: "wN", steps: [5, 6], msg: "Waves 1…N — Explorer extracts the real API; Researcher gathers theory." },
-      { wave: "wN", steps: [7], msg: "Author fills the chapter slots and writes runnable examples." },
-      { wave: "wN", steps: [8], msg: "Verifier runs every example — checking for EXIT 0 with no keys." },
+      { wave: "wN", steps: [5, 6], msg: "Waves 1…N — Explorer extracts the real CLI/schema; Researcher gathers theory." },
+      { wave: "wN", steps: [7], msg: "Author fills the chapter slots and writes compilable workflow examples." },
+      { wave: "wN", steps: [8], msg: "Verifier compiles every example — checking for a clean gh aw compile with no secrets." },
       { wave: "wN", steps: [9], revise: true, msg: "Reviewer evaluates… one chapter needs work → REVISE back to the author." },
       { wave: "wN", steps: [7], msg: "Author applies the fixes from the reviewer." },
       { wave: "wN", steps: [9], msg: "Reviewer re-checks → ACCEPT ✓" },
       { step: 10, msg: "Wave committed to git — clean, auditable history." },
       { step: 11, msg: "Integration pass — cross-chapter consistency confirmed CLEAN." },
-      { step: 12, done: true, msg: "Published: 10 verified chapters live as an interactive playbook. 🎉" }
+      { step: 12, done: true, msg: "Published: verified chapters live as an interactive book. 🎉" }
     ];
 
     const q = (sel) => document.querySelector(sel);

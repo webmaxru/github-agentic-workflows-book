@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A progressive, Python-focused guide that starts with agent concepts and builds toward Microsoft Agent Framework components, orchestration, observability, and hosting.">
-  <title>Home | Microsoft Agent Framework Playbook</title>
+  <meta name="description" content="A progressive guide that starts with agentic-workflow concepts and builds toward GitHub Agentic Workflows authoring, compilation, MCP tools, safe outputs, and CI hosting.">
+  <title>Home | GitHub Agentic Workflows: An Interactive Book</title>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="assets/style.css">
@@ -15,153 +15,21 @@
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <header class="site-header" role="banner">
     <div class="container hero">
-      <p class="eyebrow">Interactive HTML playbook</p>
-      <h1>Microsoft Agent Framework Playbook</h1>
-      <p class="lead">A progressive, Python-focused guide that starts with agent concepts and builds toward Microsoft Agent Framework components, orchestration, observability, and hosting.</p>
+      <p class="eyebrow">Interactive HTML book</p>
+      <h1>GitHub Agentic Workflows: An Interactive Book</h1>
+      <p class="lead">A progressive guide that starts with agentic-workflow concepts and builds toward GitHub Agentic Workflows authoring, compilation, MCP tools, safe outputs, and CI hosting.</p>
     </div>
   </header>
 
   <main id="main-content" class="container" tabindex="-1">
     <section class="intro-panel" aria-labelledby="start-heading">
       <h2 id="start-heading">Start with the learning path</h2>
-      <p>Use the chapter grid to move from foundational agent vocabulary into hands-on MAF component shells. Chapter authors can add content inside each prepared section without changing the site chrome.</p>
-      <p>🤖 Curious how this playbook was built? <a href="orchestration.html">See the interactive agent-orchestration wireframe →</a></p>
+      <p>Use the chapter grid to move from foundational agentic-workflow vocabulary into hands-on gh-aw workflow authoring. Chapter authors can add content inside each prepared section without changing the site chrome.</p>
     </section>
 
     <section aria-labelledby="chapters-heading">
       <h2 id="chapters-heading">Chapters</h2>
-      <div class="chapter-grid">
-        <article class="chapter-card">
-          <p class="eyebrow">Chapter 1</p>
-          <h2><a href="chapters/what-is-an-agent.html">What is an agent?</a></h2>
-          <p>Define AI agents, distinguish them from chatbots and workflows, and learn the vocabulary used by the rest of the playbook.</p>
-        </article>
-        <article class="chapter-card">
-          <p class="eyebrow">Chapter 2</p>
-          <h2><a href="chapters/agentic-patterns-and-maf-map.html">Agentic patterns and the MAF map</a></h2>
-          <p>Connect common agentic patterns to MAF&#x27;s component families before introducing APIs.</p>
-        </article>
-        <article class="chapter-card">
-          <p class="eyebrow">Chapter 3</p>
-          <h2><a href="chapters/agents-and-instructions.html">Agents and instructions</a></h2>
-          <p>Create a Python MAF agent with a clear role, instructions, and model client boundary.</p>
-            <details class="component-list">
-              <summary>MAF components</summary>
-              <ul>
-              <li>Agent</li>
-              <li>instructions</li>
-              <li>agent identity/name</li>
-              <li>run invocation</li>
-              </ul>
-            </details>
-        </article>
-        <article class="chapter-card">
-          <p class="eyebrow">Chapter 4</p>
-          <h2><a href="chapters/chat-clients-messages-and-conversations.html">Chat clients, messages, and conversations</a></h2>
-          <p>Understand how MAF separates agent behavior from provider chat clients, messages, and conversation state.</p>
-            <details class="component-list">
-              <summary>MAF components</summary>
-              <ul>
-              <li>ChatClient</li>
-              <li>FoundryChatClient</li>
-              <li>providers</li>
-              <li>messages</li>
-              <li>conversations</li>
-              <li>multi-turn state</li>
-              </ul>
-            </details>
-        </article>
-        <article class="chapter-card">
-          <p class="eyebrow">Chapter 5</p>
-          <h2><a href="chapters/tools-and-function-calling.html">Tools and function calling</a></h2>
-          <p>Add safe, well-scoped tools so an agent can act beyond text generation.</p>
-            <details class="component-list">
-              <summary>MAF components</summary>
-              <ul>
-              <li>tools</li>
-              <li>function calling</li>
-              <li>tool schemas</li>
-              <li>agent skills</li>
-              </ul>
-            </details>
-        </article>
-        <article class="chapter-card">
-          <p class="eyebrow">Chapter 6</p>
-          <h2><a href="chapters/workflows-sequential-and-concurrent.html">Workflows for sequential and concurrent orchestration</a></h2>
-          <p>Model repeatable multi-step agent systems with workflow executors, edges, and sequential or concurrent paths.</p>
-            <details class="component-list">
-              <summary>MAF components</summary>
-              <ul>
-              <li>workflows</li>
-              <li>WorkflowBuilder</li>
-              <li>executors</li>
-              <li>edges</li>
-              <li>sequential orchestration</li>
-              <li>concurrent orchestration</li>
-              </ul>
-            </details>
-        </article>
-        <article class="chapter-card">
-          <p class="eyebrow">Chapter 7</p>
-          <h2><a href="chapters/handoff-and-group-chat.html">Handoff and group chat orchestration</a></h2>
-          <p>Choose handoff and group collaboration patterns when one agent is not enough.</p>
-            <details class="component-list">
-              <summary>MAF components</summary>
-              <ul>
-              <li>handoff orchestration</li>
-              <li>group chat</li>
-              <li>multi-agent collaboration</li>
-              <li>routing</li>
-              </ul>
-            </details>
-        </article>
-        <article class="chapter-card">
-          <p class="eyebrow">Chapter 8</p>
-          <h2><a href="chapters/streaming-checkpointing-and-human-in-the-loop.html">Streaming, checkpointing, and human-in-the-loop</a></h2>
-          <p>Make longer-running agent workflows observable, resumable, and controllable by people.</p>
-            <details class="component-list">
-              <summary>MAF components</summary>
-              <ul>
-              <li>streaming</li>
-              <li>checkpointing</li>
-              <li>durability</li>
-              <li>human-in-the-loop</li>
-              <li>workflow events</li>
-              </ul>
-            </details>
-        </article>
-        <article class="chapter-card">
-          <p class="eyebrow">Chapter 9</p>
-          <h2><a href="chapters/middleware-and-observability.html">Middleware and observability</a></h2>
-          <p>Add cross-cutting behavior and OpenTelemetry traces without burying operational concerns inside agent logic.</p>
-            <details class="component-list">
-              <summary>MAF components</summary>
-              <ul>
-              <li>middleware</li>
-              <li>request/response pipeline</li>
-              <li>exception handling</li>
-              <li>OpenTelemetry</li>
-              <li>tracing</li>
-              </ul>
-            </details>
-        </article>
-        <article class="chapter-card">
-          <p class="eyebrow">Chapter 10</p>
-          <h2><a href="chapters/declarative-hosting-and-devui.html">Declarative agents, hosting, and DevUI</a></h2>
-          <p>Understand how MAF projects move from local authored components toward YAML configuration, hosted execution, and interactive debugging.</p>
-            <details class="component-list">
-              <summary>MAF components</summary>
-              <ul>
-              <li>declarative agents</li>
-              <li>YAML configuration</li>
-              <li>Foundry-hosted agents</li>
-              <li>hosting overview</li>
-              <li>A2A integration</li>
-              <li>DevUI</li>
-              </ul>
-            </details>
-        </article>
-      </div>
+      <p class="pending-note"><strong>No chapters yet.</strong> The learning path is being designed. Populate <code>content/toc.yml</code> (via <code>playbook-architect</code>) and re-run <code>site/generate.py</code> to scaffold chapter pages.</p>
     </section>
   </main>
 

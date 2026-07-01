@@ -1,213 +1,35 @@
-chapters:
-  - id: 01-what-is-an-agent
-    number: 1
-    title: What is an agent?
-    slug: what-is-an-agent
-    objective: Define AI agents, distinguish them from chatbots and workflows, and learn the vocabulary used by the rest of the playbook.
-    maf_components: []
-    depends_on: []
-    sections:
-      - Objective
-      - Concept/Theory
-      - When to use / pitfalls
-      - Recap & next
+# Table of contents for the GitHub Agentic Workflows book.
+#
+# This file is the single source of truth consumed by site/generate.py to scaffold
+# the interactive site. It is intentionally EMPTY: the chapter map is designed by the
+# `playbook-architect` agent as the first wave of the orchestration, then populated here.
+#
+# Per-chapter schema (all fields required unless noted):
+#   - id:          stable identifier, e.g. "ch01-intro"
+#     number:      display number, e.g. 1
+#     slug:        url slug, e.g. "intro" -> chapters/intro.html
+#     title:       chapter title
+#     objective:   one-sentence learning objective
+#     sections:    list of section titles (each becomes an authored content slot)
+#     features:    (optional) list of gh-aw features/capabilities this chapter covers
+#     depends_on:  (optional) list of prerequisite chapter ids
+#
+# Example (remove when the architect designs the real path):
+#   - id: ch01-intro
+#     number: 1
+#     slug: what-are-agentic-workflows
+#     title: What Are GitHub Agentic Workflows?
+#     objective: Explain what gh-aw is and when to reach for it.
+#     sections:
+#       - Objective
+#       - The concept
+#       - In gh-aw
+#       - When to use
+#       - Worked example
+#       - Recap and next
+#     features:
+#       - Natural Language Workflows
+#     depends_on: []
 
-  - id: 02-agentic-patterns-and-maf-map
-    number: 2
-    title: Agentic patterns and the MAF map
-    slug: agentic-patterns-and-maf-map
-    objective: Connect common agentic patterns to MAF's component families before introducing APIs.
-    maf_components: []
-    depends_on:
-      - 01-what-is-an-agent
-    sections:
-      - Objective
-      - Concept/Theory
-      - When to use / pitfalls
-      - Recap & next
-
-  - id: 03-agents-and-instructions
-    number: 3
-    title: Agents and instructions
-    slug: agents-and-instructions
-    objective: Create a Python MAF agent with a clear role, instructions, and model client boundary.
-    maf_components:
-      - Agent
-      - instructions
-      - agent identity/name
-      - run invocation
-    depends_on:
-      - 01-what-is-an-agent
-      - 02-agentic-patterns-and-maf-map
-    sections:
-      - Objective
-      - Concept/Theory
-      - In MAF
-      - When to use / pitfalls
-      - Worked example
-      - Recap & next
-
-  - id: 04-chat-clients-messages-and-conversations
-    number: 4
-    title: Chat clients, messages, and conversations
-    slug: chat-clients-messages-and-conversations
-    objective: Understand how MAF separates agent behavior from provider chat clients, messages, and conversation state.
-    maf_components:
-      - ChatClient
-      - FoundryChatClient
-      - providers
-      - messages
-      - conversations
-      - multi-turn state
-    depends_on:
-      - 01-what-is-an-agent
-      - 02-agentic-patterns-and-maf-map
-      - 03-agents-and-instructions
-    sections:
-      - Objective
-      - Concept/Theory
-      - In MAF
-      - When to use / pitfalls
-      - Worked example
-      - Recap & next
-
-  - id: 05-tools-and-function-calling
-    number: 5
-    title: Tools and function calling
-    slug: tools-and-function-calling
-    objective: Add safe, well-scoped tools so an agent can act beyond text generation.
-    maf_components:
-      - tools
-      - function calling
-      - tool schemas
-      - agent skills
-    depends_on:
-      - 02-agentic-patterns-and-maf-map
-      - 03-agents-and-instructions
-      - 04-chat-clients-messages-and-conversations
-    sections:
-      - Objective
-      - Concept/Theory
-      - In MAF
-      - When to use / pitfalls
-      - Worked example
-      - Recap & next
-
-  - id: 06-workflows-sequential-and-concurrent
-    number: 6
-    title: Workflows for sequential and concurrent orchestration
-    slug: workflows-sequential-and-concurrent
-    objective: Model repeatable multi-step agent systems with workflow executors, edges, and sequential or concurrent paths.
-    maf_components:
-      - workflows
-      - WorkflowBuilder
-      - executors
-      - edges
-      - sequential orchestration
-      - concurrent orchestration
-    depends_on:
-      - 02-agentic-patterns-and-maf-map
-      - 03-agents-and-instructions
-      - 05-tools-and-function-calling
-    sections:
-      - Objective
-      - Concept/Theory
-      - In MAF
-      - When to use / pitfalls
-      - Worked example
-      - Recap & next
-
-  - id: 07-handoff-and-group-chat
-    number: 7
-    title: Handoff and group chat orchestration
-    slug: handoff-and-group-chat
-    objective: Choose handoff and group collaboration patterns when one agent is not enough.
-    maf_components:
-      - handoff orchestration
-      - group chat
-      - multi-agent collaboration
-      - routing
-    depends_on:
-      - 02-agentic-patterns-and-maf-map
-      - 03-agents-and-instructions
-      - 06-workflows-sequential-and-concurrent
-    sections:
-      - Objective
-      - Concept/Theory
-      - In MAF
-      - When to use / pitfalls
-      - Worked example
-      - Recap & next
-
-  - id: 08-streaming-checkpointing-and-human-in-the-loop
-    number: 8
-    title: Streaming, checkpointing, and human-in-the-loop
-    slug: streaming-checkpointing-and-human-in-the-loop
-    objective: Make longer-running agent workflows observable, resumable, and controllable by people.
-    maf_components:
-      - streaming
-      - checkpointing
-      - durability
-      - human-in-the-loop
-      - workflow events
-    depends_on:
-      - 04-chat-clients-messages-and-conversations
-      - 06-workflows-sequential-and-concurrent
-      - 07-handoff-and-group-chat
-    sections:
-      - Objective
-      - Concept/Theory
-      - In MAF
-      - When to use / pitfalls
-      - Worked example
-      - Recap & next
-
-  - id: 09-middleware-and-observability
-    number: 9
-    title: Middleware and observability
-    slug: middleware-and-observability
-    objective: Add cross-cutting behavior and OpenTelemetry traces without burying operational concerns inside agent logic.
-    maf_components:
-      - middleware
-      - request/response pipeline
-      - exception handling
-      - OpenTelemetry
-      - tracing
-    depends_on:
-      - 03-agents-and-instructions
-      - 04-chat-clients-messages-and-conversations
-      - 05-tools-and-function-calling
-      - 06-workflows-sequential-and-concurrent
-    sections:
-      - Objective
-      - Concept/Theory
-      - In MAF
-      - When to use / pitfalls
-      - Worked example
-      - Recap & next
-
-  - id: 10-declarative-hosting-and-devui
-    number: 10
-    title: Declarative agents, hosting, and DevUI
-    slug: declarative-hosting-and-devui
-    objective: Understand how MAF projects move from local authored components toward YAML configuration, hosted execution, and interactive debugging.
-    maf_components:
-      - declarative agents
-      - YAML configuration
-      - Foundry-hosted agents
-      - hosting overview
-      - A2A integration
-      - DevUI
-    depends_on:
-      - 03-agents-and-instructions
-      - 05-tools-and-function-calling
-      - 06-workflows-sequential-and-concurrent
-      - 08-streaming-checkpointing-and-human-in-the-loop
-      - 09-middleware-and-observability
-    sections:
-      - Objective
-      - Concept/Theory
-      - In MAF
-      - When to use / pitfalls
-      - Worked example
-      - Recap & next
+title: "GitHub Agentic Workflows: An Interactive Book"
+chapters: []
