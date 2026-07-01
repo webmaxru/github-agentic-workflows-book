@@ -1,4 +1,4 @@
-"""Generate the static Microsoft Agent Framework playbook site from content/toc.yml."""
+"""Generate the static GitHub Agentic Workflows book site from content/toc.yml."""
 from __future__ import annotations
 
 import html
@@ -13,10 +13,10 @@ SITE = ROOT / "site"
 CHAPTERS_DIR = SITE / "chapters"
 TOC_PATH = ROOT / "content" / "toc.yml"
 
-PLAYBOOK_TITLE = "Microsoft Agent Framework Playbook"
+PLAYBOOK_TITLE = "GitHub Agentic Workflows: An Interactive Book"
 PLAYBOOK_INTRO = (
-    "A progressive, Python-focused guide that starts with agent concepts and builds "
-    "toward Microsoft Agent Framework components, orchestration, observability, and hosting."
+    "A progressive guide that starts with agentic-workflow concepts and builds toward "
+    "GitHub Agentic Workflows authoring, compilation, MCP tools, safe outputs, and CI hosting."
 )
 
 
@@ -33,10 +33,10 @@ def slugify(value: str) -> str:
 
 def load_chapters() -> list[dict[str, Any]]:
     with TOC_PATH.open("r", encoding="utf-8") as handle:
-        data = yaml.safe_load(handle)
-    chapters = data.get("chapters", [])
-    if len(chapters) != 10:
-        raise ValueError(f"Expected 10 chapters in {TOC_PATH}, found {len(chapters)}")
+        data = yaml.safe_load(handle) or {}
+    chapters = data.get("chapters") or []
+    if not isinstance(chapters, list):
+        raise ValueError(f"'chapters' in {TOC_PATH} must be a list, found {type(chapters).__name__}")
     return chapters
 
 
@@ -72,22 +72,29 @@ def build_chapter_nav(chapters: list[dict[str, Any]], current_id: str | None = N
 def render_index(chapters: list[dict[str, Any]]) -> str:
     cards: list[str] = []
     for chapter in chapters:
-        components = chapter.get("maf_components") or []
-        component_html = ""
-        if components:
-            component_html = "\n".join(f"              <li>{esc(component)}</li>" for component in components)
-            component_html = f'''
+        features = chapter.get("features") or []
+        feature_html = ""
+        if features:
+            feature_html = "\n".join(f"              <li>{esc(feature)}</li>" for feature in features)
+            feature_html = f'''
             <details class="component-list">
-              <summary>MAF components</summary>
+              <summary>gh-aw features</summary>
               <ul>
-{component_html}
+{feature_html}
               </ul>
             </details>'''
         cards.append(f'''        <article class="chapter-card">
           <p class="eyebrow">Chapter {esc(chapter["number"])}</p>
           <h2><a href="{esc(chapter_url(chapter))}">{esc(chapter["title"])}</a></h2>
-          <p>{esc(chapter["objective"])}</p>{component_html}
+          <p>{esc(chapter["objective"])}</p>{feature_html}
         </article>''')
+
+    if cards:
+        chapters_block = f'''      <div class="chapter-grid">
+{chr(10).join(cards)}
+      </div>'''
+    else:
+        chapters_block = '''      <p class="pending-note"><strong>No chapters yet.</strong> The learning path is being designed. Populate <code>content/toc.yml</code> (via <code>playbook-architect</code>) and re-run <code>site/generate.py</code> to scaffold chapter pages.</p>'''
 
     return f'''<!doctype html>
 <html lang="en">
@@ -98,7 +105,7 @@ def render_index(chapters: list[dict[str, Any]]) -> str:
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <header class="site-header" role="banner">
     <div class="container hero">
-      <p class="eyebrow">Interactive HTML playbook</p>
+      <p class="eyebrow">Interactive HTML book</p>
       <h1>{esc(PLAYBOOK_TITLE)}</h1>
       <p class="lead">{esc(PLAYBOOK_INTRO)}</p>
     </div>
@@ -107,14 +114,12 @@ def render_index(chapters: list[dict[str, Any]]) -> str:
   <main id="main-content" class="container" tabindex="-1">
     <section class="intro-panel" aria-labelledby="start-heading">
       <h2 id="start-heading">Start with the learning path</h2>
-      <p>Use the chapter grid to move from foundational agent vocabulary into hands-on MAF component shells. Chapter authors can add content inside each prepared section without changing the site chrome.</p>
+      <p>Use the chapter grid to move from foundational agentic-workflow vocabulary into hands-on gh-aw workflow authoring. Chapter authors can add content inside each prepared section without changing the site chrome.</p>
     </section>
 
     <section aria-labelledby="chapters-heading">
       <h2 id="chapters-heading">Chapters</h2>
-      <div class="chapter-grid">
-{chr(10).join(cards)}
-      </div>
+{chapters_block}
     </section>
   </main>
 
@@ -161,15 +166,15 @@ def render_chapter(chapters: list[dict[str, Any]], index: int) -> str:
         if next_chapter else '<span class="pager-link is-disabled">No next chapter →</span>'
     )
 
-    components = chapter.get("maf_components") or []
-    components_html = ""
-    if components:
-        components_html = "\n".join(f"            <li>{esc(component)}</li>" for component in components)
-        components_html = f'''
-          <aside class="metadata-card" aria-labelledby="components-heading">
-            <h2 id="components-heading">MAF components</h2>
+    features = chapter.get("features") or []
+    features_html = ""
+    if features:
+        features_html = "\n".join(f"            <li>{esc(feature)}</li>" for feature in features)
+        features_html = f'''
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
             <ul class="tag-list">
-{components_html}
+{features_html}
             </ul>
           </aside>'''
 
@@ -202,7 +207,7 @@ def render_chapter(chapters: list[dict[str, Any]], index: int) -> str:
   <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
 
   <div class="page-shell">
-    <aside id="chapter-sidebar" class="sidebar" aria-label="Playbook chapters">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
       <div class="sidebar-inner">
         <a class="site-title" href="../index.html">{esc(PLAYBOOK_TITLE)}</a>
         <nav class="chapter-nav" aria-label="Chapter navigation">
@@ -228,7 +233,7 @@ def render_chapter(chapters: list[dict[str, Any]], index: int) -> str:
             <ol>
 {chr(10).join(section_nav)}
             </ol>
-          </nav>{components_html}{depends_html}
+          </nav>{features_html}{depends_html}
         </div>
 
 {chr(10).join(sections)}
@@ -261,4 +266,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

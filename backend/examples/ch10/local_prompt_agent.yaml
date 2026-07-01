@@ -1,9 +1,0 @@
-kind: Prompt
-name: LocalDeclarativeAgent
-displayName: Local Declarative Agent
-description: No-network PromptAgent definition loaded by AgentFactory.
-instructions: |
-  You are a local demo agent. Keep responses short.
-model:
-  options:
-    temperature: 0.0

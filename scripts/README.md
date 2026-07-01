@@ -1,6 +1,6 @@
-# Running the MAF Playbook Fleet Autonomously
+# Running the Book Fleet Autonomously
 
-This folder holds launchers that run the playbook **agent fleet** unattended in the backend.
+This folder holds launchers that run the book's **agent fleet** unattended in the backend.
 
 The autonomy model has three layers:
 
@@ -17,7 +17,7 @@ state board.
 ## Launch (headless / programmatic)
 
 `copilot -p` runs a single prompt to completion and exits — ideal for a backend fleet.
-`--allow-all-tools` lets it install packages, run code, and commit without prompts.
+`--allow-all-tools` lets it install the `gh aw` extension, compile workflows, and commit without prompts.
 
 ```powershell
 # from the repo root
@@ -36,9 +36,9 @@ Or use the wrapper in this folder:
 ```
 
 ## Parallelism (fleet mode)
-The driver enables parallel subagents so independent work runs concurrently — e.g. theory + library
-research for a chapter, or several chapters in the same wave. Interactively you can also toggle this
-with `/fleet`. In headless mode the driver requests it itself.
+The driver enables parallel subagents so independent work runs concurrently — e.g. theory +
+capability research for a chapter, or several chapters in the same wave. Interactively you can also
+toggle this with `/fleet`. In headless mode the driver requests it itself.
 
 ## Resumability
 State lives in `todos` + git checkpoints (one commit per chapter). Re-launching the driver is
@@ -48,5 +48,6 @@ mid-wave, just run it again.
 ## Safety notes
 - `--allow-all-tools` grants the same access you have. Prefer running the fleet inside a sandbox
   (`copilot --cloud`, or `/sandbox enable`) or a container if you want isolation.
-- Provider keys go in a gitignored `.env`; examples mock live calls, so a full run needs no secrets
-  unless you want chapters to execute real LLM calls.
+- Engine keys for real workflow runs go in GitHub Actions secrets; the book's examples validate at
+  compile time (`gh aw compile`), so a full run needs no secrets unless you want examples to
+  execute real workflows.

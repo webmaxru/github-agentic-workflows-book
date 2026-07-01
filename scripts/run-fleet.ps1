@@ -1,5 +1,5 @@
 #!/usr/bin/env pwsh
-# Launches the MAF playbook agent fleet autonomously (headless).
+# Launches the GitHub Agentic Workflows book agent fleet autonomously (headless).
 # Runs the master orchestrator prompt to completion via Copilot CLI, then exits.
 #
 # Usage:
@@ -33,7 +33,7 @@ if (-not (Get-Command copilot -ErrorAction SilentlyContinue)) {
 
 $prompt = Get-Content -Raw $PromptPath
 
-Write-Host "Launching MAF playbook fleet from '$PromptPath'..." -ForegroundColor Cyan
+Write-Host "Launching GitHub Agentic Workflows book fleet from '$PromptPath'..." -ForegroundColor Cyan
 
 if ($DryRun) {
     Write-Host "[DryRun] Would run: copilot -p <orchestrator-prompt> --allow-all-tools" -ForegroundColor Yellow
