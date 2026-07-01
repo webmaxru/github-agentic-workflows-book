@@ -10,3 +10,6 @@ __pycache__/
 # Build / artifacts
 dist/
 build/
+
+# Private research working notes (not part of the published book)
+.source-docs/
