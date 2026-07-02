@@ -2,260 +2,258 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="A progressive guide that starts with agentic-workflow concepts and builds toward GitHub Agentic Workflows authoring, compilation, MCP tools, safe outputs, and CI hosting.">
+  <meta name="color-scheme" content="light dark">
   <title>Home | GitHub Agentic Workflows: An Interactive Book</title>
+  <script>(function(){try{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%234f46e5'/%3E%3Ctext%20x='16'%20y='22'%20font-family='monospace'%20font-size='16'%20font-weight='bold'%20text-anchor='middle'%20fill='white'%3Eaw%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="assets/style.css">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer src="assets/app.js"></script>
 </head>
-<body>
+<body class="home">
   <a class="skip-link" href="#main-content">Skip to main content</a>
-  <header class="site-header" role="banner">
-    <div class="container topbar">
-      <a class="brand" href="index.html"><span class="brand-badge">aw</span> gh-aw · the book</a>
-      <nav class="topnav" aria-label="Primary">
-        <a href="#chapters">Chapters</a>
+  <header class="reader-bar" role="banner">
+    <div class="reader-bar-inner">
+      <a class="brand" href="index.html"><span class="brand-mark">aw</span> gh-aw · the book</a>
+      <nav class="reader-nav" aria-label="Primary">
+        <a href="#contents">Contents</a>
         <a href="orchestration.html">How it was built</a>
         <a href="https://github.com/github/gh-aw" target="_blank" rel="noopener">gh-aw ↗</a>
       </nav>
-    </div>
-    <div class="container hero">
-      <p class="eyebrow">continuous ai · gh aw v0.81.6</p>
-      <h1 class="hero-title">Automate the judgment work CI/CD never could.</h1>
-      <p class="lead">You write the outcome in plain Markdown. gh-aw compiles it to a hardened GitHub Actions workflow and runs a coding agent on your repository's outer loop — triage, docs, review — with every write reviewed and safe by default.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="chapters/what-are-agentic-workflows.html">Start reading →</a>
-        <a class="btn btn-ghost" href="orchestration.html">How the fleet built this</a>
+      <div class="theme-toggle" role="group" aria-label="Reading theme">
+        <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">☀</span><span class="visually-hidden">Light theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">◑</span><span class="visually-hidden">Sepia theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="dark" aria-pressed="false" title="Dark"><span aria-hidden="true">☾</span><span class="visually-hidden">Dark theme</span></button>
       </div>
-      <figure class="compile-diptych" aria-label="A gh-aw workflow compiles from authored Markdown to a governed GitHub Actions workflow">
-        <div class="dip dip-source">
-          <span class="dip-tab">repo-assistant.md</span>
-          <pre><span class="c">---</span>
-<span class="k">on:</span>
-  <span class="k">issues:</span> [opened]
-<span class="k">engine:</span> copilot
-<span class="k">safe-outputs:</span>
-  <span class="k">add-comment:</span>
-  <span class="k">add-labels:</span>
-<span class="c">---</span>
-<span class="p"># Repo Assistant</span>
-Triage the new issue,
-comment, and label it.</pre>
-        </div>
-        <div class="dip-seam" aria-hidden="true">
-          <span class="seam-cmd">gh aw compile</span>
-          <span class="seam-arrow">→</span>
-        </div>
-        <div class="dip dip-out">
-          <span class="dip-tab">repo-assistant.lock.yml</span>
-          <pre><span class="g">✓ 0 errors</span> · SHA-pinned
-<span class="k">jobs:</span>
-  activation
-  agent          <span class="c">(read-only)</span>
-  detection
-  safe_outputs   <span class="c">(writes)</span>
-  conclusion
-<span class="g">→</span> comment + label proposed</pre>
-        </div>
-      </figure>
     </div>
   </header>
 
-  <main id="main-content" class="container" tabindex="-1">
-    <section class="intro-panel reading-guide" aria-labelledby="how-to-read">
-      <h2 id="how-to-read">How to read this book</h2>
-      <p>Every chapter follows one running example — the <strong>Repo Assistant</strong> — from a single workflow to an organization-wide fleet. The 14 chapters are grouped into three parts that scale up in scope. Two tracks run through the book; follow the call-outs that match your role.</p>
-      <div class="track-grid">
-        <aside class="callout callout--builder" aria-label="Builder track">
-          <p class="callout-title">Builder track</p>
-          <p>You author, compile, and run workflows. Read the parts in order and work every <em>Worked example</em>; watch for <strong>Builder</strong> call-outs with hands-on detail.</p>
-        </aside>
-        <aside class="callout callout--leader" aria-label="Leader track">
-          <p class="callout-title">Leader track</p>
-          <p>You care about safety, cost, governance, and adoption. Skim the <em>Concept</em> and <em>When to use</em> sections and follow the <strong>Leader</strong> call-outs; Parts II–III are written for you.</p>
-        </aside>
+  <main id="main-content" tabindex="-1">
+    <section class="cover" aria-labelledby="cover-title">
+      <div class="cover-inner">
+        <p class="cover-series">An interactive book on Continuous AI</p>
+        <h1 id="cover-title" class="cover-title">GitHub Agentic Workflows</h1>
+        <p class="cover-sub">Write your repository's outer loop in plain Markdown. Compile it to a hardened, SHA-pinned GitHub Actions workflow, and let a coding agent do the triage, docs, and review work — safely, and reviewed by default.</p>
+        <div class="cover-actions">
+          <a class="btn btn-primary" href="chapters/what-are-agentic-workflows.html">Start reading</a>
+          <a class="btn btn-quiet" href="#contents">Browse the contents</a>
+        </div>
+        <dl class="cover-meta">
+          <div class="cover-meta-item">
+            <dt>Length</dt>
+            <dd>14 chapters across 3 parts</dd>
+          </div>
+          <div class="cover-meta-item">
+            <dt>Reading time</dt>
+            <dd>about 108 minutes</dd>
+          </div>
+          <div class="cover-meta-item">
+            <dt>Edition</dt>
+            <dd><span class="mono">gh aw v0.81.6</span> · Public Preview</dd>
+          </div>
+        </dl>
       </div>
     </section>
 
-    <section id="chapters" aria-labelledby="chapters-heading">
-      <h2 id="chapters-heading" class="visually-hidden">Chapters by part</h2>
-      <section class="part-block" aria-labelledby="part-1">
-        <header class="part-header">
-          <p class="eyebrow">Part I</p>
-          <h2 id="part-1">The Individual (one workflow)</h2>
-        </header>
-        <div class="chapter-grid">
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/what-are-agentic-workflows.html">
-              <span class="ch-num">01</span>
-              <span class="ch-body">
-                <span class="ch-title">What Are Agentic Workflows?</span>
-                <span class="ch-obj">Explain what an agentic workflow is, why the outer loop matters, and when to reach for gh-aw instead of plain GitHub Actions.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/your-first-workflow.html">
-              <span class="ch-num">02</span>
-              <span class="ch-body">
-                <span class="ch-title">The 10-Minute Win: Your First Workflow</span>
-                <span class="ch-obj">Install the gh aw CLI and ship a first working Repo Assistant that triages a new issue end to end.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/anatomy-and-compile-model.html">
-              <span class="ch-num">03</span>
-              <span class="ch-body">
-                <span class="ch-title">Anatomy &amp; the Compile Model</span>
-                <span class="ch-obj">Read any workflow&#x27;s frontmatter + Markdown, run the compile-and-iterate loop, and understand what the generated .lock.yml contains.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/triggers.html">
-              <span class="ch-num">04</span>
-              <span class="ch-body">
-                <span class="ch-title">Triggers: When Workflows Wake Up</span>
-                <span class="ch-obj">Choose the right on: events so the Repo Assistant runs at exactly the right moments and no others.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/engines.html">
-              <span class="ch-num">05</span>
-              <span class="ch-body">
-                <span class="ch-title">Engines: Choosing the Agent&#x27;s Brain</span>
-                <span class="ch-obj">Select and configure an engine (Copilot, Claude, Codex, or Gemini) and understand the portability that engine-neutral design buys you.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
+    <section class="guide" aria-labelledby="guide-title">
+      <div class="reading-column">
+        <h2 id="guide-title">How to read this book</h2>
+        <p class="guide-lead">One running example, the <strong>Repo Assistant</strong>, grows from a single triage workflow into a governed multi-repo fleet. The chapters build in three parts that widen in scope. Two kinds of reader travel the same pages, guided by margin notes.</p>
+        <div class="tracks">
+          <p class="track"><span class="track-dot track-dot--builder" aria-hidden="true"></span><span><strong>Builders</strong> author, compile, and run. Read in order, work every <em>Worked example</em>, and follow the Builder notes.</span></p>
+          <p class="track"><span class="track-dot track-dot--leader" aria-hidden="true"></span><span><strong>Leaders</strong> weigh safety, cost, and adoption. Skim the concept and <em>when to use</em> sections and follow the Leader notes; Parts Two and Three are written for you.</span></p>
         </div>
-      </section>
-      <section class="part-block" aria-labelledby="part-2">
-        <header class="part-header">
-          <p class="eyebrow">Part II</p>
-          <h2 id="part-2">The Team (safe, reviewed, patterned)</h2>
-        </header>
-        <div class="chapter-grid">
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/safe-outputs.html">
-              <span class="ch-num">06</span>
-              <span class="ch-body">
-                <span class="ch-title">Safe Outputs: Acting Without Overreach</span>
-                <span class="ch-obj">Let the Repo Assistant write to the repo — issues, comments, PRs — through the sanitized safe-outputs boundary instead of raw permissions.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/defense-in-depth.html">
-              <span class="ch-num">07</span>
-              <span class="ch-body">
-                <span class="ch-title">Defense in Depth: Permissions, Firewall &amp; Strict Mode</span>
-                <span class="ch-obj">Harden a workflow with least-privilege permissions, an egress firewall, and strict mode so a compromised prompt can do little damage.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/tools-and-mcp.html">
-              <span class="ch-num">08</span>
-              <span class="ch-body">
-                <span class="ch-title">Tools &amp; MCP: Real Capabilities, Governed</span>
-                <span class="ch-obj">Give the Repo Assistant real capabilities with the tools: block and MCP servers while keeping every capability governed.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/continuous-triage-and-docs.html">
-              <span class="ch-num">09</span>
-              <span class="ch-body">
-                <span class="ch-title">Continuous Triage &amp; Docs: Reading the Room</span>
-                <span class="ch-obj">Ship two production-shaped patterns — Continuous Triage and Continuous Docs — as mini-products the Repo Assistant runs on its own.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/continuous-review-and-testing.html">
-              <span class="ch-num">10</span>
-              <span class="ch-body">
-                <span class="ch-title">Continuous Review, Testing &amp; CI-Doctor</span>
-                <span class="ch-obj">Close the quality loop with Review, Testing, CI-Doctor, and Refactoring patterns while keeping humans on the merge decision.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
+      </div>
+    </section>
+
+    <section id="contents" class="contents" aria-labelledby="contents-title">
+      <div class="contents-inner">
+        <div class="contents-head">
+          <h2 id="contents-title">Contents</h2>
+          <p class="contents-note">14 chapters across 3 parts</p>
         </div>
-      </section>
-      <section class="part-block" aria-labelledby="part-3">
-        <header class="part-header">
-          <p class="eyebrow">Part III</p>
-          <h2 id="part-3">The Organization (fleet at scale)</h2>
-        </header>
-        <div class="chapter-grid">
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/reuse-and-memory.html">
-              <span class="ch-num">11</span>
-              <span class="ch-body">
-                <span class="ch-title">Reuse &amp; Memory: Shared Components and Repo Knowledge</span>
-                <span class="ch-obj">Factor common intent into imported shared components and give the Repo Assistant memory that persists across runs.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/observability-and-debugging.html">
-              <span class="ch-num">12</span>
-              <span class="ch-body">
-                <span class="ch-title">Trust &amp; Operate: Observability and Debugging</span>
-                <span class="ch-obj">Inspect, debug, and audit runs with gh aw logs, gh aw audit, and OpenTelemetry so you can trust what the fleet does.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/governance-and-finops.html">
-              <span class="ch-num">13</span>
-              <span class="ch-body">
-                <span class="ch-title">Governance &amp; FinOps: Policy and Cost at Scale</span>
-                <span class="ch-obj">Cap, meter, and gate agentic spend with AI Credits and max-ai-credits, and set org policy so the fleet stays affordable and compliant.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
-          <article class="chapter-card">
-            <a class="row-link" href="chapters/fleets-and-adoption.html">
-              <span class="ch-num">14</span>
-              <span class="ch-body">
-                <span class="ch-title">Fleets &amp; Adoption: From One Repo to the Org</span>
-                <span class="ch-obj">Scale the Repo Assistant into a governed multi-repo fleet and follow an enterprise adoption playbook to roll it out.</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">→</span>
-            </a>
-          </article>
-        </div>
-      </section>
+        <section class="toc-part" aria-labelledby="part-1">
+          <header class="toc-part-head">
+            <span class="toc-part-kicker">Part One</span>
+            <h3 id="part-1" class="toc-part-title">The Individual</h3>
+            <span class="toc-part-note">one workflow</span>
+          </header>
+          <ol class="toc-list">
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/what-are-agentic-workflows.html">
+                <span class="toc-num">01</span>
+                <span class="toc-text">
+                  <span class="toc-title">What Are Agentic Workflows?</span>
+                  <span class="toc-obj">Explain what an agentic workflow is, why the outer loop matters, and when to reach for gh-aw instead of plain GitHub Actions.</span>
+                </span>
+                <span class="toc-time">10 min</span>
+              </a>
+            </li>
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/your-first-workflow.html">
+                <span class="toc-num">02</span>
+                <span class="toc-text">
+                  <span class="toc-title">The 10-Minute Win: Your First Workflow</span>
+                  <span class="toc-obj">Install the gh aw CLI and ship a first working Repo Assistant that triages a new issue end to end.</span>
+                </span>
+                <span class="toc-time">15 min</span>
+              </a>
+            </li>
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/anatomy-and-compile-model.html">
+                <span class="toc-num">03</span>
+                <span class="toc-text">
+                  <span class="toc-title">Anatomy &amp; the Compile Model</span>
+                  <span class="toc-obj">Read any workflow&#x27;s frontmatter + Markdown, run the compile-and-iterate loop, and understand what the generated .lock.yml contains.</span>
+                </span>
+                <span class="toc-time">9 min</span>
+              </a>
+            </li>
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/triggers.html">
+                <span class="toc-num">04</span>
+                <span class="toc-text">
+                  <span class="toc-title">Triggers: When Workflows Wake Up</span>
+                  <span class="toc-obj">Choose the right on: events so the Repo Assistant runs at exactly the right moments and no others.</span>
+                </span>
+                <span class="toc-time">9 min</span>
+              </a>
+            </li>
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/engines.html">
+                <span class="toc-num">05</span>
+                <span class="toc-text">
+                  <span class="toc-title">Engines: Choosing the Agent&#x27;s Brain</span>
+                  <span class="toc-obj">Select and configure an engine (Copilot, Claude, Codex, or Gemini) and understand the portability that engine-neutral design buys you.</span>
+                </span>
+                <span class="toc-time">7 min</span>
+              </a>
+            </li>
+          </ol>
+        </section>
+        <section class="toc-part" aria-labelledby="part-2">
+          <header class="toc-part-head">
+            <span class="toc-part-kicker">Part Two</span>
+            <h3 id="part-2" class="toc-part-title">The Team</h3>
+            <span class="toc-part-note">safe, reviewed, patterned</span>
+          </header>
+          <ol class="toc-list">
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/safe-outputs.html">
+                <span class="toc-num">06</span>
+                <span class="toc-text">
+                  <span class="toc-title">Safe Outputs: Acting Without Overreach</span>
+                  <span class="toc-obj">Let the Repo Assistant write to the repo — issues, comments, PRs — through the sanitized safe-outputs boundary instead of raw permissions.</span>
+                </span>
+                <span class="toc-time">7 min</span>
+              </a>
+            </li>
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/defense-in-depth.html">
+                <span class="toc-num">07</span>
+                <span class="toc-text">
+                  <span class="toc-title">Defense in Depth: Permissions, Firewall &amp; Strict Mode</span>
+                  <span class="toc-obj">Harden a workflow with least-privilege permissions, an egress firewall, and strict mode so a compromised prompt can do little damage.</span>
+                </span>
+                <span class="toc-time">7 min</span>
+              </a>
+            </li>
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/tools-and-mcp.html">
+                <span class="toc-num">08</span>
+                <span class="toc-text">
+                  <span class="toc-title">Tools &amp; MCP: Real Capabilities, Governed</span>
+                  <span class="toc-obj">Give the Repo Assistant real capabilities with the tools: block and MCP servers while keeping every capability governed.</span>
+                </span>
+                <span class="toc-time">7 min</span>
+              </a>
+            </li>
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/continuous-triage-and-docs.html">
+                <span class="toc-num">09</span>
+                <span class="toc-text">
+                  <span class="toc-title">Continuous Triage &amp; Docs: Reading the Room</span>
+                  <span class="toc-obj">Ship two production-shaped patterns — Continuous Triage and Continuous Docs — as mini-products the Repo Assistant runs on its own.</span>
+                </span>
+                <span class="toc-time">6 min</span>
+              </a>
+            </li>
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/continuous-review-and-testing.html">
+                <span class="toc-num">10</span>
+                <span class="toc-text">
+                  <span class="toc-title">Continuous Review, Testing &amp; CI-Doctor</span>
+                  <span class="toc-obj">Close the quality loop with Review, Testing, CI-Doctor, and Refactoring patterns while keeping humans on the merge decision.</span>
+                </span>
+                <span class="toc-time">6 min</span>
+              </a>
+            </li>
+          </ol>
+        </section>
+        <section class="toc-part" aria-labelledby="part-3">
+          <header class="toc-part-head">
+            <span class="toc-part-kicker">Part Three</span>
+            <h3 id="part-3" class="toc-part-title">The Organization</h3>
+            <span class="toc-part-note">fleet at scale</span>
+          </header>
+          <ol class="toc-list">
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/reuse-and-memory.html">
+                <span class="toc-num">11</span>
+                <span class="toc-text">
+                  <span class="toc-title">Reuse &amp; Memory: Shared Components and Repo Knowledge</span>
+                  <span class="toc-obj">Factor common intent into imported shared components and give the Repo Assistant memory that persists across runs.</span>
+                </span>
+                <span class="toc-time">6 min</span>
+              </a>
+            </li>
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/observability-and-debugging.html">
+                <span class="toc-num">12</span>
+                <span class="toc-text">
+                  <span class="toc-title">Trust &amp; Operate: Observability and Debugging</span>
+                  <span class="toc-obj">Inspect, debug, and audit runs with gh aw logs, gh aw audit, and OpenTelemetry so you can trust what the fleet does.</span>
+                </span>
+                <span class="toc-time">7 min</span>
+              </a>
+            </li>
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/governance-and-finops.html">
+                <span class="toc-num">13</span>
+                <span class="toc-text">
+                  <span class="toc-title">Governance &amp; FinOps: Policy and Cost at Scale</span>
+                  <span class="toc-obj">Cap, meter, and gate agentic spend with AI Credits and max-ai-credits, and set org policy so the fleet stays affordable and compliant.</span>
+                </span>
+                <span class="toc-time">6 min</span>
+              </a>
+            </li>
+            <li class="toc-row">
+              <a class="toc-link" href="chapters/fleets-and-adoption.html">
+                <span class="toc-num">14</span>
+                <span class="toc-text">
+                  <span class="toc-title">Fleets &amp; Adoption: From One Repo to the Org</span>
+                  <span class="toc-obj">Scale the Repo Assistant into a governed multi-repo fleet and follow an enterprise adoption playbook to roll it out.</span>
+                </span>
+                <span class="toc-time">6 min</span>
+              </a>
+            </li>
+          </ol>
+        </section>
+      </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>Generated from <code>content/toc.yml</code> by <code>site/generate.py</code>. Prose lives in <code>content/chapters/*.html</code>; the shell owns presentation. <a href="orchestration.html">See how the fleet built this ↗</a></p>
+  <footer class="colophon">
+    <div class="colophon-inner">
+      <p>This book is a proof of its own thesis: written by a fleet of GitHub Copilot agents, with every workflow example compiled and every claim checked against the real <span class="mono">gh aw</span> CLI.</p>
+      <p class="colophon-meta">Generated from <span class="mono">content/toc.yml</span> by <span class="mono">site/generate.py</span>. <a href="orchestration.html">See how the fleet built this ↗</a></p>
     </div>
   </footer>
 </body>

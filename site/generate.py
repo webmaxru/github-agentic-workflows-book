@@ -147,18 +147,54 @@ def slot_is_filled(inner: str) -> bool:
 
 def root_head(title: str, description: str, prefix: str = "") -> str:
     return f"""<meta charset=\"utf-8\">
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\">
   <meta name=\"description\" content=\"{esc(description)}\">
+  <meta name=\"color-scheme\" content=\"light dark\">
   <title>{esc(title)} | {esc(PLAYBOOK_TITLE)}</title>
+  <script>(function(){{try{{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){{document.documentElement.setAttribute('data-theme',t);}}}}catch(e){{}}}})();</script>
   <link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%234f46e5'/%3E%3Ctext%20x='16'%20y='22'%20font-family='monospace'%20font-size='16'%20font-weight='bold'%20text-anchor='middle'%20fill='white'%3Eaw%3C/text%3E%3C/svg%3E\">
   <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">
   <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>
-  <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@500;700&display=swap\">
+  <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap\">
   <link rel=\"preconnect\" href=\"https://cdnjs.cloudflare.com\">
   <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\">
   <link rel=\"stylesheet\" href=\"{prefix}assets/style.css\">
   <script defer src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\"></script>
   <script defer src=\"{prefix}assets/app.js\"></script>"""
+
+
+_NUM_WORDS = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"]
+_TAG_RE = re.compile(r"<[^>]+>")
+
+
+def part_number_word(number: Any) -> str:
+    try:
+        n = int(number)
+    except (TypeError, ValueError):
+        return ""
+    return _NUM_WORDS[n] if 0 < n < len(_NUM_WORDS) else str(n)
+
+
+def reading_minutes(slug: str) -> int | None:
+    """Rough reading estimate (~200 wpm) from the authored fragment, or None if unauthored."""
+    path = CONTENT_CHAPTERS_DIR / f"{slug}.html"
+    if not path.exists():
+        return None
+    text = path.read_text(encoding="utf-8")
+    text = _COMMENT_RE.sub(" ", text)
+    text = _TAG_RE.sub(" ", text)
+    words = len(text.split())
+    if words == 0:
+        return None
+    return max(1, round(words / 200))
+
+
+def theme_toggle() -> str:
+    return '''<div class="theme-toggle" role="group" aria-label="Reading theme">
+        <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">\u2600</span><span class="visually-hidden">Light theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">\u25d1</span><span class="visually-hidden">Sepia theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="dark" aria-pressed="false" title="Dark"><span aria-hidden="true">\u263e</span><span class="visually-hidden">Dark theme</span></button>
+      </div>'''
 
 
 def chapter_url(chapter: dict[str, Any], prefix: str = "chapters/") -> str:
@@ -189,124 +225,137 @@ def build_chapter_nav(grouped: list[dict[str, Any]], current_id: str | None = No
     return "\n".join(blocks)
 
 
-def render_chapter_card(chapter: dict[str, Any]) -> str:
-    return f'''          <article class="chapter-card">
-            <a class="row-link" href="{esc(chapter_url(chapter))}">
-              <span class="ch-num">{esc(chapter["number"]):0>2}</span>
-              <span class="ch-body">
-                <span class="ch-title">{esc(chapter["title"])}</span>
-                <span class="ch-obj">{esc(chapter["objective"])}</span>
-              </span>
-              <span class="ch-go" aria-hidden="true">\u2192</span>
-            </a>
-          </article>'''
+
 
 
 def render_index(grouped: list[dict[str, Any]]) -> str:
+    chapter_count = sum(len(part["chapters"]) for part in grouped)
+    part_count = sum(1 for part in grouped if part["chapters"])
+    total_min = sum((ch.get("_reading_min") or 0) for part in grouped for ch in part["chapters"])
+    first_slug = next((ch["slug"] for part in grouped for ch in part["chapters"]), None)
+    start_href = f"chapters/{first_slug}.html" if first_slug else "#contents"
+
     part_blocks: list[str] = []
     for offset, part in enumerate(grouped, start=1):
-        heading_id = f"part-{part['number'] if part['number'] is not None else offset}"
-        cards = "\n".join(render_chapter_card(chapter) for chapter in part["chapters"])
-        if not cards:
+        chs = part["chapters"]
+        if not chs:
             continue
-        part_blocks.append(f'''      <section class="part-block" aria-labelledby="{esc(heading_id)}">
-        <header class="part-header">
-          <p class="eyebrow">{esc(part["eyebrow"])}</p>
-          <h2 id="{esc(heading_id)}">{esc(part["title"])}</h2>
-        </header>
-        <div class="chapter-grid">
-{cards}
-        </div>
-      </section>''')
+        heading_id = f"part-{part['number'] if part['number'] is not None else offset}"
+        word = part_number_word(part["number"])
+        part_label = f"Part {word}" if word else str(part.get("eyebrow", "")).strip()
+        base, _, paren = str(part["title"]).partition("(")
+        base = base.strip()
+        note = paren.rstrip(") ").strip()
+        note_html = f'\n            <span class="toc-part-note">{esc(note)}</span>' if note else ""
+
+        rows: list[str] = []
+        for ch in chs:
+            minutes = ch.get("_reading_min")
+            time_html = (
+                f'<span class="toc-time">{minutes} min</span>'
+                if minutes else '<span class="toc-time toc-time--empty" aria-hidden="true">\u00b7</span>'
+            )
+            rows.append(f'''            <li class="toc-row">
+              <a class="toc-link" href="{esc(chapter_url(ch))}">
+                <span class="toc-num">{esc(ch["number"]):0>2}</span>
+                <span class="toc-text">
+                  <span class="toc-title">{esc(ch["title"])}</span>
+                  <span class="toc-obj">{esc(ch["objective"])}</span>
+                </span>
+                {time_html}
+              </a>
+            </li>''')
+
+        part_blocks.append(f'''        <section class="toc-part" aria-labelledby="{esc(heading_id)}">
+          <header class="toc-part-head">
+            <span class="toc-part-kicker">{esc(part_label)}</span>
+            <h3 id="{esc(heading_id)}" class="toc-part-title">{esc(base)}</h3>{note_html}
+          </header>
+          <ol class="toc-list">
+{chr(10).join(rows)}
+          </ol>
+        </section>''')
 
     if part_blocks:
-        parts_html = "\n".join(part_blocks)
+        contents_html = "\n".join(part_blocks)
     else:
-        parts_html = '''      <p class="pending-note"><strong>No chapters yet.</strong> Populate <code>content/toc.yml</code> (via <code>playbook-architect</code>) and re-run <code>site/generate.py</code> to scaffold chapter pages.</p>'''
+        contents_html = '''        <p class="pending-note"><strong>No chapters yet.</strong> Populate <code>content/toc.yml</code> (via <code>playbook-architect</code>) and re-run <code>site/generate.py</code> to scaffold chapter pages.</p>'''
+
+    reading_line = f"about {total_min} minutes" if total_min else f"{chapter_count} chapters"
+    scope_line = f"{chapter_count} chapters across {part_count} parts" if part_count else f"{chapter_count} chapters"
 
     return f'''<!doctype html>
 <html lang="en">
 <head>
   {root_head("Home", PLAYBOOK_INTRO)}
 </head>
-<body>
+<body class="home">
   <a class="skip-link" href="#main-content">Skip to main content</a>
-  <header class="site-header" role="banner">
-    <div class="container topbar">
-      <a class="brand" href="index.html"><span class="brand-badge">aw</span> gh-aw \u00b7 the book</a>
-      <nav class="topnav" aria-label="Primary">
-        <a href="#chapters">Chapters</a>
+  <header class="reader-bar" role="banner">
+    <div class="reader-bar-inner">
+      <a class="brand" href="index.html"><span class="brand-mark">aw</span> gh-aw \u00b7 the book</a>
+      <nav class="reader-nav" aria-label="Primary">
+        <a href="#contents">Contents</a>
         <a href="orchestration.html">How it was built</a>
         <a href="https://github.com/github/gh-aw" target="_blank" rel="noopener">gh-aw \u2197</a>
       </nav>
-    </div>
-    <div class="container hero">
-      <p class="eyebrow">continuous ai \u00b7 gh aw v0.81.6</p>
-      <h1 class="hero-title">Automate the judgment work CI/CD never could.</h1>
-      <p class="lead">You write the outcome in plain Markdown. gh-aw compiles it to a hardened GitHub Actions workflow and runs a coding agent on your repository's outer loop \u2014 triage, docs, review \u2014 with every write reviewed and safe by default.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="chapters/what-are-agentic-workflows.html">Start reading \u2192</a>
-        <a class="btn btn-ghost" href="orchestration.html">How the fleet built this</a>
-      </div>
-      <figure class="compile-diptych" aria-label="A gh-aw workflow compiles from authored Markdown to a governed GitHub Actions workflow">
-        <div class="dip dip-source">
-          <span class="dip-tab">repo-assistant.md</span>
-          <pre><span class="c">---</span>
-<span class="k">on:</span>
-  <span class="k">issues:</span> [opened]
-<span class="k">engine:</span> copilot
-<span class="k">safe-outputs:</span>
-  <span class="k">add-comment:</span>
-  <span class="k">add-labels:</span>
-<span class="c">---</span>
-<span class="p"># Repo Assistant</span>
-Triage the new issue,
-comment, and label it.</pre>
-        </div>
-        <div class="dip-seam" aria-hidden="true">
-          <span class="seam-cmd">gh aw compile</span>
-          <span class="seam-arrow">\u2192</span>
-        </div>
-        <div class="dip dip-out">
-          <span class="dip-tab">repo-assistant.lock.yml</span>
-          <pre><span class="g">\u2713 0 errors</span> \u00b7 SHA-pinned
-<span class="k">jobs:</span>
-  activation
-  agent          <span class="c">(read-only)</span>
-  detection
-  safe_outputs   <span class="c">(writes)</span>
-  conclusion
-<span class="g">\u2192</span> comment + label proposed</pre>
-        </div>
-      </figure>
+      {theme_toggle()}
     </div>
   </header>
 
-  <main id="main-content" class="container" tabindex="-1">
-    <section class="intro-panel reading-guide" aria-labelledby="how-to-read">
-      <h2 id="how-to-read">How to read this book</h2>
-      <p>Every chapter follows one running example \u2014 the <strong>Repo Assistant</strong> \u2014 from a single workflow to an organization-wide fleet. The 14 chapters are grouped into three parts that scale up in scope. Two tracks run through the book; follow the call-outs that match your role.</p>
-      <div class="track-grid">
-        <aside class="callout callout--builder" aria-label="Builder track">
-          <p class="callout-title">Builder track</p>
-          <p>You author, compile, and run workflows. Read the parts in order and work every <em>Worked example</em>; watch for <strong>Builder</strong> call-outs with hands-on detail.</p>
-        </aside>
-        <aside class="callout callout--leader" aria-label="Leader track">
-          <p class="callout-title">Leader track</p>
-          <p>You care about safety, cost, governance, and adoption. Skim the <em>Concept</em> and <em>When to use</em> sections and follow the <strong>Leader</strong> call-outs; Parts II\u2013III are written for you.</p>
-        </aside>
+  <main id="main-content" tabindex="-1">
+    <section class="cover" aria-labelledby="cover-title">
+      <div class="cover-inner">
+        <p class="cover-series">An interactive book on Continuous AI</p>
+        <h1 id="cover-title" class="cover-title">GitHub Agentic Workflows</h1>
+        <p class="cover-sub">Write your repository's outer loop in plain Markdown. Compile it to a hardened, SHA-pinned GitHub Actions workflow, and let a coding agent do the triage, docs, and review work \u2014 safely, and reviewed by default.</p>
+        <div class="cover-actions">
+          <a class="btn btn-primary" href="{esc(start_href)}">Start reading</a>
+          <a class="btn btn-quiet" href="#contents">Browse the contents</a>
+        </div>
+        <dl class="cover-meta">
+          <div class="cover-meta-item">
+            <dt>Length</dt>
+            <dd>{esc(scope_line)}</dd>
+          </div>
+          <div class="cover-meta-item">
+            <dt>Reading time</dt>
+            <dd>{esc(reading_line)}</dd>
+          </div>
+          <div class="cover-meta-item">
+            <dt>Edition</dt>
+            <dd><span class="mono">gh aw v0.81.6</span> \u00b7 Public Preview</dd>
+          </div>
+        </dl>
       </div>
     </section>
 
-    <section id="chapters" aria-labelledby="chapters-heading">
-      <h2 id="chapters-heading" class="visually-hidden">Chapters by part</h2>
-{parts_html}
+    <section class="guide" aria-labelledby="guide-title">
+      <div class="reading-column">
+        <h2 id="guide-title">How to read this book</h2>
+        <p class="guide-lead">One running example, the <strong>Repo Assistant</strong>, grows from a single triage workflow into a governed multi-repo fleet. The chapters build in three parts that widen in scope. Two kinds of reader travel the same pages, guided by margin notes.</p>
+        <div class="tracks">
+          <p class="track"><span class="track-dot track-dot--builder" aria-hidden="true"></span><span><strong>Builders</strong> author, compile, and run. Read in order, work every <em>Worked example</em>, and follow the Builder notes.</span></p>
+          <p class="track"><span class="track-dot track-dot--leader" aria-hidden="true"></span><span><strong>Leaders</strong> weigh safety, cost, and adoption. Skim the concept and <em>when to use</em> sections and follow the Leader notes; Parts Two and Three are written for you.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contents" class="contents" aria-labelledby="contents-title">
+      <div class="contents-inner">
+        <div class="contents-head">
+          <h2 id="contents-title">Contents</h2>
+          <p class="contents-note">{esc(scope_line)}</p>
+        </div>
+{contents_html}
+      </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>Generated from <code>content/toc.yml</code> by <code>site/generate.py</code>. Prose lives in <code>content/chapters/*.html</code>; the shell owns presentation. <a href="orchestration.html">See how the fleet built this \u2197</a></p>
+  <footer class="colophon">
+    <div class="colophon-inner">
+      <p>This book is a proof of its own thesis: written by a fleet of GitHub Copilot agents, with every workflow example compiled and every claim checked against the real <span class="mono">gh aw</span> CLI.</p>
+      <p class="colophon-meta">Generated from <span class="mono">content/toc.yml</span> by <span class="mono">site/generate.py</span>. <a href="orchestration.html">See how the fleet built this \u2197</a></p>
     </div>
   </footer>
 </body>
@@ -405,7 +454,10 @@ def render_chapter(
   <div class="page-shell">
     <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
       <div class="sidebar-inner">
-        <a class="site-title" href="../index.html">{esc(PLAYBOOK_TITLE)}</a>
+        <div class="sidebar-top">
+          <a class="site-title" href="../index.html">{esc(PLAYBOOK_TITLE)}</a>
+          {theme_toggle()}
+        </div>
         <nav class="chapter-nav" aria-label="Chapter navigation">
 {build_chapter_nav(grouped, chapter["id"], "")}
         </nav>
@@ -485,6 +537,9 @@ def main() -> None:
     grouped = group_parts(chapters, parts)
     CHAPTERS_DIR.mkdir(parents=True, exist_ok=True)
     CONTENT_CHAPTERS_DIR.mkdir(parents=True, exist_ok=True)
+
+    for chapter in chapters:
+        chapter["_reading_min"] = reading_minutes(chapter["slug"])
 
     (SITE / "index.html").write_text(render_index(grouped), encoding="utf-8")
 
