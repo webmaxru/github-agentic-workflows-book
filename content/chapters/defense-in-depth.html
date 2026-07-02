@@ -4,25 +4,133 @@
      with inner HTML; keep the data-slot ids unchanged (they map 1:1 to page slots). -->
 
 <section data-slot="objective" data-title="Objective">
-  <!-- Author: write content for "Objective" here -->
+  <p>By the end of this chapter you can <strong>harden a workflow</strong> so that even a fully compromised prompt can do very little damage: least-privilege <code>permissions:</code>, an egress <code>network:</code> firewall, and <code>strict</code> mode, layered on top of the safe-outputs boundary from <a class="xref" href="safe-outputs.html">Chapter 6</a>. You'll learn the threat model these defenses answer to, and how much locking-down is enough.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. We take the Repo Assistant and give it a genuinely paranoid security posture &mdash; the version you'd be comfortable running on a public repo.</p>
 </section>
 
 <section data-slot="concept-the-lethal-trifecta-and-defense-in-depth" data-title="Concept: the lethal trifecta and defense in depth">
-  <!-- Author: write content for "Concept: the lethal trifecta and defense in depth" here -->
+  <p>Chapter 6 removed the agent's write access. But writes aren't the only way to cause harm. Security researchers describe a now widely-cited danger called the <strong>&ldquo;lethal trifecta&rdquo;</strong>: an AI agent becomes genuinely dangerous when it has <strong>all three</strong> of &mdash; (1) exposure to <em>untrusted content</em>, (2) access to <em>private data</em>, and (3) the ability to <em>communicate externally</em>. Any one alone is fine. Together, a prompt-injection in the untrusted content can read your secrets and smuggle them out.</p>
+  <p>An agentic workflow naturally trends toward all three: it reads issues (untrusted), checks out your repo (private data), and can reach the network (exfiltration channel). So the strategy isn't to find the &ldquo;one fix&rdquo; &mdash; it's to <strong>break the trifecta</strong> from several directions at once, so no single failure is catastrophic. That is <strong>defense in depth</strong>, and it's exactly how gh-aw is built: it &ldquo;implements a defense-in-depth security architecture that protects against untrusted MCP servers and compromised agents&rdquo; (<a href="https://github.github.com/gh-aw/introduction/architecture/">Security Architecture</a>).</p>
+
+  <h3>Three layers of trust</h3>
+  <p>gh-aw organizes its defenses into three layers, &ldquo;each enforc[ing] distinct security properties&hellip; and constrain[ing] the impact of failures above it&rdquo; (<a href="https://github.github.com/gh-aw/introduction/architecture/">Security Architecture</a>):</p>
+  <ul>
+    <li><strong>Substrate</strong> &mdash; VM, kernel, container runtime, and the network firewall: isolation that holds &ldquo;even if an untrusted user-level component is fully compromised.&rdquo;</li>
+    <li><strong>Configuration</strong> &mdash; schema validation, SHA-pinned actions, security scanners, and role/permission checks applied at compile time.</li>
+    <li><strong>Plan</strong> &mdash; staged execution: content sanitization, threat detection, secret redaction, and the SafeOutputs permission separation you already met.</li>
+  </ul>
+  <aside class="callout callout--leader" aria-label="Leader takeaway">
+    <p class="callout-title">Leader lens: no single point of failure</p>
+    <p>Defense in depth is what lets you run autonomous agents on real repositories responsibly. A gap in one layer &mdash; a clever injection, a misconfigured permission &mdash; is caught by another. The security story you can tell your organization is not &ldquo;we trust the model,&rdquo; but &ldquo;a failure has to defeat several independent controls at once.&rdquo;</p>
+  </aside>
 </section>
 
 <section data-slot="in-gh-aw-permissions-network-firewall-strict-mode-sandboxing" data-title="In gh-aw: permissions, network firewall, strict mode, sandboxing">
-  <!-- Author: write content for "In gh-aw: permissions, network firewall, strict mode, sandboxing" here -->
+  <p>You control several of these layers directly from frontmatter. Three levers matter most day to day.</p>
+
+  <h3>1. Least-privilege <code>permissions:</code></h3>
+  <p>The <code>permissions:</code> block grants <em>read</em> scopes to the agent, which &ldquo;runs with minimal read-only permissions, while write operations are deferred to separate jobs&rdquo; (<a href="https://github.github.com/gh-aw/introduction/architecture/">Security Architecture</a>). Grant only what the task reads &mdash; a triager needs <code>issues: read</code>, not <code>contents: write</code>. If you omit <code>permissions:</code>, gh-aw defaults to read-only.</p>
+
+  <h3>2. The network firewall (<code>network:</code>)</h3>
+  <p>This is the trifecta's third leg &mdash; the exfiltration channel &mdash; and gh-aw lets you cut it. The Agent Workflow Firewall (AWF) &ldquo;controls the agent's egress traffic via a configurable domain allowlist to prevent data exfiltration&rdquo; (<a href="https://github.github.com/gh-aw/introduction/architecture/">Security Architecture</a>). Three postures, following least privilege (<a href="https://github.github.com/gh-aw/reference/network/">Network Permissions</a>):</p>
+  <figure class="code">
+    <figcaption>Three network postures, tightest to most open</figcaption>
+    <pre><code class="language-yaml">network: {}            # no network at all — the tightest
+network: defaults       # basic infrastructure only (the default)
+network:                # an explicit allowlist
+  allowed: [defaults, github, python]   # ecosystem identifiers + domains</code></pre>
+  </figure>
+  <p>Use <strong>ecosystem identifiers</strong> (<code>python</code>, <code>node</code>, <code>github</code>&hellip;) instead of raw domains &mdash; strict mode nudges you toward them, and &ldquo;blocked entries take precedence over allowed ones.&rdquo; A workflow that only reads issues needs no egress at all.</p>
+
+  <h3>3. Strict mode (the default)</h3>
+  <p>You've been relying on this since Chapter 2. <strong>Strict mode is on by default</strong>, and it enforces the configuration layer at compile time: no top-level write permissions, explicit network config, no wildcard domains, no deprecated fields, SHA-pinned actions, and security scanners (<a href="https://github.github.com/gh-aw/introduction/architecture/">Security Architecture</a>). Turning it off is a cliff: &ldquo;Workflows compiled with <code>strict: false</code> cannot run on public repositories&rdquo; (<a href="https://github.github.com/gh-aw/reference/frontmatter/">Frontmatter</a>).</p>
+
+  <h3>The layers you get for free</h3>
+  <p>Beyond what you configure, the <strong>Plan</strong> layer runs automatically: incoming issue/PR text is <strong>sanitized</strong> (mentions neutralized, non-HTTPS and untrusted URLs redacted); a separate <strong>threat-detection</strong> job uses AI to scan the agent's buffered output for &ldquo;secret leakage, malicious code patterns, and policy violations&rdquo; and &ldquo;must complete successfully and emit a &lsquo;safe&rsquo; verdict before any safe output jobs execute&rdquo;; and <strong>secret redaction</strong> scrubs artifacts &ldquo;with <code>if: always()</code>&rdquo; (<a href="https://github.github.com/gh-aw/introduction/architecture/">Security Architecture</a>).</p>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: the firewall is auditable</p>
+    <p>AWF &ldquo;logs all network activity for audit.&rdquo; If a run hits <code>(redacted)</code> output or a blocked domain, run <code>gh aw audit &lt;run-id&gt;</code> &mdash; its Firewall Analysis section lists every domain request with allow/deny status. Start from <code>network: defaults</code> and widen incrementally. (Observability is <a class="xref" href="observability-and-debugging.html">Chapter 12</a>.)</p>
+  </aside>
 </section>
 
 <section data-slot="when-to-lock-down-and-how-much-is-enough" data-title="When to lock down (and how much is enough)">
-  <!-- Author: write content for "When to lock down (and how much is enough)" here -->
+  <p>The honest answer is: <strong>the defaults are already strong</strong>, and for many workflows you barely add anything. The skill is matching the lock-down to the trifecta legs your workflow actually has.</p>
+  <table>
+    <thead>
+      <tr><th>If your workflow&hellip;</th><th>Then&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>only reads issues/PRs and comments</td><td>keep read-only perms; consider <code>network: {}</code> &mdash; it needs no egress</td></tr>
+      <tr><td>installs packages (tests, builds)</td><td>add just the ecosystem: <code>network: { allowed: [defaults, node] }</code></td></tr>
+      <tr><td>runs on a public repo</td><td>never set <code>strict: false</code>; lean on the auto-applied <code>min-integrity: approved</code></td></tr>
+      <tr><td>can be triggered by outsiders</td><td>tighten the <code>roles:</code> gate and fork policy from <a class="xref" href="triggers.html">Chapter 4</a></td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't disable strict mode to &ldquo;make it work.&rdquo;</strong> A strict-mode error is a real risk being flagged. Fix the cause &mdash; it's the compiler doing its job, and <code>strict: false</code> won't even run on public repos.</li>
+    <li><strong>Don't open the firewall wide.</strong> <code>network: { allowed: [...] }</code> with a broad list, or disabling the firewall, hands a compromised agent an exfiltration channel. Add domains one at a time, guided by <code>gh aw audit</code>.</li>
+    <li><strong>Don't over-grant read scopes either.</strong> Read access is still access to private data (trifecta leg two). Only request the scopes the task reads.</li>
+    <li><strong>Don't treat any single layer as sufficient.</strong> Safe outputs, the firewall, strict mode, and threat detection are complementary. The point is that they overlap.</li>
+  </ul>
 </section>
 
 <section data-slot="worked-example-a-hardened-least-privilege-repo-assistant" data-title="Worked example: a hardened, least-privilege Repo Assistant">
-  <!-- Author: write content for "Worked example: a hardened, least-privilege Repo Assistant" here -->
+  <p>Here is the Repo Assistant with every lever pulled toward safety &mdash; the version you'd happily run on a public repo. It still compiles cleanly under strict mode with no secrets.</p>
+
+  <figure class="code">
+    <figcaption>examples/ch07/repo-assistant-hardened.md &mdash; defense in depth in one frontmatter (compiles: 0 errors, 0 warnings)</figcaption>
+    <pre><code class="language-yaml">on:
+  issues:
+    types: [opened]
+  roles: [admin, maintainer, write]   # who may trigger (Configuration layer)
+permissions:
+  contents: read                      # least-privilege reads only
+  issues: read
+engine: copilot
+strict: true                          # enforce the Configuration layer
+network:
+  allowed:
+    - defaults                        # cut the exfiltration leg to essentials
+    - github
+timeout-minutes: 10                   # bound blast radius in time
+safe-outputs:
+  add-comment:
+    max: 1
+  add-labels:
+    allowed: [bug, enhancement, question, documentation]
+    max: 1</code></pre>
+  </figure>
+
+  <p>Count the independent controls, each attacking a different leg of the trifecta or bounding the blast radius:</p>
+  <ul>
+    <li><strong>Least privilege</strong> &mdash; the agent gets only <code>contents: read</code> and <code>issues: read</code>. No write token exists to steal.</li>
+    <li><strong>Trigger gate</strong> &mdash; <code>roles:</code> means a stranger's issue can't even start the agent.</li>
+    <li><strong>Egress firewall</strong> &mdash; a tight <code>network:</code> allowlist closes the exfiltration channel; a leaked secret has nowhere to go.</li>
+    <li><strong>Strict mode</strong> &mdash; the compiler refuses unsafe choices before this ever ships.</li>
+    <li><strong>Time cap + safe outputs</strong> &mdash; <code>timeout-minutes</code> bounds a runaway run, and writes still flow through the sanitized, permission-scoped boundary.</li>
+  </ul>
+
+  <figure class="code">
+    <figcaption>Verifying the example</figcaption>
+    <pre><code class="language-text">gh aw compile examples/ch07/repo-assistant-hardened.md
+# ✓ examples\ch07\repo-assistant-hardened.md (101.8 KB)
+# ✓ Compiled 1 workflow(s): 0 error(s), 0 warning(s)</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="The invisible layers">
+    <p class="callout-title">And three more layers you didn't have to write</p>
+    <p>On top of the frontmatter above, this workflow automatically gets <strong>content sanitization</strong> of the incoming issue, an AI <strong>threat-detection</strong> gate before any write, and <strong>secret redaction</strong> of its artifacts. You configured four controls; gh-aw added several more. That overlap <em>is</em> defense in depth.</p>
+  </aside>
 </section>
 
 <section data-slot="recap-and-what-s-next" data-title="Recap &amp; what&#x27;s next">
-  <!-- Author: write content for "Recap & what's next" here -->
+  <p>You can now harden a workflow so a compromised prompt is a non-event:</p>
+  <ul>
+    <li>The threat is the <strong>lethal trifecta</strong> &mdash; untrusted content + private data + external communication. The defense is to <strong>break it from several directions</strong>: defense in depth.</li>
+    <li>gh-aw layers trust across <strong>substrate</strong>, <strong>configuration</strong>, and <strong>plan</strong>, so a failure in one layer is caught by another.</li>
+    <li>You directly control three levers: least-privilege <strong><code>permissions:</code></strong>, the <strong><code>network:</code></strong> egress firewall, and <strong><code>strict</code></strong> mode (on by default &mdash; don't turn it off).</li>
+    <li>You get <strong>content sanitization</strong>, <strong>threat detection</strong>, and <strong>secret redaction</strong> for free. Match the lock-down to the trifecta legs your workflow actually has &mdash; the defaults are already strong.</li>
+  </ul>
+  <p><strong>What's next.</strong> A hardened, read-only agent is safe &mdash; but also limited to what it can read. To do real work it often needs <em>capabilities</em>: querying a database, browsing docs, calling an API. In <a class="xref" href="tools-and-mcp.html">Chapter 8: Tools &amp; MCP</a>, we grant those capabilities through the <code>tools:</code> block and MCP servers &mdash; without reopening the doors we just closed.</p>
 </section>
