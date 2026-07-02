@@ -4,25 +4,112 @@
      with inner HTML; keep the data-slot ids unchanged (they map 1:1 to page slots). -->
 
 <section data-slot="objective" data-title="Objective">
-  <!-- Author: write content for "Objective" here -->
+  <p>By the end of this chapter you can take the Repo Assistant from <strong>one repo to a governed, multi-repo fleet</strong> &mdash; installing shared workflows across many repositories, coordinating cross-repo work, rolling out safely, and following an enterprise adoption playbook. This is the top of the maturity arc the book has climbed since page one.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. The assistant that triaged one issue in Chapter 2 becomes an org-wide capability, run from a single source of truth.</p>
 </section>
 
 <section data-slot="concept-from-one-assistant-to-a-governed-fleet" data-title="Concept: from one assistant to a governed fleet">
-  <!-- Author: write content for "Concept: from one assistant to a governed fleet" here -->
+  <p>Something &ldquo;qualitatively different becomes possible&rdquo; when agentic workflows move beyond a single repository: they can &ldquo;coordinate or scale across dozens of repositories simultaneously&rdquo; &mdash; rolling out changes org-wide, assessing code quality across hundreds of repos, or &ldquo;aggregat[ing] issue tracking into a single control plane&rdquo; (<a href="https://github.github.com/gh-aw/guides/using-at-scale/">Using at Scale</a>). A fleet isn't just many copies of one workflow; it's a <em>managed practice</em>.</p>
+  <p>This is the arc the whole book has followed: <strong>the Individual</strong> (one workflow), <strong>the Team</strong> (safe, reviewed, patterned), and now <strong>the Organization</strong> (a fleet at scale). Each level reused everything below it &mdash; the fleet is just Parts I and II, governed and multiplied.</p>
+  <aside class="callout callout--leader" aria-label="Real impact">
+    <p class="callout-title">Measured: what a fleet actually delivers</p>
+    <p>GitHub Next's own <a href="https://github.com/githubnext/repo-assist-impact">repo-assist-impact</a> report measured a Repo Assistant fleet across <strong>15 repositories</strong>: a net reduction of <strong>651 issues</strong> and a <strong>median 9&times; velocity</strong> improvement &mdash; with the thesis that throughput is now &ldquo;gated by human decision-making,&rdquo; not by the agents. Public-preview adopters echo it: Home Assistant, CNCF, Carvana, Marks &amp; Spencer, and Hud.io. The fleet is where the compounding value the book promised on page one finally shows up.</p>
+  </aside>
 </section>
 
 <section data-slot="in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout" data-title="In gh-aw: multi-repo fleets, the dispatcher pattern, rollout">
-  <!-- Author: write content for "In gh-aw: multi-repo fleets, the dispatcher pattern, rollout" here -->
+  <p>Distribution has &ldquo;two complementary layers&rdquo; (<a href="https://github.github.com/gh-aw/guides/using-at-scale/">Using at Scale</a>).</p>
+
+  <h3>1. Install and update (developer-facing)</h3>
+  <p>Use <code>gh aw add</code> (or <code>gh aw add-wizard</code>) to &ldquo;install a workflow from another repository, and <code>gh aw update</code> to pull in upstream changes while preserving local edits.&rdquo; A workflow installed this way records where it came from in its <code>source:</code> field. The recommended org structure is a central <code>agentic-workflows</code> repository as &ldquo;the source of truth,&rdquo; with workflows &ldquo;versioned with exact tags (<code>@v1.2.0</code>)&rdquo; or SHA pins.</p>
+
+  <h3>2. Coordinate across repos (the dispatcher pattern)</h3>
+  <p>For work that spans repositories, two patterns matter. <strong>CentralRepoOps</strong> is &ldquo;where a central control repository dispatches work to target repositories or aggregates issues from component repositories&rdquo;; <strong>OrchestratorOps</strong> handles &ldquo;dispatching parallel worker workflows for large-scale multi-repo operations&rdquo; (<a href="https://github.github.com/gh-aw/guides/using-at-scale/">Using at Scale</a>). The cross-repo writes flow through the same safe-outputs boundary, now with <code>target-repo</code> and <code>allowed-repos</code>; GitHub Apps are &ldquo;preferred for automatic token rotation and fine-grained scoping.&rdquo;</p>
+
+  <h3>3. Roll out safely</h3>
+  <p>Don't flip a fleet to production writes on day one. <strong>Safe Rollout</strong> &ldquo;describes how to move from report-only or staged behavior to production writes with evidence and control&rdquo; &mdash; using the <code>staged: true</code> preview mode from <a class="xref" href="safe-outputs.html">Chapter 6</a> as a shadow-evaluation step before promotion (<a href="https://github.github.com/gh-aw/guides/using-at-scale/">Using at Scale</a>).</p>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: find everything the fleet did</p>
+    <p>Set a <code>tracker-id:</code> on a workflow and it &ldquo;tags every asset (issues, PRs, discussions, comments) the workflow creates with a hidden marker,&rdquo; so one GitHub search surfaces all of a workflow's output across every repo in the fleet. Pair it with <code>private: true</code> on internal workflows to control what's installable elsewhere.</p>
+  </aside>
 </section>
 
 <section data-slot="when-to-scale-org-wide-a-readiness-checklist" data-title="When to scale org-wide (a readiness checklist)">
-  <!-- Author: write content for "When to scale org-wide (a readiness checklist)" here -->
+  <p>Scaling multiplies both value and mistakes. Before cloning a workflow across a fleet, it should have earned it on one repo first. A readiness checklist:</p>
+  <table>
+    <thead>
+      <tr><th>Before you fan out, confirm&hellip;</th><th>Because&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>the workflow has run cleanly on one repo for a while</td><td>a bug cloned to 200 repos is 200 bugs</td></tr>
+      <tr><td>it's a <strong>shared import</strong>, pinned to a tag</td><td>you can fix it in one place (Ch. 11)</td></tr>
+      <tr><td>org <strong>defaults &amp; policy</strong> are set (<code>gh aw env</code>, <code>GH_AW_POLICY_*</code>)</td><td>budgets and capability gates apply fleet-wide (Ch. 13)</td></tr>
+      <tr><td>you can <strong>observe</strong> it (logs, audit, OTel)</td><td>you can't govern what you can't see (Ch. 12)</td></tr>
+      <tr><td>writes start <strong>staged / draft</strong></td><td>safe rollout beats a big-bang cutover</td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't fan out a workflow you haven't operated.</strong> Prove it on one repo; earn the fleet.</li>
+    <li><strong>Don't copy-paste across repos.</strong> That's the drift trap &mdash; distribute a pinned shared import so one change updates everyone.</li>
+    <li><strong>Don't go to production writes without a rollout.</strong> Start report-only or <code>staged</code>, gather evidence, then promote.</li>
+    <li><strong>Don't scale without central governance.</strong> A fleet without org defaults and policy gates is an unbounded cost-and-risk surface; set them <em>before</em> you widen, not after.</li>
+  </ul>
 </section>
 
 <section data-slot="worked-example-cloning-the-repo-assistant-across-a-fleet" data-title="Worked example: cloning the Repo Assistant across a fleet">
-  <!-- Author: write content for "Worked example: cloning the Repo Assistant across a fleet" here -->
+  <p>Here is the Repo Assistant as a <strong>fleet citizen</strong>: it imports the org's central triage policy, records where it was installed from, and tags its output for fleet-wide search. Every repo runs this same thin file.</p>
+
+  <figure class="code">
+    <figcaption>examples/ch14/fleet-triage.md &mdash; installed from a central repo, governed as a fleet (compiles: 0/0)</figcaption>
+    <pre><code class="language-yaml">on:
+  issues: { types: [opened, reopened] }
+  workflow_dispatch:
+permissions: { contents: read, issues: read }
+engine: copilot
+network: { allowed: [defaults, github] }
+source: "my-org/agentic-workflows/workflows/triage.md@v1.2.0"  # where it came from, pinned
+tracker-id: repo-assistant-triage      # find all its assets fleet-wide
+imports:
+  - shared/triage-policy.md            # the org's single source of truth
+tools:
+  repo-memory: true</code></pre>
+  </figure>
+
+  <p>This one file embodies the whole of Part III. The <strong>policy</strong> comes from a shared import (Ch. 11), so a fix propagates everywhere. <code>source:</code> pins it to a released version of the central repo, so <code>gh aw update</code> pulls upgrades deliberately. <code>tracker-id:</code> makes the fleet <em>auditable</em> &mdash; one search finds every comment and label it produced across every repo. And it inherits the budgets and policy gates an admin set org-wide (Ch. 13).</p>
+
+  <figure class="code">
+    <figcaption>The fleet lifecycle, in commands</figcaption>
+    <pre><code class="language-text"># install the central workflow into a repo (records source:)
+gh aw add my-org/agentic-workflows/workflows/triage.md@v1.2.0
+
+# later, pull the org's upgrade while preserving local edits
+gh aw update
+
+# find everything the fleet's triage assistant has done
+#   GitHub search: "gh-aw-tracker-id: repo-assistant-triage" in:body</code></pre>
+  </figure>
+
+  <figure class="code">
+    <figcaption>Verifying the example</figcaption>
+    <pre><code class="language-text">gh aw compile examples/ch14/fleet-triage.md
+# ✓ examples\ch14\fleet-triage.md (109.9 KB)
+# ✓ Compiled 1 workflow(s): 0 error(s), 0 warning(s)</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="The whole book in one file">
+    <p class="callout-title">Everything you learned, in one compiled artifact</p>
+    <p>Read the frontmatter top to bottom and you'll see all fourteen chapters: a trigger (Ch. 4), an engine (Ch. 5), safe outputs via the imported policy (Ch. 6), a network firewall and read-only scopes (Ch. 7), tools (Ch. 8), a Continuous-X pattern (Ch. 9&ndash;10), a shared import and memory (Ch. 11), tracker-based observability (Ch. 12), inherited budgets (Ch. 13), and fleet distribution (Ch. 14) &mdash; all compiled into one hardened <code>.lock.yml</code>.</p>
+  </aside>
 </section>
 
 <section data-slot="recap-and-the-road-ahead" data-title="Recap &amp; the road ahead">
-  <!-- Author: write content for "Recap & the road ahead" here -->
+  <p>You've reached the top of the arc &mdash; from one workflow to a governed fleet:</p>
+  <ul>
+    <li>Beyond one repo, workflows <strong>coordinate and scale across dozens</strong> &mdash; org-wide rollouts, cross-repo quality, a single issue-tracking control plane.</li>
+    <li>Distribute via <code>gh aw add</code>/<code>update</code> from a <strong>central source-of-truth repo</strong> with <strong>pinned versions</strong>; coordinate with <strong>CentralRepoOps</strong>/<strong>OrchestratorOps</strong> and cross-repo safe outputs.</li>
+    <li><strong>Roll out safely</strong> (report-only &rarr; staged &rarr; production), make the fleet <strong>auditable</strong> with <code>tracker-id</code>, and govern it centrally before you widen.</li>
+    <li>A fleet is just Parts I&ndash;II, <strong>governed and multiplied</strong> &mdash; and it's where measured impact (15 repos, 651 issues, 9&times; velocity) shows up.</li>
+  </ul>
+  <p><strong>The road ahead.</strong> You set out to look at your own repository, spot three tasks a tireless teammate could own overnight, and ship a governed agentic workflow that does them &mdash; safely, cheaply, and reviewably. You now can. Start with one 10-minute win, earn trust, and let the fleet compound. That's Continuous AI: the outer loop, automated &mdash; with people firmly in the loop. Go build your Repo Assistant.</p>
 </section>
