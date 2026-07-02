@@ -4,25 +4,117 @@
      with inner HTML; keep the data-slot ids unchanged (they map 1:1 to page slots). -->
 
 <section data-slot="objective" data-title="Objective">
-  <!-- Author: write content for "Objective" here -->
+  <p>By the end of this chapter you can <strong>inspect, debug, and audit</strong> what your workflows do &mdash; with <code>gh aw logs</code>, <code>gh aw audit</code>, run summaries, and OpenTelemetry &mdash; so you can trust a fleet you can't watch by hand.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. We take a run that went wrong and trace it from an overview table down to the exact failing step.</p>
 </section>
 
 <section data-slot="concept-you-can-t-govern-what-you-can-t-see" data-title="Concept: you can&#x27;t govern what you can&#x27;t see">
-  <!-- Author: write content for "Concept: you can't govern what you can't see" here -->
+  <p>Everything in Part III assumes a fleet running unattended &mdash; agents triaging, reviewing, and opening PRs across many repos while you sleep. That only works if you can answer, after the fact: <em>what did it do, why, what did it cost, and what did it touch?</em> <strong>Observability is the precondition for trust.</strong> You can't govern &mdash; can't budget, can't secure, can't improve &mdash; what you can't see.</p>
+  <p>An agentic run is unusually inspectable because, as <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a> showed, only one job is non-deterministic and everything is captured as artifacts. gh-aw &ldquo;provides comprehensive observability through GitHub Actions runs and artifacts&hellip; [which] preserve prompts, outputs, patches, and logs for post-hoc analysis&rdquo; (<a href="https://github.github.com/gh-aw/introduction/architecture/">Security Architecture</a>). Debugging an agent isn't guesswork; it's reading a well-kept record.</p>
+  <aside class="callout callout--leader" aria-label="Leader takeaway">
+    <p class="callout-title">Leader lens: auditability is a compliance asset</p>
+    <p>Every run leaves a durable trail &mdash; the prompt it saw, the actions it proposed, the network it touched, the tokens it spent. That record is what lets you answer a security or cost question about <em>any</em> past run, and it's what turns &ldquo;we run autonomous agents&rdquo; from a worry into a governable practice.</p>
+  </aside>
 </section>
 
 <section data-slot="in-gh-aw-logs-audit-opentelemetry-run-summaries" data-title="In gh-aw: logs, audit, OpenTelemetry, run summaries">
-  <!-- Author: write content for "In gh-aw: logs, audit, OpenTelemetry, run summaries" here -->
+  <p>Three CLI commands and one export cover the whole observability surface.</p>
+
+  <h3><code>gh aw logs</code> &mdash; the overview and the artifacts</h3>
+  <p>It &ldquo;download[s] and analyze[s] agentic workflow logs and artifacts&hellip; and provides an overview table with aggregate metrics including duration, token usage, and cost information&rdquo; (<code>gh aw logs --help</code>). By default it grabs just the compact usage artifact; widen with <code>--artifacts</code>:</p>
+  <figure class="code">
+    <figcaption>Fetch runs and choose how much to download</figcaption>
+    <pre><code class="language-text">gh aw logs                          # overview table: duration, tokens, cost
+gh aw logs repo-assistant           # just one workflow's runs
+gh aw logs --artifacts all          # everything: prompt, output, patch, logs
+gh aw logs --artifacts agent,firewall   # only what you need</code></pre>
+  </figure>
+  <p>The downloadable artifacts are the agent's black box recorder: <code>agent-stdio.log</code>, <code>safe_output.jsonl</code> (what it proposed), <code>aw-{branch}.patch</code> (what it changed), <code>workflow-logs/</code>, and <code>summary.json</code>. Available sets include <code>activation, agent, detection, firewall, github-api, mcp, usage</code>.</p>
+
+  <h3><code>gh aw audit</code> &mdash; the focused report</h3>
+  <p>Where <code>logs</code> is broad, <code>audit</code> is deep. It audits runs &ldquo;by downloading artifacts and logs, detecting errors, analyzing MCP tool usage, and generating a concise report&rdquo; (<code>gh aw audit --help</code>). Point it at a run and it finds the problem for you:</p>
+  <figure class="code">
+    <figcaption>Investigate one run, or diff two</figcaption>
+    <pre><code class="language-text">gh aw audit 1234567890              # detailed Markdown report for one run
+gh aw audit &lt;run-url&gt;/job/&lt;id&gt;       # a job URL — extracts the first failing step
+gh aw audit 1234567890 1234567891   # compare two runs (first = baseline)</code></pre>
+  </figure>
+  <p>Given a job URL without a step, it &ldquo;finds and extracts the first failing step's output&rdquo; &mdash; it navigates to the failure for you. Its Firewall Analysis section (from <a class="xref" href="defense-in-depth.html">Chapter 7</a>) lists every domain the agent tried to reach with allow/deny status.</p>
+
+  <h3>Run summaries and OpenTelemetry</h3>
+  <p>Every run also writes a rich Markdown <strong>step summary</strong> in the Actions UI, and <code>gh aw status</code> reports fleet health at a glance. For centralized, cross-run visibility, the <code>observability.otlp</code> block &ldquo;export[s] distributed traces from workflow runs to an OpenTelemetry Protocol (OTLP) compatible backend&rdquo; (<a href="https://github.github.com/gh-aw/reference/frontmatter/">Frontmatter</a>) &mdash; so agent runs appear in the same tracing tool as the rest of your systems.</p>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: start narrow, then widen</p>
+    <p>Downloading every artifact for every run is slow. Start with <code>gh aw logs</code> for the overview, spot the anomalous run (long duration, high tokens, a failure), then <code>gh aw audit &lt;run-id&gt;</code> just that one. Only reach for <code>--artifacts all</code> when the audit report points you at something you need to read in full.</p>
+  </aside>
 </section>
 
 <section data-slot="when-to-inspect-versus-trust-human-in-the-loop" data-title="When to inspect versus trust (human-in-the-loop)">
-  <!-- Author: write content for "When to inspect versus trust (human-in-the-loop)" here -->
+  <p>You can't read every run of a busy fleet &mdash; nor should you. The skill is knowing which runs earn a look. Let the cheap signals (the overview table, the safe-outputs boundary, the threat-detection gate) carry the routine cases, and spend attention where the signal says something's off.</p>
+  <table>
+    <thead>
+      <tr><th>Inspect closely when&hellip;</th><th>Trust the guardrails when&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>a run failed or timed out</td><td>it succeeded and produced expected safe outputs</td></tr>
+      <tr><td>tokens/cost spiked vs. the norm</td><td>cost is in the usual band</td></tr>
+      <tr><td>the firewall logged unexpected domains</td><td>egress stayed within the allowlist</td></tr>
+      <tr><td>you're rolling out a new or changed workflow</td><td>a stable workflow is running unchanged</td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't skip observability because &ldquo;it's working.&rdquo;</strong> A silent fleet is not a healthy fleet &mdash; it's an unmonitored one. Glance at <code>gh aw logs</code> regularly even when nothing's on fire.</li>
+    <li><strong>Don't debug from the model's chat alone.</strong> The artifacts &mdash; patch, safe-output JSON, firewall log &mdash; are ground truth; the agent's narration is not. Read the record, not the story.</li>
+    <li><strong>Don't treat observability as a substitute for the guardrails.</strong> Seeing a bad action after the fact is no help if it already shipped. Logs and audit <em>complement</em> safe outputs and review gates; they don't replace them.</li>
+  </ul>
 </section>
 
 <section data-slot="worked-example-debugging-a-failed-run-from-its-logs" data-title="Worked example: debugging a failed run from its logs">
-  <!-- Author: write content for "Worked example: debugging a failed run from its logs" here -->
+  <p>The Repo Assistant's nightly run failed. Here's the trace from &ldquo;something's wrong&rdquo; to root cause &mdash; three commands, no guessing.</p>
+
+  <p><strong>1. Get the overview.</strong> Start broad to find the bad run and its ID:</p>
+  <figure class="code">
+    <figcaption>The overview table surfaces the anomaly</figcaption>
+    <pre><code class="language-text">gh aw logs repo-assistant
+# RUN ID       WORKFLOW         STATUS   DURATION   TOKENS    COST
+# 1234567890   repo-assistant   failure  4m12s      182,400   …
+# 1234567889   repo-assistant   success  0m48s       12,100   …</code></pre>
+  </figure>
+  <p>The failed run also burned <strong>15×</strong> the tokens of a healthy one &mdash; two signals pointing at the same run.</p>
+
+  <p><strong>2. Audit that run.</strong> Let <code>audit</code> find the failing step and explain it:</p>
+  <figure class="code">
+    <figcaption>A focused report that detects the error for you</figcaption>
+    <pre><code class="language-text">gh aw audit 1234567890
+# Downloads artifacts + logs, detects errors, analyzes MCP tool usage,
+# and writes a concise Markdown report — including the first failing step
+# and a Firewall Analysis of every domain the agent tried to reach.</code></pre>
+  </figure>
+  <p>Say the report shows the agent looping on a tool call to a domain the firewall <strong>denied</strong> &mdash; that explains both the failure <em>and</em> the token blow-up (it retried until timeout).</p>
+
+  <p><strong>3. Confirm and fix.</strong> Pull the full artifacts if you need to read the raw exchange, then fix the cause &mdash; add the domain to <code>network.allowed</code> (<a class="xref" href="defense-in-depth.html">Chapter 7</a>) &mdash; and recompile:</p>
+  <figure class="code">
+    <figcaption>Read the black box, then fix the workflow</figcaption>
+    <pre><code class="language-text">gh aw logs repo-assistant --artifacts all   # agent-stdio.log, firewall log, patch…
+# → root cause: egress to an un-allowed domain, retried to timeout
+# fix: add the domain to network.allowed, then:
+gh aw compile .github/workflows/repo-assistant.md</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="The example workflow for this chapter">
+    <p class="callout-title">Making runs observable up front</p>
+    <p>The chapter's example, <code>examples/ch12/repo-assistant-observable.md</code>, adds an <code>observability.otlp</code> block so its traces flow to your OpenTelemetry backend automatically &mdash; it compiles clean (0/0, secrets approved as in <a class="xref" href="engines.html">Chapter 5</a>). Between OTel traces, the Actions step summary, and <code>gh aw logs</code>/<code>audit</code>, you rarely have to guess what a run did.</p>
+  </aside>
 </section>
 
 <section data-slot="recap-and-what-s-next" data-title="Recap &amp; what&#x27;s next">
-  <!-- Author: write content for "Recap & what's next" here -->
+  <p>You can now see what your fleet does, and debug it when it misbehaves:</p>
+  <ul>
+    <li><strong>Observability is the precondition for trust</strong> &mdash; you can't govern what you can't see, and every run leaves a durable artifact trail.</li>
+    <li><code>gh aw logs</code> gives the <strong>overview + artifacts</strong> (duration, tokens, cost; <code>--artifacts</code> to download more); <code>gh aw audit</code> gives a <strong>focused report</strong> that detects the failing step and analyzes tool/firewall use.</li>
+    <li>Run <strong>step summaries</strong>, <code>gh aw status</code>, and <strong>OpenTelemetry</strong> (<code>observability.otlp</code>) round out the picture.</li>
+    <li>Inspect the runs that <em>signal</em> trouble (failures, cost spikes, denied egress); trust the guardrails for the rest &mdash; but never let observability replace them.</li>
+  </ul>
+  <p><strong>What's next.</strong> Seeing cost is the first step; <em>controlling</em> it is the next. In <a class="xref" href="governance-and-finops.html">Chapter 13: Governance &amp; FinOps</a>, we cap and meter agentic spend with <code>max-ai-credits</code> and set the org policy that keeps a fleet affordable and compliant.</p>
 </section>
