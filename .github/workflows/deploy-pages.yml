@@ -1,8 +1,8 @@
 name: Deploy book to GitHub Pages
 
-# Builds the static site from content/ with site/generate.py and publishes site/
-# to GitHub Pages. The committed images (cover, og-image, icons) are shipped as-is;
-# generate.py refreshes the HTML, sitemap, robots, manifest and llms files.
+# Builds the static site from content/ with site/generate.py and publishes it to the
+# gh-pages branch, which GitHub Pages serves (legacy branch source) at the custom
+# domain aw.isainative.dev. The committed images (cover, og-image, icons) ship as-is.
 
 on:
   push:
@@ -15,19 +15,16 @@ on:
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
-# Least-privilege token; Pages deployment needs pages:write + id-token:write.
+# Only needs to push the built site to the gh-pages branch.
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
-# Allow one concurrent deployment; let in-progress production deploys finish.
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: deploy-gh-pages
+  cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -44,23 +41,16 @@ jobs:
           python -m pip install pyyaml
           python site/generate.py
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
-
-      - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Publish site/ to gh-pages
+        run: |
+          cd site
+          rm -rf __pycache__
+          touch .nojekyll
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Deploy ${GITHUB_SHA} from ${GITHUB_REF_NAME}"
+          git push -q --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
