@@ -1,3 +1,13 @@
+<p align="center">
+  <a href="https://webmaxru.github.io/github-agentic-workflows-book/">
+    <img src="assets/cover.png" alt="GitHub Agentic Workflows: An Interactive Book — Continuous AI for the repository's outer loop, written by the agentic fleet it teaches" width="100%">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://webmaxru.github.io/github-agentic-workflows-book/"><strong>Read the book →</strong></a>
+</p>
+
 # GitHub Agentic Workflows — An Interactive Book
 
 An interactive, multi-page HTML book that teaches **GitHub Agentic Workflows (gh-aw)** — starting

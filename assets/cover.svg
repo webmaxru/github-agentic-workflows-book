@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-label="GitHub Agentic Workflows: An Interactive Book">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#111a2e"/>
+    </linearGradient>
+    <radialGradient id="glowBlue" cx="0.1" cy="0.05" r="0.75">
+      <stop offset="0" stop-color="#78a6ff" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#78a6ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowGreen" cx="0.95" cy="1" r="0.7">
+      <stop offset="0" stop-color="#4ade80" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#4ade80" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#78a6ff"/>
+      <stop offset="0.5" stop-color="#8bd0ff"/>
+      <stop offset="1" stop-color="#4ade80"/>
+    </linearGradient>
+    <linearGradient id="badge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#78a6ff"/>
+      <stop offset="1" stop-color="#4ade80"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background + glows -->
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect width="1280" height="640" fill="url(#glowBlue)"/>
+  <rect width="1280" height="640" fill="url(#glowGreen)"/>
+  <rect x="0" y="0" width="1280" height="6" fill="url(#accent)"/>
+
+  <!-- fleet node-graph motif (upper right, subtle) -->
+  <g opacity="0.85">
+    <g stroke="#2b3a5c" stroke-width="2">
+      <line x1="946" y1="132" x2="1018" y2="214"/>
+      <line x1="1082" y1="112" x2="1018" y2="214"/>
+      <line x1="1176" y1="188" x2="1018" y2="214"/>
+      <line x1="1018" y1="214" x2="908" y2="252"/>
+      <line x1="1018" y1="214" x2="1112" y2="286"/>
+      <line x1="1112" y1="286" x2="1046" y2="356"/>
+      <line x1="946" y1="132" x2="1082" y2="112"/>
+      <line x1="1082" y1="112" x2="1176" y2="188"/>
+    </g>
+    <g fill="#141d33" stroke="#3a4c73" stroke-width="2">
+      <circle cx="946" cy="132" r="13"/>
+      <circle cx="1082" cy="112" r="10"/>
+      <circle cx="1176" cy="188" r="12"/>
+      <circle cx="908" cy="252" r="10"/>
+      <circle cx="1046" cy="356" r="10"/>
+    </g>
+    <!-- orchestrator + two role nodes, accented -->
+    <circle cx="1018" cy="214" r="17" fill="#182a4a" stroke="#78a6ff" stroke-width="2.5"/>
+    <circle cx="1112" cy="286" r="12" fill="#16321f" stroke="#4ade80" stroke-width="2.5"/>
+  </g>
+
+  <!-- badge + eyebrow -->
+  <g transform="translate(72,84)">
+    <rect width="76" height="76" rx="18" fill="url(#badge)"/>
+    <text x="38" y="52" font-family="'Cascadia Code','Consolas',ui-monospace,monospace" font-size="37" font-weight="700" fill="#0b1020" text-anchor="middle">aw</text>
+  </g>
+  <text x="168" y="115" font-family="'Segoe UI',system-ui,Arial,sans-serif" font-size="19" font-weight="600" letter-spacing="3.5" fill="#b7c2d8">INTERACTIVE&#160;&#160;HTML&#160;&#160;BOOK</text>
+  <text x="169" y="147" font-family="'Cascadia Code','Consolas',ui-monospace,monospace" font-size="18" fill="#78a6ff">gh&#160;aw&#160;v0.81.6&#160;&#183;&#160;Public&#160;Preview</text>
+
+  <!-- title -->
+  <text x="70" y="268" font-family="'Segoe UI',system-ui,Arial,sans-serif" font-size="86" font-weight="800" fill="#edf2ff">GitHub Agentic</text>
+  <text x="70" y="356" font-family="'Segoe UI',system-ui,Arial,sans-serif" font-size="86" font-weight="800" fill="#edf2ff">Workflows</text>
+  <text x="74" y="418" font-family="'Segoe UI',system-ui,Arial,sans-serif" font-size="40" font-weight="600" fill="#4ade80">An Interactive Book</text>
+
+  <!-- tagline -->
+  <text x="74" y="466" font-family="'Segoe UI',system-ui,Arial,sans-serif" font-size="24" fill="#b7c2d8">Continuous AI for the repository&#8217;s outer loop &#8212;</text>
+  <text x="74" y="500" font-family="'Segoe UI',system-ui,Arial,sans-serif" font-size="24" fill="#b7c2d8">written by the agentic fleet it teaches.</text>
+
+  <!-- wave pipeline pills -->
+  <g transform="translate(74,540)" font-family="'Segoe UI',system-ui,Arial,sans-serif" font-size="17" font-weight="600">
+    <g>
+      <rect x="0" y="0" width="112" height="38" rx="19" fill="#16213a" stroke="#2b3a5c"/>
+      <text x="56" y="24" text-anchor="middle" fill="#c6d0e6">research</text>
+    </g>
+    <text x="122" y="24" fill="#4a5878" font-size="18">&#8594;</text>
+    <g transform="translate(146,0)">
+      <rect x="0" y="0" width="98" height="38" rx="19" fill="#16213a" stroke="#2b3a5c"/>
+      <text x="49" y="24" text-anchor="middle" fill="#c6d0e6">author</text>
+    </g>
+    <text x="256" y="24" fill="#4a5878" font-size="18">&#8594;</text>
+    <g transform="translate(280,0)">
+      <rect x="0" y="0" width="92" height="38" rx="19" fill="#16213a" stroke="#2b3a5c"/>
+      <text x="46" y="24" text-anchor="middle" fill="#c6d0e6">verify</text>
+    </g>
+    <text x="384" y="24" fill="#4a5878" font-size="18">&#8594;</text>
+    <g transform="translate(408,0)">
+      <rect x="0" y="0" width="96" height="38" rx="19" fill="#16213a" stroke="#2b3a5c"/>
+      <text x="48" y="24" text-anchor="middle" fill="#c6d0e6">review</text>
+    </g>
+    <text x="516" y="24" fill="#4a5878" font-size="18">&#8594;</text>
+    <g transform="translate(540,0)">
+      <rect x="0" y="0" width="112" height="38" rx="19" fill="#16213a" stroke="#3a5c46"/>
+      <text x="56" y="24" text-anchor="middle" fill="#7ee2a8">integrate</text>
+    </g>
+  </g>
+
+  <!-- footer -->
+  <text x="74" y="612" font-family="'Cascadia Code','Consolas',ui-monospace,monospace" font-size="18" fill="#8b97b1">webmaxru.github.io/github-agentic-workflows-book</text>
+  <text x="1206" y="612" text-anchor="end" font-family="'Segoe UI',system-ui,Arial,sans-serif" font-size="18" fill="#8b97b1">by Maxim Salnikov</text>
+</svg>
