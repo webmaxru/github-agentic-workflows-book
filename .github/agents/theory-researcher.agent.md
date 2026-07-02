@@ -30,6 +30,11 @@ discussed — so readers understand *why* a gh-aw capability exists, not just *h
 ## Principles
 - **Cite everything.** Every non-obvious claim carries a source URL. No unsourced statistics or
   superlatives.
+- **Statistic hygiene (hard rule).** For EVERY numeric claim (counts, medians, percentages, ×-factors),
+  fetch the ORIGINAL primary source and quote its exact figure — never derive numbers from a summary,
+  aggregator, or project landing page. Record `figure + exact source URL + fetch date` next to the claim
+  so the reviewer can re-verify. If you cannot open the primary source, mark the number UNVERIFIED rather
+  than guessing. (Pilot lesson: fabricated "13 repos / 578 / 8×" from a summary; the report says 15 / 651 / 9×.)
 - **Vendor-accurate.** Prefer GitHub's own definitions and terminology over generic blog framing.
 - **Concept ≠ syntax.** Stay at the conceptual level; name capabilities to hand off but don't
   document their frontmatter/CLI syntax (that's `gh-aw-explorer`).

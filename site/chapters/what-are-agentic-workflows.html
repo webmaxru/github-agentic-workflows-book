@@ -88,37 +88,142 @@
         <section class="chapter-section" data-section="objective">
           <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
           <div class="section-content" data-content-slot="objective">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="objective"</code> block in <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+<p>By the end of this chapter you can say precisely what an <strong>agentic workflow</strong> is, explain why the repository's <em>outer loop</em> is where it earns its keep, and judge when to reach for GitHub Agentic Workflows (gh-aw) instead of plain GitHub Actions. This is the vocabulary chapter: the terms defined here &mdash; outer loop, Continuous AI, safe-by-default &mdash; are used as settled language for the rest of the book.</p>
+  <p>Everything here targets <strong>gh aw v0.81.6</strong> (Public Preview). You won't write a workflow yet &mdash; that is <a class="xref" href="your-first-workflow.html">Chapter 2</a>. First, the idea.</p>
+  <aside class="callout callout--note" aria-label="How to read this chapter">
+    <p class="callout-title">Concepts first, syntax later</p>
+    <p>This chapter names gh-aw's building blocks &mdash; triggers, engines, safe outputs &mdash; only to anchor the ideas behind them. Each one gets a full, hands-on chapter later. Read this for the <em>why</em>; the <em>how</em> starts in Chapter 2.</p>
+  </aside>
           </div>
         </section>
         <section class="chapter-section" data-section="the-outer-loop-why-ci-cd-stops-short">
           <h2 id="the-outer-loop-why-ci-cd-stops-short"><a class="anchor-link" href="#the-outer-loop-why-ci-cd-stops-short" aria-label="Link to The outer loop: why CI/CD stops short section">The outer loop: why CI/CD stops short</a></h2>
           <div class="section-content" data-content-slot="the-outer-loop-why-ci-cd-stops-short">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="the-outer-loop-why-ci-cd-stops-short"</code> block in <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+<p>Think about how work actually moves through a repository. There is the <strong>inner loop</strong>: the fast, interactive coding you do at your desk &mdash; edit, run, debug, repeat &mdash; minute to minute. And there is the <strong>outer loop</strong>: the repository's slower, collaborative life that surrounds and outlives any one editing session &mdash; issues filed, pull requests opened and reviewed, discussions, releases, CI results, and docs that quietly drift out of date. You leave the inner loop every time you close your laptop. The outer loop keeps going.</p>
+
+  <h3>CI/CD automated half of the outer loop</h3>
+  <p>Continuous integration and deployment were a triumph of outer-loop automation &mdash; but only for the <em>deterministic</em> half. A build, a test suite, a release: these &ldquo;do exactly what you tell them, every time, in the same way&rdquo; (<a href="https://github.github.com/gh-aw/introduction/how-they-work/">How They Work</a>). That determinism is precisely what you want when correctness means <em>identical</em> behavior on every run.</p>
+  <p>But a large, genuinely useful class of outer-loop work is not like that. Reading a new issue and deciding whether it's a bug or a feature request. Asking a reporter for the missing reproduction step. Keeping the docs honest as the code changes. Investigating why CI went red. None of these can be written as a fixed <code>if/then</code> rule, because the right action depends on unstructured context you can only <em>interpret</em>. That is <strong>judgment work</strong>, and CI/CD was never built to express it &mdash; so it fell to already-overloaded humans, or it simply didn't get done.</p>
+
+  <h3>Where the throughput actually stalls</h3>
+  <p>This is the gap the book is about. Individual AI productivity has advanced quickly, but GitHub Next observes that faster inner-loop coding &ldquo;can shift burdens to other team members, or to later stages in software projects&rdquo; &mdash; more code generated means more to review, triage, document, and maintain (<a href="https://githubnext.com/projects/continuous-ai/">Continuous AI</a>). The bottleneck moves <em>outward</em>, into the collaborative loop, and that is exactly the loop CI/CD left to human judgment.</p>
+
+  <aside class="callout callout--builder" aria-label="Builder track">
+    <p class="callout-title">Builder track</p>
+    <p>You already automate the deterministic half of your repo with Actions. The outer-loop judgment tasks &mdash; triage, doc upkeep, first-pass review &mdash; are the half you keep meaning to get to. That backlog is the opportunity, and it's where agentic workflows aim.</p>
+  </aside>
+  <aside class="callout callout--leader" aria-label="Leader track">
+    <p class="callout-title">Leader track</p>
+    <p>Your team's real throughput is won or lost in the outer loop &mdash; how fast issues get triaged, PRs get reviewed, docs stay current. Inner-loop speedups can even <em>increase</em> outer-loop load. The strategic question is not &ldquo;can AI write code?&rdquo; but &ldquo;can we automate the collaborative judgment work that gates delivery?&rdquo;</p>
+  </aside>
           </div>
         </section>
         <section class="chapter-section" data-section="in-gh-aw-continuous-ai-from-github-next">
           <h2 id="in-gh-aw-continuous-ai-from-github-next"><a class="anchor-link" href="#in-gh-aw-continuous-ai-from-github-next" aria-label="Link to In gh-aw: Continuous AI, from GitHub Next section">In gh-aw: Continuous AI, from GitHub Next</a></h2>
           <div class="section-content" data-content-slot="in-gh-aw-continuous-ai-from-github-next">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="in-gh-aw-continuous-ai-from-github-next"</code> block in <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+<p>GitHub Next gives this idea a name: <strong>Continuous AI</strong> &mdash; &ldquo;all uses of automated AI to support software collaboration on any platform.&rdquo; It is deliberately named to rhyme with CI/CD: &ldquo;Just as CI/CD transformed software development by automating integration and deployment, Continuous AI covers the ways in which AI can be used to automate and enhance collaboration workflows&rdquo; (<a href="https://githubnext.com/projects/continuous-ai/">Continuous AI</a>). The framing is a <em>third leg</em> alongside CI and CD &mdash; and, notably, a <em>category</em> rather than a product: &ldquo;not a term GitHub owns, nor a technology GitHub builds.&rdquo;</p>
+
+  <h3>An agentic workflow, defined</h3>
+  <p>An <strong>agentic workflow</strong> is the concrete unit that practices Continuous AI. GitHub defines these as &ldquo;automated, intent-driven repository workflows that run in GitHub Actions, authored in plain Markdown and executed with coding agents&rdquo; (<a href="https://github.blog/ai-and-ml/automate-repository-tasks-with-github-agentic-workflows/">launch blog</a>). You describe the <em>outcome you want</em> in natural language; a coding agent interprets that intent and carries out the multi-step work. Where traditional automation follows fixed logic, an agentic workflow has <em>agency</em> &mdash; it can &ldquo;understand context, make decisions, and generate content by interpreting natural language instructions flexibly&rdquo; (<a href="https://github.github.com/gh-aw/introduction/how-they-work/">How They Work</a>).</p>
+  <p>That makes it three things it is often confused with, but isn't:</p>
+  <ul>
+    <li><strong>Not a chatbot or an IDE assistant.</strong> Those are interactive and human-driven, turn by turn. An agentic workflow is <em>standing</em> and event-driven: it wakes on a repository event, does one job unattended, and proposes a result.</li>
+    <li><strong>Not a fully autonomous agent.</strong> It runs in a bounded sub-loop &ldquo;under defined terms,&rdquo; and &ldquo;pull requests are never merged automatically &mdash; humans must always review and approve&rdquo; (<a href="https://github.blog/ai-and-ml/automate-repository-tasks-with-github-agentic-workflows/">launch blog</a>).</li>
+    <li><strong>Not a replacement for GitHub Actions.</strong> Which brings us to how it actually runs.</li>
+  </ul>
+
+  <h3>It compiles <em>to</em> GitHub Actions</h3>
+  <p>Here is the key architectural fact, and the reason gh-aw is additive rather than a competitor to your existing pipelines. You author a Markdown file; the <code>gh aw compile</code> command turns it into an ordinary, security-hardened GitHub Actions workflow that GitHub runs. &ldquo;The <code>.md</code> file is the editable source of truth, while <code>.lock.yml</code> is the compiled GitHub Actions workflow with security hardening&rdquo; (<a href="https://github.github.com/gh-aw/introduction/how-they-work/">How They Work</a>). Agentic workflows &ldquo;run on GitHub Actions because that is where GitHub provides the necessary infrastructure for permissions, logging, auditing, sandboxed execution, and rich repository context&rdquo; (<a href="https://github.blog/ai-and-ml/automate-repository-tasks-with-github-agentic-workflows/">launch blog</a>). So gh-aw adds three things Actions alone lacks &mdash; an <strong>agentic engine</strong> that reasons over context, a <strong>natural-language authoring surface</strong>, and a <strong>security model</strong> &mdash; on top of the substrate you already trust. The compile model is <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a>.</p>
+
+  <h3>Safe by default (a first look)</h3>
+  <p>Letting a standing agent act in your repository sounds risky until you see the boundary. The agent runs <strong>read-only</strong> by default &mdash; it &ldquo;can read repository state, but it cannot push commits or write to issues directly&rdquo; (<a href="https://github.github.com/gh-aw/">gh-aw</a>). Anything it wants to change, it <em>requests</em> as a structured <strong>safe output</strong>, which a separate, permission-scoped job validates before applying &mdash; so that &ldquo;even a fully compromised agent cannot directly modify repository state&rdquo; (<a href="https://github.github.com/gh-aw/introduction/architecture/">Security Architecture</a>). The agent proposes; a mediated boundary disposes. That is the whole safety thesis in one line; the mechanism is <a class="xref" href="safe-outputs.html">Chapter 6</a> and the threat model behind it is <a class="xref" href="defense-in-depth.html">Chapter 7</a>.</p>
+
+  <aside class="callout callout--note" aria-label="Named patterns">
+    <p class="callout-title">The &ldquo;Continuous X&rdquo; family</p>
+    <p>Continuous AI names recurring patterns you'll meet throughout the book: <strong>Continuous Triage</strong>, <strong>Continuous Documentation</strong>, <strong>Continuous Code Improvement</strong>, <strong>Continuous Summarization</strong>, and more (<a href="https://githubnext.com/projects/continuous-ai/">Continuous AI</a>). Each becomes one small agentic workflow &mdash; a trigger, an engine, and a set of safe outputs.</p>
+  </aside>
           </div>
         </section>
         <section class="chapter-section" data-section="when-agentic-workflows-fit-and-when-they-don-t">
           <h2 id="when-agentic-workflows-fit-and-when-they-don-t"><a class="anchor-link" href="#when-agentic-workflows-fit-and-when-they-don-t" aria-label="Link to When agentic workflows fit (and when they don&#x27;t) section">When agentic workflows fit (and when they don&#x27;t)</a></h2>
           <div class="section-content" data-content-slot="when-agentic-workflows-fit-and-when-they-don-t">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="when-agentic-workflows-fit-and-when-they-don-t"</code> block in <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+<p>The mental model GitHub offers is refreshingly simple: &ldquo;if repetitive work in a repository can be described in words, it might be a good fit for an agentic workflow&rdquo; (<a href="https://github.blog/ai-and-ml/automate-repository-tasks-with-github-agentic-workflows/">launch blog</a>). More precisely, a task fits when it has all three of these traits:</p>
+  <ul>
+    <li><strong>It's judgment work</strong> &mdash; subjective and repetitive, the kind of task &ldquo;that traditional CI/CD struggle to express&rdquo; because there's no fixed rule to encode.</li>
+    <li><strong>Exact reproducibility isn't the point</strong> &mdash; triage, drafting docs, researching dependencies, proposing improvements for review. A slightly different (good) answer each time is fine.</li>
+    <li><strong>Actions are low-stakes and reviewable</strong> &mdash; a comment, a label, a draft PR. Best practice is to &ldquo;start with low-risk outputs such as comments, drafts, or reports before enabling pull request creation.&rdquo;</li>
+  </ul>
+
+  <h3>When to reach for something else</h3>
+  <p>Agentic workflows are additive, not universal. Keep the work in deterministic GitHub Actions &mdash; or a human's hands &mdash; when:</p>
+  <ul class="when-not">
+    <li><strong>The task must be exactly reproducible.</strong> Builds, tests, and releases must behave identically every run. GitHub is explicit: don't use agentic workflows &ldquo;as a replacement for GitHub Actions YAML workflows for CI/CD&rdquo;; the use cases &ldquo;largely do not overlap&rdquo; (<a href="https://github.blog/ai-and-ml/automate-repository-tasks-with-github-agentic-workflows/">launch blog</a>).</li>
+    <li><strong>The action is high-stakes or hard to reverse.</strong> Publishing a release, deleting data, force-pushing &mdash; if a mistake can't be shrugged off with a click, it isn't a starting point.</li>
+    <li><strong>Success must be 100% correct with no human in the loop.</strong> The value here is throughput on <em>reviewable proposals</em>, not unsupervised perfection.</li>
+    <li><strong>One workflow is trying to do everything.</strong> The unit is one teammate, one job. Start narrow and let patterns emerge.</li>
+  </ul>
+  <p>There's a deeper reason the human stays central. The impact study of GitHub Next's real repository assistant found that throughput was gated less by the model than by &ldquo;how often human maintainers chose to act on the agent's proposals&rdquo; (<a href="https://github.com/githubnext/repo-assist-impact/blob/main/report.md">Repo Assist impact report</a>). Agentic workflows don't remove humans from the loop &mdash; they make the humans' judgment the scarce, valuable input.</p>
           </div>
         </section>
         <section class="chapter-section" data-section="worked-example-reading-the-repo-assistant-s-first-mission">
           <h2 id="worked-example-reading-the-repo-assistant-s-first-mission"><a class="anchor-link" href="#worked-example-reading-the-repo-assistant-s-first-mission" aria-label="Link to Worked example: reading the Repo Assistant&#x27;s first mission section">Worked example: reading the Repo Assistant&#x27;s first mission</a></h2>
           <div class="section-content" data-content-slot="worked-example-reading-the-repo-assistant-s-first-mission">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="worked-example-reading-the-repo-assistant-s-first-mission"</code> block in <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+<p>Concepts land when you see them in one artifact. Here is the book's running example &mdash; the <strong>Repo Assistant</strong>, an agentic workflow that triages a newly opened issue. You'll build and ship it in <a class="xref" href="your-first-workflow.html">Chapter 2</a>; right now we're just <em>reading</em> it, because every concept from this chapter is visible in these few lines.</p>
+
+  <figure class="code">
+    <figcaption>examples/ch02/repo-assistant-triage.md &mdash; read it as five concepts in one file</figcaption>
+    <pre><code class="language-markdown">---
+on:
+  issues:
+    types: [opened]        # (2) an OUTER-LOOP trigger: a new issue
+  workflow_dispatch:        #     also runnable by hand
+permissions:
+  contents: read            # (5) READ-ONLY: the agent cannot write directly
+  issues: read
+engine: copilot             # (1) the ENGINE: the judgment that reads the issue
+network: defaults
+safe-outputs:               # (5) mediated writes: proposed, then applied by a scoped job
+  add-comment:
+    max: 1
+  add-labels:
+    allowed: [bug, enhancement, question, documentation]
+    max: 1
+---
+
+# Repo Assistant — triage a new issue
+
+You are the **Repo Assistant**. A new issue was just opened.
+Read its title and body, decide what kind of issue it is, post one short
+triage comment, and apply at most one label from the allowed set.</code></pre>
+  </figure>
+
+  <h3>Five concepts, one artifact</h3>
+  <ul>
+    <li><strong>(1) Agentic workflow.</strong> The whole file <em>is</em> one: YAML frontmatter that configures it, plus a natural-language body that states intent. No <code>if/then</code> logic &mdash; just &ldquo;triage it.&rdquo;</li>
+    <li><strong>(2) Outer loop.</strong> The <code>on: issues: [opened]</code> trigger binds it to a collaborative, outer-loop moment &mdash; a new issue &mdash; not to your keystrokes. Triggers are <a class="xref" href="triggers.html">Chapter 4</a>.</li>
+    <li><strong>(3) Continuous AI.</strong> This is <em>Continuous Triage</em>, one of the named patterns, expressed as a single workflow.</li>
+    <li><strong>(4) Compiles to Actions.</strong> Running <code>gh aw compile</code> turns this Markdown into a hardened <code>.lock.yml</code> that GitHub Actions executes &mdash; the subject of <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a>.</li>
+    <li><strong>(5) Safe by default.</strong> <code>permissions</code> are read-only; the only writes are one comment and one allow-listed label, <em>requested</em> through <code>safe-outputs</code> and applied by a separate scoped job. Full mechanism in <a class="xref" href="safe-outputs.html">Chapter 6</a>.</li>
+  </ul>
+
+  <aside class="case-study" aria-label="Case study">
+    <p class="case-study-title">Repo Assist, measured</p>
+    <p>The Repo Assistant is modeled on GitHub Next's real &ldquo;Repo Assist.&rdquo; An impact study across <strong>15 open-source repositories</strong> reported a net reduction of <strong>651 open issues</strong> and a <strong>median 9&times; increase</strong> in both issue-closure and PR-merge velocity &mdash; turning largely dormant projects into actively maintained ones. Its central finding: throughput was gated by <strong>how often human maintainers chose to act</strong> on the agent's proposals, and 78% of the agent's draft PRs were marked ready by a human before merge (<a href="https://github.com/githubnext/repo-assist-impact/blob/main/report.md">Repo Assist impact report</a>).</p>
+  </aside>
           </div>
         </section>
         <section class="chapter-section" data-section="recap-and-what-s-next">
           <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
           <div class="section-content" data-content-slot="recap-and-what-s-next">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="recap-and-what-s-next"</code> block in <code>content/chapters/what-are-agentic-workflows.html</code>.</p>
+<p>You now have the vocabulary the rest of the book stands on:</p>
+  <ul>
+    <li>The <strong>inner loop</strong> is your interactive coding; the <strong>outer loop</strong> is the repository's collaborative life. CI/CD automated the outer loop's <em>deterministic</em> work and left its <em>judgment</em> work to humans.</li>
+    <li>An <strong>agentic workflow</strong> is intent-driven, event-triggered repository automation authored in Markdown and run by a coding agent &mdash; a standing teammate that proposes, not a chatbot and not an unsupervised agent.</li>
+    <li><strong>Continuous AI</strong> is GitHub Next's name for applying AI to that outer loop &mdash; a third leg beside CI/CD &mdash; and gh-aw is how you practice it.</li>
+    <li>gh-aw <strong>compiles to GitHub Actions</strong>; it is additive, adding an engine, a natural-language surface, and a security model on top of the substrate you already trust.</li>
+    <li>The agent is <strong>read-only by default</strong> and every write is a mediated, reviewable proposal &mdash; which is what makes standing automation safe to trust.</li>
+  </ul>
+  <p><strong>What's next.</strong> Enough theory &mdash; time to ship. In <a class="xref" href="your-first-workflow.html">Chapter 2: The 10-Minute Win</a> you'll install the <code>gh aw</code> CLI and get this exact Repo Assistant running end to end, triaging a real issue through the safe-by-default boundary.</p>
           </div>
         </section>
 

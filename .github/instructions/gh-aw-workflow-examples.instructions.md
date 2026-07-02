@@ -24,6 +24,9 @@ Applies to all example agentic workflows in the book (under `examples/`). Goal: 
 - **Never hardcode or commit secrets.** Engine keys are GitHub Actions secrets, referenced by name.
 - Validate examples at **compile time** — do not require a live run. Use `gh aw compile --validate`
   / `--strict`; clearly mark anything that would need a real run or a secret.
+- If an example is used to demonstrate `gh aw run` (manual dispatch), its `on:` block MUST include a
+  `workflow_dispatch:` trigger — `gh aw run` only works with workflows that declare one (verified via
+  `gh aw run --help`, v0.81.6).
 
 ## Verification
 - Every example must be compiled by `code-verifier` and reach **PASS** (compiles to `.lock.yml`,

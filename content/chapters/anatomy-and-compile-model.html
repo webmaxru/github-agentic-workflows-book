@@ -4,25 +4,126 @@
      with inner HTML; keep the data-slot ids unchanged (they map 1:1 to page slots). -->
 
 <section data-slot="objective" data-title="Objective">
-  <!-- Author: write content for "Objective" here -->
+  <p>By the end of this chapter you can open any agentic workflow and read it fluently &mdash; the YAML frontmatter and the Markdown body &mdash; run the <strong>compile-and-iterate loop</strong> with confidence, and understand what the generated <code>.lock.yml</code> actually contains and why it exists. In <a class="xref" href="your-first-workflow.html">Chapter 2</a> you shipped a workflow; here you open the hood.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. We reuse the same Repo Assistant from Chapter 2 &mdash; no new workflow &mdash; and read its compiled output side by side with its source.</p>
+  <aside class="callout callout--note" aria-label="Prerequisites">
+    <p class="callout-title">Before you start</p>
+    <p>This chapter assumes you've installed <code>gh aw</code> and compiled a workflow once, as in <a class="xref" href="your-first-workflow.html">Chapter 2</a>. If <code>gh aw version</code> prints <code>v0.81.6</code>, you're set.</p>
+  </aside>
 </section>
 
 <section data-slot="concept-natural-language-as-reviewable-source" data-title="Concept: natural language as reviewable source">
-  <!-- Author: write content for "Concept: natural language as reviewable source" here -->
+  <p>The most important idea in this chapter is also the most quietly radical: in gh-aw, the <strong>prose is the source code</strong>. A workflow is a single Markdown file with two parts &mdash; a YAML <strong>frontmatter</strong> block between <code>---</code> markers that carries configuration, and a <strong>Markdown body</strong> of natural-language instructions for the agent (<a href="https://github.github.com/gh-aw/reference/workflow-structure/">Workflow Structure</a>). That file lives in <code>.github/workflows/</code>, under version control, and is reviewed in a pull request exactly like any other source file.</p>
+
+  <h3>Why &ldquo;reviewable&rdquo; is the whole point</h3>
+  <p>Traditional automation buries its real intent in verbose, opaque configuration that few teammates can review well. Making the <em>prose</em> the artifact inverts that: instead of encoding logic as &ldquo;if issue has label X, do Y,&rdquo; &ldquo;you write &lsquo;analyze this issue and provide helpful context&rsquo;, and the AI decides what's helpful based on the specific issue content&rdquo; (<a href="https://github.github.com/gh-aw/introduction/how-they-work/">How They Work</a>). A reviewer reads the same English the agent will act on &mdash; the behavior is <em>auditable</em> by anyone who can read, not just those fluent in Actions YAML.</p>
+  <p>Two distinctions keep this precise:</p>
+  <ul>
+    <li><strong>Frontmatter vs. body.</strong> Frontmatter is machine-facing configuration (triggers, permissions, engine, tools); the body is human-facing intent. The file deliberately separates &ldquo;technical configuration from natural language instructions.&rdquo;</li>
+    <li><strong>Reviewable is not the same as deterministic.</strong> Making the <em>instruction</em> inspectable does not make the agent's <em>response</em> reproducible. Holding those two ideas apart is what the rest of the chapter is about.</li>
+  </ul>
+  <aside class="callout callout--tip" aria-label="Author intent, not implementation">
+    <p class="callout-title">The body is the program</p>
+    <p>Treat the Markdown body as logic, not a description field. &ldquo;Start simple and iterate with clear, specific instructions&rdquo; &mdash; the same discipline you'd bring to code, applied to prose.</p>
+  </aside>
 </section>
 
 <section data-slot="in-gh-aw-frontmatter-markdown-to-gh-aw-compile-to-lock-yml" data-title="In gh-aw: frontmatter + Markdown to gh aw compile to .lock.yml">
-  <!-- Author: write content for "In gh-aw: frontmatter + Markdown to gh aw compile to .lock.yml" here -->
+  <p>A prose file can't run on GitHub's infrastructure, and hand-writing the hardened Actions YAML it would need is verbose and easy to get <em>insecurely</em> wrong. So gh-aw inserts a <strong>compile step</strong>. <code>gh aw compile</code> &ldquo;transforms a markdown workflow file into a complete GitHub Actions <code>.lock.yml</code>&rdquo; &mdash; and the official mental model is exactly the one you'd expect: &ldquo;Think of it like compiling code &mdash; you write human-friendly markdown, the compiler produces machine-ready YAML&rdquo; (<a href="https://github.github.com/gh-aw/reference/compilation-process/">Compilation Process</a>).</p>
+
+  <figure class="code">
+    <figcaption>Compile the Repo Assistant (offline &mdash; no engine, no secrets)</figcaption>
+    <pre><code class="language-text">gh aw compile .github/workflows/repo-assistant-triage.md
+# ✓ repo-assistant-triage.md (100.5 KB)
+# ✓ Compiled 1 workflow(s): 0 error(s), 0 warning(s)</code></pre>
+  </figure>
+
+  <h3>Why a compile step exists at all</h3>
+  <p>The compile step earns its place by buying four things at once:</p>
+  <ul>
+    <li><strong>Portability.</strong> The output is ordinary GitHub Actions YAML that runs on infrastructure you already have &mdash; no hosted runtime, no black box.</li>
+    <li><strong>Review &amp; validation.</strong> Compilation &ldquo;includ[es] validation, import resolution, tool configuration, and security hardening,&rdquo; catching errors and unsafe choices <em>before</em> they ship (<a href="https://github.github.com/gh-aw/reference/compilation-process/">Compilation Process</a>).</li>
+    <li><strong>Determinism.</strong> The same source yields the same hardened artifact &mdash; the property the next section builds on.</li>
+    <li><strong>Pinning &amp; hardening.</strong> The compiler pins every referenced action to an immutable commit SHA (&ldquo;tags can be moved, SHAs cannot&rdquo;) and applies security hardening automatically.</li>
+  </ul>
+  <p>It's fast enough to feel like a normal build: simple workflows &ldquo;compile in ~100ms&rdquo; (<a href="https://github.github.com/gh-aw/reference/compilation-process/">Compilation Process</a>). Internally it runs five phases &mdash; parsing, validation, job construction, dependency resolution, and YAML generation &mdash; but you need only the <em>idea</em> of a build pipeline, not the internals. And crucially, <strong>compilation is offline</strong>: it never calls an engine or touches GitHub, which is exactly why every example in this book is compile-verified without secrets.</p>
+
+  <h3>Two artifacts, one source of truth</h3>
+  <p>One authored intent produces two committed files. &ldquo;The <code>.md</code> file is the editable source of truth, while <code>.lock.yml</code> is the compiled GitHub Actions workflow with security hardening. Commit both files&rdquo; (<a href="https://github.github.com/gh-aw/introduction/how-they-work/">How They Work</a>). You edit the Markdown; the lock runs. You never hand-edit the lock &mdash; it opens with a blunt <code>DO NOT EDIT</code> banner, and the next compile would overwrite your changes anyway. Committing <em>both</em> gives reviewers transparency: they can diff the human intent <em>and</em> the exact hardened artifact that will execute.</p>
+  <aside class="callout callout--warning" aria-label="Commit both files">
+    <p class="callout-title">Commit the lock &mdash; don't gitignore it</p>
+    <p>In your real repositories, commit both the <code>.md</code> and its <code>.lock.yml</code> so reviewers see the hardened, SHA-pinned workflow that actually runs. (<code>gh aw init</code> marks locks as <em>generated</em> in <code>.gitattributes</code> so diffs stay quiet.) This book's own <code>examples/</code> folder gitignores the ~100&nbsp;KB locks purely as local repo hygiene for the compile check &mdash; that's a book convenience, not advice for your repo.</p>
+  </aside>
 </section>
 
 <section data-slot="the-authoring-loop-compile-status-run-iterate" data-title="The authoring loop: compile, status, run, iterate">
-  <!-- Author: write content for "The authoring loop: compile, status, run, iterate" here -->
+  <p>Authoring a workflow is a feedback cycle, not a one-shot: <strong>write &rarr; compile &rarr; (check status) &rarr; run &rarr; iterate</strong>. You rarely get the instructions right the first time, so the model is built for cheap iteration &mdash; with a fast path and a slow path that are worth internalizing.</p>
+
+  <h3>The fast path and the slow path</h3>
+  <p>Not every edit needs a recompile. The frontmatter is compiled into the lock and the body is loaded at run time, so:</p>
+  <ul>
+    <li><strong>Fast path &mdash; edit the body.</strong> Change the natural-language instructions and the update &ldquo;takes effect on the next run&rdquo; with no recompile. Iterate on wording freely.</li>
+    <li><strong>Slow path &mdash; change the frontmatter.</strong> Triggers, permissions, engine, tools &mdash; these &ldquo;always require recompilation because they affect security-sensitive configuration&rdquo; (<a href="https://github.github.com/gh-aw/guides/editing-workflows/">Editing Workflows</a>).</li>
+  </ul>
+  <p>The rule of thumb: <em>edit the body freely; recompile after any frontmatter change.</em> This is what keeps security-sensitive configuration behind the compiler while letting you tune the prompt at the speed of thought. <code>gh aw compile --watch</code> recompiles on save to tighten the loop further.</p>
+
+  <h3>Observe, then run</h3>
+  <p>Two commands let you see state before you spend anything. <code>gh aw status</code> reports each workflow's state &mdash; enabled or disabled, schedules, labels &mdash; and its quick sibling <code>gh aw list</code> shows name, engine, and <strong>compilation status</strong> without an API call. Only <code>gh aw run</code> actually triggers execution.</p>
+  <aside class="callout callout--warning" aria-label="Compile is free; run is not">
+    <p class="callout-title">Compile is free and offline; run is neither</p>
+    <p><code>compile</code> and <code>status</code>/<code>list</code> are local and cost nothing. <code>gh aw run</code> is a <em>live</em> step: it executes a coding agent on GitHub Actions, needs the engine secret configured, spends AI credits, and requires a <code>workflow_dispatch</code> trigger (as established in <a class="xref" href="your-first-workflow.html">Chapter 2</a>). It's the one step this book does not compile-verify.</p>
+  </aside>
+  <p>Underneath the loop sits the mental model that ties this chapter together &mdash; the <strong>determinism boundary</strong>. Almost everything the compiler emits is fixed and reproducible; exactly one step, where the engine reads context and decides, is not. The next section shows that boundary in the compiled file itself.</p>
 </section>
 
 <section data-slot="worked-example-reading-a-compiled-lock-yml-side-by-side" data-title="Worked example: reading a compiled .lock.yml side by side">
-  <!-- Author: write content for "Worked example: reading a compiled .lock.yml side by side" here -->
+  <p>Let's read the Repo Assistant's compiled lock. It's ~100&nbsp;KB of machine-generated YAML, so we'll look at the parts that teach the model: the header, the pinned dependencies, and the job graph. Every excerpt below is copied verbatim from the file <code>gh aw compile</code> produced on v0.81.6.</p>
+
+  <h3>The header: provenance and a hash</h3>
+  <figure class="code">
+    <figcaption>Top of repo-assistant-triage.lock.yml &mdash; metadata, the DO NOT EDIT banner, and SHA-pinned actions</figcaption>
+    <pre><code class="language-yaml"># gh-aw-metadata: {"schema_version":"v4","frontmatter_hash":"a783ee73…",
+#   "body_hash":"8c11b173…","compiler_version":"v0.81.6","strict":true,"agent_id":"copilot"}
+# This file was automatically generated by gh-aw (v0.81.6). DO NOT EDIT.
+#
+# Custom actions used:
+#   - actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+#   - actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+#
+# Secrets used:
+#   - COPILOT_GITHUB_TOKEN
+#   - GITHUB_TOKEN</code></pre>
+  </figure>
+  <p>Three things to notice. The <strong><code>frontmatter_hash</code> and <code>body_hash</code></strong> are the compile-determinism signal: identical source produces identical hashes, so a reviewer (or CI) can tell whether a lock is in sync with its <code>.md</code>. The <strong><code>compiler_version</code></strong> records exactly which gh-aw built it. And every action is <strong>pinned to a full commit SHA</strong> with the human-readable version in a trailing comment &mdash; the hardening the compiler applies for you. The lock even lists its <em>Secrets used</em> and <em>Custom actions used</em> up front, so the file audits itself.</p>
+
+  <h3>The job graph: where the determinism boundary lives</h3>
+  <p>Scroll past the header and the source's tidy five-key frontmatter has expanded into a full Actions job graph. Note the top-level <code>permissions: {}</code> &mdash; the compiler grants <em>nothing</em> globally and pushes least-privilege scopes down into individual jobs.</p>
+  <figure class="code">
+    <figcaption>The compiled job graph &mdash; only one job is non-deterministic</figcaption>
+    <pre><code class="language-yaml">permissions: {}          # top-level: nothing; scopes pushed down per-job
+jobs:
+  pre_activation:        # ┐
+  activation:            # │  deterministic, SHA-pinned scaffold
+  agent:                 # ←  the ONE non-deterministic step: the engine runs here
+  detection:             # │  threat / safe-output detection
+  safe_outputs:          # │  validates + applies the agent's requested writes
+  conclusion:            # ┘  finalize &amp; report</code></pre>
+  </figure>
+  <p>This is the determinism boundary made concrete. Five of these six jobs are <strong>fixed infrastructure</strong> &mdash; they always run the same way, on SHA-pinned actions, and you can audit them like any workflow. Exactly one, the <strong><code>agent</code></strong> job, is model-driven: that's where the engine reads the issue and exercises judgment. Everything unpredictable is boxed in by predictable steps &mdash; including the write path, because the agent runs read-only and its proposed writes flow through the separate, deterministic <code>safe_outputs</code> job (the mechanism is <a class="xref" href="safe-outputs.html">Chapter 6</a>; the threat model is <a class="xref" href="defense-in-depth.html">Chapter 7</a>).</p>
+  <aside class="callout callout--note" aria-label="Reproducible artifact vs reproducible behavior">
+    <p class="callout-title">Two kinds of &ldquo;deterministic&rdquo;</p>
+    <p>The <em>compile</em> is reproducible: the same <code>.md</code> yields the same hardened lock, down to the frontmatter hash. The <em>run</em> is not: the same prompt can yield a different (still good) agent response. A stable artifact does not imply a stable answer &mdash; they're different layers, and keeping them apart is the key mental model of the whole system.</p>
+  </aside>
 </section>
 
 <section data-slot="recap-and-what-s-next" data-title="Recap &amp; what&#x27;s next">
-  <!-- Author: write content for "Recap & what's next" here -->
+  <p>You can now read a workflow and its compiled output with a clear model of each:</p>
+  <ul>
+    <li>A workflow is <strong>natural language as reviewable source</strong> &mdash; YAML frontmatter (config) plus a Markdown body (intent), committed and reviewed like code.</li>
+    <li><code>gh aw compile</code> is a real <strong>build step</strong>: offline, ~100&nbsp;ms, five phases, producing a hardened <code>.lock.yml</code> with validation, security hardening, and SHA-pinned actions.</li>
+    <li>You commit <strong>two artifacts</strong> &mdash; edit the <code>.md</code>, never hand-edit the <code>.lock.yml</code> (it says <code>DO NOT EDIT</code> for a reason).</li>
+    <li>The <strong>authoring loop</strong> has a fast path (edit the body, no recompile) and a slow path (change frontmatter, recompile).</li>
+    <li>The <strong>determinism boundary</strong> is visible in the job graph: five fixed jobs around one non-deterministic <code>agent</code> job &mdash; predictable infrastructure boxing in the model's judgment.</li>
+  </ul>
+  <p><strong>What's next.</strong> You've read the whole anatomy except the piece that decides <em>when</em> a workflow wakes up. In <a class="xref" href="triggers.html">Chapter 4: Triggers</a>, we open the <code>on:</code> block and choose the events that make the Repo Assistant run at exactly the right moments &mdash; and no others.</p>
 </section>
