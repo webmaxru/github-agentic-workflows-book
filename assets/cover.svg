@@ -58,8 +58,7 @@
     <rect width="76" height="76" rx="18" fill="url(#badge)"/>
     <text x="38" y="52" font-family="'Cascadia Code','Consolas',ui-monospace,monospace" font-size="37" font-weight="700" fill="#0b1020" text-anchor="middle">aw</text>
   </g>
-  <text x="168" y="115" font-family="'Segoe UI',system-ui,Arial,sans-serif" font-size="19" font-weight="600" letter-spacing="3.5" fill="#b7c2d8">INTERACTIVE&#160;&#160;HTML&#160;&#160;BOOK</text>
-  <text x="169" y="147" font-family="'Cascadia Code','Consolas',ui-monospace,monospace" font-size="18" fill="#78a6ff">gh&#160;aw&#160;v0.81.6&#160;&#183;&#160;Public&#160;Preview</text>
+  <text x="168" y="128" font-family="'Segoe UI',system-ui,Arial,sans-serif" font-size="19" font-weight="600" letter-spacing="3.5" fill="#b7c2d8">INTERACTIVE&#160;&#160;HTML&#160;&#160;BOOK</text>
 
   <!-- title -->
   <text x="70" y="268" font-family="'Segoe UI',system-ui,Arial,sans-serif" font-size="86" font-weight="800" fill="#edf2ff">GitHub Agentic</text>
@@ -99,6 +98,6 @@
   </g>
 
   <!-- footer -->
-  <text x="74" y="612" font-family="'Cascadia Code','Consolas',ui-monospace,monospace" font-size="18" fill="#8b97b1">webmaxru.github.io/github-agentic-workflows-book</text>
+  <text x="74" y="612" font-family="'Cascadia Code','Consolas',ui-monospace,monospace" font-size="18" fill="#8b97b1">aw.isainative.dev</text>
   <text x="1206" y="612" text-anchor="end" font-family="'Segoe UI',system-ui,Arial,sans-serif" font-size="18" fill="#8b97b1">by Maxim Salnikov</text>
 </svg>

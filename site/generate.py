@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import html
+import json
 import re
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -19,6 +21,32 @@ PLAYBOOK_INTRO = (
     "A progressive guide that starts with agentic-workflow concepts and builds toward "
     "GitHub Agentic Workflows authoring, compilation, MCP tools, safe outputs, and CI hosting."
 )
+
+# --- Site identity & discovery metadata --------------------------------------
+# Production origin (custom domain served by GitHub Pages at the root path).
+SITE_ORIGIN = "https://aw.isainative.dev"
+SITE_SHORT_NAME = "gh-aw Book"
+HOME_DESCRIPTION = (
+    "Learn GitHub Agentic Workflows (gh-aw): write your repository's outer loop in "
+    "Markdown, compile it to hardened GitHub Actions, and run safe, reviewed Continuous AI."
+)
+AUTHOR_NAME = "Maxim Salnikov"
+AUTHOR_URL = "https://www.linkedin.com/in/webmax/"
+AUTHOR_GITHUB = "https://github.com/webmaxru"
+REPO_URL = "https://github.com/webmaxru/github-agentic-workflows-book"
+OG_IMAGE_URL = f"{SITE_ORIGIN}/og-image.png"
+OG_IMAGE_ALT = "GitHub Agentic Workflows \u2014 An Interactive Book by Maxim Salnikov"
+THEME_COLOR_LIGHT = "#e9edf4"
+THEME_COLOR_DARK = "#0d1220"
+GH_AW_DOCS = "https://github.github.com/gh-aw/"
+GH_AW_REPO = "https://github.com/github/gh-aw"
+
+# AI / LLM agent crawlers welcomed explicitly in robots.txt (default policy: allow).
+AI_AGENTS = [
+    "GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-User",
+    "anthropic-ai", "PerplexityBot", "Perplexity-User", "Google-Extended",
+    "Applebot-Extended", "CCBot", "cohere-ai", "Amazonbot", "meta-externalagent",
+]
 
 
 def esc(value: Any) -> str:
@@ -145,22 +173,139 @@ def slot_is_filled(inner: str) -> bool:
     return bool(_COMMENT_RE.sub("", inner).strip())
 
 
-def root_head(title: str, description: str, prefix: str = "") -> str:
-    return f"""<meta charset=\"utf-8\">
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\">
-  <meta name=\"description\" content=\"{esc(description)}\">
-  <meta name=\"color-scheme\" content=\"light dark\">
-  <title>{esc(title)} | {esc(PLAYBOOK_TITLE)}</title>
+def abs_url(path: str = "") -> str:
+    """Absolute URL against the production origin; `path` is root-relative (no leading slash)."""
+    path = path.lstrip("/")
+    return f"{SITE_ORIGIN}/{path}" if path else f"{SITE_ORIGIN}/"
+
+
+def json_ld_script(data: Any) -> str:
+    """Serialize JSON-LD, neutralizing characters that could break out of the <script>."""
+    raw = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+    raw = raw.replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
+    return f'<script type="application/ld+json">{raw}</script>'
+
+
+def author_node() -> dict[str, Any]:
+    return {
+        "@type": "Person",
+        "@id": f"{SITE_ORIGIN}/#author",
+        "name": AUTHOR_NAME,
+        "url": AUTHOR_URL,
+        "sameAs": [AUTHOR_URL, AUTHOR_GITHUB],
+        "worksFor": {"@type": "Organization", "name": "Microsoft"},
+    }
+
+
+def home_json_ld(chapter_count: int) -> str:
+    website = {
+        "@type": "WebSite",
+        "@id": f"{SITE_ORIGIN}/#website",
+        "url": abs_url(),
+        "name": PLAYBOOK_TITLE,
+        "description": HOME_DESCRIPTION,
+        "inLanguage": "en",
+        "publisher": {"@id": f"{SITE_ORIGIN}/#author"},
+    }
+    book = {
+        "@type": "Book",
+        "@id": f"{SITE_ORIGIN}/#book",
+        "name": PLAYBOOK_TITLE,
+        "url": abs_url(),
+        "author": {"@id": f"{SITE_ORIGIN}/#author"},
+        "inLanguage": "en",
+        "bookFormat": "https://schema.org/EBook",
+        "genre": "Software engineering",
+        "about": "GitHub Agentic Workflows (gh-aw)",
+        "numberOfPages": chapter_count,
+        "image": OG_IMAGE_URL,
+        "isPartOf": {"@id": f"{SITE_ORIGIN}/#website"},
+    }
+    return json_ld_script({"@context": "https://schema.org", "@graph": [website, author_node(), book]})
+
+
+def chapter_json_ld(chapter: dict[str, Any], part_title: str) -> str:
+    url = abs_url(f"chapters/{chapter['slug']}.html")
+    article = {
+        "@type": "TechArticle",
+        "@id": f"{url}#article",
+        "headline": chapter["title"],
+        "name": chapter["title"],
+        "description": chapter["objective"],
+        "url": url,
+        "inLanguage": "en",
+        "author": {"@id": f"{SITE_ORIGIN}/#author"},
+        "publisher": {"@id": f"{SITE_ORIGIN}/#author"},
+        "isPartOf": {"@id": f"{SITE_ORIGIN}/#book"},
+        "image": OG_IMAGE_URL,
+    }
+    if part_title:
+        article["articleSection"] = part_title
+    features = chapter.get("features") or []
+    if features:
+        article["keywords"] = ", ".join(features)
+    crumbs = [{"@type": "ListItem", "position": 1, "name": "Home", "item": abs_url()}]
+    position = 2
+    if part_title:
+        crumbs.append({"@type": "ListItem", "position": position, "name": part_title, "item": abs_url() + "#contents"})
+        position += 1
+    crumbs.append({"@type": "ListItem", "position": position, "name": chapter["title"], "item": url})
+    breadcrumb = {"@type": "BreadcrumbList", "@id": f"{url}#breadcrumb", "itemListElement": crumbs}
+    return json_ld_script({"@context": "https://schema.org", "@graph": [article, author_node(), breadcrumb]})
+
+
+def root_head(
+    *,
+    page_title: str,
+    description: str,
+    canonical_url: str,
+    og_type: str,
+    og_title: str,
+    json_ld: str = "",
+    prefix: str = "",
+) -> str:
+    robots = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    return f"""<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{esc(page_title)}</title>
+  <meta name="description" content="{esc(description)}">
+  <meta name="author" content="{esc(AUTHOR_NAME)}">
+  <link rel="canonical" href="{esc(canonical_url)}">
+  <meta name="robots" content="{robots}">
+  <meta name="googlebot" content="{robots}">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="{THEME_COLOR_LIGHT}">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="{THEME_COLOR_DARK}">
   <script>(function(){{try{{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){{document.documentElement.setAttribute('data-theme',t);}}}}catch(e){{}}}})();</script>
-  <link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%234f46e5'/%3E%3Ctext%20x='16'%20y='22'%20font-family='monospace'%20font-size='16'%20font-weight='bold'%20text-anchor='middle'%20fill='white'%3Eaw%3C/text%3E%3C/svg%3E\">
-  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">
-  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>
-  <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap\">
-  <link rel=\"preconnect\" href=\"https://cdnjs.cloudflare.com\">
-  <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\">
-  <link rel=\"stylesheet\" href=\"{prefix}assets/style.css\">
-  <script defer src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\"></script>
-  <script defer src=\"{prefix}assets/app.js\"></script>"""
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="{og_type}">
+  <meta property="og:site_name" content="{esc(PLAYBOOK_TITLE)}">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="{esc(og_title)}">
+  <meta property="og:description" content="{esc(description)}">
+  <meta property="og:url" content="{esc(canonical_url)}">
+  <meta property="og:image" content="{esc(OG_IMAGE_URL)}">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{esc(OG_IMAGE_ALT)}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{esc(og_title)}">
+  <meta name="twitter:description" content="{esc(description)}">
+  <meta name="twitter:image" content="{esc(OG_IMAGE_URL)}">
+  <meta name="twitter:image:alt" content="{esc(OG_IMAGE_ALT)}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="{prefix}assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="{prefix}assets/app.js"></script>
+  {json_ld}"""
 
 
 _NUM_WORDS = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"]
@@ -287,7 +432,15 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
     return f'''<!doctype html>
 <html lang="en">
 <head>
-  {root_head("Home", PLAYBOOK_INTRO)}
+  {root_head(
+      page_title=PLAYBOOK_TITLE,
+      description=HOME_DESCRIPTION,
+      canonical_url=abs_url(),
+      og_type="website",
+      og_title=PLAYBOOK_TITLE,
+      json_ld=home_json_ld(chapter_count),
+      prefix="",
+  )}
 </head>
 <body class="home">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -296,7 +449,7 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
       <a class="brand" href="index.html"><span class="brand-mark">aw</span> gh-aw \u00b7 the book</a>
       <nav class="reader-nav" aria-label="Primary">
         <a href="#contents">Contents</a>
-        <a href="orchestration.html">How it was built</a>
+        <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repo \u2197</a>
         <a href="https://github.com/github/gh-aw" target="_blank" rel="noopener">gh-aw \u2197</a>
       </nav>
       {theme_toggle()}
@@ -321,10 +474,6 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
           <div class="cover-meta-item">
             <dt>Reading time</dt>
             <dd>{esc(reading_line)}</dd>
-          </div>
-          <div class="cover-meta-item">
-            <dt>Edition</dt>
-            <dd><span class="mono">gh aw v0.81.6</span> \u00b7 Public Preview</dd>
           </div>
         </dl>
       </div>
@@ -354,8 +503,8 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
 
   <footer class="colophon">
     <div class="colophon-inner">
-      <p>This book is a proof of its own thesis: written by a fleet of GitHub Copilot agents, with every workflow example compiled and every claim checked against the real <span class="mono">gh aw</span> CLI.</p>
-      <p class="colophon-meta">Generated from <span class="mono">content/toc.yml</span> by <span class="mono">site/generate.py</span>. <a href="orchestration.html">See how the fleet built this \u2197</a></p>
+      <p class="colophon-author">By <strong>Maxim Salnikov</strong> \u00b7 Microsoft</p>
+      <p class="colophon-meta"><a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a></p>
     </div>
   </footer>
 </body>
@@ -445,7 +594,15 @@ def render_chapter(
     return f'''<!doctype html>
 <html lang="en">
 <head>
-  {root_head(chapter["title"], chapter["objective"], "../")}
+  {root_head(
+      page_title=f"{chapter['title']} | {PLAYBOOK_TITLE}",
+      description=chapter["objective"],
+      canonical_url=abs_url(f"chapters/{chapter['slug']}.html"),
+      og_type="article",
+      og_title=chapter["title"],
+      json_ld=chapter_json_ld(chapter, part_title),
+      prefix="../",
+  )}
 </head>
 <body class="chapter-page">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -491,13 +648,147 @@ def render_chapter(
       </main>
 
       <footer class="site-footer chapter-footer">
-        <p>Presentation generated by <code>site/generate.py</code>. Prose is injected from <code>content/chapters/{esc(chapter["slug"])}.html</code>.</p>
+        <p>By <strong>Maxim Salnikov</strong> \u00b7 Microsoft \u00b7 <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a></p>
       </footer>
     </div>
   </div>
 </body>
 </html>
 '''
+
+
+def _strip_text(fragment_html: str) -> str:
+    """Reduce an authored HTML fragment to plain readable text for llms-full.txt."""
+    text = _COMMENT_RE.sub(" ", fragment_html)
+    text = _TAG_RE.sub(" ", text)
+    text = html.unescape(text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def render_404() -> str:
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found | {esc(PLAYBOOK_TITLE)}</title>
+  <meta name="robots" content="noindex, follow">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="{THEME_COLOR_LIGHT}">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="{THEME_COLOR_DARK}">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body class="home">
+  <main id="main-content" style="max-width:44rem;margin:0 auto;padding:16vh 1.5rem 10rem;text-align:center">
+    <p style="font-family:var(--font-mono);color:var(--muted);letter-spacing:.08em">404</p>
+    <h1 style="font-size:clamp(2rem,6vw,3rem);line-height:1.1;margin:.4em 0">This page wandered off the outer loop</h1>
+    <p style="color:var(--muted);font-size:1.1rem">The page you asked for doesn't exist or has moved. Head back to the book and pick up where you left off.</p>
+    <p style="margin-top:2rem"><a class="btn btn-primary" href="/">Back to the book</a></p>
+  </main>
+</body>
+</html>
+"""
+
+
+def write_discovery_files(chapters: list[dict[str, Any]]) -> None:
+    """Write crawl/agent discovery files into the shipped site dir, kept in sync each build."""
+    today = date.today().isoformat()
+
+    # Custom domain for GitHub Pages.
+    (SITE / "CNAME").write_text("aw.isainative.dev\n", encoding="utf-8")
+
+    # Serve every file verbatim (skip Jekyll processing on GitHub Pages).
+    (SITE / ".nojekyll").write_text("", encoding="utf-8")
+
+    # robots.txt — allow everyone, welcome AI agents explicitly, reference the sitemap.
+    robots = [f"# robots.txt for {abs_url()}", "User-agent: *", "Allow: /", "",
+              "# AI / LLM agents are welcome to read, index, and cite this book."]
+    for agent in AI_AGENTS:
+        robots += [f"User-agent: {agent}", "Allow: /", ""]
+    robots += [f"Sitemap: {abs_url('sitemap.xml')}", ""]
+    (SITE / "robots.txt").write_text("\n".join(robots), encoding="utf-8")
+
+    # sitemap.xml — home + every chapter.
+    entries = [(abs_url(), "1.0", "weekly")]
+    entries += [(abs_url(f"chapters/{ch['slug']}.html"), "0.8", "monthly") for ch in chapters]
+    sm = ['<?xml version="1.0" encoding="UTF-8"?>',
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for loc, priority, changefreq in entries:
+        sm += ["  <url>",
+               f"    <loc>{esc(loc)}</loc>",
+               f"    <lastmod>{today}</lastmod>",
+               f"    <changefreq>{changefreq}</changefreq>",
+               f"    <priority>{priority}</priority>",
+               "  </url>"]
+    sm.append("</urlset>")
+    (SITE / "sitemap.xml").write_text("\n".join(sm) + "\n", encoding="utf-8")
+
+    # site.webmanifest
+    manifest = {
+        "name": PLAYBOOK_TITLE,
+        "short_name": SITE_SHORT_NAME,
+        "description": HOME_DESCRIPTION,
+        "id": "/",
+        "start_url": "/",
+        "scope": "/",
+        "display": "standalone",
+        "background_color": THEME_COLOR_DARK,
+        "theme_color": THEME_COLOR_DARK,
+        "lang": "en",
+        "dir": "ltr",
+        "categories": ["education", "developer", "books", "technology"],
+        "icons": [
+            {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+            {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+            {"src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+        ],
+    }
+    (SITE / "site.webmanifest").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+    # llms.txt (llmstxt.org): title, summary blockquote, intro, then Markdown link sections.
+    llms = [f"# {PLAYBOOK_TITLE}", "",
+            f"> {HOME_DESCRIPTION}", "",
+            ("An interactive, compile-verified HTML book on GitHub Agentic Workflows (gh-aw) \u2014 "
+             "Continuous AI for a repository's outer loop. It progresses from concepts to authoring, "
+             "compiling, triggers, engines, safe outputs, security, tools/MCP, the \"Continuous X\" "
+             "patterns, reuse, observability, governance/FinOps, and fleet adoption. "
+             f"Written by {AUTHOR_NAME}."),
+            "",
+            "## Start here",
+            f"- [Home & table of contents]({abs_url()}): Overview, reading guide, and the full chapter list.",
+            "",
+            "## Chapters"]
+    for ch in chapters:
+        ch_url = abs_url(f"chapters/{ch['slug']}.html")
+        llms.append(f"- [Chapter {ch['number']}: {ch['title']}]({ch_url}): {ch['objective']}")
+    llms += ["",
+             "## Reference",
+             f"- [GitHub Agentic Workflows documentation]({GH_AW_DOCS}): Official gh-aw docs.",
+             f"- [gh-aw repository]({GH_AW_REPO}): Source, schema, and sample workflows.",
+             f"- [Book repository]({REPO_URL}): Source and generator for this book.",
+             ""]
+    (SITE / "llms.txt").write_text("\n".join(llms), encoding="utf-8")
+
+    # llms-full.txt: full readable text of every chapter, concatenated for agents.
+    full = [f"# {PLAYBOOK_TITLE}", "",
+            f"> {HOME_DESCRIPTION}", "",
+            f"Source: {abs_url()} | Author: {AUTHOR_NAME} | Generated: {today}", ""]
+    for ch in chapters:
+        ch_url = abs_url(f"chapters/{ch['slug']}.html")
+        full += [f"## Chapter {ch['number']}: {ch['title']}", "",
+                 f"URL: {ch_url}", f"Objective: {ch['objective']}", ""]
+        fragment = CONTENT_CHAPTERS_DIR / f"{ch['slug']}.html"
+        if fragment.exists():
+            body = _strip_text(fragment.read_text(encoding="utf-8"))
+            if body:
+                full += [body, ""]
+    (SITE / "llms-full.txt").write_text("\n".join(full), encoding="utf-8")
+
+    # 404.html — helpful, noindex, links home.
+    (SITE / "404.html").write_text(render_404(), encoding="utf-8")
 
 
 def print_report(reports: list[dict[str, Any]]) -> None:
@@ -557,6 +848,7 @@ def main() -> None:
         output.write_text(render_chapter(chapters, grouped, index, slots), encoding="utf-8")
         reports.append({"chapter": chapter, "total": len(sections), "filled": filled, "scaffolded": scaffolded})
 
+    write_discovery_files(chapters)
     print_report(reports)
 
 

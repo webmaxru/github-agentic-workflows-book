@@ -3,11 +3,36 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="A progressive guide that starts with agentic-workflow concepts and builds toward GitHub Agentic Workflows authoring, compilation, MCP tools, safe outputs, and CI hosting.">
+  <title>GitHub Agentic Workflows: An Interactive Book</title>
+  <meta name="description" content="Learn GitHub Agentic Workflows (gh-aw): write your repository&#x27;s outer loop in Markdown, compile it to hardened GitHub Actions, and run safe, reviewed Continuous AI.">
+  <meta name="author" content="Maxim Salnikov">
+  <link rel="canonical" href="https://aw.isainative.dev/">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="color-scheme" content="light dark">
-  <title>Home | GitHub Agentic Workflows: An Interactive Book</title>
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e9edf4">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1220">
   <script>(function(){try{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%234f46e5'/%3E%3Ctext%20x='16'%20y='22'%20font-family='monospace'%20font-size='16'%20font-weight='bold'%20text-anchor='middle'%20fill='white'%3Eaw%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GitHub Agentic Workflows: An Interactive Book">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="GitHub Agentic Workflows: An Interactive Book">
+  <meta property="og:description" content="Learn GitHub Agentic Workflows (gh-aw): write your repository&#x27;s outer loop in Markdown, compile it to hardened GitHub Actions, and run safe, reviewed Continuous AI.">
+  <meta property="og:url" content="https://aw.isainative.dev/">
+  <meta property="og:image" content="https://aw.isainative.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GitHub Agentic Workflows: An Interactive Book">
+  <meta name="twitter:description" content="Learn GitHub Agentic Workflows (gh-aw): write your repository&#x27;s outer loop in Markdown, compile it to hardened GitHub Actions, and run safe, reviewed Continuous AI.">
+  <meta name="twitter:image" content="https://aw.isainative.dev/og-image.png">
+  <meta name="twitter:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
@@ -16,6 +41,7 @@
   <link rel="stylesheet" href="assets/style.css">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer src="assets/app.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://aw.isainative.dev/#website","url":"https://aw.isainative.dev/","name":"GitHub Agentic Workflows: An Interactive Book","description":"Learn GitHub Agentic Workflows (gh-aw): write your repository's outer loop in Markdown, compile it to hardened GitHub Actions, and run safe, reviewed Continuous AI.","inLanguage":"en","publisher":{"@id":"https://aw.isainative.dev/#author"}},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"Book","@id":"https://aw.isainative.dev/#book","name":"GitHub Agentic Workflows: An Interactive Book","url":"https://aw.isainative.dev/","author":{"@id":"https://aw.isainative.dev/#author"},"inLanguage":"en","bookFormat":"https://schema.org/EBook","genre":"Software engineering","about":"GitHub Agentic Workflows (gh-aw)","numberOfPages":14,"image":"https://aw.isainative.dev/og-image.png","isPartOf":{"@id":"https://aw.isainative.dev/#website"}}]}</script>
 </head>
 <body class="home">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -24,7 +50,7 @@
       <a class="brand" href="index.html"><span class="brand-mark">aw</span> gh-aw · the book</a>
       <nav class="reader-nav" aria-label="Primary">
         <a href="#contents">Contents</a>
-        <a href="orchestration.html">How it was built</a>
+        <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repo ↗</a>
         <a href="https://github.com/github/gh-aw" target="_blank" rel="noopener">gh-aw ↗</a>
       </nav>
       <div class="theme-toggle" role="group" aria-label="Reading theme">
@@ -53,10 +79,6 @@
           <div class="cover-meta-item">
             <dt>Reading time</dt>
             <dd>about 108 minutes</dd>
-          </div>
-          <div class="cover-meta-item">
-            <dt>Edition</dt>
-            <dd><span class="mono">gh aw v0.81.6</span> · Public Preview</dd>
           </div>
         </dl>
       </div>
@@ -252,8 +274,8 @@
 
   <footer class="colophon">
     <div class="colophon-inner">
-      <p>This book is a proof of its own thesis: written by a fleet of GitHub Copilot agents, with every workflow example compiled and every claim checked against the real <span class="mono">gh aw</span> CLI.</p>
-      <p class="colophon-meta">Generated from <span class="mono">content/toc.yml</span> by <span class="mono">site/generate.py</span>. <a href="orchestration.html">See how the fleet built this ↗</a></p>
+      <p class="colophon-author">By <strong>Maxim Salnikov</strong> · Microsoft</p>
+      <p class="colophon-meta"><a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub ↗</a></p>
     </div>
   </footer>
 </body>

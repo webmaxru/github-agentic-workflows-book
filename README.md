@@ -1,11 +1,11 @@
 <p align="center">
-  <a href="https://webmaxru.github.io/github-agentic-workflows-book/">
+  <a href="https://aw.isainative.dev/">
     <img src="assets/cover.png" alt="GitHub Agentic Workflows: An Interactive Book — Continuous AI for the repository's outer loop, written by the agentic fleet it teaches" width="100%">
   </a>
 </p>
 
 <p align="center">
-  <a href="https://webmaxru.github.io/github-agentic-workflows-book/"><strong>Read the book →</strong></a>
+  <a href="https://aw.isainative.dev/"><strong>Read the book →</strong></a>
 </p>
 
 # GitHub Agentic Workflows — An Interactive Book
@@ -24,11 +24,7 @@ prompt) that collaborate under an orchestrator in a wave-based pipeline.
 > 🧬 **Built on the foundation of [`microsoft-agent-framework-playbook-fleets-generated` by Valentina Alto](https://github.com/Valentina-Alto/microsoft-agent-framework-playbook-fleets-generated)** — this project adapts that repository's fleet-of-primitives methodology and site tooling from the **Microsoft Agent Framework** to **GitHub Agentic Workflows**.
 
 > 🛠️ **Build & preview locally:** the site is generated from `content/toc.yml` by `site/generate.py`
-> and served from `site/` (see [Run the book locally](#run-the-book-locally)). A published URL is TBD.
-
-> 🤖 **See the fleet in action:** an **interactive orchestration wireframe** at
-> [`site/orchestration.html`](site/orchestration.html) animates the exact pipeline
-> (design → research → author → verify → review) that produces this book.
+> and served from `site/` (see [Run the book locally](#run-the-book-locally)). Published at <https://aw.isainative.dev/>.
 
 ---
 
@@ -169,7 +165,6 @@ site/
   index.html          # generated
   chapters/*.html     # generated: one page per chapter in toc.yml
   assets/             # style.css + app.js
-  orchestration.html  # animated fleet wireframe
 scripts/
   run-fleet.ps1       # convenience launcher
 ```
