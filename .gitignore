@@ -23,3 +23,6 @@ build/
 
 # APM dependencies
 apm_modules/
+
+# impeccable live-mode local session state (config.json is committed; the journal is local)
+.impeccable/live/sessions/

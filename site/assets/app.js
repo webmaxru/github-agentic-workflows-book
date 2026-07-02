@@ -82,6 +82,40 @@
     });
   });
 
+  // Reading theme: light / sepia / dark, remembered across visits. A no-flash
+  // inline <script> in the <head> applies the stored theme before first paint;
+  // here we wire the segmented control and keep it in sync.
+  (function theme() {
+    const KEY = 'aw-theme';
+    const root = document.documentElement;
+    const opts = Array.from(document.querySelectorAll('.theme-opt'));
+    if (!opts.length) return;
+
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const stored = () => { try { return localStorage.getItem(KEY); } catch (_e) { return null; } };
+    const effective = () => stored() || (mql.matches ? 'dark' : 'light');
+
+    const sync = () => {
+      const active = effective();
+      opts.forEach((btn) => {
+        btn.setAttribute('aria-pressed', String(btn.dataset.themeValue === active));
+      });
+    };
+
+    opts.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const value = btn.dataset.themeValue;
+        root.setAttribute('data-theme', value);
+        try { localStorage.setItem(KEY, value); } catch (_e) { /* ignore */ }
+        sync();
+      });
+    });
+
+    // When the reader is on "system" (nothing stored) and the OS flips, follow it.
+    mql.addEventListener('change', () => { if (!stored()) sync(); });
+    sync();
+  })();
+
   if (window.hljs) {
     window.hljs.configure({ languages: ['yaml', 'yml', 'bash', 'shell', 'json', 'markdown', 'python', 'javascript', 'http'] });
     window.hljs.highlightAll();
