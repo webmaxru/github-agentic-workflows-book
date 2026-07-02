@@ -100,37 +100,148 @@
         <section class="chapter-section" data-section="objective">
           <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
           <div class="section-content" data-content-slot="objective">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="objective"</code> block in <code>content/chapters/engines.html</code>.</p>
+<p>By the end of this chapter you can <strong>select and configure the engine</strong> &mdash; the coding agent that interprets your Markdown &mdash; and understand the portability that gh-aw's engine-neutral design buys you. You'll know the four production engines, the one field that switches between them, and how to pin a version for reproducible, secure builds.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. We take the same Repo Assistant and swap its brain from Copilot to Claude &mdash; changing exactly one block of frontmatter.</p>
           </div>
         </section>
         <section class="chapter-section" data-section="concept-engine-neutral-by-design">
           <h2 id="concept-engine-neutral-by-design"><a class="anchor-link" href="#concept-engine-neutral-by-design" aria-label="Link to Concept: engine-neutral by design section">Concept: engine-neutral by design</a></h2>
           <div class="section-content" data-content-slot="concept-engine-neutral-by-design">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="concept-engine-neutral-by-design"</code> block in <code>content/chapters/engines.html</code>.</p>
+<p>A workflow has two separable parts: <strong>what you want done</strong> (the Markdown intent and the safe-outputs boundary) and <strong>who does the thinking</strong> (the model behind the agent). gh-aw keeps these apart on purpose. The engine is a <em>pluggable</em> component; the workflow around it &mdash; triggers, permissions, safe outputs, the compiled hardening &mdash; stays the same no matter which model you choose.</p>
+
+  <h3>Why decouple the brain?</h3>
+  <p>Tying automation to one vendor's model is a bet you might regret. Prices change, a competitor ships a better model, your org standardizes on a provider you already pay for, or a model you depend on is deprecated. If your workflow's logic were entangled with a specific model's API, every one of those events would be a rewrite. gh-aw's answer is blunt and reassuring: &ldquo;You can switch later by changing only <code>engine:</code> and the corresponding secret&rdquo; (<a href="https://github.github.com/gh-aw/reference/engines/">AI Engines</a>).</p>
+  <p>This is the same &ldquo;prose is the source&rdquo; idea from <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a>, viewed from the other side. Because your intent lives in portable natural language rather than model-specific API calls, the intent <em>survives</em> a change of engine. The engine is a runtime detail, not the architecture.</p>
+  <aside class="callout callout--leader" aria-label="Leader takeaway">
+    <p class="callout-title">Leader lens: no vendor lock-in on day one</p>
+    <p>Engine-neutrality is a procurement and risk hedge. You can start on whatever model your team already has access to, negotiate on price later, and switch providers without re-authoring a fleet of workflows. The portability is structural, not a promise.</p>
+  </aside>
           </div>
         </section>
         <section class="chapter-section" data-section="in-gh-aw-the-engine-field-and-its-options">
           <h2 id="in-gh-aw-the-engine-field-and-its-options"><a class="anchor-link" href="#in-gh-aw-the-engine-field-and-its-options" aria-label="Link to In gh-aw: the engine: field and its options section">In gh-aw: the engine: field and its options</a></h2>
           <div class="section-content" data-content-slot="in-gh-aw-the-engine-field-and-its-options">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="in-gh-aw-the-engine-field-and-its-options"</code> block in <code>content/chapters/engines.html</code>.</p>
+<p>The <code>engine:</code> frontmatter field &ldquo;specifies which AI engine interprets the markdown section&rdquo; (<a href="https://github.github.com/gh-aw/reference/frontmatter/">Frontmatter</a>). At its simplest it's one word:</p>
+  <figure class="code">
+    <figcaption>The simplest engine selection</figcaption>
+    <pre><code class="language-yaml">engine: copilot   # the default — this line can be omitted entirely</code></pre>
+  </figure>
+
+  <h3>The four production engines</h3>
+  <p>Each engine is a real coding-agent CLI, and each needs its own credential &mdash; configured as a GitHub Actions secret, <strong>never in the workflow</strong> (<a href="https://github.github.com/gh-aw/reference/engines/">AI Engines</a>):</p>
+  <table>
+    <thead>
+      <tr><th>Engine</th><th><code>engine:</code></th><th>Credential</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>GitHub Copilot CLI <strong>(default)</strong></td><td><code>copilot</code></td><td><code>copilot-requests: write</code> (recommended) or <code>COPILOT_GITHUB_TOKEN</code></td></tr>
+      <tr><td>Claude (Anthropic)</td><td><code>claude</code></td><td><code>ANTHROPIC_API_KEY</code></td></tr>
+      <tr><td>OpenAI Codex</td><td><code>codex</code></td><td><code>OPENAI_API_KEY</code></td></tr>
+      <tr><td>Google Gemini CLI</td><td><code>gemini</code></td><td><code>GEMINI_API_KEY</code></td></tr>
+    </tbody>
+  </table>
+  <p>&ldquo;Copilot CLI is the default &mdash; <code>engine:</code> can be omitted when using Copilot&rdquo; (<a href="https://github.github.com/gh-aw/reference/engines/">AI Engines</a>). (There are also experimental engines &mdash; <code>crush</code>, <code>opencode</code>, <code>pi</code> &mdash; but the four above are the ones to build on.)</p>
+
+  <h3>The object form: version, model, and more</h3>
+  <p>When you need more than the default, <code>engine:</code> becomes an object. The two fields you'll use most are <code>version</code> (which CLI release to install) and <code>model</code> (which model to run):</p>
+  <figure class="code">
+    <figcaption>Extended engine configuration &mdash; pin the version, choose the model</figcaption>
+    <pre><code class="language-yaml">engine:
+  id: claude
+  version: "2.1.70"          # pin the CLI release for reproducible builds
+  model: claude-sonnet-4.5   # override the engine's default model</code></pre>
+  </figure>
+  <p><strong>Pin your version.</strong> By default gh-aw installs the <em>latest</em> engine CLI, and the compiler will warn you about it: an unpinned <code>latest</code> is &ldquo;a supply chain security risk&hellip; can change unexpectedly.&rdquo; Pinning gives you &ldquo;reproducible builds&rdquo; and shields you from a surprise CLI release (<a href="https://github.github.com/gh-aw/reference/engines/">AI Engines</a>). This is the same hardening instinct as SHA-pinning actions in <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a>.</p>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: switching engines triggers a secret review</p>
+    <p>When you change engine, you introduce a new credential &mdash; and gh-aw's compiler notices. Its safe-update mode flags the &ldquo;new restricted secret&rdquo; (e.g. <code>ANTHROPIC_API_KEY</code>) and asks you to review it before shipping. Approve deliberately (<code>gh aw compile --approve</code>) once you've confirmed the change is intentional. The security model behind this gate is <a class="xref" href="defense-in-depth.html">Chapter 7</a>.</p>
+  </aside>
           </div>
         </section>
         <section class="chapter-section" data-section="when-to-pick-which-engine-capability-cost-availability">
           <h2 id="when-to-pick-which-engine-capability-cost-availability"><a class="anchor-link" href="#when-to-pick-which-engine-capability-cost-availability" aria-label="Link to When to pick which engine (capability, cost, availability) section">When to pick which engine (capability, cost, availability)</a></h2>
           <div class="section-content" data-content-slot="when-to-pick-which-engine-capability-cost-availability">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="when-to-pick-which-engine-capability-cost-availability"</code> block in <code>content/chapters/engines.html</code>.</p>
+<p>Because switching is cheap, this is a low-stakes decision &mdash; but the official guidance gives clear starting points. &ldquo;Choose the engine that best matches your needs and existing AI account&rdquo; (<a href="https://github.github.com/gh-aw/reference/engines/">AI Engines</a>):</p>
+  <table>
+    <thead>
+      <tr><th>Pick&hellip;</th><th>When&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Copilot</strong> (default)</td><td>you want the broadest gh-aw feature set &mdash; including custom agents and autopilot-style continuations &mdash; and the simplest org billing.</td></tr>
+      <tr><td><strong>Claude</strong></td><td>you want &ldquo;stronger control over turn limits (<code>max-turns</code>) for long reasoning sessions.&rdquo;</td></tr>
+      <tr><td><strong>Codex</strong> / <strong>Gemini</strong></td><td>those models are &ldquo;already part of existing tooling or budget decisions.&rdquo;</td></tr>
+    </tbody>
+  </table>
+  <p>Not every feature is available on every engine. A few notable differences from the engine comparison (<a href="https://github.github.com/gh-aw/reference/engines/">AI Engines</a>): <code>max-turns</code> (an iteration cap for long reasoning) is a Claude feature; <code>max-continuations</code> (autopilot) and custom agent files (<code>engine.agent</code>) are Copilot-only. The top-level <code>max-turns</code> (default <code>500</code>) and <code>max-ai-credits</code> (default <code>1000</code>) budgets, however, work across all engines.</p>
+
+  <h3>When <em>not</em> to fiddle with engines</h3>
+  <ul>
+    <li><strong>Don't override the default without a reason.</strong> Copilot is the default because it has the widest feature coverage and the simplest billing. Start there; switch only when a concrete need (a model you prefer, a budget you already hold) appears.</li>
+    <li><strong>Don't ship <code>version: latest</code> to production.</strong> It's convenient for experimentation but it's an unpinned dependency &mdash; the compiler warns you for good reason. Pin before you rely on it.</li>
+    <li><strong>Don't put keys in the workflow.</strong> Every engine reads its credential from a GitHub Actions secret. A key in frontmatter is a leak; in strict mode it's a compile error.</li>
+    <li><strong>Don't chase models for their own sake.</strong> The engine rarely decides whether a workflow succeeds &mdash; clear instructions and the right tools matter far more. Change the brain last, not first.</li>
+  </ul>
           </div>
         </section>
         <section class="chapter-section" data-section="worked-example-switching-the-repo-assistant-s-engine">
           <h2 id="worked-example-switching-the-repo-assistant-s-engine"><a class="anchor-link" href="#worked-example-switching-the-repo-assistant-s-engine" aria-label="Link to Worked example: switching the Repo Assistant&#x27;s engine section">Worked example: switching the Repo Assistant&#x27;s engine</a></h2>
           <div class="section-content" data-content-slot="worked-example-switching-the-repo-assistant-s-engine">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="worked-example-switching-the-repo-assistant-s-engine"</code> block in <code>content/chapters/engines.html</code>.</p>
+<p>Let's prove the portability claim. We take the Repo Assistant's triage instructions &mdash; the exact prose from <a class="xref" href="your-first-workflow.html">Chapter 2</a> &mdash; and run them on Claude instead of Copilot. <strong>Only the <code>engine:</code> block changes.</strong></p>
+
+  <figure class="code">
+    <figcaption>examples/ch05/repo-assistant-claude.md &mdash; same assistant, different brain (compiles: 0 errors, 0 warnings)</figcaption>
+    <pre><code class="language-yaml">on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+engine:
+  id: claude
+  version: "2.1.70"
+  model: claude-sonnet-4.5
+permissions:
+  contents: read
+  issues: read
+network: defaults
+safe-outputs:
+  add-comment:
+    max: 1
+  add-labels:
+    allowed: [bug, enhancement, question, documentation]
+    max: 1</code></pre>
+  </figure>
+
+  <p>Set the Copilot version side by side and the diff is a single block: <code>engine: copilot</code> becomes the three-line Claude object. The triggers, the read-only permissions, the network posture, and the entire <code>safe-outputs:</code> boundary are untouched &mdash; and so is the Markdown body. That is engine-neutrality made concrete.</p>
+
+  <p>Compiling reveals gh-aw's two engine-related guardrails at work. First, if you leave <code>version: latest</code>, the compiler warns that an unpinned CLI is a supply-chain risk &mdash; so we pinned <code>2.1.70</code>. Second, switching to Claude introduces a new secret, and the compiler's safe-update mode asks you to review it:</p>
+  <figure class="code">
+    <figcaption>The secret-review gate when you change engines</figcaption>
+    <pre><code class="language-text">gh aw compile examples/ch05/repo-assistant-claude.md
+# New restricted secret(s):
+#   - ANTHROPIC_API_KEY
+# Remediation: use --approve once you've confirmed the change is intentional.
+
+gh aw compile --approve examples/ch05/repo-assistant-claude.md
+# ✓ examples\ch05\repo-assistant-claude.md (105.0 KB)
+# ✓ Compiled 1 workflow(s): 0 error(s), 0 warning(s)</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="The secret still lives in Actions, not the file">
+    <p class="callout-title">Compile is still offline; the key still lives in Actions</p>
+    <p>Notice what <em>didn't</em> happen: the compile succeeded without an <code>ANTHROPIC_API_KEY</code> present. As in <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a>, compilation is offline &mdash; the key is only needed at <em>run</em> time and is stored as a GitHub Actions secret. The <code>--approve</code> step simply records that <em>you</em> intended to add that secret to the workflow's threat surface.</p>
+  </aside>
           </div>
         </section>
         <section class="chapter-section" data-section="recap-and-what-s-next">
           <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
           <div class="section-content" data-content-slot="recap-and-what-s-next">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="recap-and-what-s-next"</code> block in <code>content/chapters/engines.html</code>.</p>
+<p>You can now choose and configure the agent's brain with confidence:</p>
+  <ul>
+    <li>gh-aw is <strong>engine-neutral by design</strong>: your intent and safe-outputs boundary are portable, and you &ldquo;switch later by changing only <code>engine:</code> and the corresponding secret.&rdquo;</li>
+    <li>Four production engines &mdash; <strong>Copilot</strong> (default), <strong>Claude</strong>, <strong>Codex</strong>, <strong>Gemini</strong> &mdash; each read a credential from a GitHub Actions secret, never the file.</li>
+    <li>The object form adds <code>version</code> and <code>model</code>; <strong>pin the version</strong> for reproducible, supply-chain-safe builds.</li>
+    <li>Pick by feature and existing budget (Copilot = broadest features; Claude = <code>max-turns</code> control; Codex/Gemini = models you already use) &mdash; and change the engine <em>last</em>, since instructions and tools matter more.</li>
+    <li>Changing engines trips a <strong>secret-review gate</strong> &mdash; a first taste of the security model to come.</li>
+  </ul>
+  <p><strong>What's next.</strong> That's Part I complete: you can author, compile, trigger, and power a workflow. But so far the Repo Assistant only ever <em>proposed</em> writes through <code>safe-outputs:</code> without our examining how. In <a class="xref" href="safe-outputs.html">Chapter 6: Safe Outputs</a> &mdash; the opening of Part II &mdash; we finally open that boundary and see how an agent acts on your repo without ever holding raw write access.</p>
           </div>
         </section>
 
