@@ -20,3 +20,6 @@ build/
 
 # Local tooling artifacts (browser automation snapshots/logs)
 .playwright-mcp/
+
+# APM dependencies
+apm_modules/
