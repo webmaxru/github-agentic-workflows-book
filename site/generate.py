@@ -150,7 +150,10 @@ def root_head(title: str, description: str, prefix: str = "") -> str:
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
   <meta name=\"description\" content=\"{esc(description)}\">
   <title>{esc(title)} | {esc(PLAYBOOK_TITLE)}</title>
-  <link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%232da44e'/%3E%3Ctext%20x='16'%20y='22'%20font-family='monospace'%20font-size='16'%20font-weight='bold'%20text-anchor='middle'%20fill='white'%3Eaw%3C/text%3E%3C/svg%3E\">
+  <link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%234f46e5'/%3E%3Ctext%20x='16'%20y='22'%20font-family='monospace'%20font-size='16'%20font-weight='bold'%20text-anchor='middle'%20fill='white'%3Eaw%3C/text%3E%3C/svg%3E\">
+  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">
+  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>
+  <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@500;700&display=swap\">
   <link rel=\"preconnect\" href=\"https://cdnjs.cloudflare.com\">
   <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\">
   <link rel=\"stylesheet\" href=\"{prefix}assets/style.css\">
@@ -187,21 +190,15 @@ def build_chapter_nav(grouped: list[dict[str, Any]], current_id: str | None = No
 
 
 def render_chapter_card(chapter: dict[str, Any]) -> str:
-    features = chapter.get("features") or []
-    feature_html = ""
-    if features:
-        items = "\n".join(f"                <li>{esc(feature)}</li>" for feature in features)
-        feature_html = f'''
-            <details class="component-list">
-              <summary>gh-aw features</summary>
-              <ul>
-{items}
-              </ul>
-            </details>'''
     return f'''          <article class="chapter-card">
-            <p class="eyebrow">Chapter {esc(chapter["number"])}</p>
-            <h3><a href="{esc(chapter_url(chapter))}">{esc(chapter["title"])}</a></h3>
-            <p>{esc(chapter["objective"])}</p>{feature_html}
+            <a class="row-link" href="{esc(chapter_url(chapter))}">
+              <span class="ch-num">{esc(chapter["number"]):0>2}</span>
+              <span class="ch-body">
+                <span class="ch-title">{esc(chapter["title"])}</span>
+                <span class="ch-obj">{esc(chapter["objective"])}</span>
+              </span>
+              <span class="ch-go" aria-hidden="true">\u2192</span>
+            </a>
           </article>'''
 
 
@@ -235,14 +232,53 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <header class="site-header" role="banner">
-    <div class="container hero">
-      <p class="eyebrow">Interactive HTML book</p>
-      <h1>{esc(PLAYBOOK_TITLE)}</h1>
-      <p class="lead">{esc(PLAYBOOK_INTRO)}</p>
-      <nav class="hero-links" aria-label="About this book">
-        <a href="orchestration.html">How this book was built \u2192</a>
-        <a href="https://github.com/github/gh-aw" target="_blank" rel="noopener">gh-aw on GitHub \u2197</a>
+    <div class="container topbar">
+      <a class="brand" href="index.html"><span class="brand-badge">aw</span> gh-aw \u00b7 the book</a>
+      <nav class="topnav" aria-label="Primary">
+        <a href="#chapters">Chapters</a>
+        <a href="orchestration.html">How it was built</a>
+        <a href="https://github.com/github/gh-aw" target="_blank" rel="noopener">gh-aw \u2197</a>
       </nav>
+    </div>
+    <div class="container hero">
+      <p class="eyebrow">continuous ai \u00b7 gh aw v0.81.6</p>
+      <h1 class="hero-title">Automate the judgment work CI/CD never could.</h1>
+      <p class="lead">You write the outcome in plain Markdown. gh-aw compiles it to a hardened GitHub Actions workflow and runs a coding agent on your repository's outer loop \u2014 triage, docs, review \u2014 with every write reviewed and safe by default.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="chapters/what-are-agentic-workflows.html">Start reading \u2192</a>
+        <a class="btn btn-ghost" href="orchestration.html">How the fleet built this</a>
+      </div>
+      <figure class="compile-diptych" aria-label="A gh-aw workflow compiles from authored Markdown to a governed GitHub Actions workflow">
+        <div class="dip dip-source">
+          <span class="dip-tab">repo-assistant.md</span>
+          <pre><span class="c">---</span>
+<span class="k">on:</span>
+  <span class="k">issues:</span> [opened]
+<span class="k">engine:</span> copilot
+<span class="k">safe-outputs:</span>
+  <span class="k">add-comment:</span>
+  <span class="k">add-labels:</span>
+<span class="c">---</span>
+<span class="p"># Repo Assistant</span>
+Triage the new issue,
+comment, and label it.</pre>
+        </div>
+        <div class="dip-seam" aria-hidden="true">
+          <span class="seam-cmd">gh aw compile</span>
+          <span class="seam-arrow">\u2192</span>
+        </div>
+        <div class="dip dip-out">
+          <span class="dip-tab">repo-assistant.lock.yml</span>
+          <pre><span class="g">\u2713 0 errors</span> \u00b7 SHA-pinned
+<span class="k">jobs:</span>
+  activation
+  agent          <span class="c">(read-only)</span>
+  detection
+  safe_outputs   <span class="c">(writes)</span>
+  conclusion
+<span class="g">\u2192</span> comment + label proposed</pre>
+        </div>
+      </figure>
     </div>
   </header>
 
@@ -262,7 +298,7 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
       </div>
     </section>
 
-    <section aria-labelledby="chapters-heading">
+    <section id="chapters" aria-labelledby="chapters-heading">
       <h2 id="chapters-heading" class="visually-hidden">Chapters by part</h2>
 {parts_html}
     </section>
@@ -278,6 +314,14 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
 '''
 
 
+def part_label_for(grouped: list[dict[str, Any]], chapter_id: str) -> str:
+    for part in grouped:
+        for chapter in part["chapters"]:
+            if chapter["id"] == chapter_id:
+                return str(part.get("title", ""))
+    return ""
+
+
 def render_chapter(
     chapters: list[dict[str, Any]],
     grouped: list[dict[str, Any]],
@@ -287,6 +331,7 @@ def render_chapter(
     chapter = chapters[index]
     prev_chapter = chapters[index - 1] if index > 0 else None
     next_chapter = chapters[index + 1] if index < len(chapters) - 1 else None
+    part_title = part_label_for(grouped, chapter["id"])
 
     section_nav: list[str] = []
     sections: list[str] = []
@@ -370,7 +415,7 @@ def render_chapter(
     <div class="content-shell">
       <header class="chapter-header">
         <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter {esc(chapter["number"])}</nav>
-        <p class="eyebrow">Chapter {esc(chapter["number"])}</p>
+        <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">{esc(chapter["number"]):0>2}</span><span class="fm-sep">\u00b7</span><span class="fm-k">part:</span> <span class="fm-v">{esc(part_title)}</span></p>
         <h1>{esc(chapter["title"])}</h1>
         <p class="lead">{esc(chapter["objective"])}</p>
       </header>
