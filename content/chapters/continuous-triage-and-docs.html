@@ -4,25 +4,141 @@
      with inner HTML; keep the data-slot ids unchanged (they map 1:1 to page slots). -->
 
 <section data-slot="objective" data-title="Objective">
-  <!-- Author: write content for "Objective" here -->
+  <p>By the end of this chapter you can ship <strong>two production-shaped patterns</strong> &mdash; <strong>Continuous Triage</strong> and <strong>Continuous Docs</strong> &mdash; as mini-products the Repo Assistant runs on its own. You've learned all the machinery; now you assemble it into workflows that deliver a repeatable outcome, not just a demo.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. These recipes are drawn from the <a href="https://github.com/githubnext/agentics">githubnext/agentics</a> samples and the &ldquo;Continuous X&rdquo; family GitHub Next calls the <em>Agent Factory</em>.</p>
 </section>
 
 <section data-slot="concept-continuous-x-patterns-as-mini-products" data-title="Concept: Continuous X — patterns as mini-products">
-  <!-- Author: write content for "Concept: Continuous X — patterns as mini-products" here -->
+  <p>Back in <a class="xref" href="what-are-agentic-workflows.html">Chapter 1</a> we framed gh-aw as <strong>Continuous AI</strong> &mdash; the third leg of repository automation beside CI and CD. This chapter is where that abstraction becomes a habit. A <strong>&ldquo;Continuous X&rdquo; pattern</strong> takes one recurring judgement task &mdash; triage, docs, review, testing &mdash; and turns it into a standing workflow that does that job every time it's needed, forever, without a human kicking it off.</p>
+
+  <h3>Patterns, not scripts</h3>
+  <p>The mental shift is from &ldquo;a workflow&rdquo; to <strong>a mini-product</strong>. A pattern has a clear owner-task, a trigger cadence, a bounded set of outputs, and a definition of &ldquo;done&rdquo; &mdash; just like a small internal tool. Continuous Triage <em>owns</em> the question &ldquo;is this issue categorized and acknowledged?&rdquo; Continuous Docs <em>owns</em> &ldquo;do the docs still match the code?&rdquo; You ship the pattern once; it earns its keep on every issue and every merge thereafter.</p>
+  <p>This is exactly the reframing from the brief's spine: CI/CD automates deterministic work; Continuous X automates the <em>judgement</em> work that used to require a human to notice and act.</p>
+  <aside class="callout callout--leader" aria-label="Real adopters">
+    <p class="callout-title">Measured: patterns in the wild</p>
+    <p>These aren't hypotheticals. Adopters run Continuous-X fleets today: <code>backend.ai-webui</code> runs a daily test-improver and an e2e-healer; <code>euparliamentmonitor</code> coordinates 20+ agents; a review agent from <code>clash-verge-rev</code> has been cloned across 215+ repositories. The patterns in this chapter are the same shape, scaled down to one repo.</p>
+  </aside>
 </section>
 
 <section data-slot="in-gh-aw-the-triage-and-docs-recipes" data-title="In gh-aw: the Triage and Docs recipes">
-  <!-- Author: write content for "In gh-aw: the Triage and Docs recipes" here -->
+  <p>Neither recipe needs anything new &mdash; they're compositions of Chapters 4&ndash;8. What makes them <em>patterns</em> is the shape.</p>
+
+  <h3>Continuous Triage</h3>
+  <p>Triage is <strong>reactive plus proactive</strong>: respond to each new issue, and sweep periodically for anything missed. So it combines an event trigger with a schedule (<a class="xref" href="triggers.html">Chapter 4</a>), reads with the GitHub tool (<a class="xref" href="tools-and-mcp.html">Chapter 8</a>), and writes only through <code>add-comment</code> + <code>add-labels</code> (<a class="xref" href="safe-outputs.html">Chapter 6</a>).</p>
+  <figure class="code">
+    <figcaption>The Triage recipe, in one glance</figcaption>
+    <pre><code class="language-yaml">on:
+  issues: { types: [opened, reopened] }
+  schedule: daily          # sweep for anything missed
+  reaction: eyes
+tools:
+  github: { toolsets: [issues] }   # find duplicates
+safe-outputs:
+  add-comment: { max: 1 }
+  add-labels:
+    allowed: [bug, enhancement, question, documentation, duplicate, needs-info]
+    max: 3</code></pre>
+  </figure>
+
+  <h3>Continuous Docs</h3>
+  <p>Docs-sync is triggered by <strong>the thing that makes docs stale</strong> &mdash; a code merge &mdash; plus a weekly backstop. It reads code and docs, then <em>proposes</em> a fix as a draft PR (or flags an issue when the drift is too big). The defining move is that it writes via <code>create-pull-request</code>, so a human always approves the doc change.</p>
+  <figure class="code">
+    <figcaption>The Docs recipe, in one glance</figcaption>
+    <pre><code class="language-yaml">on:
+  push: { branches: [main], paths: ["src/**", "lib/**"] }  # docs go stale on merge
+  schedule: weekly
+tools:
+  github: { toolsets: [repos] }
+  edit:
+safe-outputs:
+  create-pull-request: { title-prefix: "[docs] ", draft: true }
+  create-issue: { max: 1 }         # fallback when drift is too large</code></pre>
+  </figure>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: trigger on the cause of the problem</p>
+    <p>The art of a good pattern is choosing the trigger that matches <em>when the work arises</em>. Triage fires on new issues because that's when categorization is needed; Docs fires on merges to code paths because that's when docs drift. The <code>paths:</code> filter keeps the docs agent from running on unrelated changes &mdash; both accurate and cheap.</p>
+  </aside>
 </section>
 
 <section data-slot="when-these-patterns-pay-off-and-their-failure-modes" data-title="When these patterns pay off (and their failure modes)">
-  <!-- Author: write content for "When these patterns pay off (and their failure modes)" here -->
+  <p>Continuous Triage pays off on any repo where issues arrive faster than maintainers can categorize them; Continuous Docs pays off wherever docs and code drift apart between releases. Both shine because they attack the <em>&ldquo;nobody got around to it&rdquo;</em> tax &mdash; work that's valuable but rarely urgent.</p>
+
+  <h3>Failure modes to design against</h3>
+  <ul>
+    <li><strong>The over-eager triager.</strong> An agent that comments on everything becomes noise. Cap outputs (<code>max: 1</code> comment), restrict labels with <code>allowed</code>, and instruct it to skip ambiguous cases rather than guess.</li>
+    <li><strong>The confidently wrong docs PR.</strong> A doc &ldquo;fix&rdquo; that misreads the code is worse than stale docs. That's why Docs opens a <strong>draft</strong> PR and falls back to an issue for large drift &mdash; the human stays on the merge decision.</li>
+    <li><strong>The runaway schedule.</strong> A daily sweep with no bound quietly burns credits. Pair schedules with a <code>stop-after:</code> and, later, a budget (<a class="xref" href="governance-and-finops.html">Chapter 13</a>).</li>
+  </ul>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't automate a judgement you can't yet articulate.</strong> If you can't write down how <em>you'd</em> triage, the agent can't either. Codify the policy first.</li>
+    <li><strong>Don't let a pattern write where it should only suggest.</strong> High-stakes changes (docs that ship to customers, labels that trigger releases) belong behind a draft PR or a human review, not a direct write.</li>
+    <li><strong>Don't run every pattern on day one.</strong> Ship one, watch it for a week, tune the prompt, then add the next. Patterns compound; mistakes compound too.</li>
+  </ul>
 </section>
 
 <section data-slot="worked-example-the-triage-plus-docs-sync-duo" data-title="Worked example: the triage plus docs-sync duo">
-  <!-- Author: write content for "Worked example: the triage plus docs-sync duo" here -->
+  <p>Ship both as two files in <code>.github/workflows/</code>. Together they cover the two most common &ldquo;nobody got around to it&rdquo; gaps &mdash; and both compile cleanly under strict mode.</p>
+
+  <figure class="code">
+    <figcaption>examples/ch09/continuous-triage.md &mdash; reactive + proactive triage (compiles: 0/0)</figcaption>
+    <pre><code class="language-yaml">on:
+  issues: { types: [opened, reopened] }
+  schedule: daily
+  workflow_dispatch:
+  reaction: eyes
+permissions: { contents: read, issues: read }
+engine: copilot
+network: { allowed: [defaults, github] }
+tools:
+  github: { toolsets: [issues] }
+safe-outputs:
+  add-comment: { max: 1 }
+  add-labels:
+    allowed: [bug, enhancement, question, documentation, duplicate, needs-info]
+    max: 3</code></pre>
+  </figure>
+
+  <figure class="code">
+    <figcaption>examples/ch09/continuous-docs.md &mdash; docs-sync that proposes a PR (compiles: 0/0)</figcaption>
+    <pre><code class="language-yaml">on:
+  push: { branches: [main], paths: ["src/**", "lib/**"] }
+  schedule: weekly
+  workflow_dispatch:
+permissions: { contents: read }
+engine: copilot
+network: { allowed: [defaults, github] }
+tools:
+  github: { toolsets: [repos] }
+  edit:
+safe-outputs:
+  create-pull-request: { title-prefix: "[docs] ", labels: [documentation, automated], draft: true }
+  create-issue: { max: 1 }</code></pre>
+  </figure>
+
+  <p>Read them as two mini-products with different rhythms. Triage is <strong>read-mostly and chatty</strong> &mdash; it comments and labels, never touches code. Docs is <strong>read-mostly and proposes</strong> &mdash; it drafts a PR a human merges. Neither holds a write token; both are bounded by the same firewall and safe-outputs boundary you've applied since Part II opened.</p>
+
+  <figure class="code">
+    <figcaption>Verifying both examples</figcaption>
+    <pre><code class="language-text">gh aw compile examples/ch09/continuous-triage.md
+# ✓ examples\ch09\continuous-triage.md (102.1 KB) — 0 error(s), 0 warning(s)
+gh aw compile examples/ch09/continuous-docs.md
+# ✓ examples\ch09\continuous-docs.md (104.0 KB) — 0 error(s), 0 warning(s)</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="Composition, not new syntax">
+    <p class="callout-title">You already knew how to build these</p>
+    <p>There's no new frontmatter here &mdash; just triggers (Ch4), an engine (Ch5), safe outputs (Ch6), the firewall (Ch7), and tools (Ch8), composed with intent. That's the whole point of a pattern: the value is in the <em>combination and the prompt</em>, not in a new feature.</p>
+  </aside>
 </section>
 
 <section data-slot="recap-and-what-s-next" data-title="Recap &amp; what&#x27;s next">
-  <!-- Author: write content for "Recap & what's next" here -->
+  <p>You've shipped your first two Continuous-X mini-products:</p>
+  <ul>
+    <li>A <strong>Continuous X pattern</strong> turns one recurring judgement task into a standing workflow &mdash; a <strong>mini-product</strong> with an owner-task, a cadence, and bounded outputs.</li>
+    <li><strong>Continuous Triage</strong> is reactive + proactive, writing via <code>add-comment</code>/<code>add-labels</code>; <strong>Continuous Docs</strong> triggers on code merges and <em>proposes</em> a draft PR.</li>
+    <li>Both are <strong>compositions</strong> of Chapters 4&ndash;8 &mdash; no new syntax; the value is in the combination and the prompt.</li>
+    <li>Design against the failure modes: cap outputs, prefer draft PRs for anything high-stakes, and ship one pattern at a time.</li>
+  </ul>
+  <p><strong>What's next.</strong> Triage and docs keep the <em>inbox</em> honest. The other half of a healthy repo is the <em>code</em> itself. In <a class="xref" href="continuous-review-and-testing.html">Chapter 10: Continuous Review, Testing &amp; CI-Doctor</a>, we close the quality loop &mdash; while keeping humans firmly on the merge decision.</p>
 </section>
