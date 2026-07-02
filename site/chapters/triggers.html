@@ -100,37 +100,197 @@
         <section class="chapter-section" data-section="objective">
           <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
           <div class="section-content" data-content-slot="objective">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="objective"</code> block in <code>content/chapters/triggers.html</code>.</p>
+<p>By the end of this chapter you can choose the right <code>on:</code> events so the Repo Assistant runs at <strong>exactly the right moments &mdash; and no others</strong>. You'll know the everyday triggers (issues, pull requests, comments, schedules, manual runs), the safe defaults gh-aw applies, and the cost-and-security guardrails that come attached to <em>when</em> a workflow fires.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. We keep evolving the same Repo Assistant from <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a> &mdash; this time teaching it to wake up both on a new issue <em>and</em> on a nightly sweep.</p>
           </div>
         </section>
         <section class="chapter-section" data-section="concept-event-driven-work-the-outer-loop-s-clock">
           <h2 id="concept-event-driven-work-the-outer-loop-s-clock"><a class="anchor-link" href="#concept-event-driven-work-the-outer-loop-s-clock" aria-label="Link to Concept: event-driven work (the outer loop&#x27;s clock) section">Concept: event-driven work (the outer loop&#x27;s clock)</a></h2>
           <div class="section-content" data-content-slot="concept-event-driven-work-the-outer-loop-s-clock">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="concept-event-driven-work-the-outer-loop-s-clock"</code> block in <code>content/chapters/triggers.html</code>.</p>
+<p>In <a class="xref" href="what-are-agentic-workflows.html">Chapter 1</a> we framed gh-aw as automation for the repository's <strong>outer loop</strong> &mdash; the judgment work that happens around the edges of writing code. But an outer-loop teammate is only useful if it shows up at the right time. A triager who reads issues a week late is worse than none. The <strong>trigger</strong> is the workflow's clock: it decides the precise moment the agent is worth spending money and attention on.</p>
+
+  <h3>Two shapes of &ldquo;the right moment&rdquo;</h3>
+  <p>Almost every useful trigger is one of two shapes:</p>
+  <ul>
+    <li><strong>Reactive</strong> &mdash; something happened, respond now. An issue was opened, a PR was pushed, someone left a comment. The event carries a payload (the issue, the PR) that <em>is</em> the work.</li>
+    <li><strong>Proactive</strong> &mdash; on a rhythm, go look for work. A nightly sweep for stale issues, a weekly docs audit. Nothing &ldquo;happened&rdquo;; the schedule itself is the prompt.</li>
+  </ul>
+  <p>Great agentic teammates use both. A human maintainer answers issues as they arrive <em>and</em> does a Friday-afternoon cleanup; the Repo Assistant should too. The rest of this chapter is about expressing those two shapes precisely &mdash; and about the fact that <strong>choosing a trigger is also a security and cost decision</strong>, because it decides who and what can make your agent run.</p>
+  <aside class="callout callout--leader" aria-label="Leader takeaway">
+    <p class="callout-title">Leader lens: the trigger is the risk surface</p>
+    <p>Every trigger is a door into paid, autonomous execution. &ldquo;Who can open a PR from a fork?&rdquo; and &ldquo;how often does the nightly job run?&rdquo; are governance questions, not just engineering ones. gh-aw makes the safe answer the default &mdash; the value of this chapter for a leader is knowing <em>which</em> defaults protect you.</p>
+  </aside>
           </div>
         </section>
         <section class="chapter-section" data-section="in-gh-aw-the-on-block-and-its-events">
           <h2 id="in-gh-aw-the-on-block-and-its-events"><a class="anchor-link" href="#in-gh-aw-the-on-block-and-its-events" aria-label="Link to In gh-aw: the on: block and its events section">In gh-aw: the on: block and its events</a></h2>
           <div class="section-content" data-content-slot="in-gh-aw-the-on-block-and-its-events">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="in-gh-aw-the-on-block-and-its-events"</code> block in <code>content/chapters/triggers.html</code>.</p>
+<p>Triggers live in the <code>on:</code> block of the frontmatter. gh-aw &ldquo;supports all standard GitHub Actions triggers plus additional enhancements for reactions, cost control, and advanced filtering&rdquo; (<a href="https://github.github.com/gh-aw/reference/triggers/">Triggers</a>). The simplest form is pure Actions syntax:</p>
+
+  <figure class="code">
+    <figcaption>The minimal reactive trigger &mdash; run when an issue is opened</figcaption>
+    <pre><code class="language-yaml">on:
+  issues:
+    types: [opened]</code></pre>
+  </figure>
+
+  <h3>The everyday events</h3>
+  <p>You'll reach for a small set of triggers constantly. Each one hands the agent a different payload to reason about:</p>
+  <table>
+    <thead>
+      <tr><th>Trigger</th><th>Fires when&hellip;</th><th>Typical use</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>issues:</code></td><td>an issue is opened, edited, labeled, closed&hellip;</td><td>triage, auto-response</td></tr>
+      <tr><td><code>pull_request:</code></td><td>a PR is opened, synchronized, labeled&hellip;</td><td>review, CI-doctor</td></tr>
+      <tr><td><code>issue_comment:</code></td><td>someone comments on an issue or PR</td><td>ChatOps, follow-ups</td></tr>
+      <tr><td><code>schedule:</code></td><td>a recurring time arrives</td><td>sweeps, audits, reports</td></tr>
+      <tr><td><code>workflow_dispatch:</code></td><td>you run it manually (UI, API, or <code>gh aw run</code>)</td><td>testing, on-demand tasks</td></tr>
+      <tr><td><code>workflow_run:</code></td><td>another workflow (e.g. CI) completes</td><td>react to build failures</td></tr>
+    </tbody>
+  </table>
+  <p>When a <code>pull_request</code> or comment event fires, &ldquo;the coding agent has access to both the PR branch and the default branch&rdquo; (<a href="https://github.github.com/gh-aw/reference/triggers/">Triggers</a>) &mdash; the context it needs to actually review the change.</p>
+
+  <h3>Human-friendly schedules</h3>
+  <p>For proactive work, gh-aw improves on raw cron. You can write &ldquo;human-friendly expressions&rdquo; that compile to cron, and even use <strong>fuzzy scheduling</strong>, which &ldquo;scatter[s] execution times to avoid load spikes&rdquo; (<a href="https://github.github.com/gh-aw/reference/schedule-syntax/">Schedule Syntax</a>):</p>
+  <figure class="code">
+    <figcaption>Three ways to say &ldquo;roughly every day&rdquo;</figcaption>
+    <pre><code class="language-yaml">on:
+  schedule: daily                          # compiler picks a scattered time
+  # schedule: daily around 14:00           # ±1 hour around 2pm UTC
+  # schedule: daily between 9:00 and 17:00 # scattered within business hours
+  # schedule:
+  #   - cron: "30 6 * * 1"                 # or exact cron: Monday 06:30 UTC</code></pre>
+  </figure>
+  <p>The compiler &ldquo;assigns each workflow a unique, deterministic execution time based on the file path, ensuring load distribution and consistency across recompiles&rdquo; (<a href="https://github.github.com/gh-aw/reference/schedule-syntax/">Schedule Syntax</a>). If a hundred repos all say <code>daily</code>, they won't all stampede at midnight.</p>
+
+  <h3>Shorthands: the one-line trigger</h3>
+  <p>Many triggers have a natural-language shorthand string that &ldquo;expands into standard GitHub Actions trigger syntax and automatically includes <code>workflow_dispatch</code>&rdquo; so you can always run the workflow by hand (<a href="https://github.github.com/gh-aw/reference/triggers/">Triggers</a>):</p>
+  <figure class="code">
+    <figcaption>Shorthands that read like English</figcaption>
+    <pre><code class="language-yaml">on: issue opened                     # issues: [opened]
+on: issue labeled bug                # issues labeled "bug" only
+on: pull_request opened affecting docs/**   # PR touching docs paths
+on: push to main                     # push to a branch
+on: daily                            # a fuzzy daily schedule</code></pre>
+  </figure>
+
+  <h3>Feedback and cost controls attached to the trigger</h3>
+  <p>Two enhancements ride along in the same <code>on:</code> block and matter for every workflow you ship:</p>
+  <ul>
+    <li><strong><code>reaction:</code></strong> adds an emoji to the triggering item so a human sees the agent noticed &mdash; <code>"eyes"</code> when it starts, for instance. &ldquo;The reaction is added to the triggering item&rdquo; (<a href="https://github.github.com/gh-aw/reference/triggers/">Triggers</a>).</li>
+    <li><strong><code>stop-after:</code></strong> &ldquo;automatically disable[s] workflow triggering after a deadline to control costs&rdquo; &mdash; e.g. <code>stop-after: "+30d"</code>. &ldquo;Recompiling the workflow resets the stop time&rdquo; (<a href="https://github.github.com/gh-aw/reference/triggers/">Triggers</a>). It's a seatbelt for scheduled jobs that would otherwise run forever.</li>
+  </ul>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: <code>gh aw run</code> needs a dispatch trigger</p>
+    <p>To run a workflow manually with <code>gh aw run</code>, it must declare <code>workflow_dispatch:</code>. Shorthands add it for you; if you write the long form, add <code>workflow_dispatch:</code> explicitly so you can test on demand without waiting for an event.</p>
+  </aside>
           </div>
         </section>
         <section class="chapter-section" data-section="when-to-use-which-trigger-and-safe-defaults">
           <h2 id="when-to-use-which-trigger-and-safe-defaults"><a class="anchor-link" href="#when-to-use-which-trigger-and-safe-defaults" aria-label="Link to When to use which trigger (and safe defaults) section">When to use which trigger (and safe defaults)</a></h2>
           <div class="section-content" data-content-slot="when-to-use-which-trigger-and-safe-defaults">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="when-to-use-which-trigger-and-safe-defaults"</code> block in <code>content/chapters/triggers.html</code>.</p>
+<p>Choosing a trigger is mostly about matching the two shapes from the concept &mdash; but a few defaults exist specifically to stop a trigger from becoming an attack vector. These are the parts a reviewer should always check.</p>
+
+  <h3>Safe defaults you get for free</h3>
+  <ul>
+    <li><strong>Forks are blocked by default.</strong> &ldquo;Pull request workflows block forks by default for security&rdquo; &mdash; you opt specific forks in with the <code>forks:</code> field (<a href="https://github.github.com/gh-aw/reference/triggers/">Triggers</a>). This is the front line against a malicious PR trying to run your agent with your secrets.</li>
+    <li><strong>Who can trigger is an allowlist.</strong> Unsafe triggers (<code>push</code>, <code>issues</code>, <code>pull_request</code>) &ldquo;automatically enforce permission checks.&rdquo; The <code>roles:</code> filter defaults to <code>[admin, maintainer, write]</code>, and &ldquo;failed checks cancel the workflow with a warning&rdquo; (<a href="https://github.github.com/gh-aw/reference/triggers/">Triggers</a>). A drive-by issue from a stranger won't spend your credits unless you widen the allowlist.</li>
+    <li><strong><code>workflow_run</code> is hardened.</strong> The compiler &ldquo;injects repository ID and fork checks to reject cross-repository or fork-triggered runs,&rdquo; and warns (or errors in strict mode) if you don't scope <code>branches:</code> (<a href="https://github.github.com/gh-aw/reference/triggers/">Triggers</a>).</li>
+  </ul>
+
+  <h3>A quick decision guide</h3>
+  <table>
+    <thead>
+      <tr><th>You want to&hellip;</th><th>Reach for</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>respond to each new issue/PR</td><td><code>issues:</code> / <code>pull_request:</code> with <code>types:</code></td></tr>
+      <tr><td>do periodic maintenance</td><td><code>schedule:</code> (prefer fuzzy <code>daily</code>/<code>weekly</code>)</td></tr>
+      <tr><td>let humans invoke on demand</td><td><code>workflow_dispatch:</code></td></tr>
+      <tr><td>answer a <code>/command</code> in a comment</td><td><code>slash_command:</code></td></tr>
+      <tr><td>react to CI results</td><td><code>workflow_run:</code> with <code>branches:</code></td></tr>
+      <tr><td>trigger from an external system (Jira, PagerDuty)</td><td><code>repository_dispatch:</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't trigger on high-frequency events without a filter.</strong> <code>on: push</code> to a busy repo, or <code>issue_comment</code> on every comment, can fire constantly &mdash; each run costs AI credits. Filter by label (<code>names:</code>), path (<code>affecting</code>), or a <code>slash_command</code> so the agent runs only when it's genuinely wanted.</li>
+    <li><strong>Don't open the fork gate casually.</strong> <code>forks: ["*"]</code> lets any fork trigger your workflow; use the narrowest pattern that meets the need, and pair it with the security model in <a class="xref" href="defense-in-depth.html">Chapter 7</a>.</li>
+    <li><strong>Don't leave a scheduled workflow uncapped.</strong> A nightly job with no <code>stop-after:</code> and no budget will run indefinitely. Cost controls belong on the trigger, and we return to budgets in <a class="xref" href="governance-and-finops.html">Chapter 13</a>.</li>
+  </ul>
           </div>
         </section>
         <section class="chapter-section" data-section="worked-example-repo-assistant-on-issues-plus-a-nightly-schedule">
           <h2 id="worked-example-repo-assistant-on-issues-plus-a-nightly-schedule"><a class="anchor-link" href="#worked-example-repo-assistant-on-issues-plus-a-nightly-schedule" aria-label="Link to Worked example: Repo Assistant on issues plus a nightly schedule section">Worked example: Repo Assistant on issues plus a nightly schedule</a></h2>
           <div class="section-content" data-content-slot="worked-example-repo-assistant-on-issues-plus-a-nightly-schedule">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="worked-example-repo-assistant-on-issues-plus-a-nightly-schedule"</code> block in <code>content/chapters/triggers.html</code>.</p>
+<p>Let's give the Repo Assistant both shapes at once: it triages each new issue reactively <em>and</em> runs a nightly stale-issue sweep proactively. The whole thing is one file, and it compiles cleanly under strict mode with no engine key.</p>
+
+  <figure class="code">
+    <figcaption>examples/ch04/repo-assistant-triggers.md &mdash; two triggers, one assistant (compiles: 0 errors, 0 warnings)</figcaption>
+    <pre><code class="language-yaml">on:
+  issues:
+    types: [opened, reopened]
+  schedule: daily
+  workflow_dispatch:
+  reaction: eyes
+  stop-after: "+30d"
+permissions:
+  contents: read
+  issues: read
+engine: copilot
+network: defaults
+safe-outputs:
+  add-comment:
+    max: 1
+  add-labels:
+    allowed: [bug, enhancement, question, documentation, needs-info, stale]
+    max: 3</code></pre>
+  </figure>
+
+  <p>Read the <code>on:</code> block as the assistant's clock. It wakes up three ways &mdash; a new/reopened issue, a fuzzy <code>daily</code> schedule, or a manual <code>workflow_dispatch</code> &mdash; drops an <span aria-label="eyes">:eyes:</span> reaction on whatever triggered it, and <strong>stops firing 30 days after compilation</strong> unless you recompile. Everything else is the safe posture from earlier chapters: read-only <code>permissions:</code>, the default Copilot engine, curated <code>network:</code>, and writes routed through <code>safe-outputs:</code> (the subject of <a class="xref" href="safe-outputs.html">Chapter 6</a>).</p>
+
+  <p>Because the same file now handles two <em>kinds</em> of run, the Markdown body branches on <code>github.event_name</code>:</p>
+  <figure class="code">
+    <figcaption>The body decides its job from which trigger fired</figcaption>
+    <pre><code class="language-markdown"># Repo Assistant — triage on open, sweep on a schedule
+
+Check `${{ github.event_name }}` first.
+
+## If an issue was just opened or reopened (`issues`)
+Read the triggering issue, post one triage comment, apply the best label.
+
+## If this is the daily schedule (`schedule`) or a manual run
+No single issue triggered this run — do a **daily sweep**: find open issues with
+no activity in 30 days and, for the clearly abandoned ones, add `stale` and a
+gentle comment. Be conservative: when in doubt, leave the issue alone.</code></pre>
+  </figure>
+
+  <p>Compile it exactly as before &mdash; offline, no secrets:</p>
+  <figure class="code">
+    <figcaption>Verifying the example</figcaption>
+    <pre><code class="language-text">gh aw compile examples/ch04/repo-assistant-triggers.md
+# ✓ examples\ch04\repo-assistant-triggers.md (102.8 KB)
+# ✓ Compiled 1 workflow(s): 0 error(s), 0 warning(s)</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="What the compiler did with your triggers">
+    <p class="callout-title">The compiler expands your triggers</p>
+    <p>In the generated <code>.lock.yml</code>, <code>schedule: daily</code> becomes a concrete scattered cron line (with your original text preserved as a comment), the fork and role checks are injected as guarded <code>if:</code> conditions, and <code>stop-after</code> becomes a compile-time deadline. You wrote intent; the compiler wrote the hardened GitHub Actions plumbing &mdash; the same compile model from <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a>.</p>
+  </aside>
           </div>
         </section>
         <section class="chapter-section" data-section="recap-and-what-s-next">
           <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
           <div class="section-content" data-content-slot="recap-and-what-s-next">
-<p class="pending-note"><strong>Content pending.</strong> Reserved for the chapter author. Fill the <code>data-slot="recap-and-what-s-next"</code> block in <code>content/chapters/triggers.html</code>.</p>
+<p>You can now make a workflow wake up at exactly the right moments:</p>
+  <ul>
+    <li>Triggers are the outer loop's <strong>clock</strong>, and they come in two shapes: <strong>reactive</strong> (issues, PRs, comments) and <strong>proactive</strong> (schedules).</li>
+    <li>The <code>on:</code> block is standard Actions syntax <strong>plus</strong> gh-aw enhancements: human-friendly and <strong>fuzzy</strong> schedules, one-line <strong>shorthands</strong>, <code>reaction:</code> feedback, and <code>stop-after:</code> cost control.</li>
+    <li>Choosing a trigger is a <strong>security and cost decision</strong>. Forks are blocked by default, <code>roles:</code> gates who can trigger, and <code>workflow_run</code> is hardened against cross-repo abuse &mdash; safe by default, widened deliberately.</li>
+    <li>Filter high-frequency events and cap scheduled ones, so the agent runs only when it's worth it.</li>
+  </ul>
+  <p><strong>What's next.</strong> The assistant now wakes at the right time &mdash; but which <em>brain</em> does it think with? In <a class="xref" href="engines.html">Chapter 5: Engines</a>, we choose and configure the engine (Copilot, Claude, Codex, or Gemini) and see the portability that engine-neutral design buys you.</p>
           </div>
         </section>
 
