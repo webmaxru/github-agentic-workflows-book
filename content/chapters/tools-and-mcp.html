@@ -4,25 +4,131 @@
      with inner HTML; keep the data-slot ids unchanged (they map 1:1 to page slots). -->
 
 <section data-slot="objective" data-title="Objective">
-  <!-- Author: write content for "Objective" here -->
+  <p>By the end of this chapter you can give the Repo Assistant <strong>real capabilities</strong> &mdash; querying GitHub, fetching web pages, running shell commands, calling third-party services &mdash; through the <code>tools:</code> block and MCP servers, while keeping every capability <strong>governed</strong> by the security model from <a class="xref" href="defense-in-depth.html">Chapter 7</a>.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. We hand the Repo Assistant its first real tools and watch it do a richer triage than prose alone allows.</p>
 </section>
 
 <section data-slot="concept-agents-need-tools-safely" data-title="Concept: agents need tools, safely">
-  <!-- Author: write content for "Concept: agents need tools, safely" here -->
+  <p>A language model on its own can only reason about the text in front of it. To be <em>useful</em> on your repo it needs to <strong>act on the world</strong>: look up related issues, read a linked spec, run a linter, query a service. Those actions are <strong>tools</strong> &mdash; the bridge between the model's judgment and real systems.</p>
+  <p>The industry-standard way to expose a tool to an agent is the <strong>Model Context Protocol (MCP)</strong>: an open protocol that lets an agent discover and call capabilities offered by a &ldquo;server&rdquo; &mdash; a GitHub server, a database server, a browser server. MCP is why the same workflow can talk to wildly different systems through one uniform interface.</p>
+
+  <h3>The tension: capability vs. exposure</h3>
+  <p>Every tool you add is also new <em>attack surface</em>. A tool that reads private data feeds the second leg of the lethal trifecta; a tool that reaches the network feeds the third. A naive &ldquo;give the agent everything&rdquo; approach maximizes usefulness and risk together. So the discipline is the same as with permissions: <strong>grant the fewest tools the task needs, each scoped as tightly as possible</strong> &mdash; and lean on gh-aw to sandbox what you do grant.</p>
+  <aside class="callout callout--leader" aria-label="Leader takeaway">
+    <p class="callout-title">Leader lens: capabilities are governable, not all-or-nothing</p>
+    <p>The worry with agents is &ldquo;what can it touch?&rdquo; MCP plus gh-aw's gateway makes that an explicit, reviewable list: each tool is declared in the workflow, each MCP server runs isolated, and each is bounded by the same firewall and allowlists as everything else. Adding a capability is a decision you can see in a diff.</p>
+  </aside>
 </section>
 
 <section data-slot="in-gh-aw-the-tools-block-mcp-servers-the-mcp-gateway" data-title="In gh-aw: the tools: block, MCP servers, the MCP gateway">
-  <!-- Author: write content for "In gh-aw: the tools: block, MCP servers, the MCP gateway" here -->
+  <p>Capabilities are declared in the <code>tools:</code> block, which specifies &ldquo;which GitHub API calls, browser automation, and AI capabilities are available to your workflow&rdquo; (<a href="https://github.github.com/gh-aw/reference/tools/">Tools</a>).</p>
+
+  <h3>Built-in tools</h3>
+  <p>A handful ship with gh-aw. The most common:</p>
+  <table>
+    <thead>
+      <tr><th>Tool</th><th>Grants</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>github:</code></td><td>GitHub API reads via <strong>toolsets</strong> (<code>issues</code>, <code>repos</code>&hellip;) &mdash; this is the GitHub MCP server</td></tr>
+      <tr><td><code>bash:</code></td><td>shell commands &mdash; defaults to a <em>safe</em> set (<code>ls</code>, <code>cat</code>, <code>grep</code>&hellip;); allowlist your own</td></tr>
+      <tr><td><code>edit:</code></td><td>editing files in the workspace</td></tr>
+      <tr><td><code>web-fetch:</code> / <code>web-search:</code></td><td>fetch a page / search the web</td></tr>
+      <tr><td><code>playwright:</code></td><td>browser automation</td></tr>
+    </tbody>
+  </table>
+  <p><code>bash</code> is a good illustration of scoping: it &ldquo;defaults to safe commands&rdquo; and you narrow or widen it explicitly &mdash; <code>bash: ["echo", "git status"]</code> for a specific set, or <code>bash: []</code> to disable it entirely (<a href="https://github.github.com/gh-aw/reference/tools/">Tools</a>). Grant <code>bash: [":*"]</code> (everything) only with real caution.</p>
+
+  <h3>Custom MCP servers</h3>
+  <p>For anything beyond the built-ins, declare an MCP server under <code>mcp-servers:</code> &mdash; &ldquo;custom Model Context Protocol servers for third-party services&rdquo; (<a href="https://github.github.com/gh-aw/reference/tools/">Tools</a>):</p>
+  <figure class="code">
+    <figcaption>A custom MCP server, scoped to two tools</figcaption>
+    <pre><code class="language-yaml">mcp-servers:
+  slack:
+    command: "npx"
+    args: ["-y", "@slack/mcp-server"]
+    env:
+      SLACK_BOT_TOKEN: "${{ secrets.SLACK_BOT_TOKEN }}"
+    allowed: ["send_message", "get_channel_history"]   # only these tools</code></pre>
+  </figure>
+  <p>A server can be a process (<code>command</code>+<code>args</code>), a Docker <code>container</code>, or an HTTP <code>url</code>; <code>env</code> passes secrets, and <strong><code>allowed</code> restricts which of its tools the agent may call</strong> (<a href="https://github.github.com/gh-aw/reference/tools/">Tools</a>).</p>
+
+  <h3>The MCP gateway sandbox</h3>
+  <p>Here's the safety story that makes third-party servers acceptable. MCP servers don't run in the agent's process &mdash; they &ldquo;execute within isolated containers, enforcing substrate-level separation between the agent and each server.&rdquo; A gateway spawns them, &ldquo;while AWF mediates all network egress&rdquo; so &ldquo;even if an MCP server is compromised, it cannot access the memory or state of other components&rdquo; (<a href="https://github.github.com/gh-aw/introduction/architecture/">Security Architecture</a>). The <code>allowed:</code> list is enforced at the gateway, and per-server network allowlists still apply.</p>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: adding a server trips the review gate</p>
+    <p>An MCP server with an <code>env</code> secret introduces a new restricted secret &mdash; so, exactly as when switching engines in <a class="xref" href="engines.html">Chapter 5</a>, the compiler flags it for review and you approve with <code>gh aw compile --approve</code>. Adding a capability is deliberately a reviewed act.</p>
+  </aside>
 </section>
 
 <section data-slot="when-to-add-a-tool-or-mcp-server-and-when-it-s-a-risk" data-title="When to add a tool or MCP server (and when it&#x27;s a risk)">
-  <!-- Author: write content for "When to add a tool or MCP server (and when it's a risk)" here -->
+  <p>Add a tool when the task genuinely can't be done without it &mdash; and stop there. The question to ask of every tool is: <em>&ldquo;if the agent were hijacked, what could it do with this?&rdquo;</em></p>
+  <table>
+    <thead>
+      <tr><th>Need</th><th>Reach for</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>look up related issues / PRs / code</td><td><code>github:</code> with the narrowest <code>toolsets</code></td></tr>
+      <tr><td>read a linked doc or spec</td><td><code>web-fetch:</code> + the domain in <code>network.allowed</code></td></tr>
+      <tr><td>run a build or a linter</td><td><code>bash:</code> with an explicit command allowlist</td></tr>
+      <tr><td>talk to a third-party service</td><td>a scoped <code>mcp-servers:</code> entry with <code>allowed</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't grant <code>bash: [":*"]</code> casually.</strong> Unrestricted shell is close to unrestricted power. Allowlist exactly the commands the task runs.</li>
+    <li><strong>Don't add an MCP server you haven't vetted.</strong> A third-party server is code you're running; the gateway isolates it, but a malicious one can still misuse the tools and network you grant it. Pin it, scope its <code>allowed</code> tools, and limit its network.</li>
+    <li><strong>Don't widen the network just to make a tool work.</strong> A tool that needs broad egress reopens the exfiltration leg you closed in <a class="xref" href="defense-in-depth.html">Chapter 7</a>. Add only the specific domains it requires.</li>
+    <li><strong>Don't confuse tools with writes.</strong> Tools are how the agent <em>reads and acts</em> in-run; persistent changes to your repo still belong in <code>safe-outputs:</code>. Keep the two separate.</li>
+  </ul>
 </section>
 
 <section data-slot="worked-example-repo-assistant-queries-an-mcp-server" data-title="Worked example: Repo Assistant queries an MCP server">
-  <!-- Author: write content for "Worked example: Repo Assistant queries an MCP server" here -->
+  <p>Let's give the Repo Assistant its first real capabilities. It will query the <strong>GitHub MCP server</strong> to find duplicate issues and use <code>web-fetch</code> to read a linked spec &mdash; a much richer triage than reading the issue text alone.</p>
+
+  <figure class="code">
+    <figcaption>examples/ch08/repo-assistant-tools.md &mdash; a read-only agent with governed tools (compiles: 0 errors, 0 warnings)</figcaption>
+    <pre><code class="language-yaml">permissions:
+  contents: read
+  issues: read
+engine: copilot
+network:
+  allowed:
+    - defaults
+    - github
+tools:
+  github:
+    toolsets: [issues, repos]   # the GitHub MCP server, read-only
+  web-fetch:                     # fetch linked docs (firewall-gated)
+safe-outputs:
+  add-comment:
+    max: 1</code></pre>
+  </figure>
+
+  <p>The <code>github</code> tool <em>is</em> an MCP server &mdash; the same GitHub MCP the security docs describe, scoped here to just the <code>issues</code> and <code>repos</code> toolsets so the agent can search but not, say, manage releases. <code>web-fetch</code> is gated by the <code>network:</code> firewall from <a class="xref" href="defense-in-depth.html">Chapter 7</a>: the agent can only reach domains you've allowed, so a link to an untrusted host simply won't load. Every capability is present <em>and</em> bounded.</p>
+
+  <p>Notice what stayed constant: <code>permissions:</code> are still read-only, and the only way anything reaches the repo is the single <code>add-comment</code> safe output. We added <em>reach</em>, not <em>write authority</em>.</p>
+
+  <figure class="code">
+    <figcaption>Verifying the example</figcaption>
+    <pre><code class="language-text">gh aw compile examples/ch08/repo-assistant-tools.md
+# ✓ examples\ch08\repo-assistant-tools.md (100.8 KB)
+# ✓ Compiled 1 workflow(s): 0 error(s), 0 warning(s)</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="Scaling to third-party servers">
+    <p class="callout-title">From built-in to third-party</p>
+    <p>To go further &mdash; say, post to Slack or query a database &mdash; you'd add an <code>mcp-servers:</code> entry with its <code>command</code>/<code>container</code>, an <code>allowed</code> tool list, and the domains it needs in <code>network.allowed</code>. The gateway sandboxes it in its own container, and its secret trips the same review gate you saw in <a class="xref" href="engines.html">Chapter 5</a>. The governance model doesn't change &mdash; only the server does.</p>
+  </aside>
 </section>
 
 <section data-slot="recap-and-what-s-next" data-title="Recap &amp; what&#x27;s next">
-  <!-- Author: write content for "Recap & what's next" here -->
+  <p>You can now give an agent real capabilities without widening its blast radius:</p>
+  <ul>
+    <li>Agents need <strong>tools</strong> to act; <strong>MCP</strong> is the open protocol that exposes capabilities uniformly &mdash; but every tool is also attack surface.</li>
+    <li>The <code>tools:</code> block grants <strong>built-in tools</strong> (<code>github</code>, <code>bash</code>, <code>edit</code>, <code>web-fetch</code>, <code>playwright</code>&hellip;); <code>mcp-servers:</code> adds <strong>custom servers</strong> with an <code>allowed</code> tool list.</li>
+    <li>The <strong>MCP gateway</strong> runs each server in an <strong>isolated container</strong>, with AWF mediating egress &mdash; a compromised server can't reach other components.</li>
+    <li>Grant the <strong>fewest tools, scoped tightest</strong>; never reach for unrestricted <code>bash</code> or a broad network; keep tools (reads/actions) separate from <code>safe-outputs:</code> (writes).</li>
+  </ul>
+  <p><strong>What's next.</strong> That completes the <em>machinery</em> &mdash; triggers, engines, safe outputs, security, tools. In <strong>Part II's payoff</strong>, we assemble it into production-shaped patterns. <a class="xref" href="continuous-triage-and-docs.html">Chapter 9: Continuous Triage &amp; Docs</a> ships two mini-products the Repo Assistant runs on its own.</p>
 </section>
