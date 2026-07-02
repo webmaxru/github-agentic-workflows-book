@@ -17,3 +17,6 @@ build/
 
 # Private research working notes (not part of the published book)
 .source-docs/
+
+# Local tooling artifacts (browser automation snapshots/logs)
+.playwright-mcp/
