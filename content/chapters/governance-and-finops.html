@@ -4,25 +4,129 @@
      with inner HTML; keep the data-slot ids unchanged (they map 1:1 to page slots). -->
 
 <section data-slot="objective" data-title="Objective">
-  <!-- Author: write content for "Objective" here -->
+  <p>By the end of this chapter you can <strong>cap, meter, and gate</strong> agentic spend &mdash; with <code>max-ai-credits</code> per-workflow budgets and org-wide defaults &mdash; and set the policy that keeps a fleet affordable and compliant as it grows.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. We put a hard budget on the Repo Assistant and show how an org enforces the same limits across every repo at once.</p>
 </section>
 
 <section data-slot="concept-agentic-work-has-a-budget-and-a-policy-surface" data-title="Concept: agentic work has a budget and a policy surface">
-  <!-- Author: write content for "Concept: agentic work has a budget and a policy surface" here -->
+  <p>CI/CD costs are largely fixed: a build takes roughly the same compute every time. Agentic work is different &mdash; each run spends a <em>variable</em> amount of model inference depending on how much the agent reads, reasons, and retries. That variability is the whole reason agents are powerful, and it's also why <strong>agentic work has a budget in a way CI never did</strong>. Left unbounded, a looping agent or an over-eager schedule can quietly run up real money.</p>
+  <p>At one repo, this is a cost knob. Across an org, it becomes a <strong>policy surface</strong>: which workflows may run, which capabilities they may use, what they may spend, which model they default to. FinOps &mdash; the discipline of managing variable cloud spend &mdash; now applies to your agents, and governance means answering these questions <em>once, centrally</em>, not per repo.</p>
+  <aside class="callout callout--leader" aria-label="Leader takeaway">
+    <p class="callout-title">Leader lens: predictable spend, enforced centrally</p>
+    <p>The two questions a leader asks about an agent fleet are &ldquo;what will it cost?&rdquo; and &ldquo;what is it allowed to do?&rdquo; gh-aw answers both with hard controls: per-workflow credit budgets that fail safe, and org/enterprise defaults and policies that apply to every repo without editing a single workflow. Spend becomes a dial you set, not a surprise you discover.</p>
+  </aside>
 </section>
 
 <section data-slot="in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy" data-title="In gh-aw: max-ai-credits, AI Credits, token efficiency, policy">
-  <!-- Author: write content for "In gh-aw: max-ai-credits, AI Credits, token efficiency, policy" here -->
+  <p>Cost is denominated in <strong>AI Credits (AIC)</strong>, a model-normalized unit so budgets mean the same thing regardless of engine. You control it at two levels.</p>
+
+  <h3>Per-workflow budgets</h3>
+  <p><code>max-ai-credits</code> &ldquo;sets the AWF AI Credits budget used for cost enforcement. It is enabled by default and defaults to <code>1000</code> (<code>1k</code>) when omitted&rdquo; &mdash; with steering messages at 80%, 90%, 95%, and 99% of budget (<a href="https://github.github.com/gh-aw/reference/frontmatter/">Frontmatter</a>). Its sibling <code>max-daily-ai-credits</code> caps a rolling 24-hour total across recent runs of the same workflow; when exceeded it &ldquo;warns, creates an issue, skips the agent job&rdquo; (<a href="https://github.github.com/gh-aw/reference/frontmatter/">Frontmatter</a>) &mdash; a fail-safe, not a silent overspend.</p>
+  <figure class="code">
+    <figcaption>Three cost dials in the frontmatter</figcaption>
+    <pre><code class="language-yaml">max-ai-credits: 200          # per-run budget (default 1000); K/M suffixes ok
+max-daily-ai-credits: 2000   # rolling 24h cap across this workflow's runs
+timeout-minutes: 10          # wall-clock ceiling (default 20)
+on:
+  stop-after: "+30d"          # stop triggering after a deadline (Ch. 4)</code></pre>
+  </figure>
+  <p><strong>Token efficiency</strong> is the other half: a tighter prompt, a narrower toolset, and read-only scopes all reduce credits per run. The cheapest run is the one that reads only what it needs &mdash; good security and good FinOps are the same discipline.</p>
+
+  <h3>Org-wide defaults and policy</h3>
+  <p>Editing every workflow doesn't scale. <code>gh aw env</code> manages <code>GH_AW_DEFAULT_*</code> variables at repository, organization, or enterprise scope from a YAML file (<a href="https://github.github.com/gh-aw/guides/governance/">Governance</a>):</p>
+  <figure class="code">
+    <figcaption>defaults.yml &mdash; org-wide guardrails, applied without touching workflows</figcaption>
+    <pre><code class="language-yaml">default_max_ai_credits: "5M"
+default_max_daily_ai_credits: "15M"
+default_max_turns: "12"
+default_timeout_minutes: "30"
+default_model_copilot: "gpt-5-mini"</code></pre>
+  </figure>
+  <p>Values <strong>percolate</strong> with a clear precedence: &ldquo;workflow frontmatter value&hellip; repository variable&hellip; organization variable&hellip; enterprise variable&hellip; built-in compiler fallback&rdquo; (<a href="https://github.github.com/gh-aw/guides/governance/">Governance</a>). Beyond numbers, <strong>policy variables</strong> (<code>GH_AW_POLICY_*</code>) &ldquo;enforce capability gates&hellip; without recompiling any workflow&rdquo; &mdash; for instance <code>GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=false</code> makes the safe-outputs server refuse to start for any workflow that tries to open PRs, org-wide.</p>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: the recommended rollout</p>
+    <p>The docs prescribe a layered rollout: <em>enterprise baseline &rarr; org where needed &rarr; repo exceptions &rarr; rare, explicit frontmatter overrides.</em> Preview any change with <code>gh aw env update &hellip; --dry-run</code> before applying. Most repos stay aligned to the baseline; exceptions are deliberate and visible.</p>
+  </aside>
 </section>
 
 <section data-slot="when-to-cap-meter-and-gate-cost-and-risk-trade-offs" data-title="When to cap, meter, and gate (cost and risk trade-offs)">
-  <!-- Author: write content for "When to cap, meter, and gate (cost and risk trade-offs)" here -->
+  <p>Budgets trade off <em>cost certainty</em> against <em>task completion</em>: too tight and useful runs get cut off; too loose and a bad run overspends. Tune to the shape of the work.</p>
+  <table>
+    <thead>
+      <tr><th>For&hellip;</th><th>Set&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>a cheap, frequent job (triage)</td><td>a low per-run <code>max-ai-credits</code> and a daily cap</td></tr>
+      <tr><td>an occasional deep task (refactor)</td><td>a higher per-run budget, no aggressive daily cap</td></tr>
+      <tr><td>a whole org</td><td>generous enterprise defaults, tightened per-org/repo</td></tr>
+      <tr><td>a capability you want to forbid</td><td>a <code>GH_AW_POLICY_*</code> gate, not per-workflow edits</td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't disable budgets (<code>max-ai-credits: -1</code>) to &ldquo;unblock&rdquo; a workflow.</strong> A run hitting its cap is usually a looping or over-scoped agent &mdash; fix the cause; the budget did its job.</li>
+    <li><strong>Don't set org defaults so tight that every repo overrides them.</strong> If exceptions become the norm, the baseline is wrong. The goal is most repos aligned, few exceptions.</li>
+    <li><strong>Don't rely on budgets for security.</strong> A budget limits <em>spend</em>, not <em>blast radius</em> &mdash; that's still safe outputs, the firewall, and policy gates (Chapters 6&ndash;8). Cost controls and security controls are complementary.</li>
+    <li><strong>Don't govern by editing workflows.</strong> At scale, prefer <code>gh aw env</code> defaults and <code>GH_AW_POLICY_*</code> gates &mdash; central, reviewable, and applied without recompiling every repo.</li>
+  </ul>
 </section>
 
 <section data-slot="worked-example-a-budgeted-policy-compliant-repo-assistant" data-title="Worked example: a budgeted, policy-compliant Repo Assistant">
-  <!-- Author: write content for "Worked example: a budgeted, policy-compliant Repo Assistant" here -->
+  <p>Here's the Repo Assistant with a real budget &mdash; capped three ways and set to expire &mdash; the version an org would be happy to run at scale.</p>
+
+  <figure class="code">
+    <figcaption>examples/ch13/repo-assistant-budgeted.md &mdash; cost controls in frontmatter (compiles: 0/0)</figcaption>
+    <pre><code class="language-yaml">on:
+  issues: { types: [opened] }
+  schedule: daily
+  workflow_dispatch:
+  stop-after: "+30d"           # stop triggering after a month
+permissions: { contents: read, issues: read }
+engine: copilot
+network: { allowed: [defaults, github] }
+max-ai-credits: 200            # tight per-run budget (default is 1000)
+max-daily-ai-credits: 2000     # rolling 24h cap across runs
+timeout-minutes: 10            # wall-clock ceiling
+safe-outputs:
+  add-comment: { max: 1 }
+  add-labels:
+    allowed: [bug, enhancement, question, documentation]
+    max: 1</code></pre>
+  </figure>
+
+  <p>Four independent cost brakes: a <strong>per-run</strong> credit budget of 200, a <strong>rolling daily</strong> cap of 2000, a <strong>wall-clock</strong> ceiling, and a <strong>calendar</strong> expiry. If a single run misbehaves, <code>max-ai-credits</code> stops it; if the whole day runs hot, <code>max-daily-ai-credits</code> warns, files an issue, and skips further agent runs. None of these require a human watching a dashboard.</p>
+
+  <p>Now make it <em>org-compliant</em> without editing this file at all. An admin sets baseline defaults and a capability policy once:</p>
+  <figure class="code">
+    <figcaption>Org-wide governance &mdash; applied to every repo, no workflow edits</figcaption>
+    <pre><code class="language-text"># defaults.yml, applied at org scope
+gh aw env update defaults.yml --scope org --org my-org --dry-run
+gh aw env update defaults.yml --scope org --org my-org
+
+# forbid a capability fleet-wide, no recompile needed
+gh variable set GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST --org my-org --body "false"</code></pre>
+  </figure>
+
+  <figure class="code">
+    <figcaption>Verifying the workflow</figcaption>
+    <pre><code class="language-text">gh aw compile examples/ch13/repo-assistant-budgeted.md
+# ✓ examples\ch13\repo-assistant-budgeted.md (101.7 KB)
+# ✓ Compiled 1 workflow(s): 0 error(s), 0 warning(s)</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="Precedence in action">
+    <p class="callout-title">Frontmatter wins, defaults fill the gaps</p>
+    <p>Because precedence runs <em>frontmatter &rarr; repo &rarr; org &rarr; enterprise &rarr; fallback</em>, this workflow's explicit <code>max-ai-credits: 200</code> stands even under a looser org default &mdash; while any repo that <em>omits</em> a budget inherits the org's. Deliberate local choices are respected; silence inherits the safe baseline.</p>
+  </aside>
 </section>
 
 <section data-slot="recap-and-what-s-next" data-title="Recap &amp; what&#x27;s next">
-  <!-- Author: write content for "Recap & what's next" here -->
+  <p>You can now keep an agent fleet affordable and compliant:</p>
+  <ul>
+    <li>Agentic work has a <strong>variable cost</strong> and, at scale, a <strong>policy surface</strong> &mdash; FinOps and governance now apply to your agents.</li>
+    <li>Per-workflow: <code>max-ai-credits</code> (default 1000, steering at 80/90/95/99%), <code>max-daily-ai-credits</code> (fail-safe daily cap), <code>timeout-minutes</code>, and <code>stop-after</code>.</li>
+    <li>Org-wide: <code>gh aw env</code> sets <code>GH_AW_DEFAULT_*</code> defaults that <strong>percolate</strong> (frontmatter &rarr; repo &rarr; org &rarr; enterprise), and <code>GH_AW_POLICY_*</code> variables <strong>gate capabilities</strong> without recompiling.</li>
+    <li>Tune budgets to the work, roll out defaults in layers, and remember budgets limit <em>spend</em>, not <em>blast radius</em>.</li>
+  </ul>
+  <p><strong>What's next.</strong> You can now build, secure, operate, and govern agentic workflows. The final chapter zooms all the way out: <a class="xref" href="fleets-and-adoption.html">Chapter 14: Fleets &amp; Adoption</a> takes the Repo Assistant from one repo to a multi-repo fleet and lays out the enterprise adoption playbook.</p>
 </section>
