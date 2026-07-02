@@ -4,25 +4,131 @@
      with inner HTML; keep the data-slot ids unchanged (they map 1:1 to page slots). -->
 
 <section data-slot="objective" data-title="Objective">
-  <!-- Author: write content for "Objective" here -->
+  <p>By the end of this chapter you can factor common intent into <strong>imported shared components</strong> so a fleet of workflows stops repeating itself, and give the Repo Assistant <strong>memory</strong> that persists across runs. This opens <strong>Part III</strong>: the leap from one repository to an organization.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. We take the triage policy we've refined over ten chapters and turn it into a single shared file every repo can import.</p>
 </section>
 
 <section data-slot="concept-don-t-repeat-yourself-across-a-fleet" data-title="Concept: don&#x27;t repeat yourself across a fleet">
-  <!-- Author: write content for "Concept: don't repeat yourself across a fleet" here -->
+  <p>One repo, one triage workflow &mdash; fine to write inline. But the moment you have <em>five</em> repos each with a triage workflow, you've copied the same allowed-label list, the same tools, the same policy prose five times. Fix a rule in one, and the other four drift. This is the classic <strong>Don't Repeat Yourself</strong> problem, now at the scale of a fleet of agents.</p>
+  <p>There are two distinct kinds of &ldquo;sameness&rdquo; to factor out:</p>
+  <ul>
+    <li><strong>Shared configuration and intent</strong> &mdash; the toolset, the safe-outputs limits, the triage policy itself. This wants to live in <em>one file</em> that many workflows <strong>import</strong>.</li>
+    <li><strong>Shared knowledge over time</strong> &mdash; what the agent learned on previous runs (recurring duplicates, project conventions). This wants to <strong>persist</strong> across runs as memory.</li>
+  </ul>
+  <p>Imports solve repetition <em>across workflows</em>; memory solves amnesia <em>across runs</em>. Together they turn a pile of copy-pasted workflows into a maintained, learning fleet.</p>
+  <aside class="callout callout--leader" aria-label="Leader takeaway">
+    <p class="callout-title">Leader lens: govern once, apply everywhere</p>
+    <p>A shared component is a <em>governance surface</em>. Encode your triage policy, your allowed labels, your security posture once; every repo that imports it inherits the current version. Updating org-wide behavior becomes a single reviewed change, not a 200-repo migration &mdash; which is exactly how the largest adopters run agents at scale.</p>
+  </aside>
 </section>
 
 <section data-slot="in-gh-aw-imports-shared-components-and-repo-memory" data-title="In gh-aw: imports, shared components, and repo memory">
-  <!-- Author: write content for "In gh-aw: imports, shared components, and repo memory" here -->
+  <h3>Imports and shared components</h3>
+  <p>The <code>imports:</code> field &ldquo;compose[s] shared tools, steps, MCP servers, and prompts from other workflow files&rdquo; (<a href="https://github.github.com/gh-aw/reference/frontmatter/">Frontmatter</a>). A <strong>shared component</strong> is simply a workflow file <em>without</em> an <code>on:</code> field: it is &ldquo;validated but not compiled into GitHub Actions, only imported by other workflows&rdquo; (<a href="https://github.github.com/gh-aw/reference/imports/">Imports</a>).</p>
+  <figure class="code">
+    <figcaption>Import a shared file; its tools and safe-outputs merge into yours</figcaption>
+    <pre><code class="language-yaml">imports:
+  - shared/triage-policy.md                         # local, repo-relative
+  - acme-org/shared-workflows/triage.md@v2.1.0      # cross-repo, pinned to a tag</code></pre>
+  </figure>
+  <p>Paths resolve three ways: <strong>relative</strong> to the workflow, <strong>repo-root</strong> (<code>.github/&hellip;</code>), or <strong>cross-repo</strong> as <code>owner/repo/path@ref</code> &mdash; and cross-repo imports are &ldquo;pinned to a semantic tag, branch, or commit SHA&rdquo; and cached for offline compiles (<a href="https://github.github.com/gh-aw/reference/imports/">Imports</a>). Fields merge sensibly: tool allowlists concatenate and dedupe; each safe-output type is defined once, with the main workflow winning on conflict.</p>
+
+  <h3>Repo memory vs. cache memory</h3>
+  <p>Persistence comes in two flavors, and choosing correctly matters. <strong>Repo memory</strong> gives &ldquo;persistent file storage via Git branches with unlimited retention&rdquo; &mdash; enable it with <code>tools: repo-memory: true</code> and the compiler auto-configures a <code>memory/default</code> branch that files &ldquo;auto-commit/push after workflow completion&rdquo; (<a href="https://github.github.com/gh-aw/reference/repo-memory/">Repo Memory</a>). <strong>Cache memory</strong> uses the GitHub Actions cache instead &mdash; fast, but 7-day retention and no version control.</p>
+  <table>
+    <thead>
+      <tr><th></th><th>Repo memory</th><th>Cache memory</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Storage</td><td>Git branches</td><td>Actions Cache</td></tr>
+      <tr><td>Retention</td><td>Unlimited</td><td>7 days</td></tr>
+      <tr><td>Versioned</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Best for</td><td>Long-term insights/history</td><td>Temporary/session state</td></tr>
+    </tbody>
+  </table>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: shared components can be parameterized</p>
+    <p>A shared file can declare an <code>import-schema</code> of typed parameters; callers pass values with the <code>uses</code>/<code>with</code> form. That lets one <code>deploy.md</code> or <code>triage.md</code> serve many repos with per-repo tweaks (region, allowed labels) &mdash; reuse without a fork.</p>
+  </aside>
 </section>
 
 <section data-slot="when-to-extract-a-shared-component-and-when-to-inline" data-title="When to extract a shared component (and when to inline)">
-  <!-- Author: write content for "When to extract a shared component (and when to inline)" here -->
+  <p>The rule of thumb is the <strong>rule of three</strong>: inline the first time, wince the second, extract the third. Premature sharing couples workflows that should stay independent; late sharing leaves you with drift. Extract when the <em>same</em> intent genuinely recurs and you want it governed centrally.</p>
+  <table>
+    <thead>
+      <tr><th>Extract to a shared import when&hellip;</th><th>Keep inline when&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>the policy/toolset repeats across repos</td><td>it's genuinely one-off</td></tr>
+      <tr><td>you want one place to update org-wide</td><td>the workflows will diverge anyway</td></tr>
+      <tr><td>a security config must be consistent</td><td>early days &mdash; you're still iterating</td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't track a moving branch for cross-repo imports.</strong> Pin to a tag or SHA (<code>@v2.1.0</code>), not <code>@main</code> &mdash; an unpinned import is a supply-chain risk, the same lesson as unpinned engine versions in <a class="xref" href="engines.html">Chapter 5</a>.</li>
+    <li><strong>Don't put secrets in memory.</strong> Repo memory follows repository permissions and lives in a branch; &ldquo;don't store sensitive data in repo memory.&rdquo; Keep secrets in Actions secrets, always.</li>
+    <li><strong>Don't reach for repo memory when cache memory fits.</strong> Session-only scratch state doesn't need an unlimited, version-controlled branch &mdash; use the faster 7-day cache.</li>
+    <li><strong>Don't over-abstract.</strong> A shared component with fifteen parameters is harder to reason about than two honest copies. Share the stable core; let the edges vary.</li>
+  </ul>
 </section>
 
 <section data-slot="worked-example-importing-a-shared-triage-policy-with-memory" data-title="Worked example: importing a shared triage policy with memory">
-  <!-- Author: write content for "Worked example: importing a shared triage policy with memory" here -->
+  <p>Let's collapse ten chapters of triage refinement into <strong>one shared file</strong> plus a thin workflow that imports it and remembers what it learns.</p>
+
+  <figure class="code">
+    <figcaption>examples/ch11/shared/triage-policy.md &mdash; a shared component (no <code>on:</code>, so it never runs alone)</figcaption>
+    <pre><code class="language-yaml">description: Shared triage policy reused across Repo Assistant workflows
+tools:
+  github: { toolsets: [issues] }
+safe-outputs:
+  add-comment: { max: 1 }
+  add-labels:
+    allowed: [bug, enhancement, question, documentation, duplicate, needs-info]
+    max: 3
+---
+## Shared triage policy
+Categorize the issue, summarize it in one sentence, note missing info, apply at
+most three labels from the allowed set, and post one concise comment.</code></pre>
+  </figure>
+
+  <figure class="code">
+    <figcaption>examples/ch11/repo-assistant-shared.md &mdash; imports the policy, adds memory (compiles: 0/0)</figcaption>
+    <pre><code class="language-yaml">on:
+  issues: { types: [opened, reopened] }
+  schedule: daily
+  workflow_dispatch:
+permissions: { contents: read, issues: read }
+engine: copilot
+network: { allowed: [defaults, github] }
+imports:
+  - shared/triage-policy.md      # tools + labels + safe-outputs, from one file
+tools:
+  repo-memory: true              # persist what it learns across runs</code></pre>
+  </figure>
+
+  <p>The main workflow is now almost content-free: the <em>policy</em> &mdash; tools, allowed labels, safe outputs &mdash; comes entirely from the imported file, and <code>repo-memory: true</code> lets the agent read prior notes and append new ones each run. Point ten repositories at the same <code>shared/triage-policy.md</code> (or a pinned cross-repo import) and they triage identically; change the file once and all ten update on their next compile.</p>
+
+  <figure class="code">
+    <figcaption>Verifying the example</figcaption>
+    <pre><code class="language-text">gh aw compile examples/ch11/repo-assistant-shared.md
+# ✓ examples\ch11\repo-assistant-shared.md (108.1 KB)
+# ✓ Compiled 1 workflow(s): 0 error(s), 0 warning(s)</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="How the merge works">
+    <p class="callout-title">The compiler merged two files into one lock</p>
+    <p>Notice the workflow declares no <code>safe-outputs</code> or <code>github</code> tool of its own &mdash; they came from the import and were merged in at compile time (tool allowlists concatenate; safe-output types are defined once). The compiled <code>.lock.yml</code> is a single self-contained artifact, exactly as in <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a> &mdash; imports are resolved at build time, not runtime.</p>
+  </aside>
 </section>
 
 <section data-slot="recap-and-what-s-next" data-title="Recap &amp; what&#x27;s next">
-  <!-- Author: write content for "Recap & what's next" here -->
+  <p>You can now stop repeating yourself across a fleet, and let agents remember:</p>
+  <ul>
+    <li>As you scale to many repos, factor common intent into <strong>shared components</strong> &mdash; files without <code>on:</code> that others <code>import</code>.</li>
+    <li>Imports resolve <strong>relative</strong>, <strong>repo-root</strong>, or <strong>cross-repo</strong> (<code>owner/repo/path@ref</code>, pinned); fields merge, and <code>import-schema</code> allows typed parameters.</li>
+    <li><strong>Repo memory</strong> (Git branches, unlimited, versioned) vs. <strong>cache memory</strong> (Actions cache, 7-day, fast) give the agent persistence across runs.</li>
+    <li>Follow the <strong>rule of three</strong>, <strong>pin</strong> cross-repo imports, and never store secrets in memory.</li>
+  </ul>
+  <p><strong>What's next.</strong> A shared, remembering fleet is powerful &mdash; and now you need to <em>see</em> what it's doing. In <a class="xref" href="observability-and-debugging.html">Chapter 12: Trust &amp; Operate</a>, we inspect, debug, and audit runs with <code>gh aw logs</code> and <code>gh aw audit</code>, because you can't govern what you can't see.</p>
 </section>
