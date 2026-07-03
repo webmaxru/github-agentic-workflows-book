@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="../assets/style.css">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer src="../assets/app.js"></script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/governance-and-finops.html#article","headline":"Governance \u0026 FinOps: Policy and Cost at Scale","name":"Governance \u0026 FinOps: Policy and Cost at Scale","description":"Cap, meter, and gate agentic spend with AI Credits and max-ai-credits, and set org policy so the fleet stays affordable and compliant.","url":"https://aw.isainative.dev/chapters/governance-and-finops.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Organization (fleet at scale)","keywords":"max-ai-credits, AI Credits billing, token efficiency, governance / policy, cost controls (FinOps)"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/governance-and-finops.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Organization (fleet at scale)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"Governance \u0026 FinOps: Policy and Cost at Scale","item":"https://aw.isainative.dev/chapters/governance-and-finops.html"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/governance-and-finops.html#article","headline":"Governance \u0026 FinOps: Policy and Cost at Scale","name":"Governance \u0026 FinOps: Policy and Cost at Scale","description":"Cap, meter, and gate agentic spend with AI Credits and max-ai-credits, and set org policy so the fleet stays affordable and compliant.","url":"https://aw.isainative.dev/chapters/governance-and-finops.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Organization (fleet at scale)","keywords":"max-ai-credits, AI Credits billing, token efficiency, governance / policy, APM governance (apm-policy.yml), cost controls (FinOps)"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/governance-and-finops.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Organization (fleet at scale)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"Governance \u0026 FinOps: Policy and Cost at Scale","item":"https://aw.isainative.dev/chapters/governance-and-finops.html"}]}]}</script>
 </head>
 <body class="chapter-page">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -120,6 +120,7 @@
             <li>AI Credits billing</li>
             <li>token efficiency</li>
             <li>governance / policy</li>
+            <li>APM governance (apm-policy.yml)</li>
             <li>cost controls (FinOps)</li>
             </ul>
           </aside>
@@ -134,8 +135,8 @@
         <section class="chapter-section" data-section="objective">
           <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
           <div class="section-content" data-content-slot="objective">
-<p>By the end of this chapter you can <strong>cap, meter, and gate</strong> agentic spend &mdash; with <code>max-ai-credits</code> per-workflow budgets and org-wide defaults &mdash; and set the policy that keeps a fleet affordable and compliant as it grows.</p>
-  <p>Everything targets <strong>gh aw v0.81.6</strong>. We put a hard budget on the Repo Assistant and show how an org enforces the same limits across every repo at once.</p>
+<p>By the end of this chapter you can <strong>cap, meter, and gate</strong> agentic spend &mdash; with <code>max-ai-credits</code> per-workflow budgets and org-wide defaults &mdash; and set the policy that keeps a fleet affordable and compliant as it grows. That policy surface extends past cost to the agent's <em>supply chain</em>: which skills and prompts your workflows are even allowed to consume.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. We put a hard budget on the Repo Assistant and show how an org enforces the same limits &mdash; and the same approved dependency list &mdash; across every repo at once.</p>
           </div>
         </section>
         <section class="chapter-section" data-section="concept-agentic-work-has-a-budget-and-a-policy-surface">
@@ -181,6 +182,28 @@ default_model_copilot: "gpt-5-mini"</code></pre>
     <p class="callout-title">Builder detail: the recommended rollout</p>
     <p>The docs prescribe a layered rollout: <em>enterprise baseline &rarr; org where needed &rarr; repo exceptions &rarr; rare, explicit frontmatter overrides.</em> Preview any change with <code>gh aw env update &hellip; --dry-run</code> before applying. Most repos stay aligned to the baseline; exceptions are deliberate and visible.</p>
   </aside>
+
+  <h3>Governing the agent supply chain (APM)</h3>
+  <p>Budgets and policy variables govern <em>spend</em> and <em>capabilities</em>. A third surface is the <em>dependency</em> supply chain from <a class="xref" href="reuse-and-memory.html">Chapter 11</a>: the skills, prompts, and plugins an agent consumes are executable context, so an unreviewed one is an injection vector &mdash; exactly the <a class="xref" href="defense-in-depth.html">Chapter 7</a> threat model. The <strong>Agent Package Manager (APM)</strong> &ldquo;treats agent skills as packages with the same governance primitives that enterprises require for code dependencies&rdquo; (<a href="https://learn.github.com/well-architected/governance/recommendations/governing-agentic-workflows">Governing agentic workflows</a>).</p>
+  <p>Three controls turn that supply chain into a governed surface:</p>
+  <ul>
+    <li><strong>Pinning &amp; scanning.</strong> Every package is pinned to an exact commit SHA in an <code>apm.lock.yaml</code> so &ldquo;there is no drift between what was reviewed and what actually runs,&rdquo; and install-time scanning flags &ldquo;hidden Unicode threats like homoglyphs, bidirectional override characters, and zero-width joiners&rdquo; that could smuggle invisible instructions into a prompt (<a href="https://learn.github.com/well-architected/governance/recommendations/governing-agentic-workflows">Governing agentic workflows</a>).</li>
+    <li><strong>Org-level allowlists.</strong> An <code>apm-policy.yml</code> in the org's <code>.github</code> repository controls which packages any repo may consume. Inheritance is <em>tighten-only</em> across enterprise &rarr; org &rarr; repo &mdash; children &ldquo;can narrow allowlists, add deny entries, and escalate enforcement, but&hellip; cannot relax constraints set by a parent&rdquo; &mdash; the same percolation model as your cost defaults, applied to dependencies.</li>
+    <li><strong>Isolation.</strong> Importing a skill with <code>isolated: true</code> means &ldquo;the agent sees only the skill's packaged instructions,&rdquo; so a compromised repo-level <code>AGENTS.md</code> or <code>copilot-instructions.md</code> cannot silently override a security skill's rules (<a href="https://learn.github.com/well-architected/governance/recommendations/governing-agentic-workflows">Governing agentic workflows</a>).</li>
+  </ul>
+  <figure class="code">
+    <figcaption>Illustrative: an org-wide dependency allowlist in <code>.github/apm-policy.yml</code></figcaption>
+    <pre><code class="language-yaml">name: "Org agent governance"
+enforcement: block
+dependencies:
+  allow:
+    - "org/approved-security-skills/*"
+    - "org/approved-review-skills/*"
+  deny:
+    - "*"                       # deny everything not explicitly allowed
+  require_pinned_constraint: true</code></pre>
+  </figure>
+  <p>Together &mdash; lockfile + org policy + isolation &mdash; these give a platform team a complete answer to the compliance question &ldquo;show me exactly what instructions the agent followed, at what version.&rdquo; Air-gapped shops can go further and route all downloads through a corporate scanning proxy (<code>PROXY_REGISTRY_ONLY=1</code>) so nothing is fetched directly from GitHub (<a href="https://learn.github.com/well-architected/governance/recommendations/governing-agentic-workflows">Governing agentic workflows</a>).</p>
           </div>
         </section>
         <section class="chapter-section" data-section="when-to-cap-meter-and-gate-cost-and-risk-trade-offs">
@@ -196,6 +219,7 @@ default_model_copilot: "gpt-5-mini"</code></pre>
       <tr><td>an occasional deep task (refactor)</td><td>a higher per-run budget, no aggressive daily cap</td></tr>
       <tr><td>a whole org</td><td>generous enterprise defaults, tightened per-org/repo</td></tr>
       <tr><td>a capability you want to forbid</td><td>a <code>GH_AW_POLICY_*</code> gate, not per-workflow edits</td></tr>
+      <tr><td>the skills/prompts agents may use</td><td>an <code>apm-policy.yml</code> allowlist + committed, pinned <code>apm.lock</code></td></tr>
     </tbody>
   </table>
 
@@ -205,6 +229,7 @@ default_model_copilot: "gpt-5-mini"</code></pre>
     <li><strong>Don't set org defaults so tight that every repo overrides them.</strong> If exceptions become the norm, the baseline is wrong. The goal is most repos aligned, few exceptions.</li>
     <li><strong>Don't rely on budgets for security.</strong> A budget limits <em>spend</em>, not <em>blast radius</em> &mdash; that's still safe outputs, the firewall, and policy gates (Chapters 6&ndash;8). Cost controls and security controls are complementary.</li>
     <li><strong>Don't govern by editing workflows.</strong> At scale, prefer <code>gh aw env</code> defaults and <code>GH_AW_POLICY_*</code> gates &mdash; central, reviewable, and applied without recompiling every repo.</li>
+    <li><strong>Don't let agents pull skills you haven't approved.</strong> An unpinned, unscanned skill package is an ungoverned instruction source; set an <code>apm-policy.yml</code> allowlist and require pinned constraints before you widen a fleet, not after.</li>
   </ul>
           </div>
         </section>
@@ -266,6 +291,7 @@ gh variable set GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST --org my-org --body "fals
     <li>Agentic work has a <strong>variable cost</strong> and, at scale, a <strong>policy surface</strong> &mdash; FinOps and governance now apply to your agents.</li>
     <li>Per-workflow: <code>max-ai-credits</code> (default 1000, steering at 80/90/95/99%), <code>max-daily-ai-credits</code> (fail-safe daily cap), <code>timeout-minutes</code>, and <code>stop-after</code>.</li>
     <li>Org-wide: <code>gh aw env</code> sets <code>GH_AW_DEFAULT_*</code> defaults that <strong>percolate</strong> (frontmatter &rarr; repo &rarr; org &rarr; enterprise), and <code>GH_AW_POLICY_*</code> variables <strong>gate capabilities</strong> without recompiling.</li>
+    <li>Supply chain: <strong>APM</strong> governs <em>which</em> skills a fleet may use &mdash; SHA-pinned <code>apm.lock.yaml</code>, install-time Unicode scanning, a tighten-only <code>apm-policy.yml</code> allowlist, and <code>isolated: true</code> imports that repo config can't override.</li>
     <li>Tune budgets to the work, roll out defaults in layers, and remember budgets limit <em>spend</em>, not <em>blast radius</em>.</li>
   </ul>
   <p><strong>What's next.</strong> You can now build, secure, operate, and govern agentic workflows. The final chapter zooms all the way out: <a class="xref" href="fleets-and-adoption.html">Chapter 14: Fleets &amp; Adoption</a> takes the Repo Assistant from one repo to a multi-repo fleet and lays out the enterprise adoption playbook.</p>

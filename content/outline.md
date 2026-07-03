@@ -30,9 +30,9 @@ matters, governance, cost, rollout) through margin callouts.
 | 8 | II | Builder | Tools & MCP: Real Capabilities, Governed | Add governed capabilities via `tools:` and MCP servers | `tools:`; MCP servers; MCP gateway; built-in tools; tool permissions | 7 |
 | 9 | II | Both | Continuous Triage & Docs: Reading the Room | Ship the Triage and Docs patterns as mini-products | Continuous Triage; Continuous Docs; scheduled+event triggers; agentics samples | 6, 8 |
 | 10 | II | Both | Continuous Review, Testing & CI-Doctor | Close the quality loop with review/test/heal patterns | Review; Testing; CI-Doctor; Refactoring; `pull_request` triggers | 9 |
-| 11 | III | Builder | Reuse & Memory: Shared Components and Repo Knowledge | Factor shared intent via `imports:` and add persistent memory | `imports:`; shared components; memory/persistence; AGENTS.md | 10 |
+| 11 | III | Builder | Reuse & Memory: Shared Components and Repo Knowledge | Factor shared intent via `imports:` and add persistent memory | `imports:`; shared components; APM dependencies (`shared/apm.md`); memory/persistence; AGENTS.md | 10 |
 | 12 | III | Both | Trust & Operate: Observability and Debugging | Inspect, debug, and audit runs to trust the fleet | `gh aw logs`; `gh aw audit`; OpenTelemetry; run summaries; HITL review | 11 |
-| 13 | III | Leader | Governance & FinOps: Policy and Cost at Scale | Cap, meter, and gate agentic spend and set org policy | `max-ai-credits`; AI Credits; token efficiency; governance/policy | 12 |
+| 13 | III | Leader | Governance & FinOps: Policy and Cost at Scale | Cap, meter, and gate agentic spend and set org policy | `max-ai-credits`; AI Credits; token efficiency; governance/policy; APM supply-chain governance (`apm-policy.yml`) | 12 |
 | 14 | III | Leader | Fleets & Adoption: From One Repo to the Org | Scale into a governed multi-repo fleet with a rollout playbook | multi-repo fleets; dispatcher pattern; cross-repo composition; adoption playbook | 13 |
 
 **Parts (maturity arc):** **Part I — The Individual** (chs 1–5) · **Part II — The Team** (chs 6–10) ·

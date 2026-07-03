@@ -18,6 +18,14 @@
 - Merge: tools deep-merge (allowed arrays concat+dedupe); safe-outputs each type once (main wins);
   network allowed union; permissions validation-only (main must declare imported perms).
 - `inlined-imports: true` embeds imports into lock (self-contained; for cross-org workflow_call / rulesets).
+- **APM (Agent Package Manager)** rides the import mechanism: import `shared/apm.md` (vendored from
+  `microsoft/apm` via `gh aw add microsoft/apm/.github/workflows/shared/apm.md --dir shared`) and pass
+  `with: packages: [...]`. Adds a dedicated `apm` job that packs packages into a bundle artifact; agent
+  job unpacks for deterministic startup. Manages skills/prompts/instructions/agents/hooks/plugins;
+  resolves full dependency tree. Package ref formats: `owner/repo` | `owner/repo/path` | `owner/repo#ref`.
+  `apm.lock` pins every package to an exact commit SHA (reproducible; lock diffs reviewable in PRs).
+  Token fallback GH_AW_PLUGINS_TOKEN → GH_AW_GITHUB_TOKEN → GITHUB_TOKEN. Governance detail → ch13.
+  Source: reference/dependencies/ (https://github.github.com/gh-aw/reference/dependencies/).
 - **repo-memory:** `tools: repo-memory: true` → Git-branch storage, UNLIMITED retention, versioned,
   `/tmp/gh-aw/repo-memory-default/`, auto-commit/push (GraphQL signed commits). vs **cache-memory:**
   Actions cache, 7-day, fast, not versioned. Comparison table verified.

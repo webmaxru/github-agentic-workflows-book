@@ -96,10 +96,11 @@ Motivation comes from real adopters, not hypotheticals. Chapters open or close w
 - **The security model:** permissions, network firewall, Strict Mode, and sandbox isolation.
 - **Tools & MCP (`tools:`):** giving workflows real, governed capabilities.
 - **The Continuous-X pattern library:** triage, docs, review, CI-doctor, testing, refactoring.
-- **Reuse & memory:** shared components (`imports:`) and repo memory.
+- **Reuse & memory:** shared components (`imports:`), agent dependencies via APM (`shared/apm.md`), and repo memory.
 - **Trust & operate:** reviewing, debugging (`gh aw logs` / `gh aw audit`), human-in-the-loop.
 - **Scale for leaders:** governance and policy, cost & FinOps (AI Credits, token efficiency),
-  multi-repo fleets, and an enterprise adoption playbook.
+  agent-dependency governance (APM: pinning, allowlists, isolation), multi-repo fleets, and an
+  enterprise adoption playbook.
 
 ## Out of scope
 - Building or teaching Microsoft Agent Framework, LangChain, or other agent SDKs.

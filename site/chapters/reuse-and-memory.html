@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="../assets/style.css">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer src="../assets/app.js"></script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/reuse-and-memory.html#article","headline":"Reuse \u0026 Memory: Shared Components and Repo Knowledge","name":"Reuse \u0026 Memory: Shared Components and Repo Knowledge","description":"Factor common intent into imported shared components and give the Repo Assistant memory that persists across runs.","url":"https://aw.isainative.dev/chapters/reuse-and-memory.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Organization (fleet at scale)","keywords":"imports:, shared components, memory / persistence, AGENTS.md context, DRY workflows"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/reuse-and-memory.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Organization (fleet at scale)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"Reuse \u0026 Memory: Shared Components and Repo Knowledge","item":"https://aw.isainative.dev/chapters/reuse-and-memory.html"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/reuse-and-memory.html#article","headline":"Reuse \u0026 Memory: Shared Components and Repo Knowledge","name":"Reuse \u0026 Memory: Shared Components and Repo Knowledge","description":"Factor common intent into imported shared components and give the Repo Assistant memory that persists across runs.","url":"https://aw.isainative.dev/chapters/reuse-and-memory.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Organization (fleet at scale)","keywords":"imports:, shared components, APM dependencies (shared/apm.md), memory / persistence, AGENTS.md context, DRY workflows"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/reuse-and-memory.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Organization (fleet at scale)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"Reuse \u0026 Memory: Shared Components and Repo Knowledge","item":"https://aw.isainative.dev/chapters/reuse-and-memory.html"}]}]}</script>
 </head>
 <body class="chapter-page">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -118,6 +118,7 @@
             <ul class="tag-list">
             <li>imports:</li>
             <li>shared components</li>
+            <li>APM dependencies (shared/apm.md)</li>
             <li>memory / persistence</li>
             <li>AGENTS.md context</li>
             <li>DRY workflows</li>
@@ -167,6 +168,21 @@
   </figure>
   <p>Paths resolve three ways: <strong>relative</strong> to the workflow, <strong>repo-root</strong> (<code>.github/&hellip;</code>), or <strong>cross-repo</strong> as <code>owner/repo/path@ref</code> &mdash; and cross-repo imports are &ldquo;pinned to a semantic tag, branch, or commit SHA&rdquo; and cached for offline compiles (<a href="https://github.github.com/gh-aw/reference/imports/">Imports</a>). Fields merge sensibly: tool allowlists concatenate and dedupe; each safe-output type is defined once, with the main workflow winning on conflict.</p>
 
+  <h3>Packaging dependencies: the Agent Package Manager (APM)</h3>
+  <p>Imports compose files you write. But agents increasingly depend on <em>published</em> primitives &mdash; skills, prompts, instructions, sub-agents, hooks, and plugins &mdash; that live in other repositories and evolve on their own cadence. The <strong>Agent Package Manager (APM)</strong> &ldquo;manages AI agent primitives&hellip; Packages can depend on other packages and APM resolves the full dependency tree&rdquo; (<a href="https://github.github.com/gh-aw/reference/dependencies/">APM Dependencies</a>). It is the same DRY instinct as a shared component, but for the agent's <em>context</em> rather than its config &mdash; a real package manager for agent intelligence.</p>
+  <p>APM plugs into gh-aw through exactly the mechanism you just learned: you import a shared file, <code>shared/apm.md</code>, and pass it the packages you want. That import &ldquo;adds a dedicated <code>apm</code> job&rdquo; that resolves and packs the packages into a bundle at build time, which the agent job unpacks &ldquo;for deterministic startup&rdquo; (<a href="https://github.github.com/gh-aw/reference/dependencies/">APM Dependencies</a>).</p>
+  <figure class="code">
+    <figcaption>Illustrative: depend on published skills via the <code>shared/apm.md</code> import</figcaption>
+    <pre><code class="language-yaml">imports:
+  - uses: shared/apm.md            # vendored from microsoft/apm via `gh aw add`
+    with:
+      packages:
+        - microsoft/apm-sample-package                       # a full package
+        - github/awesome-copilot/skills/review-and-refactor  # one primitive
+        - anthropics/skills/skills/frontend-design#v2.0      # pinned to a tag</code></pre>
+  </figure>
+  <p>Each entry is a package reference in one of three shapes: <code>owner/repo</code> (a full package), <code>owner/repo/path</code> (a single primitive such as one skill), or <code>owner/repo#ref</code> (pinned to a tag, branch, or SHA) (<a href="https://github.github.com/gh-aw/reference/dependencies/">APM Dependencies</a>). Reproducibility is the point: an <code>apm.lock</code> file &ldquo;pin[s] every package to an exact commit SHA, so the same versions are installed on every run,&rdquo; and those lock diffs &ldquo;appear in pull requests and are reviewable before merge&rdquo; &mdash; an audit trail for exactly which agent context is in use. That reviewable, pinnable supply chain is what makes APM <em>governable</em> at org scale, which we return to in <a class="xref" href="governance-and-finops.html">Chapter 13</a>.</p>
+
   <h3>Repo memory vs. cache memory</h3>
   <p>Persistence comes in two flavors, and choosing correctly matters. <strong>Repo memory</strong> gives &ldquo;persistent file storage via Git branches with unlimited retention&rdquo; &mdash; enable it with <code>tools: repo-memory: true</code> and the compiler auto-configures a <code>memory/default</code> branch that files &ldquo;auto-commit/push after workflow completion&rdquo; (<a href="https://github.github.com/gh-aw/reference/repo-memory/">Repo Memory</a>). <strong>Cache memory</strong> uses the GitHub Actions cache instead &mdash; fast, but 7-day retention and no version control.</p>
   <table>
@@ -204,6 +220,7 @@
   <h3>When <em>not</em> to</h3>
   <ul>
     <li><strong>Don't track a moving branch for cross-repo imports.</strong> Pin to a tag or SHA (<code>@v2.1.0</code>), not <code>@main</code> &mdash; an unpinned import is a supply-chain risk, the same lesson as unpinned engine versions in <a class="xref" href="engines.html">Chapter 5</a>.</li>
+    <li><strong>Don't consume APM packages unpinned or unreviewed.</strong> A skill is executable context: commit the <code>apm.lock</code>, review its diffs, and pin references. Skills you don't control are exactly where the <a class="xref" href="defense-in-depth.html">Chapter 7</a> threat model applies &mdash; govern them (Chapter 13), don't trust them by default.</li>
     <li><strong>Don't put secrets in memory.</strong> Repo memory follows repository permissions and lives in a branch; &ldquo;don't store sensitive data in repo memory.&rdquo; Keep secrets in Actions secrets, always.</li>
     <li><strong>Don't reach for repo memory when cache memory fits.</strong> Session-only scratch state doesn't need an unlimited, version-controlled branch &mdash; use the faster 7-day cache.</li>
     <li><strong>Don't over-abstract.</strong> A shared component with fifteen parameters is harder to reason about than two honest copies. Share the stable core; let the edges vary.</li>
@@ -267,6 +284,7 @@ tools:
   <ul>
     <li>As you scale to many repos, factor common intent into <strong>shared components</strong> &mdash; files without <code>on:</code> that others <code>import</code>.</li>
     <li>Imports resolve <strong>relative</strong>, <strong>repo-root</strong>, or <strong>cross-repo</strong> (<code>owner/repo/path@ref</code>, pinned); fields merge, and <code>import-schema</code> allows typed parameters.</li>
+    <li>The <strong>Agent Package Manager (APM)</strong> rides the same import mechanism (<code>shared/apm.md</code> + <code>packages:</code>) to depend on published skills/prompts/plugins, pinned to exact SHAs in an <code>apm.lock</code> for reproducible, reviewable builds.</li>
     <li><strong>Repo memory</strong> (Git branches, unlimited, versioned) vs. <strong>cache memory</strong> (Actions cache, 7-day, fast) give the agent persistence across runs.</li>
     <li>Follow the <strong>rule of three</strong>, <strong>pin</strong> cross-repo imports, and never store secrets in memory.</li>
   </ul>

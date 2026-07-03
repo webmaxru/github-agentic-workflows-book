@@ -266,6 +266,7 @@ chapters:
     features:
       - "imports:"
       - "shared components"
+      - "APM dependencies (shared/apm.md)"
       - "memory / persistence"
       - "AGENTS.md context"
       - "DRY workflows"
@@ -310,6 +311,7 @@ chapters:
       - "AI Credits billing"
       - "token efficiency"
       - "governance / policy"
+      - "APM governance (apm-policy.yml)"
       - "cost controls (FinOps)"
     depends_on: ["ch12-observability-and-debugging"]
 

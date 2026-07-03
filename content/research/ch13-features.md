@@ -26,6 +26,20 @@
   org-wide. Set via `gh variable set --org`.
 - **Rollout pattern:** enterprise baseline → org where needed → repo exceptions → rare frontmatter overrides.
 
+## APM governance layer (source: reference/dependencies/ + learn.github.com well-architected governing-agentic-workflows)
+- APM treats agent skills as packages with the same governance primitives as code deps.
+- **Pinning + scanning:** every package pinned to exact commit SHA in `apm.lock.yaml` (no drift between
+  reviewed vs. run); install-time content scan for hidden Unicode threats (homoglyphs, bidi override
+  chars, zero-width joiners) that could inject invisible prompt instructions.
+- **Org policy `apm-policy.yml`** (in org `.github` repo): `enforcement: block`, `dependencies.allow/deny`,
+  `require_pinned_constraint: true`. Inheritance enterprise→org→repo is TIGHTEN-ONLY (child can narrow
+  allowlist / add deny / escalate enforcement, cannot relax parent). Mirrors cost-defaults percolation.
+- **Isolation:** `imports: - uses: shared/apm.md with: { isolated: true }` → agent sees only the skill's
+  packaged instructions; repo-level AGENTS.md / copilot-instructions.md cannot override it.
+- **Air-gapped:** corporate scanning proxy via `PROXY_REGISTRY_URL/TOKEN` + `PROXY_REGISTRY_ONLY=1`
+  (blocks direct GitHub fetch; lockfile records proxy host).
+- Ties to ch07 threat model (skills = executable context = injection vector) and ch11 (APM = import layer).
+
 ## Example shape (verified)
 4 cost brakes: max-ai-credits:200 + max-daily-ai-credits:2000 + timeout-minutes:10 + stop-after:+30d.
 Prose shows `gh aw env update --org` + `GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=false`. Next: ch14 fleets/adoption.
