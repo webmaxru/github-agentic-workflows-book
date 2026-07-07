@@ -1,0 +1,8 @@
+# Dependencies for scripts/build_pdf.py — renders site/book.html into a PDF with
+# headless Chromium (Playwright). Kept separate from the site generator, which
+# only needs PyYAML, so `python site/generate.py` stays dependency-light.
+#
+# After installing, download the browser once:
+#   python -m playwright install --with-deps chromium   # CI (Linux)
+#   python -m playwright install chromium               # local (Windows/macOS)
+playwright>=1.44

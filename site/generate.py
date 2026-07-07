@@ -42,6 +42,14 @@ THEME_COLOR_DARK = "#0d1220"
 GH_AW_DOCS = "https://github.github.com/gh-aw/"
 GH_AW_REPO = "https://github.com/github/gh-aw"
 
+# Downloadable editions -------------------------------------------------------
+# book.html is the single-page "print edition" (all chapters on one page), emitted
+# by render_book(); it is also the source Playwright renders into the PDF.
+# gh-aw-book.pdf is a binary BUILD ARTIFACT: it is gitignored and produced by
+# scripts/build_pdf.py (locally and in CI), not committed to main.
+BOOK_PAGE = "book.html"
+PDF_FILENAME = "gh-aw-book.pdf"
+
 # AI / LLM agent crawlers welcomed explicitly in robots.txt (default policy: allow).
 AI_AGENTS = [
     "GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-User",
@@ -486,6 +494,7 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
       <a class="brand" href="index.html"><span class="brand-mark">aw</span> gh-aw \u00b7 the book</a>
       <nav class="reader-nav" aria-label="Primary">
         <a href="#contents">Contents</a>
+        <a href="{PDF_FILENAME}">Download PDF</a>
         <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repo \u2197</a>
         <a href="https://github.com/github/gh-aw" target="_blank" rel="noopener">gh-aw \u2197</a>
       </nav>
@@ -502,6 +511,7 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
         <div class="cover-actions">
           <a class="btn btn-primary" href="{esc(start_href)}">Start reading</a>
           <a class="btn btn-quiet" href="#contents">Browse the contents</a>
+          <a class="btn btn-quiet" href="{PDF_FILENAME}">\u2193 Download PDF</a>
         </div>
         <dl class="cover-meta">
           <div class="cover-meta-item">
@@ -541,7 +551,7 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
   <footer class="colophon">
     <div class="colophon-inner">
       <p class="colophon-author">By <strong>Maxim Salnikov</strong> \u00b7 Microsoft</p>
-      <p class="colophon-meta"><a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a></p>
+      <p class="colophon-meta"><a href="{PDF_FILENAME}">Download the PDF</a> \u00b7 <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a></p>
     </div>
   </footer>
 </body>
@@ -660,7 +670,7 @@ def render_chapter(
 
     <div class="content-shell">
       <header class="chapter-header">
-        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter {esc(chapter["number"])}</nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter {esc(chapter["number"])} <span class="fm-sep">\u00b7</span> <a href="../{PDF_FILENAME}">Download PDF</a></nav>
         <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">{esc(chapter["number"]):0>2}</span><span class="fm-sep">\u00b7</span><span class="fm-k">part:</span> <span class="fm-v">{esc(part_title)}</span></p>
         <h1>{esc(chapter["title"])}</h1>
         <p class="lead">{esc(chapter["objective"])}</p>
@@ -685,10 +695,231 @@ def render_chapter(
       </main>
 
       <footer class="site-footer chapter-footer">
-        <p>By <strong>Maxim Salnikov</strong> \u00b7 Microsoft \u00b7 <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a></p>
+        <p>By <strong>Maxim Salnikov</strong> \u00b7 Microsoft \u00b7 <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a> \u00b7 <a href="../{PDF_FILENAME}">Download the PDF</a></p>
       </footer>
     </div>
   </div>
+</body>
+</html>
+'''
+
+
+# --- Single-page "book" edition (source for the downloadable PDF) -------------
+# render_book() concatenates every chapter's authored content into one printable
+# HTML document (site/book.html). scripts/build_pdf.py renders it to a PDF with
+# headless Chromium. Cross-chapter links (href="<slug>.html") are rewritten to
+# in-page anchors (#ch-<slug>) and section ids are namespaced per chapter so the
+# single page has no duplicate ids.
+
+BOOK_CSS = """
+*{box-sizing:border-box;}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-scheme:light;}
+body.book{margin:0;background:#fff;color:var(--ink);font-family:var(--font-body);font-size:11pt;line-height:1.62;-webkit-font-smoothing:antialiased;}
+:root{
+  --surface-2:#f1f4fa;--ink:#181d29;--muted:#4f5768;--faint:#626b80;
+  --line:#dce1ec;--line-strong:#c5cddd;
+  --iris:#4f46e5;--iris-strong:#3a30bf;--signal:#147a4c;--dawn:#b0651a;--leader:#0c766e;--warn:#b0430c;
+  --code-bg:#f6f8fc;--code-ink:#243049;
+  --font-body:"Literata",Georgia,"Times New Roman",serif;
+  --font-ui:"Hanken Grotesk","Segoe UI",system-ui,-apple-system,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+.book-cover,.book-toc,.book-body,.book-colophon{max-width:46rem;margin:0 auto;padding:0 1.25rem;}
+.book-toolbar{position:sticky;top:0;z-index:10;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;padding:.6rem 1.25rem;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+.book-btn{font-family:var(--font-ui);font-size:.82rem;font-weight:600;line-height:1;cursor:pointer;padding:.5rem .8rem;border-radius:8px;border:1px solid var(--line-strong);background:var(--surface-2);color:var(--ink);text-decoration:none;}
+.book-btn--primary{background:var(--iris);border-color:var(--iris);color:#fff;}
+.book-btn:hover{border-color:var(--iris);}
+.book-cover{padding-top:12vh;padding-bottom:8vh;}
+.book-cover-series{font-family:var(--font-ui);text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;font-weight:700;color:var(--iris);margin:0 0 1rem;}
+.book-cover-title{font-size:clamp(2.4rem,7vw,3.6rem);line-height:1.03;margin:0 0 1rem;font-weight:700;letter-spacing:-.01em;}
+.book-cover-sub{font-size:1.15rem;color:var(--muted);max-width:34rem;margin:0 0 2rem;}
+.book-cover-author{font-size:1rem;margin:.2rem 0;}
+.book-cover-meta{font-family:var(--font-ui);font-size:.82rem;color:var(--faint);margin:.2rem 0;}
+.book-toc h2{font-size:1.7rem;margin:0 0 1.2rem;padding-bottom:.5rem;border-bottom:2px solid var(--line);}
+.bt-part{margin:0 0 1.5rem;}
+.bt-part h3{font-family:var(--font-ui);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin:0 0 .5rem;}
+.book-toc ol{list-style:none;margin:0;padding:0;}
+.book-toc .bt-part li a{display:flex;gap:.8rem;align-items:baseline;padding:.34rem 0;text-decoration:none;color:var(--ink);border-bottom:1px dotted var(--line);}
+.bt-num{font-family:var(--font-mono);font-size:.82rem;color:var(--iris);font-weight:600;min-width:1.6rem;}
+.bt-title{font-weight:500;}
+.book-toc a:hover .bt-title{color:var(--iris);}
+.book-chapter{padding-top:1rem;}
+.book-chapter-head{margin:0 0 2rem;padding-bottom:1.2rem;border-bottom:2px solid var(--line);}
+.book-chapter-kicker{font-family:var(--font-ui);text-transform:uppercase;letter-spacing:.1em;font-size:.72rem;font-weight:700;color:var(--iris);margin:0 0 .6rem;}
+.book-chapter-head h1{font-size:clamp(1.9rem,5vw,2.6rem);line-height:1.08;margin:0 0 .6rem;font-weight:700;letter-spacing:-.01em;}
+.book-chapter-obj{font-size:1.12rem;color:var(--muted);font-style:italic;margin:0;}
+.book-section{margin:0 0 1.2rem;}
+.book-section h2{font-size:1.4rem;line-height:1.2;margin:2rem 0 .8rem;font-weight:700;}
+.book-body h3{font-size:1.12rem;margin:1.5rem 0 .5rem;font-weight:600;}
+.book-body h4{font-size:1rem;margin:1.2rem 0 .4rem;font-weight:600;}
+.book-body p{margin:0 0 .9rem;}
+.book-body ul,.book-body ol{margin:0 0 .9rem;padding-left:1.4rem;}
+.book-body li{margin:.25rem 0;}
+.book-body>*>a,.book-body p a,.book-body li a{color:var(--iris-strong);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--iris) 35%,var(--line));}
+a.xref{font-weight:600;text-decoration:none;border-bottom:1px dashed color-mix(in srgb,var(--iris) 55%,var(--line));}
+a.xref::before{content:"\\2192 ";color:var(--iris);font-family:var(--font-mono);}
+.book-body :not(pre) > code{font-family:var(--font-mono);font-size:.86em;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:.05em .35em;color:var(--ink);}
+figure.code{margin:1.4rem 0;border:1px solid var(--line-strong);border-radius:10px;overflow:hidden;background:var(--code-bg);}
+figure.code>figcaption{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;padding:.5rem .9rem;font-family:var(--font-mono);font-size:.72rem;font-weight:600;color:var(--muted);background:var(--surface-2);border-bottom:1px solid var(--line);}
+figure.code>figcaption::before{content:"\\203a";color:var(--signal);font-weight:700;}
+figure.code.needs-secret{border-color:color-mix(in srgb,var(--warn) 55%,var(--line-strong));}
+figure.code.needs-secret>figcaption::after{content:"\\01F512 requires a secret / live run";margin-left:auto;font-family:var(--font-ui);font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--warn);}
+pre{margin:0;padding:.9rem 1rem;overflow:auto;background:var(--code-bg);}
+figure.code>pre{border-radius:0;}
+pre code{font-family:var(--font-mono);font-size:.8rem;line-height:1.5;color:var(--code-ink);white-space:pre-wrap;overflow-wrap:break-word;word-break:break-word;}
+pre code.hljs{background:transparent;padding:0;}
+.callout{--c:var(--iris);border:1px solid color-mix(in srgb,var(--c) 34%,var(--line));border-left-width:4px;border-radius:8px;background:color-mix(in srgb,var(--c) 6%,#fff);padding:.9rem 1.1rem;margin:1.4rem 0;}
+.callout>:first-child{margin-top:0;}
+.callout>:last-child{margin-bottom:0;}
+.callout-title{display:flex;align-items:center;gap:.45rem;font-family:var(--font-ui);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--c);margin:0 0 .4rem;}
+.callout-title::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c);flex:none;}
+.callout--builder{--c:var(--iris);}
+.callout--leader{--c:var(--leader);}
+.callout--warning{--c:var(--warn);}
+.callout--tip{--c:var(--signal);}
+.callout--note{--c:var(--muted);}
+blockquote{margin:1.2rem 0;padding:.2rem 0 .2rem 1.1rem;border-left:3px solid var(--line-strong);color:var(--muted);font-style:italic;}
+table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.9rem;}
+th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top;}
+th{background:var(--surface-2);font-family:var(--font-ui);font-size:.82rem;}
+.pending-note{color:var(--warn);font-style:italic;}
+.copy-code{display:none;}
+.book-colophon{margin-top:3rem;padding-top:1.4rem;padding-bottom:3rem;border-top:1px solid var(--line);font-family:var(--font-ui);font-size:.82rem;color:var(--faint);}
+.book-colophon a{color:var(--iris-strong);}
+@media print{
+  .book-toolbar{display:none!important;}
+  .book-cover,.book-toc,.book-body,.book-colophon{max-width:none;padding:0;margin:0;}
+  .book-cover{padding-top:22%;break-after:page;}
+  .book-toc{break-after:page;}
+  .book-chapter{break-before:page;}
+  .book-chapter-head,.book-section h2,.book-body h3,.book-body h4{break-after:avoid;}
+  figure.code,.callout,table,blockquote{break-inside:avoid;}
+  .book-body p a,.book-body li a{border-bottom:none;color:var(--iris-strong);}
+  pre code{font-size:8.4pt;}
+}
+"""
+
+
+def _rewrite_book_links(fragment_html: str, slug_set: set[str]) -> str:
+    """Rewrite cross-chapter links (href="<slug>.html"[#frag]) to in-page anchors."""
+    def repl(match: "re.Match[str]") -> str:
+        slug = match.group(1)
+        return f'href="#ch-{slug}"' if slug in slug_set else match.group(0)
+    return re.sub(r'href="([a-z0-9-]+)\.html(?:#[^"]*)?"', repl, fragment_html)
+
+
+def render_book(
+    chapters: list[dict[str, Any]],
+    grouped: list[dict[str, Any]],
+    slots_by_slug: dict[str, dict[str, str]],
+) -> str:
+    """Render the single-page edition (site/book.html); source for the PDF."""
+    slug_set = {chapter["slug"] for chapter in chapters}
+    today = date.today().isoformat()
+    chapter_count = len(chapters)
+
+    toc_parts: list[str] = []
+    for part in grouped:
+        chs = part["chapters"]
+        if not chs:
+            continue
+        rows = "".join(
+            f'<li><a href="#ch-{esc(ch["slug"])}"><span class="bt-num">{esc(ch["number"]):0>2}</span>'
+            f'<span class="bt-title">{esc(ch["title"])}</span></a></li>'
+            for ch in chs
+        )
+        toc_parts.append(
+            f'    <section class="bt-part"><h3>{esc(part["eyebrow"])} \u00b7 {esc(part["title"])}</h3>'
+            f'<ol>{rows}</ol></section>'
+        )
+    toc_html = "\n".join(toc_parts)
+
+    chapter_blocks: list[str] = []
+    for chapter in chapters:
+        slug = chapter["slug"]
+        part_title = part_label_for(grouped, chapter["id"])
+        slots = slots_by_slug.get(slug, {})
+        sections_html: list[str] = []
+        for section_id, title in section_ids(chapter):
+            inner = slots.get(section_id, "")
+            if slot_is_filled(inner):
+                content_html = _rewrite_book_links(inner.strip(), slug_set)
+            else:
+                content_html = '<p class="pending-note"><strong>Content pending.</strong></p>'
+            sections_html.append(
+                f'        <section class="book-section" id="ch-{esc(slug)}--{esc(section_id)}">\n'
+                f'          <h2>{esc(title)}</h2>\n{content_html}\n        </section>'
+            )
+        chapter_blocks.append(
+            f'''      <article class="book-chapter" id="ch-{esc(slug)}">
+        <header class="book-chapter-head">
+          <p class="book-chapter-kicker">{esc(part_title)} \u00b7 Chapter {esc(chapter["number"])}</p>
+          <h1>{esc(chapter["title"])}</h1>
+          <p class="book-chapter-obj">{esc(chapter["objective"])}</p>
+        </header>
+{chr(10).join(sections_html)}
+      </article>'''
+        )
+    chapters_html = "\n".join(chapter_blocks)
+
+    return f'''<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{esc(PLAYBOOK_TITLE)} \u2014 Single-page edition</title>
+  <meta name="description" content="{esc(HOME_DESCRIPTION)}">
+  <meta name="author" content="{esc(AUTHOR_NAME)}">
+  <meta name="robots" content="noindex, follow">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <style>{BOOK_CSS}</style>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer>
+    window.addEventListener('load', function () {{
+      try {{
+        if (window.hljs) {{
+          window.hljs.configure({{ languages: ['yaml','yml','bash','shell','json','markdown','python','javascript','http'] }});
+          window.hljs.highlightAll();
+        }}
+      }} catch (e) {{}}
+      document.documentElement.setAttribute('data-book-ready', '1');
+    }});
+  </script>
+</head>
+<body class="book">
+  <div class="book-toolbar" role="toolbar" aria-label="Book actions">
+    <a class="book-btn book-btn--primary" href="{PDF_FILENAME}">\u2193 Download PDF</a>
+    <button class="book-btn" type="button" onclick="window.print()">Print / Save as PDF</button>
+    <a class="book-btn" href="index.html">\u2190 Back to the web edition</a>
+  </div>
+
+  <header class="book-cover">
+    <p class="book-cover-series">An interactive book on Continuous AI</p>
+    <h1 class="book-cover-title">GitHub Agentic Workflows</h1>
+    <p class="book-cover-sub">{esc(PLAYBOOK_INTRO)}</p>
+    <p class="book-cover-author">By <strong>{esc(AUTHOR_NAME)}</strong> \u00b7 Microsoft</p>
+    <p class="book-cover-meta">{chapter_count} chapters \u00b7 Single-page edition \u00b7 Generated {today}</p>
+  </header>
+
+  <nav class="book-toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+{toc_html}
+  </nav>
+
+  <main class="book-body">
+{chapters_html}
+  </main>
+
+  <footer class="book-colophon">
+    <p>By <strong>{esc(AUTHOR_NAME)}</strong> \u00b7 Microsoft \u00b7 <a href="{esc(AUTHOR_URL)}">LinkedIn</a> \u00b7 <a href="{esc(REPO_URL)}">Book repository</a></p>
+    <p>{esc(PLAYBOOK_TITLE)} \u00b7 {esc(SITE_ORIGIN)}</p>
+  </footer>
 </body>
 </html>
 '''
@@ -796,6 +1027,7 @@ def write_discovery_files(chapters: list[dict[str, Any]]) -> None:
             "",
             "## Start here",
             f"- [Home & table of contents]({abs_url()}): Overview, reading guide, and the full chapter list.",
+            f"- [Download the PDF]({abs_url(PDF_FILENAME)}): The complete book as a single downloadable PDF.",
             "",
             "## Chapters"]
     for ch in chapters:
@@ -857,6 +1089,8 @@ def print_report(reports: list[dict[str, Any]]) -> None:
         print(f"  {label} {dots} {r['filled']}/{r['total']} {state}{note}")
     print("")
     print(f"Totals: {filled_slots}/{total_slots} slots authored \u00b7 {complete} complete \u00b7 {pending} pending.")
+    print(f"Single-page edition: {SITE / BOOK_PAGE}  (PDF source)")
+    print(f"Build the PDF ({PDF_FILENAME}): python scripts/build_pdf.py")
     print("Serve locally: python -m http.server -d site 8000")
 
 
@@ -872,6 +1106,7 @@ def main() -> None:
     (SITE / "index.html").write_text(render_index(grouped), encoding="utf-8")
 
     reports: list[dict[str, Any]] = []
+    slots_by_slug: dict[str, dict[str, str]] = {}
     for index, chapter in enumerate(chapters):
         sections = section_ids(chapter)
         fragment_path = CONTENT_CHAPTERS_DIR / f"{chapter['slug']}.html"
@@ -880,10 +1115,13 @@ def main() -> None:
             fragment_path.write_text(scaffold_fragment(chapter, sections), encoding="utf-8")
             scaffolded = True
         slots = parse_fragment(fragment_path.read_text(encoding="utf-8"))
+        slots_by_slug[chapter["slug"]] = slots
         filled = sum(1 for section_id, _ in sections if slot_is_filled(slots.get(section_id, "")))
         output = CHAPTERS_DIR / f"{chapter['slug']}.html"
         output.write_text(render_chapter(chapters, grouped, index, slots), encoding="utf-8")
         reports.append({"chapter": chapter, "total": len(sections), "filled": filled, "scaffolded": scaffolded})
+
+    (SITE / BOOK_PAGE).write_text(render_book(chapters, grouped, slots_by_slug), encoding="utf-8")
 
     write_discovery_files(chapters)
     print_report(reports)
