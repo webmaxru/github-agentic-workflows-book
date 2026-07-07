@@ -236,7 +236,14 @@ consent banner** — and stays inside Azure's **free tier** (workspace-based, 30
   carries an **empty** string (a safe no-op).
 - In CI (`.github/workflows/deploy-pages.yml`) the value comes from the repository **Actions
   variable** `APPINSIGHTS_CONNECTION_STRING` (Settings → Secrets and variables → Actions →
-  Variables — *not* a secret), and is injected only into the `gh-pages` build.
+  Variables — *not* a secret), forwarded into the site-generation step and injected only into the
+  `gh-pages` build. The one line the deploy job needs on its **Regenerate site from content** step:
+  ```yaml
+  env:
+    APPINSIGHTS_CONNECTION_STRING: ${{ vars.APPINSIGHTS_CONNECTION_STRING }}
+  ```
+  Until that env line is present, the published HTML carries an empty string and analytics stays a
+  safe no-op.
 
 **Kill switch (one line).** Flip the constant at the top of `analytics/analytics.entry.js` and
 rebuild:
