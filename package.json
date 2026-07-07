@@ -1,0 +1,20 @@
+{
+  "name": "gh-aw-book-analytics",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Build tooling for the gh-aw book site's cookieless Azure Application Insights (RUM) beacon.",
+  "license": "MIT",
+  "scripts": {
+    "build:analytics": "esbuild analytics/analytics.entry.js --bundle --minify --format=iife --target=es2019 --legal-comments=none --outfile=site/assets/analytics.js",
+    "report": "cookieless-insights report --resource-group is-ai-native-rg --app-insights aw-book-ai --days 30 --open"
+  },
+  "dependencies": {
+    "@webmaxru/cookieless-insights": "^0.1.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import html
 import json
+import os
 import re
 from datetime import date
 from pathlib import Path
@@ -186,6 +187,41 @@ def json_ld_script(data: Any) -> str:
     return f'<script type="application/ld+json">{raw}</script>'
 
 
+def _load_connection_string() -> str:
+    """Public Application Insights client key, provided at BUILD time (never committed).
+
+    Read from the APPINSIGHTS_CONNECTION_STRING env var — set as a CI *variable*
+    (it is a public, write-only ingestion key, not a secret). Falls back to a local
+    ``.env`` file for development. When empty, the analytics beacon is a safe no-op.
+    """
+    value = os.environ.get("APPINSIGHTS_CONNECTION_STRING", "").strip()
+    if not value:
+        env_file = ROOT / ".env"
+        if env_file.exists():
+            for line in env_file.read_text(encoding="utf-8").splitlines():
+                stripped = line.strip()
+                if stripped.startswith("APPINSIGHTS_CONNECTION_STRING="):
+                    value = stripped.split("=", 1)[1].strip().strip('"').strip("'")
+                    break
+    return value
+
+
+APPINSIGHTS_CONNECTION_STRING = _load_connection_string()
+
+
+def analytics_head(prefix: str) -> str:
+    """Cookieless Azure Application Insights (RUM): inject the build-time public
+    connection string as a global, then load the bundled beacon (site/assets/analytics.js,
+    built by `npm run build:analytics`). Empty key -> the beacon self-disables, so the
+    page behaves identically without analytics."""
+    raw = json.dumps(APPINSIGHTS_CONNECTION_STRING)
+    raw = raw.replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
+    return (
+        f"<script>window.__APPINSIGHTS_CONNECTION_STRING__={raw};</script>\n"
+        f'  <script defer src="{prefix}assets/analytics.js"></script>'
+    )
+
+
 def author_node() -> dict[str, Any]:
     return {
         "@type": "Person",
@@ -305,6 +341,7 @@ def root_head(
   <link rel="stylesheet" href="{prefix}assets/style.css">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer src="{prefix}assets/app.js"></script>
+  {analytics_head(prefix)}
   {json_ld}"""
 
 
