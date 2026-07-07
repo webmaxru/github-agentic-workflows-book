@@ -164,9 +164,15 @@ site/
   generate.py         # scaffolds the site from content/toc.yml
   index.html          # generated
   chapters/*.html     # generated: one page per chapter in toc.yml
-  assets/             # style.css + app.js
+  assets/             # style.css + app.js + analytics.js (built beacon)
+analytics/
+  analytics.entry.js  # cookieless App Insights beacon source (bundled → site/assets/analytics.js)
+azure/
+  dashboard.json      # Portal engagement dashboard (ARM template)
+package.json          # analytics build tooling (esbuild bundle + report command)
 scripts/
   run-fleet.ps1       # convenience launcher
+  report.ps1          # engagement report (PowerShell)
 ```
 
 > The book content itself (`content/research/`, `examples/`, generated `site/` pages) is produced by
@@ -205,7 +211,65 @@ gh aw compile examples/<chapter>/<workflow>.md
 
 ---
 
-## Chapter arc
+## Privacy-friendly analytics (cookieless RUM)
+
+The published site is instrumented with **cookieless Real User Monitoring** via Azure Application
+Insights, using [`@webmaxru/cookieless-insights`](https://www.npmjs.com/package/@webmaxru/cookieless-insights).
+It uses **no cookies, no local/session storage, and no persistent identifier** — so there is **no
+consent banner** — and stays inside Azure's **free tier** (workspace-based, 30-day retention,
+0.16 GB/day cap). Telemetry is sent with the browser **beacon** transport (`navigator.sendBeacon`).
+
+**How it's wired**
+
+- `analytics/analytics.entry.js` is the beacon source — it initializes tracking, records an
+  automatic **page view**, and wires **key interactions** (theme change, sidebar toggle, code copy,
+  in-page section nav, internal/outbound link clicks, "opened via shared link", and debounced
+  input changes for any sliders/typing). It is bundled to `site/assets/analytics.js` with esbuild:
+  ```powershell
+  npm ci
+  npm run build:analytics
+  ```
+- The Application Insights **connection string is a public client key**, injected at **build time**,
+  never committed as source. `site/generate.py` reads the `APPINSIGHTS_CONNECTION_STRING`
+  environment variable and embeds it into each page's `<head>` as
+  `window.__APPINSIGHTS_CONNECTION_STRING__`; the beacon reads that global. The committed HTML
+  carries an **empty** string (a safe no-op).
+- In CI (`.github/workflows/deploy-pages.yml`) the value comes from the repository **Actions
+  variable** `APPINSIGHTS_CONNECTION_STRING` (Settings → Secrets and variables → Actions →
+  Variables — *not* a secret), forwarded into the site-generation step and injected only into the
+  `gh-pages` build. The one line the deploy job needs on its **Regenerate site from content** step:
+  ```yaml
+  env:
+    APPINSIGHTS_CONNECTION_STRING: ${{ vars.APPINSIGHTS_CONNECTION_STRING }}
+  ```
+  Until that env line is present, the published HTML carries an empty string and analytics stays a
+  safe no-op.
+
+**Kill switch (one line).** Flip the constant at the top of `analytics/analytics.entry.js` and
+rebuild:
+
+```js
+const ANALYTICS_ENABLED = false; // disables all telemetry
+```
+
+Clearing the `APPINSIGHTS_CONNECTION_STRING` repo variable (empty string) also disables tracking on
+the next deploy — `init()` self-disables when the connection string is empty.
+
+**Engagement report & dashboard**
+
+```powershell
+# print engagement (page views, sessions, per-visit dwell, key events, top pages, geo, browser/OS)
+npm run report                       # wraps the command below and opens the Portal dashboard
+npx cookieless-insights report --resource-group is-ai-native-rg --app-insights aw-book-ai --days 30
+# PowerShell equivalent
+./scripts/report.ps1 -ResourceGroup is-ai-native-rg -AppInsights aw-book-ai
+```
+
+The Azure Portal **engagement dashboard** (`azure/dashboard.json`) is deployed in resource group
+`is-ai-native-rg`. Data appears within ~1–3 minutes of a real visit.
+
+---
+
 
 The concrete chapter map is **designed by `playbook-architect`** from
 [`content/playbook-brief.md`](content/playbook-brief.md) and recorded in
