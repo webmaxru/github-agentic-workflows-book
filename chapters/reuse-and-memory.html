@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Reuse &amp; Memory: Shared Components and Repo Knowledge | GitHub Agentic Workflows: An Interactive Book</title>
+  <meta name="description" content="Factor common intent into imported shared components and give the Repo Assistant memory that persists across runs.">
+  <meta name="author" content="Maxim Salnikov">
+  <link rel="canonical" href="https://aw.isainative.dev/chapters/reuse-and-memory.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e9edf4">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1220">
+  <script>(function(){try{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GitHub Agentic Workflows: An Interactive Book">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Reuse &amp; Memory: Shared Components and Repo Knowledge">
+  <meta property="og:description" content="Factor common intent into imported shared components and give the Repo Assistant memory that persists across runs.">
+  <meta property="og:url" content="https://aw.isainative.dev/chapters/reuse-and-memory.html">
+  <meta property="og:image" content="https://aw.isainative.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Reuse &amp; Memory: Shared Components and Repo Knowledge">
+  <meta name="twitter:description" content="Factor common intent into imported shared components and give the Repo Assistant memory that persists across runs.">
+  <meta name="twitter:image" content="https://aw.isainative.dev/og-image.png">
+  <meta name="twitter:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+  <script>window.__APPINSIGHTS_CONNECTION_STRING__="InstrumentationKey=4a8e6d36-bad7-4a8e-a597-37805fe9df80;IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/;ApplicationId=651b4175-b2d2-42ef-adaa-e77479976fc3";</script>
+  <script defer src="../assets/analytics.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/reuse-and-memory.html#article","headline":"Reuse \u0026 Memory: Shared Components and Repo Knowledge","name":"Reuse \u0026 Memory: Shared Components and Repo Knowledge","description":"Factor common intent into imported shared components and give the Repo Assistant memory that persists across runs.","url":"https://aw.isainative.dev/chapters/reuse-and-memory.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Organization (fleet at scale)","keywords":"imports:, shared components, APM dependencies (shared/apm.md), memory / persistence, AGENTS.md context, DRY workflows"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/reuse-and-memory.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Organization (fleet at scale)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"Reuse \u0026 Memory: Shared Components and Repo Knowledge","item":"https://aw.isainative.dev/chapters/reuse-and-memory.html"}]}]}</script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <div class="sidebar-top">
+          <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+          <div class="theme-toggle" role="group" aria-label="Reading theme">
+        <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">☀</span><span class="visually-hidden">Light theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">◑</span><span class="visually-hidden">Sepia theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="dark" aria-pressed="false" title="Dark"><span aria-hidden="true">☾</span><span class="visually-hidden">Dark theme</span></button>
+      </div>
+        </div>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a class="is-current" aria-current="page" href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 11 <span class="fm-sep">·</span> <a href="../gh-aw-book.pdf">Download PDF</a> <span class="fm-sep">·</span> <a href="../versions.html">v1.1</a></nav>
+        <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">11</span><span class="fm-sep">·</span><span class="fm-k">part:</span> <span class="fm-v">The Organization (fleet at scale)</span></p>
+        <h1>Reuse &amp; Memory: Shared Components and Repo Knowledge</h1>
+        <p class="lead">Factor common intent into imported shared components and give the Repo Assistant memory that persists across runs.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#concept-don-t-repeat-yourself-across-a-fleet">Concept: don&#x27;t repeat yourself across a fleet</a></li>
+              <li><a href="#in-gh-aw-imports-shared-components-and-repo-memory">In gh-aw: imports, shared components, and repo memory</a></li>
+              <li><a href="#when-to-extract-a-shared-component-and-when-to-inline">When to extract a shared component (and when to inline)</a></li>
+              <li><a href="#worked-example-importing-a-shared-triage-policy-with-memory">Worked example: importing a shared triage policy with memory</a></li>
+              <li><a href="#recap-and-what-s-next">Recap &amp; what&#x27;s next</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>imports:</li>
+            <li>shared components</li>
+            <li>APM dependencies (shared/apm.md)</li>
+            <li>memory / persistence</li>
+            <li>AGENTS.md context</li>
+            <li>DRY workflows</li>
+            </ul>
+          </aside>
+          <aside class="metadata-card" aria-labelledby="depends-heading">
+            <h2 id="depends-heading">Prerequisites</h2>
+            <ul>
+            <li><a href="continuous-review-and-testing.html">Chapter 10: Continuous Review, Testing &amp; CI-Doctor</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p>By the end of this chapter you can factor common intent into <strong>imported shared components</strong> so a fleet of workflows stops repeating itself, and give the Repo Assistant <strong>memory</strong> that persists across runs. This opens <strong>Part III</strong>: the leap from one repository to an organization.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. We take the triage policy we've refined over ten chapters and turn it into a single shared file every repo can import.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="concept-don-t-repeat-yourself-across-a-fleet">
+          <h2 id="concept-don-t-repeat-yourself-across-a-fleet"><a class="anchor-link" href="#concept-don-t-repeat-yourself-across-a-fleet" aria-label="Link to Concept: don&#x27;t repeat yourself across a fleet section">Concept: don&#x27;t repeat yourself across a fleet</a></h2>
+          <div class="section-content" data-content-slot="concept-don-t-repeat-yourself-across-a-fleet">
+<p>One repo, one triage workflow &mdash; fine to write inline. But the moment you have <em>five</em> repos each with a triage workflow, you've copied the same allowed-label list, the same tools, the same policy prose five times. Fix a rule in one, and the other four drift. This is the classic <strong>Don't Repeat Yourself</strong> problem, now at the scale of a fleet of agents.</p>
+  <p>There are two distinct kinds of &ldquo;sameness&rdquo; to factor out:</p>
+  <ul>
+    <li><strong>Shared configuration and intent</strong> &mdash; the toolset, the safe-outputs limits, the triage policy itself. This wants to live in <em>one file</em> that many workflows <strong>import</strong>.</li>
+    <li><strong>Shared knowledge over time</strong> &mdash; what the agent learned on previous runs (recurring duplicates, project conventions). This wants to <strong>persist</strong> across runs as memory.</li>
+  </ul>
+  <p>Imports solve repetition <em>across workflows</em>; memory solves amnesia <em>across runs</em>. Together they turn a pile of copy-pasted workflows into a maintained, learning fleet.</p>
+  <aside class="callout callout--leader" aria-label="Leader takeaway">
+    <p class="callout-title">Leader lens: govern once, apply everywhere</p>
+    <p>A shared component is a <em>governance surface</em>. Encode your triage policy, your allowed labels, your security posture once; every repo that imports it inherits the current version. Updating org-wide behavior becomes a single reviewed change, not a 200-repo migration &mdash; which is exactly how the largest adopters run agents at scale.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-imports-shared-components-and-repo-memory">
+          <h2 id="in-gh-aw-imports-shared-components-and-repo-memory"><a class="anchor-link" href="#in-gh-aw-imports-shared-components-and-repo-memory" aria-label="Link to In gh-aw: imports, shared components, and repo memory section">In gh-aw: imports, shared components, and repo memory</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-imports-shared-components-and-repo-memory">
+<h3>Imports and shared components</h3>
+  <p>The <code>imports:</code> field &ldquo;compose[s] shared tools, steps, MCP servers, and prompts from other workflow files&rdquo; (<a href="https://github.github.com/gh-aw/reference/frontmatter/">Frontmatter</a>). A <strong>shared component</strong> is simply a workflow file <em>without</em> an <code>on:</code> field: it is &ldquo;validated but not compiled into GitHub Actions, only imported by other workflows&rdquo; (<a href="https://github.github.com/gh-aw/reference/imports/">Imports</a>).</p>
+  <figure class="code">
+    <figcaption>Import a shared file; its tools and safe-outputs merge into yours</figcaption>
+    <pre><code class="language-yaml">imports:
+  - shared/triage-policy.md                         # local, repo-relative
+  - acme-org/shared-workflows/triage.md@v2.1.0      # cross-repo, pinned to a tag</code></pre>
+  </figure>
+  <p>Paths resolve three ways: <strong>relative</strong> to the workflow, <strong>repo-root</strong> (<code>.github/&hellip;</code>), or <strong>cross-repo</strong> as <code>owner/repo/path@ref</code> &mdash; and cross-repo imports are &ldquo;pinned to a semantic tag, branch, or commit SHA&rdquo; and cached for offline compiles (<a href="https://github.github.com/gh-aw/reference/imports/">Imports</a>). Fields merge sensibly: tool allowlists concatenate and dedupe; each safe-output type is defined once, with the main workflow winning on conflict.</p>
+
+  <h3>Packaging dependencies: the Agent Package Manager (APM)</h3>
+  <p>Imports compose files you write. But agents increasingly depend on <em>published</em> primitives &mdash; skills, prompts, instructions, sub-agents, hooks, and plugins &mdash; that live in other repositories and evolve on their own cadence. The <strong>Agent Package Manager (APM)</strong> &ldquo;manages AI agent primitives&hellip; Packages can depend on other packages and APM resolves the full dependency tree&rdquo; (<a href="https://github.github.com/gh-aw/reference/dependencies/">APM Dependencies</a>). It is the same DRY instinct as a shared component, but for the agent's <em>context</em> rather than its config &mdash; a real package manager for agent intelligence.</p>
+  <p>APM plugs into gh-aw through exactly the mechanism you just learned: you import a shared file, <code>shared/apm.md</code>, and pass it the packages you want. That import &ldquo;adds a dedicated <code>apm</code> job&rdquo; that resolves and packs the packages into a bundle at build time, which the agent job unpacks &ldquo;for deterministic startup&rdquo; (<a href="https://github.github.com/gh-aw/reference/dependencies/">APM Dependencies</a>).</p>
+  <figure class="code">
+    <figcaption>Illustrative: depend on published skills via the <code>shared/apm.md</code> import</figcaption>
+    <pre><code class="language-yaml">imports:
+  - uses: shared/apm.md            # vendored from microsoft/apm via `gh aw add`
+    with:
+      packages:
+        - microsoft/apm-sample-package                       # a full package
+        - github/awesome-copilot/skills/review-and-refactor  # one primitive
+        - anthropics/skills/skills/frontend-design#v2.0      # pinned to a tag</code></pre>
+  </figure>
+  <p>Each entry is a package reference in one of three shapes: <code>owner/repo</code> (a full package), <code>owner/repo/path</code> (a single primitive such as one skill), or <code>owner/repo#ref</code> (pinned to a tag, branch, or SHA) (<a href="https://github.github.com/gh-aw/reference/dependencies/">APM Dependencies</a>). Reproducibility is the point: an <code>apm.lock</code> file &ldquo;pin[s] every package to an exact commit SHA, so the same versions are installed on every run,&rdquo; and those lock diffs &ldquo;appear in pull requests and are reviewable before merge&rdquo; &mdash; an audit trail for exactly which agent context is in use. That reviewable, pinnable supply chain is what makes APM <em>governable</em> at org scale, which we return to in <a class="xref" href="governance-and-finops.html">Chapter 13</a>.</p>
+
+  <h3>Repo memory vs. cache memory</h3>
+  <p>Persistence comes in two flavors, and choosing correctly matters. <strong>Repo memory</strong> gives &ldquo;persistent file storage via Git branches with unlimited retention&rdquo; &mdash; enable it with <code>tools: repo-memory: true</code> and the compiler auto-configures a <code>memory/default</code> branch that files &ldquo;auto-commit/push after workflow completion&rdquo; (<a href="https://github.github.com/gh-aw/reference/repo-memory/">Repo Memory</a>). <strong>Cache memory</strong> uses the GitHub Actions cache instead &mdash; fast, but 7-day retention and no version control.</p>
+  <table>
+    <thead>
+      <tr><th></th><th>Repo memory</th><th>Cache memory</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Storage</td><td>Git branches</td><td>Actions Cache</td></tr>
+      <tr><td>Retention</td><td>Unlimited</td><td>7 days</td></tr>
+      <tr><td>Versioned</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Best for</td><td>Long-term insights/history</td><td>Temporary/session state</td></tr>
+    </tbody>
+  </table>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: shared components can be parameterized</p>
+    <p>A shared file can declare an <code>import-schema</code> of typed parameters; callers pass values with the <code>uses</code>/<code>with</code> form. That lets one <code>deploy.md</code> or <code>triage.md</code> serve many repos with per-repo tweaks (region, allowed labels) &mdash; reuse without a fork.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="when-to-extract-a-shared-component-and-when-to-inline">
+          <h2 id="when-to-extract-a-shared-component-and-when-to-inline"><a class="anchor-link" href="#when-to-extract-a-shared-component-and-when-to-inline" aria-label="Link to When to extract a shared component (and when to inline) section">When to extract a shared component (and when to inline)</a></h2>
+          <div class="section-content" data-content-slot="when-to-extract-a-shared-component-and-when-to-inline">
+<p>The rule of thumb is the <strong>rule of three</strong>: inline the first time, wince the second, extract the third. Premature sharing couples workflows that should stay independent; late sharing leaves you with drift. Extract when the <em>same</em> intent genuinely recurs and you want it governed centrally.</p>
+  <table>
+    <thead>
+      <tr><th>Extract to a shared import when&hellip;</th><th>Keep inline when&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>the policy/toolset repeats across repos</td><td>it's genuinely one-off</td></tr>
+      <tr><td>you want one place to update org-wide</td><td>the workflows will diverge anyway</td></tr>
+      <tr><td>a security config must be consistent</td><td>early days &mdash; you're still iterating</td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't track a moving branch for cross-repo imports.</strong> Pin to a tag or SHA (<code>@v2.1.0</code>), not <code>@main</code> &mdash; an unpinned import is a supply-chain risk, the same lesson as unpinned engine versions in <a class="xref" href="engines.html">Chapter 5</a>.</li>
+    <li><strong>Don't consume APM packages unpinned or unreviewed.</strong> A skill is executable context: commit the <code>apm.lock</code>, review its diffs, and pin references. Skills you don't control are exactly where the <a class="xref" href="defense-in-depth.html">Chapter 7</a> threat model applies &mdash; govern them (Chapter 13), don't trust them by default.</li>
+    <li><strong>Don't put secrets in memory.</strong> Repo memory follows repository permissions and lives in a branch; &ldquo;don't store sensitive data in repo memory.&rdquo; Keep secrets in Actions secrets, always.</li>
+    <li><strong>Don't reach for repo memory when cache memory fits.</strong> Session-only scratch state doesn't need an unlimited, version-controlled branch &mdash; use the faster 7-day cache.</li>
+    <li><strong>Don't over-abstract.</strong> A shared component with fifteen parameters is harder to reason about than two honest copies. Share the stable core; let the edges vary.</li>
+  </ul>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-importing-a-shared-triage-policy-with-memory">
+          <h2 id="worked-example-importing-a-shared-triage-policy-with-memory"><a class="anchor-link" href="#worked-example-importing-a-shared-triage-policy-with-memory" aria-label="Link to Worked example: importing a shared triage policy with memory section">Worked example: importing a shared triage policy with memory</a></h2>
+          <div class="section-content" data-content-slot="worked-example-importing-a-shared-triage-policy-with-memory">
+<p>Let's collapse ten chapters of triage refinement into <strong>one shared file</strong> plus a thin workflow that imports it and remembers what it learns.</p>
+
+  <figure class="code">
+    <figcaption>examples/ch11/shared/triage-policy.md &mdash; a shared component (no <code>on:</code>, so it never runs alone)</figcaption>
+    <pre><code class="language-yaml">description: Shared triage policy reused across Repo Assistant workflows
+tools:
+  github: { toolsets: [issues] }
+safe-outputs:
+  add-comment: { max: 1 }
+  add-labels:
+    allowed: [bug, enhancement, question, documentation, duplicate, needs-info]
+    max: 3
+---
+## Shared triage policy
+Categorize the issue, summarize it in one sentence, note missing info, apply at
+most three labels from the allowed set, and post one concise comment.</code></pre>
+  </figure>
+
+  <figure class="code">
+    <figcaption>examples/ch11/repo-assistant-shared.md &mdash; imports the policy, adds memory (compiles: 0/0)</figcaption>
+    <pre><code class="language-yaml">on:
+  issues: { types: [opened, reopened] }
+  schedule: daily
+  workflow_dispatch:
+permissions: { contents: read, issues: read }
+engine: copilot
+network: { allowed: [defaults, github] }
+imports:
+  - shared/triage-policy.md      # tools + labels + safe-outputs, from one file
+tools:
+  repo-memory: true              # persist what it learns across runs</code></pre>
+  </figure>
+
+  <p>The main workflow is now almost content-free: the <em>policy</em> &mdash; tools, allowed labels, safe outputs &mdash; comes entirely from the imported file, and <code>repo-memory: true</code> lets the agent read prior notes and append new ones each run. Point ten repositories at the same <code>shared/triage-policy.md</code> (or a pinned cross-repo import) and they triage identically; change the file once and all ten update on their next compile.</p>
+
+  <figure class="code">
+    <figcaption>Verifying the example</figcaption>
+    <pre><code class="language-text">gh aw compile examples/ch11/repo-assistant-shared.md
+# ✓ examples\ch11\repo-assistant-shared.md (108.1 KB)
+# ✓ Compiled 1 workflow(s): 0 error(s), 0 warning(s)</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="How the merge works">
+    <p class="callout-title">The compiler merged two files into one lock</p>
+    <p>Notice the workflow declares no <code>safe-outputs</code> or <code>github</code> tool of its own &mdash; they came from the import and were merged in at compile time (tool allowlists concatenate; safe-output types are defined once). The compiled <code>.lock.yml</code> is a single self-contained artifact, exactly as in <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a> &mdash; imports are resolved at build time, not runtime.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-what-s-next">
+          <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
+          <div class="section-content" data-content-slot="recap-and-what-s-next">
+<p>You can now stop repeating yourself across a fleet, and let agents remember:</p>
+  <ul>
+    <li>As you scale to many repos, factor common intent into <strong>shared components</strong> &mdash; files without <code>on:</code> that others <code>import</code>.</li>
+    <li>Imports resolve <strong>relative</strong>, <strong>repo-root</strong>, or <strong>cross-repo</strong> (<code>owner/repo/path@ref</code>, pinned); fields merge, and <code>import-schema</code> allows typed parameters.</li>
+    <li>The <strong>Agent Package Manager (APM)</strong> rides the same import mechanism (<code>shared/apm.md</code> + <code>packages:</code>) to depend on published skills/prompts/plugins, pinned to exact SHAs in an <code>apm.lock</code> for reproducible, reviewable builds.</li>
+    <li><strong>Repo memory</strong> (Git branches, unlimited, versioned) vs. <strong>cache memory</strong> (Actions cache, 7-day, fast) give the agent persistence across runs.</li>
+    <li>Follow the <strong>rule of three</strong>, <strong>pin</strong> cross-repo imports, and never store secrets in memory.</li>
+  </ul>
+  <p><strong>What's next.</strong> A shared, remembering fleet is powerful &mdash; and now you need to <em>see</em> what it's doing. In <a class="xref" href="observability-and-debugging.html">Chapter 12: Trust &amp; Operate</a>, we inspect, debug, and audit runs with <code>gh aw logs</code> and <code>gh aw audit</code>, because you can't govern what you can't see.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <a class="pager-link" rel="prev" href="continuous-review-and-testing.html">← Chapter 10: Continuous Review, Testing &amp; CI-Doctor</a>
+          <a class="pager-link" rel="next" href="observability-and-debugging.html">Chapter 12: Trust &amp; Operate: Observability and Debugging →</a>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>By <strong>Maxim Salnikov</strong> · Microsoft · <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub ↗</a> · <a href="../gh-aw-book.pdf">Download the PDF</a> · <a href="../versions.html">Content edition v1.1</a></p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

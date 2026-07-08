@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Continuous Review, Testing &amp; CI-Doctor | GitHub Agentic Workflows: An Interactive Book</title>
+  <meta name="description" content="Close the quality loop with Review, Testing, CI-Doctor, and Refactoring patterns while keeping humans on the merge decision.">
+  <meta name="author" content="Maxim Salnikov">
+  <link rel="canonical" href="https://aw.isainative.dev/chapters/continuous-review-and-testing.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e9edf4">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1220">
+  <script>(function(){try{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GitHub Agentic Workflows: An Interactive Book">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Continuous Review, Testing &amp; CI-Doctor">
+  <meta property="og:description" content="Close the quality loop with Review, Testing, CI-Doctor, and Refactoring patterns while keeping humans on the merge decision.">
+  <meta property="og:url" content="https://aw.isainative.dev/chapters/continuous-review-and-testing.html">
+  <meta property="og:image" content="https://aw.isainative.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Continuous Review, Testing &amp; CI-Doctor">
+  <meta name="twitter:description" content="Close the quality loop with Review, Testing, CI-Doctor, and Refactoring patterns while keeping humans on the merge decision.">
+  <meta name="twitter:image" content="https://aw.isainative.dev/og-image.png">
+  <meta name="twitter:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+  <script>window.__APPINSIGHTS_CONNECTION_STRING__="InstrumentationKey=4a8e6d36-bad7-4a8e-a597-37805fe9df80;IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/;ApplicationId=651b4175-b2d2-42ef-adaa-e77479976fc3";</script>
+  <script defer src="../assets/analytics.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/continuous-review-and-testing.html#article","headline":"Continuous Review, Testing \u0026 CI-Doctor","name":"Continuous Review, Testing \u0026 CI-Doctor","description":"Close the quality loop with Review, Testing, CI-Doctor, and Refactoring patterns while keeping humans on the merge decision.","url":"https://aw.isainative.dev/chapters/continuous-review-and-testing.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Team (safe, reviewed, patterned)","keywords":"Continuous Review pattern, Continuous Testing pattern, CI-Doctor pattern, Continuous Refactoring pattern, pull_request triggers"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/continuous-review-and-testing.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Team (safe, reviewed, patterned)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"Continuous Review, Testing \u0026 CI-Doctor","item":"https://aw.isainative.dev/chapters/continuous-review-and-testing.html"}]}]}</script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <div class="sidebar-top">
+          <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+          <div class="theme-toggle" role="group" aria-label="Reading theme">
+        <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">☀</span><span class="visually-hidden">Light theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">◑</span><span class="visually-hidden">Sepia theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="dark" aria-pressed="false" title="Dark"><span aria-hidden="true">☾</span><span class="visually-hidden">Dark theme</span></button>
+      </div>
+        </div>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a class="is-current" aria-current="page" href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 10 <span class="fm-sep">·</span> <a href="../gh-aw-book.pdf">Download PDF</a> <span class="fm-sep">·</span> <a href="../versions.html">v1.1</a></nav>
+        <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">10</span><span class="fm-sep">·</span><span class="fm-k">part:</span> <span class="fm-v">The Team (safe, reviewed, patterned)</span></p>
+        <h1>Continuous Review, Testing &amp; CI-Doctor</h1>
+        <p class="lead">Close the quality loop with Review, Testing, CI-Doctor, and Refactoring patterns while keeping humans on the merge decision.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#concept-closing-the-quality-loop">Concept: closing the quality loop</a></li>
+              <li><a href="#in-gh-aw-the-review-testing-ci-doctor-and-refactoring-recipes">In gh-aw: the Review, Testing, CI-Doctor, and Refactoring recipes</a></li>
+              <li><a href="#when-to-automate-quality-and-where-humans-stay-in-the-loop">When to automate quality (and where humans stay in the loop)</a></li>
+              <li><a href="#worked-example-a-pr-review-plus-daily-test-improver-pair">Worked example: a PR-review plus daily-test-improver pair</a></li>
+              <li><a href="#recap-and-what-s-next">Recap &amp; what&#x27;s next</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>Continuous Review pattern</li>
+            <li>Continuous Testing pattern</li>
+            <li>CI-Doctor pattern</li>
+            <li>Continuous Refactoring pattern</li>
+            <li>pull_request triggers</li>
+            </ul>
+          </aside>
+          <aside class="metadata-card" aria-labelledby="depends-heading">
+            <h2 id="depends-heading">Prerequisites</h2>
+            <ul>
+            <li><a href="continuous-triage-and-docs.html">Chapter 9: Continuous Triage &amp; Docs: Reading the Room</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p>By the end of this chapter you can close the repository's <strong>quality loop</strong> with four more patterns &mdash; <strong>Review</strong>, <strong>Testing</strong>, <strong>CI-Doctor</strong>, and <strong>Refactoring</strong> &mdash; while keeping humans firmly on the merge decision. This is the second half of the Continuous-X library and the close of Part II.</p>
+  <p>Everything targets <strong>gh aw v0.81.6</strong>. The Repo Assistant graduates from tending the issue tracker to helping tend the <em>code</em>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="concept-closing-the-quality-loop">
+          <h2 id="concept-closing-the-quality-loop"><a class="anchor-link" href="#concept-closing-the-quality-loop" aria-label="Link to Concept: closing the quality loop section">Concept: closing the quality loop</a></h2>
+          <div class="section-content" data-content-slot="concept-closing-the-quality-loop">
+<p>A repository's quality has a <strong>loop</strong>: code is proposed (a PR), reviewed, tested, merged, and &mdash; when something slips &mdash; fixed. Traditional CI automates the <em>deterministic</em> checks in that loop: does it compile, do the tests pass, does the linter approve. But the <em>judgement</em> steps &mdash; is this a good change? is this test worth adding? why did CI actually break? &mdash; still wait on a human.</p>
+  <p>Continuous-X patterns fill exactly those judgement gaps. Where <a class="xref" href="continuous-triage-and-docs.html">Chapter 9</a> kept the <em>inbox</em> honest, these keep the <em>codebase</em> honest &mdash; each one a mini-product owning one link in the quality loop.</p>
+
+  <h3>The one rule that makes it safe: humans keep the merge</h3>
+  <p>The defining constraint of quality automation is that <strong>the agent proposes; a human disposes</strong>. A review agent <em>comments</em>, it doesn't approve. A test-improver <em>opens a draft PR</em>, it doesn't push to main. This isn't timidity &mdash; it's what lets you run these patterns at all. The agent accelerates the work up to the decision point and stops, leaving the irreversible call to a person. That's the human-in-the-loop principle, and it's why the safe-outputs boundary from <a class="xref" href="safe-outputs.html">Chapter 6</a> matters most here.</p>
+  <aside class="callout callout--leader" aria-label="Real adopters">
+    <p class="callout-title">Measured: quality agents at scale</p>
+    <p>A single PR-review agent originating in <code>clash-verge-rev</code> has been cloned across <strong>215+ repositories</strong>; <code>backend.ai-webui</code> runs both a daily test-improver and an e2e-healer; <code>camunda</code> runs CI cost analysis. Quality is the category where Continuous-X adoption has spread fastest &mdash; because the human-keeps-the-merge rule makes it low-risk to try.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-the-review-testing-ci-doctor-and-refactoring-recipes">
+          <h2 id="in-gh-aw-the-review-testing-ci-doctor-and-refactoring-recipes"><a class="anchor-link" href="#in-gh-aw-the-review-testing-ci-doctor-and-refactoring-recipes" aria-label="Link to In gh-aw: the Review, Testing, CI-Doctor, and Refactoring recipes section">In gh-aw: the Review, Testing, CI-Doctor, and Refactoring recipes</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-the-review-testing-ci-doctor-and-refactoring-recipes">
+<p>Four patterns, each triggered by a different moment in the quality loop &mdash; and each writing through a safe output that stops short of merging.</p>
+  <table>
+    <thead>
+      <tr><th>Pattern</th><th>Trigger</th><th>Writes via</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Review</strong></td><td><code>pull_request</code></td><td><code>submit-pull-request-review</code> (COMMENT only)</td></tr>
+      <tr><td><strong>Testing</strong></td><td><code>schedule</code></td><td><code>create-pull-request</code> (draft)</td></tr>
+      <tr><td><strong>CI-Doctor</strong></td><td><code>workflow_run</code> (CI failed)</td><td><code>add-comment</code> / <code>create-issue</code></td></tr>
+      <tr><td><strong>Refactoring</strong></td><td><code>schedule</code> or command</td><td><code>create-pull-request</code> (draft)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Review: comment, never approve</h3>
+  <p>The Review pattern reads a PR diff and leaves inline feedback. The critical setting is <code>allowed-events: [COMMENT]</code>, which &ldquo;prevents the agent from submitting APPROVE reviews regardless of what the agent attempts to output&rdquo; &mdash; the docs explicitly recommend it as &ldquo;the default for automated review workflows&hellip; without creating a persistent merge-blocking state&rdquo; (<a href="https://github.github.com/gh-aw/reference/safe-outputs/">Safe Outputs</a>). Infrastructure enforces the human-keeps-the-merge rule.</p>
+
+  <h3>CI-Doctor: react to the failure</h3>
+  <p>CI-Doctor is the elegant use of the <code>workflow_run</code> trigger from <a class="xref" href="triggers.html">Chapter 4</a> with <strong>conclusion filtering</strong>: fire only when a named CI workflow finishes with <code>failure</code>, read the logs, and post a diagnosis. Because <code>workflow_run</code> is hardened against cross-repo abuse, this stays safe even on public repos.</p>
+  <figure class="code">
+    <figcaption>The CI-Doctor trigger &mdash; wake only on a real CI failure</figcaption>
+    <pre><code class="language-yaml">on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    conclusion: [failure]     # only when CI actually broke
+    branches: [main]</code></pre>
+  </figure>
+
+  <h3>Testing &amp; Refactoring: propose a diff</h3>
+  <p>Both run on a schedule, do focused work, and open a <strong>draft</strong> <code>create-pull-request</code>. Testing adds coverage without touching production code; Refactoring makes a small, behavior-preserving cleanup. Draft PRs keep the human on the merge, exactly as in the Docs pattern.</p>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: give the tester a scoped shell</p>
+    <p>A test-improver has to <em>run</em> the suite, so it needs <code>bash</code> &mdash; but scope it. Prefer an explicit allowlist like <code>bash: ["npm ci", "npm test", "npx jest"]</code> over the unrestricted <code>bash: [":*"]</code>, and add only the ecosystem the build needs to <code>network.allowed</code> (e.g. <code>node</code>). Capability where required, tight everywhere else.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="when-to-automate-quality-and-where-humans-stay-in-the-loop">
+          <h2 id="when-to-automate-quality-and-where-humans-stay-in-the-loop"><a class="anchor-link" href="#when-to-automate-quality-and-where-humans-stay-in-the-loop" aria-label="Link to When to automate quality (and where humans stay in the loop) section">When to automate quality (and where humans stay in the loop)</a></h2>
+          <div class="section-content" data-content-slot="when-to-automate-quality-and-where-humans-stay-in-the-loop">
+<p>Quality patterns pay off when they act as a <strong>tireless first pass</strong> &mdash; catching the obvious before a human spends attention, never replacing the human's final say. The line to hold: <em>automate the noticing and the drafting; reserve the deciding.</em></p>
+  <table>
+    <thead>
+      <tr><th>Agent may&hellip;</th><th>Human keeps&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>comment on a PR, flag risks</td><td>approve / request changes / merge</td></tr>
+      <tr><td>open a draft test or refactor PR</td><td>review and merge that PR</td></tr>
+      <tr><td>diagnose a CI failure, file an issue</td><td>decide the fix and ship it</td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't let a review agent block merges.</strong> Auto <code>REQUEST_CHANGES</code> creates a persistent merge-blocking state from a fallible model. Keep <code>allowed-events: [COMMENT]</code> unless a human explicitly wants gating.</li>
+    <li><strong>Don't let the test-improver edit production code.</strong> Instruct it to add tests only; a PR that &ldquo;fixes&rdquo; code to make a test pass is the opposite of what you want.</li>
+    <li><strong>Don't auto-merge agent PRs.</strong> The draft PR is the human's decision point &mdash; automating the merge throws away the one safeguard that makes this safe.</li>
+    <li><strong>Don't run a refactoring agent on a repo without good tests.</strong> &ldquo;Behavior-preserving&rdquo; is only verifiable if the tests can prove it. Ship Testing before Refactoring.</li>
+  </ul>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-a-pr-review-plus-daily-test-improver-pair">
+          <h2 id="worked-example-a-pr-review-plus-daily-test-improver-pair"><a class="anchor-link" href="#worked-example-a-pr-review-plus-daily-test-improver-pair" aria-label="Link to Worked example: a PR-review plus daily-test-improver pair section">Worked example: a PR-review plus daily-test-improver pair</a></h2>
+          <div class="section-content" data-content-slot="worked-example-a-pr-review-plus-daily-test-improver-pair">
+<p>Two complementary quality agents: one reacts to every PR, the other proactively strengthens the tests. Both compile cleanly, and both stop short of the merge.</p>
+
+  <figure class="code">
+    <figcaption>examples/ch10/continuous-review.md &mdash; comment-only PR review (compiles: 0/0)</figcaption>
+    <pre><code class="language-yaml">on:
+  pull_request: { types: [opened, synchronize] }
+permissions: { contents: read, pull-requests: read }
+engine: copilot
+network: { allowed: [defaults, github] }
+tools:
+  github: { toolsets: [pull_requests] }
+safe-outputs:
+  create-pull-request-review-comment: { max: 10 }
+  submit-pull-request-review:
+    allowed-events: [COMMENT]     # can never approve or block
+    max: 1</code></pre>
+  </figure>
+
+  <figure class="code">
+    <figcaption>examples/ch10/daily-test-improver.md &mdash; proposes tests as a draft PR (compiles: 0/0)</figcaption>
+    <pre><code class="language-yaml">on:
+  schedule: daily
+  workflow_dispatch:
+permissions: { contents: read }
+engine: copilot
+network: { allowed: [defaults, github, node] }
+tools:
+  github: { toolsets: [repos] }
+  bash: ["npm ci", "npm test", "npx jest", "npx vitest run"]   # scoped shell
+  edit:
+safe-outputs:
+  create-pull-request: { title-prefix: "[tests] ", labels: [tests, automated], draft: true }</code></pre>
+  </figure>
+
+  <p>The review agent holds <strong>read-only</strong> PR access and can only emit a <code>COMMENT</code> review &mdash; the <code>allowed-events</code> setting makes &ldquo;never block a merge&rdquo; an infrastructural guarantee, not a hope. The test-improver gets a <strong>scoped shell</strong> to run the suite and <code>edit</code> to write tests, but its sole output is a <strong>draft</strong> PR a human reviews. Both accelerate the work right up to the human's decision, then hand it over.</p>
+
+  <figure class="code">
+    <figcaption>Verifying both examples</figcaption>
+    <pre><code class="language-text">gh aw compile examples/ch10/continuous-review.md
+# ✓ examples\ch10\continuous-review.md (101.8 KB) — 0 error(s), 0 warning(s)
+gh aw compile examples/ch10/daily-test-improver.md
+# ✓ examples\ch10\daily-test-improver.md (103.8 KB) — 0 error(s), 0 warning(s)</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="The safe output enforces the principle">
+    <p class="callout-title">The principle is enforced, not just documented</p>
+    <p>Notice how <code>allowed-events: [COMMENT]</code> and <code>draft: true</code> turn &ldquo;humans keep the merge&rdquo; from a guideline into a compiled constraint. Even a hijacked agent can't approve a PR or merge one &mdash; the safe-outputs layer simply won't let the request through. That's the quality loop closed <em>safely</em>.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-what-s-next">
+          <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
+          <div class="section-content" data-content-slot="recap-and-what-s-next">
+<p>You've closed the quality loop &mdash; and Part II:</p>
+  <ul>
+    <li>Quality automation fills the <strong>judgement gaps</strong> CI can't: is this change good, is this test worth adding, why did CI break.</li>
+    <li>Four patterns &mdash; <strong>Review</strong> (PR, comment-only), <strong>Testing</strong> (scheduled draft PR), <strong>CI-Doctor</strong> (<code>workflow_run</code> on failure), <strong>Refactoring</strong> (scheduled draft PR).</li>
+    <li>The unbreakable rule is <strong>humans keep the merge</strong> &mdash; enforced by <code>allowed-events: [COMMENT]</code> and <code>draft: true</code>, not just by convention.</li>
+    <li>Automate the noticing and drafting; reserve the deciding. Ship Testing before Refactoring, and never auto-merge an agent's PR.</li>
+  </ul>
+  <p><strong>What's next.</strong> You now have a shelf of patterns &mdash; and you're about to notice how much they repeat. <strong>Part III</strong> scales from one repo to an org. <a class="xref" href="reuse-and-memory.html">Chapter 11: Reuse &amp; Memory</a> factors the shared parts into imported components and gives the Repo Assistant memory that persists across runs.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <a class="pager-link" rel="prev" href="continuous-triage-and-docs.html">← Chapter 9: Continuous Triage &amp; Docs: Reading the Room</a>
+          <a class="pager-link" rel="next" href="reuse-and-memory.html">Chapter 11: Reuse &amp; Memory: Shared Components and Repo Knowledge →</a>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>By <strong>Maxim Salnikov</strong> · Microsoft · <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub ↗</a> · <a href="../gh-aw-book.pdf">Download the PDF</a> · <a href="../versions.html">Content edition v1.1</a></p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
