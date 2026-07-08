@@ -1,0 +1,125 @@
+name: Release book content
+
+# Publishes a GitHub Release for the book's CONTENT edition whenever content/VERSION changes.
+#
+# The book is a living document: its prose (content/) is versioned independently of the site
+# generator and tooling. content/VERSION is the source of truth, content/CHANGELOG.md is the
+# history, and each version is shipped here as a Release tagged `content-vX.Y` with the matching
+# single-file PDF attached — so every published state stays reproducible and downloadable.
+#
+# This job is CONTENT-only: it is not triggered by site/tooling changes, and it is idempotent —
+# if a release for the current version already exists, it does nothing.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "content/VERSION"
+      # CHANGELOG is included so a notes-only fix can retrigger a release that
+      # failed on a previous push (the idempotency guard prevents duplicates).
+      - "content/CHANGELOG.md"
+  # Manual runs (re)cut the release for whatever ref they are dispatched against:
+  # the version, PDF, and notes always come from that ref's content/VERSION and
+  # content/CHANGELOG.md, so a dispatched release can never be mislabeled.
+  workflow_dispatch:
+
+# Creating a release and pushing the tag needs write access to repository contents.
+permissions:
+  contents: write
+
+concurrency:
+  group: release-content
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Resolve content version, tag, and asset name
+        id: meta
+        run: |
+          # Always derive from the checked-out content/VERSION so the tag, PDF,
+          # and notes describe exactly this ref — no override can desync them.
+          VERSION="$(python scripts/content_version.py version)"
+          TAG="$(python scripts/content_version.py tag "$VERSION")"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "asset=gh-aw-book-v$VERSION.pdf" >> "$GITHUB_OUTPUT"
+          echo "Resolved content version $VERSION -> tag $TAG"
+
+      - name: Decide whether to create, repair, or skip this release
+        id: guard
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ steps.meta.outputs.tag }}"
+          ASSET="${{ steps.meta.outputs.asset }}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            if gh release view "$TAG" --json assets --jq '.assets[].name' | grep -Fxq "$ASSET"; then
+              echo "Release $TAG already exists with asset $ASSET — nothing to do."
+              echo "action=skip" >> "$GITHUB_OUTPUT"
+            else
+              echo "Release $TAG exists but PDF asset $ASSET is missing — will (re)upload it."
+              echo "action=upload" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "No release for $TAG yet — will create it."
+            echo "action=create" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Write release notes from the changelog
+        if: steps.guard.outputs.action == 'create'
+        run: |
+          {
+            echo "## GitHub Agentic Workflows — content ${{ steps.meta.outputs.tag }}"
+            echo
+            python scripts/content_version.py notes "${{ steps.meta.outputs.version }}"
+            echo
+            echo "---"
+            echo
+            echo "📖 Read online: https://aw.isainative.dev/ · [Version history](https://aw.isainative.dev/versions.html)"
+            echo
+            echo "📄 The single-file PDF for this version is attached below."
+          } > release-notes.md
+          cat release-notes.md
+
+      - name: Build the versioned PDF edition
+        if: steps.guard.outputs.action != 'skip'
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyyaml
+          python site/generate.py
+          python -m pip install -r scripts/requirements-pdf.txt
+          python -m playwright install --with-deps chromium
+          python scripts/build_pdf.py
+          cp site/gh-aw-book.pdf "${{ steps.meta.outputs.asset }}"
+
+      - name: Create the GitHub Release
+        if: steps.guard.outputs.action == 'create'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.meta.outputs.tag }}" \
+            "${{ steps.meta.outputs.asset }}#GitHub Agentic Workflows — v${{ steps.meta.outputs.version }} (PDF)" \
+            --title "Content v${{ steps.meta.outputs.version }}" \
+            --notes-file release-notes.md \
+            --target "${GITHUB_SHA}"
+
+      - name: Attach the missing PDF to the existing release
+        if: steps.guard.outputs.action == 'upload'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${{ steps.meta.outputs.tag }}" \
+            "${{ steps.meta.outputs.asset }}#GitHub Agentic Workflows — v${{ steps.meta.outputs.version }} (PDF)" \
+            --clobber

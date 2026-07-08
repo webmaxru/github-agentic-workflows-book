@@ -5,6 +5,7 @@ import html
 import json
 import os
 import re
+import sys
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -16,6 +17,11 @@ SITE = ROOT / "site"
 CHAPTERS_DIR = SITE / "chapters"
 CONTENT_CHAPTERS_DIR = ROOT / "content" / "chapters"
 TOC_PATH = ROOT / "content" / "toc.yml"
+
+# Content version + changelog live in content/ and are parsed by scripts/content_version.py.
+# The book is a living document: its prose is versioned independently of this generator.
+sys.path.insert(0, str(ROOT / "scripts"))
+import content_version  # noqa: E402  (path set up above)
 
 PLAYBOOK_TITLE = "GitHub Agentic Workflows: An Interactive Book"
 PLAYBOOK_INTRO = (
@@ -49,6 +55,16 @@ GH_AW_REPO = "https://github.com/github/gh-aw"
 # scripts/build_pdf.py (locally and in CI), not committed to main.
 BOOK_PAGE = "book.html"
 PDF_FILENAME = "gh-aw-book.pdf"
+
+# Content edition version --------------------------------------------------------
+# The book is a living document: its prose (content/) is versioned independently of the
+# tooling. content/VERSION is the source of truth; content/CHANGELOG.md is the history;
+# each version ships as a GitHub Release tagged content-vX.Y. See scripts/content_version.py.
+CONTENT_VERSION = content_version.read_version()
+CONTENT_VERSION_TAG = content_version.tag_for(CONTENT_VERSION)
+VERSIONS_PAGE = "versions.html"
+RELEASES_URL = f"{REPO_URL}/releases"
+RELEASE_URL = f"{REPO_URL}/releases/tag/{CONTENT_VERSION_TAG}"
 
 # AI / LLM agent crawlers welcomed explicitly in robots.txt (default policy: allow).
 AI_AGENTS = [
@@ -186,6 +202,16 @@ def abs_url(path: str = "") -> str:
     """Absolute URL against the production origin; `path` is root-relative (no leading slash)."""
     path = path.lstrip("/")
     return f"{SITE_ORIGIN}/{path}" if path else f"{SITE_ORIGIN}/"
+
+
+def version_pill(prefix: str = "") -> str:
+    """A small "v1.1" pill linking to the version-history page. `prefix` is the root-relative
+    path back to the site root ("" from root pages, "../" from chapter pages)."""
+    return (
+        f'<a class="version-pill" href="{prefix}{VERSIONS_PAGE}" '
+        f'title="Content version {esc(CONTENT_VERSION)} \u2014 view version history">'
+        f'v{esc(CONTENT_VERSION)}</a>'
+    )
 
 
 def json_ld_script(data: Any) -> str:
@@ -495,9 +521,11 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
       <nav class="reader-nav" aria-label="Primary">
         <a href="#contents">Contents</a>
         <a href="{PDF_FILENAME}">Download PDF</a>
+        <a href="{VERSIONS_PAGE}">Version history</a>
         <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repo \u2197</a>
         <a href="https://github.com/github/gh-aw" target="_blank" rel="noopener">gh-aw \u2197</a>
       </nav>
+      {version_pill()}
       {theme_toggle()}
     </div>
   </header>
@@ -521,6 +549,10 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
           <div class="cover-meta-item">
             <dt>Reading time</dt>
             <dd>{esc(reading_line)}</dd>
+          </div>
+          <div class="cover-meta-item">
+            <dt>Edition</dt>
+            <dd><a class="cover-meta-link" href="{VERSIONS_PAGE}">v{esc(CONTENT_VERSION)}</a></dd>
           </div>
         </dl>
       </div>
@@ -551,7 +583,7 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
   <footer class="colophon">
     <div class="colophon-inner">
       <p class="colophon-author">By <strong>Maxim Salnikov</strong> \u00b7 Microsoft</p>
-      <p class="colophon-meta"><a href="{PDF_FILENAME}">Download the PDF</a> \u00b7 <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a></p>
+      <p class="colophon-meta"><a href="{VERSIONS_PAGE}">Content edition v{esc(CONTENT_VERSION)}</a> \u00b7 <a href="{PDF_FILENAME}">Download the PDF</a> \u00b7 <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a></p>
     </div>
   </footer>
 </body>
@@ -670,7 +702,7 @@ def render_chapter(
 
     <div class="content-shell">
       <header class="chapter-header">
-        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter {esc(chapter["number"])} <span class="fm-sep">\u00b7</span> <a href="../{PDF_FILENAME}">Download PDF</a></nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter {esc(chapter["number"])} <span class="fm-sep">\u00b7</span> <a href="../{PDF_FILENAME}">Download PDF</a> <span class="fm-sep">\u00b7</span> <a href="../{VERSIONS_PAGE}">v{esc(CONTENT_VERSION)}</a></nav>
         <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">{esc(chapter["number"]):0>2}</span><span class="fm-sep">\u00b7</span><span class="fm-k">part:</span> <span class="fm-v">{esc(part_title)}</span></p>
         <h1>{esc(chapter["title"])}</h1>
         <p class="lead">{esc(chapter["objective"])}</p>
@@ -695,7 +727,7 @@ def render_chapter(
       </main>
 
       <footer class="site-footer chapter-footer">
-        <p>By <strong>Maxim Salnikov</strong> \u00b7 Microsoft \u00b7 <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a> \u00b7 <a href="../{PDF_FILENAME}">Download the PDF</a></p>
+        <p>By <strong>Maxim Salnikov</strong> \u00b7 Microsoft \u00b7 <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a> \u00b7 <a href="../{PDF_FILENAME}">Download the PDF</a> \u00b7 <a href="../{VERSIONS_PAGE}">Content edition v{esc(CONTENT_VERSION)}</a></p>
       </footer>
     </div>
   </div>
@@ -904,7 +936,7 @@ def render_book(
     <h1 class="book-cover-title">GitHub Agentic Workflows</h1>
     <p class="book-cover-sub">{esc(PLAYBOOK_INTRO)}</p>
     <p class="book-cover-author">By <strong>{esc(AUTHOR_NAME)}</strong> \u00b7 Microsoft</p>
-    <p class="book-cover-meta">{chapter_count} chapters \u00b7 Single-page edition \u00b7 Generated {today}</p>
+    <p class="book-cover-meta">Version {esc(CONTENT_VERSION)} \u00b7 {chapter_count} chapters \u00b7 Single-page edition \u00b7 Generated {today}</p>
   </header>
 
   <nav class="book-toc" aria-label="Table of contents">
@@ -918,7 +950,121 @@ def render_book(
 
   <footer class="book-colophon">
     <p>By <strong>{esc(AUTHOR_NAME)}</strong> \u00b7 Microsoft \u00b7 <a href="{esc(AUTHOR_URL)}">LinkedIn</a> \u00b7 <a href="{esc(REPO_URL)}">Book repository</a></p>
-    <p>{esc(PLAYBOOK_TITLE)} \u00b7 {esc(SITE_ORIGIN)}</p>
+    <p>{esc(PLAYBOOK_TITLE)} \u00b7 Content edition v{esc(CONTENT_VERSION)} \u00b7 {esc(SITE_ORIGIN)}</p>
+  </footer>
+</body>
+</html>
+'''
+
+
+def _release_card(release: "content_version.Release", *, is_current: bool) -> str:
+    """Render one changelog release as an accessible card on the version-history page."""
+    tag = release.tag
+    tag_url = f"{REPO_URL}/releases/tag/{tag}"
+    badge = '<span class="release-badge release-badge--current">Current</span>' if is_current else ""
+    summary_html = f'<p class="release-summary">{esc(release.summary)}</p>' if release.summary else ""
+
+    groups_html: list[str] = []
+    for group in release.groups:
+        items = "".join(f"<li>{_inline_md(item)}</li>" for item in group.items)
+        if not items:
+            continue
+        heading = f'<h4 class="release-group-title">{esc(group.title)}</h4>' if group.title else ""
+        groups_html.append(f'{heading}<ul class="release-changes">{items}</ul>')
+
+    return f'''      <article class="release{' release--current' if is_current else ''}" id="{esc(tag)}">
+        <header class="release-head">
+          <h3 class="release-version">Version {esc(release.version)}{badge}</h3>
+          <p class="release-date"><time datetime="{esc(release.date)}">{esc(release.date)}</time> \u00b7 <a href="{esc(tag_url)}" target="_blank" rel="noopener">{esc(tag)} \u2197</a></p>
+        </header>
+        {summary_html}
+        {"".join(groups_html)}
+      </article>'''
+
+
+# Minimal inline-markdown for changelog items: **bold** and `code`. Everything else is escaped.
+_MD_BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
+_MD_CODE_RE = re.compile(r"`([^`]+?)`")
+
+
+def _inline_md(text: str) -> str:
+    out = esc(text)
+    out = _MD_CODE_RE.sub(lambda m: f"<code>{m.group(1)}</code>", out)
+    out = _MD_BOLD_RE.sub(lambda m: f"<strong>{m.group(1)}</strong>", out)
+    return out
+
+
+def render_versions() -> str:
+    """Render versions.html — the content edition's version history, linked to GitHub Releases."""
+    releases = content_version.parse_changelog()
+    cards = "\n".join(
+        _release_card(release, is_current=(release.version == CONTENT_VERSION))
+        for release in releases
+    ) or '<p class="pending-note"><strong>No versions recorded yet.</strong></p>'
+
+    page_title = f"Version history \u2014 {PLAYBOOK_TITLE}"
+    description = (
+        f"Version history for the GitHub Agentic Workflows book. The current content edition is "
+        f"v{CONTENT_VERSION}; every version is published as a GitHub Release with a downloadable PDF."
+    )
+    return f'''<!doctype html>
+<html lang="en">
+<head>
+  {root_head(
+      page_title=page_title,
+      description=description,
+      canonical_url=abs_url(VERSIONS_PAGE),
+      og_type="website",
+      og_title=page_title,
+      prefix="",
+  )}
+</head>
+<body class="home">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="reader-bar" role="banner">
+    <div class="reader-bar-inner">
+      <a class="brand" href="index.html"><span class="brand-mark">aw</span> gh-aw \u00b7 the book</a>
+      <nav class="reader-nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="index.html#contents">Contents</a>
+        <a href="{PDF_FILENAME}">Download PDF</a>
+        <a href="{esc(RELEASES_URL)}" target="_blank" rel="noopener">Releases \u2197</a>
+      </nav>
+      {version_pill()}
+      {theme_toggle()}
+    </div>
+  </header>
+
+  <main id="main-content" tabindex="-1">
+    <section class="version-hero" aria-labelledby="version-title">
+      <div class="reading-column">
+        <p class="cover-series">A living book \u00b7 versioned content</p>
+        <h1 id="version-title">Version history</h1>
+        <p class="guide-lead">This book keeps growing. The <strong>content</strong> \u2014 the chapters and
+        their prose \u2014 carries its own version, independent of the site generator and tooling. The
+        current edition is <strong>v{esc(CONTENT_VERSION)}</strong>. Every version is published as a
+        <a href="{esc(RELEASES_URL)}" target="_blank" rel="noopener">GitHub Release</a> with the
+        matching single-file PDF attached, so any past state stays reproducible and downloadable.</p>
+        <div class="cover-actions">
+          <a class="btn btn-primary" href="{esc(RELEASE_URL)}" target="_blank" rel="noopener">Latest release \u2197</a>
+          <a class="btn btn-quiet" href="{PDF_FILENAME}">\u2193 Download the PDF</a>
+          <a class="btn btn-quiet" href="{esc(REPO_URL)}/blob/main/content/CHANGELOG.md" target="_blank" rel="noopener">Full changelog \u2197</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="version-list" aria-label="Releases">
+      <div class="reading-column">
+{cards}
+      </div>
+    </section>
+  </main>
+
+  <footer class="colophon">
+    <div class="colophon-inner">
+      <p class="colophon-author">By <strong>{esc(AUTHOR_NAME)}</strong> \u00b7 Microsoft</p>
+      <p class="colophon-meta"><a href="index.html">Back to the book</a> \u00b7 <a href="{esc(RELEASES_URL)}" target="_blank" rel="noopener">All releases on GitHub \u2197</a> \u00b7 <a href="{PDF_FILENAME}">Download the PDF</a></p>
+    </div>
   </footer>
 </body>
 </html>
@@ -979,8 +1125,8 @@ def write_discovery_files(chapters: list[dict[str, Any]]) -> None:
     robots += [f"Sitemap: {abs_url('sitemap.xml')}", ""]
     (SITE / "robots.txt").write_text("\n".join(robots), encoding="utf-8")
 
-    # sitemap.xml — home + every chapter.
-    entries = [(abs_url(), "1.0", "weekly")]
+    # sitemap.xml — home + version history + every chapter.
+    entries = [(abs_url(), "1.0", "weekly"), (abs_url(VERSIONS_PAGE), "0.5", "weekly")]
     entries += [(abs_url(f"chapters/{ch['slug']}.html"), "0.8", "monthly") for ch in chapters]
     sm = ['<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
@@ -1028,6 +1174,7 @@ def write_discovery_files(chapters: list[dict[str, Any]]) -> None:
             "## Start here",
             f"- [Home & table of contents]({abs_url()}): Overview, reading guide, and the full chapter list.",
             f"- [Download the PDF]({abs_url(PDF_FILENAME)}): The complete book as a single downloadable PDF.",
+            f"- [Version history]({abs_url(VERSIONS_PAGE)}): Content edition v{CONTENT_VERSION}; every version is a GitHub Release with a PDF.",
             "",
             "## Chapters"]
     for ch in chapters:
@@ -1044,7 +1191,7 @@ def write_discovery_files(chapters: list[dict[str, Any]]) -> None:
     # llms-full.txt: full readable text of every chapter, concatenated for agents.
     full = [f"# {PLAYBOOK_TITLE}", "",
             f"> {HOME_DESCRIPTION}", "",
-            f"Source: {abs_url()} | Author: {AUTHOR_NAME} | Generated: {today}", ""]
+            f"Source: {abs_url()} | Author: {AUTHOR_NAME} | Content edition: v{CONTENT_VERSION} | Generated: {today}", ""]
     for ch in chapters:
         ch_url = abs_url(f"chapters/{ch['slug']}.html")
         full += [f"## Chapter {ch['number']}: {ch['title']}", "",
@@ -1090,6 +1237,7 @@ def print_report(reports: list[dict[str, Any]]) -> None:
     print("")
     print(f"Totals: {filled_slots}/{total_slots} slots authored \u00b7 {complete} complete \u00b7 {pending} pending.")
     print(f"Single-page edition: {SITE / BOOK_PAGE}  (PDF source)")
+    print(f"Version history: {SITE / VERSIONS_PAGE}  (content edition v{CONTENT_VERSION})")
     print(f"Build the PDF ({PDF_FILENAME}): python scripts/build_pdf.py")
     print("Serve locally: python -m http.server -d site 8000")
 
@@ -1122,6 +1270,7 @@ def main() -> None:
         reports.append({"chapter": chapter, "total": len(sections), "filled": filled, "scaffolded": scaffolded})
 
     (SITE / BOOK_PAGE).write_text(render_book(chapters, grouped, slots_by_slug), encoding="utf-8")
+    (SITE / VERSIONS_PAGE).write_text(render_versions(), encoding="utf-8")
 
     write_discovery_files(chapters)
     print_report(reports)

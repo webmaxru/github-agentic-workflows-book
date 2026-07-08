@@ -32,13 +32,20 @@ SITE = ROOT / "site"
 BOOK_PAGE = "book.html"
 PDF_PATH = SITE / "gh-aw-book.pdf"
 
-# Running footer: book title on the left, "Page N / M" on the right. The
+# Content version stamped into the PDF footer (source of truth: content/VERSION).
+sys.path.insert(0, str(ROOT / "scripts"))
+import content_version  # noqa: E402  (path set up above)
+
+CONTENT_VERSION = content_version.read_version()
+
+# Running footer: book title + content version on the left, "Page N / M" on the right. The
 # pageNumber / totalPages spans are filled in by Chromium.
 FOOTER_TEMPLATE = (
     '<div style="width:100%;font-family:\'Hanken Grotesk\',Arial,sans-serif;'
     'font-size:8px;color:#8a93a6;padding:0 14mm;display:flex;'
     'justify-content:space-between;align-items:center;">'
-    '<span>GitHub Agentic Workflows \u2014 An Interactive Book</span>'
+    '<span>GitHub Agentic Workflows \u2014 An Interactive Book '
+    f'\u00b7 v{CONTENT_VERSION}</span>'
     '<span>Page <span class="pageNumber"></span> / <span class="totalPages"></span></span>'
     "</div>"
 )
