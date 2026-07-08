@@ -7,6 +7,7 @@ An interactive, compile-verified HTML book on GitHub Agentic Workflows (gh-aw) â
 ## Start here
 - [Home & table of contents](https://aw.isainative.dev/): Overview, reading guide, and the full chapter list.
 - [Download the PDF](https://aw.isainative.dev/gh-aw-book.pdf): The complete book as a single downloadable PDF.
+- [Version history](https://aw.isainative.dev/versions.html): Content edition v1.1; every version is a GitHub Release with a PDF.
 
 ## Chapters
 - [Chapter 1: What Are Agentic Workflows?](https://aw.isainative.dev/chapters/what-are-agentic-workflows.html): Explain what an agentic workflow is, why the outer loop matters, and when to reach for gh-aw instead of plain GitHub Actions.
