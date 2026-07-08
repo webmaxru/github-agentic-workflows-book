@@ -14,6 +14,14 @@ __pycache__/
 dist/
 build/
 
+# Downloadable book PDF — a binary build artifact rendered from site/book.html by
+# scripts/build_pdf.py (in CI on every deploy, and locally on demand). It is
+# published to gh-pages but not committed to main.
+site/gh-aw-book.pdf
+
+# Playwright browser-download marker (browsers install to a shared cache, not here)
+.playwright/
+
 # gh-aw compiled lock files — examples are verified at compile time (gh aw compile),
 # but the generated *.lock.yml (≈100 KB each) are build outputs, not committed sources.
 *.lock.yml

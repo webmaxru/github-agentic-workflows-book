@@ -164,6 +164,8 @@ site/
   generate.py         # scaffolds the site from content/toc.yml
   index.html          # generated
   chapters/*.html     # generated: one page per chapter in toc.yml
+  book.html           # generated: single-page edition (source for the PDF)
+  gh-aw-book.pdf      # build artifact (gitignored): the downloadable PDF
   assets/             # style.css + app.js + analytics.js (built beacon)
 analytics/
   analytics.entry.js  # cookieless App Insights beacon source (bundled → site/assets/analytics.js)
@@ -171,6 +173,8 @@ azure/
   dashboard.json      # Portal engagement dashboard (ARM template)
 package.json          # analytics build tooling (esbuild bundle + report command)
 scripts/
+  build_pdf.py        # renders site/book.html → site/gh-aw-book.pdf (Playwright)
+  requirements-pdf.txt # Python deps for the PDF build
   run-fleet.ps1       # convenience launcher
   report.ps1          # engagement report (PowerShell)
 ```
@@ -208,6 +212,32 @@ gh aw compile examples/<chapter>/<workflow>.md
 > **Note:** `gh aw compile` validates frontmatter and lowers the Markdown workflow into a GitHub
 > Actions lock file. Running a workflow for real (`gh aw run`) needs an engine configured in GitHub
 > Actions secrets; the book's examples are written to compile cleanly without that.
+
+---
+
+## Download the book as a PDF
+
+The whole book is also available as a **single downloadable PDF**, linked from the site (home page
+"Download PDF", the reader nav, and every chapter). It is rendered from a **single-page edition**
+(`site/book.html`, which `site/generate.py` produces alongside the chapter pages) using headless
+Chromium via [Playwright](https://playwright.dev/python/), so code blocks keep their syntax
+highlighting and the PDF carries page numbers and a chapter outline.
+
+```powershell
+# 1. (re)generate the site, including site/book.html (the PDF's source)
+python site/generate.py
+
+# 2. render the PDF → site/gh-aw-book.pdf
+pip install -r scripts/requirements-pdf.txt
+python -m playwright install chromium      # one-time browser download (add --with-deps on Linux)
+python scripts/build_pdf.py
+```
+
+The PDF (`site/gh-aw-book.pdf`) is a **binary build artifact**: it is gitignored, not committed to
+`main`. On every push that changes the book, the deploy workflow
+([`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)) regenerates it right
+after `generate.py` and publishes it to the live site — so the downloadable PDF always matches the
+current book.
 
 ---
 
