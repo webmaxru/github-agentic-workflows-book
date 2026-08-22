@@ -346,7 +346,16 @@ npx cookieless-insights report --resource-group is-ai-native-rg --app-insights a
 ```
 
 The Azure Portal **engagement dashboard** (`azure/dashboard.json`) is deployed in resource group
-`is-ai-native-rg`. Data appears within ~1–3 minutes of a real visit.
+`is-ai-native-rg` and targets the isolated `aw-book-ai` component backed by the
+`aw-book-law` workspace. To recreate the monitoring resources in the existing resource group,
+run:
+
+```powershell
+pwsh scripts/setup.ps1 -Name aw-book -Location eastus2 -ResourceGroup is-ai-native-rg
+```
+
+The helper uses workspace-based Application Insights with 30-day retention and a 0.16 GB/day
+workspace cap. Data appears within ~1–3 minutes of a real visit.
 
 ---
 

@@ -33,6 +33,7 @@ az monitor log-analytics workspace update -g $ResourceGroup --workspace-name $la
 Write-Host "==> Workspace-based Application Insights $ai" -ForegroundColor Cyan
 $wsid = az monitor log-analytics workspace show -g $ResourceGroup -n $law --query id -o tsv
 az monitor app-insights component create --app $ai -g $ResourceGroup -l $Location --workspace $wsid --kind web --application-type web -o table
+az monitor app-insights component update --app $ai -g $ResourceGroup --retention-time 30 -o table
 
 $cs = az monitor app-insights component show --app $ai -g $ResourceGroup --query connectionString -o tsv
 Write-Host "`nConnection string (set as VITE_APPINSIGHTS_CONNECTION_STRING at build time):" -ForegroundColor Green
