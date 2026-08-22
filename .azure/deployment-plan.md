@@ -1,6 +1,6 @@
 # Azure Deployment Plan
 
-> **Status:** Validated
+> **Status:** Deployed
 
 Generated: 2026-08-22
 
@@ -51,10 +51,10 @@ No subscription policy assignments were found.
 - The GitHub Actions variable exists, but its connection string does not match the active
   `is-ai-native-appi` resource. The active resource also contains telemetry from a different
   application, so it must not be reused for this book.
-- The deploy workflow injects the variable but does not rebuild the analytics bundle and does not
-  trigger when `analytics/` or the package manifests change.
-- The package report command already targets `aw-book-ai`, but that resource is absent. The Portal
-  dashboard is also absent.
+- The deploy workflow now rebuilds the analytics bundle and triggers when `analytics/` or the package
+  manifests change.
+- The package report command now has a matching `aw-book-ai` resource and the Portal dashboard is
+  deployed against it.
 
 ---
 
@@ -182,8 +182,8 @@ No quota is near a known limit, and no quota increase is requested.
 
 - [x] Invoke `azure-deploy` for the approved Azure changes
 - [x] Deploy the engagement dashboard through `npx cookieless-insights dashboard`
-- [ ] Confirm the GitHub Pages deploy workflow succeeds
-- [ ] Update plan status to `Deployed`
+- [x] Confirm the GitHub Pages deploy workflow succeeds (`32576600455`)
+- [x] Update plan status to `Deployed`
 
 ---
 
@@ -204,6 +204,9 @@ No quota is near a known limit, and no quota increase is requested.
 | RBAC review | Static infrastructure scan | Not applicable; no Bicep/Terraform or managed-identity assignments | 2026-08-22 |
 | Live home page | `curl.exe -sSfL https://aw.isainative.dev/` | Analytics script and injected key present | 2026-08-22 |
 | Live chapter page | `curl.exe -sSfL https://aw.isainative.dev/chapters/observability-and-debugging.html` | Analytics script and injected key present | 2026-08-22 |
+| Published beacon | `curl.exe -sSfL https://aw.isainative.dev/assets/analytics.js` | Published bytes match the verified local bundle | 2026-08-22 |
+| Engagement report | `npx cookieless-insights report --app-insights aw-book-ai --resource-group is-ai-native-rg --days 30` | 52 page views, 33 custom events, 52 sessions; report queries succeed | 2026-08-22 |
+| GitHub Pages deployment | `gh run watch 32576600455 --repo webmaxru/github-agentic-workflows-book --exit-status` | Succeeded; public pages now use `aw-book-ai` | 2026-08-22 |
 | Azure resource group | `az group show -n is-ai-native-rg` | Succeeded in `eastus2` | 2026-08-22 |
 | Active unrelated App Insights | `az monitor app-insights component show -g is-ai-native-rg --app is-ai-native-appi` | Workspace-based, 30-day retention, Succeeded | 2026-08-22 |
 | Existing telemetry query | `az monitor app-insights query --app 8070c21d-c43f-4902-bcf4-932f03d4ea61 ...` | Existing resource has data; not used for the book | 2026-08-22 |
@@ -214,16 +217,17 @@ No quota is near a known limit, and no quota increase is requested.
 
 | File | Purpose | Status |
 |------|---------|--------|
-| `.azure/deployment-plan.md` | Source of truth for this remediation | In progress |
-| `.github/workflows/deploy-pages.yml` | Build analytics before site generation and trigger on analytics changes | Planned |
+| `.azure/deployment-plan.md` | Source of truth for this remediation | Deployed |
+| `.github/workflows/deploy-pages.yml` | Build analytics before site generation and trigger on analytics changes | Committed locally |
 | `package.json` | Keep report target aligned with `aw-book-ai` | Already aligned |
-| `README.md` | Document isolated resource setup and report target | Planned |
-| `scripts/setup.ps1` | Provision the isolated free-tier resources | Existing helper |
+| `README.md` | Document isolated resource setup and report target | Committed locally |
+| `scripts/setup.ps1` | Provision the isolated free-tier resources | Updated locally |
 | `azure/dashboard.json` | Engagement dashboard template | Existing template |
 
 ---
 
 ## 11. Next Steps
 
-1. Execute the approved free-tier remediation in `is-ai-native-rg`/`eastus2`.
-2. Validate the generated bundle, site injection, resource configuration, and dashboard target.
+1. Monitor the `aw-book-ai` report as real visits continue.
+2. The feature branch commit is ready for review; pushing it requires a GitHub token with the
+   `workflow` scope because it changes `.github/workflows/deploy-pages.yml`.
