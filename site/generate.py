@@ -1094,6 +1094,7 @@ def render_404() -> str:
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="stylesheet" href="/assets/style.css">
+  {analytics_head("/")}
 </head>
 <body class="home">
   <main id="main-content" style="max-width:44rem;margin:0 auto;padding:16vh 1.5rem 10rem;text-align:center">
