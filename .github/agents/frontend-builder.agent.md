@@ -28,6 +28,13 @@ makes the theory→capability learning path obvious and pleasant to follow.
 5. Ensure **accessibility and responsiveness** (semantic HTML, keyboard nav, contrast, mobile layout)
    and verify the site builds/serves locally.
 
+For an incremental edition, integrate accepted fragments into the existing generator and
+presentation without redesigning or replacing authored content. Surface framework coverage
+from `content/FRAMEWORK_VERSION` separately from the prose edition in `content/VERSION`,
+consistently in the online and single-page/PDF editions. Do not hardcode the update target
+in templates. Check the rendered chapter inventory, cross-links, version history, and PDF
+stamps after regeneration. Generated output is not the source of truth.
+
 ## Principles
 - **Content/presentation separation.** Don't bake chapter prose into templates; pull it in.
 - **Static-first & dependency-light.** Prefer a simple, portable stack; avoid heavy build chains

@@ -17,8 +17,9 @@ Turn the live `gh aw` CLI surface and workflow schema into accurate, example-bac
 reference notes** that the `chapter-author` weaves into chapters.
 
 ## What you do
-1. Ensure the CLI is available (defer to the `gh-aw-environment-setup` skill): install the
-   `gh aw` extension and record the version (`gh aw version`).
+1. Read the validated `content/FRAMEWORK_VERSION` or the update's explicitly saved target.
+   Use `gh-aw-environment-setup` to install that exact version in isolation and check the
+   actual executable's `version` output. Never silently reuse a mismatched personal extension.
 2. **Explore** the real surface: enumerate CLI commands (`gh aw --help`, `compile`, `run`, `logs`,
    `audit`, `add`, `new`, `mcp inspect`, …), and study the workflow file format — frontmatter
    fields (`on:`, `engine:`, `permissions:`, `network:`, `tools:`, `safe-outputs:`, `imports:`,
@@ -26,10 +27,26 @@ reference notes** that the `chapter-author` weaves into chapters.
 3. For each capability in scope, document: its purpose, the **concept it implements**, the exact
    frontmatter/CLI syntax, typical usage, and **when to use / when not to** it.
 4. Write a **minimal example workflow** (`.md` with frontmatter + a short natural-language body)
-   per capability and hand it to `code-verifier` to confirm it **compiles** (`gh aw compile
-   --strict` / `--validate`); no secrets or live runs are required to validate.
+   per capability and hand it to `code-verifier` to confirm strict compilation with the exact
+   target. Read flags from that executable's help; no engine secrets or live runs are required.
 5. Save notes as artifacts (e.g. `content/research/<chapter>-features.md`) and example workflows
    under an `examples/` tree.
+
+## Incremental release research
+
+When handed an existing-book update, assess the **entire baseline-to-target interval**, not
+only the latest release body. Paginate until the baseline; include intervening prerelease
+changes that reached the stable target and inspect the tagged source comparison for gaps.
+Record upstream tag/commit/date/URLs, commands, and exact old/new behavior. Check tagged
+docs/schema rather than assuming the current documentation site describes the chosen release.
+
+Save new evidence under `content/research/updates/<target>/`; preserve historical briefs.
+Produce an impact decision for every existing chapter, including reasons for unchanged
+chapters, and give authors concrete cited corrections, additions, and example implications.
+The impact plan starts as `researching` and becomes `researched` on a complete handoff;
+the orchestrator owns later states and marks the finished PR handoff `prepared`.
+Do not rewrite existing prose or change the validated framework baseline yourself. Keep
+large raw downloads and minimal exploratory probes in session artifacts.
 
 ## Principles
 - **Empirical over assumed.** Verify frontmatter fields and CLI flags against the installed
@@ -51,7 +68,8 @@ Plus the **artifact path(s)** written and any install/compile commands run.
 - Install: `gh extension install github/gh-aw` (or the `install-gh-aw.sh` script) → verify with
   `gh aw version`. Initialize a repo with `gh aw init`.
 - Workflows are markdown + YAML frontmatter in `.github/workflows/*.md`, compiled to
-  `*.lock.yml` by `gh aw compile`. Engines: Copilot, Claude, Codex, Gemini. Writes route through
+  `*.lock.yml` by `gh aw compile`. The v0.88.7 built-ins are Copilot, Claude, Codex, Gemini, Pi.
+  Confirm the selected target rather than treating this list as timeless. Writes route through
   `safe-outputs:`; MCP servers extend tools.
 - Docs: https://github.github.com/gh-aw/ · Repo & samples: https://github.com/github/gh-aw
   (see the `.github/aw/*.md` reference files). **Confirm names by exploration** — do not trust any

@@ -10,71 +10,51 @@ on:
     paths:
       - "site/**"
       - "content/**"
+      - "examples/**"
       - "assets/**"
       - "scripts/**"
       - "analytics/**"
       - "package.json"
       - "package-lock.json"
       - ".github/workflows/deploy-pages.yml"
+      - ".github/workflows/validate-book.yml"
   workflow_dispatch:
 
-# Only needs to push the built site to the gh-pages branch.
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: deploy-gh-pages
   cancel-in-progress: true
 
 jobs:
+  validate:
+    uses: ./.github/workflows/validate-book.yml
+    with:
+      artifact-name: validated-pages
+
   deploy:
+    needs: validate
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Download the validated site, analytics beacon, and PDF
+        uses: actions/download-artifact@v4
         with:
-          python-version: "3.12"
+          name: validated-pages
+          path: artifact
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: npm
-
-      - name: Build analytics beacon
+      - name: Publish the exact validated site to gh-pages
         run: |
-          npm ci --no-audit --no-fund
-          npm run build:analytics
-
-      - name: Regenerate site from content
-        env:
-          APPINSIGHTS_CONNECTION_STRING: ${{ vars.APPINSIGHTS_CONNECTION_STRING }}
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install pyyaml
-          python site/generate.py
-
-      - name: Build downloadable PDF (single-page edition)
-        # Renders site/book.html to site/gh-aw-book.pdf with headless Chromium so
-        # the published PDF is regenerated on every book change and shipped in site/.
-        run: |
-          python -m pip install -r scripts/requirements-pdf.txt
-          python -m playwright install --with-deps chromium
-          python scripts/build_pdf.py
-
-      - name: Publish site/ to gh-pages
-        run: |
-          cd site
-          rm -rf __pycache__
+          cd artifact/site
           touch .nojekyll
           git init -q -b gh-pages
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -q -m "Deploy ${GITHUB_SHA} from ${GITHUB_REF_NAME}"
+          git commit -q -m "Deploy ${SOURCE_SHA} from ${GITHUB_REF_NAME}"
           git push -q --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_SHA: ${{ needs.validate.outputs.source-sha }}

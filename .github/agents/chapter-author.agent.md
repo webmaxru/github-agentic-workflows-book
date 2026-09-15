@@ -26,6 +26,19 @@ to the concept it implements and showing it in a real, compilable example workfl
 5. Save the chapter to the content tree (e.g. `content/chapters/<n>-<slug>.html`) and update any
    per-chapter metadata the TOC needs.
 
+## Maintenance scope
+
+For a framework update, read the existing chapter, fixed-target research, and its impact-map
+entry. Edit only affected material while preserving the narrative, chapter slug, section
+slots, and still-valid concepts. Keep source example files and embedded HTML snippets in
+sync, including changed defaults and runtime caveats. Do not remove a feature or weaken
+strict mode just to make a failing example pass.
+
+Use new versioned research; do not rewrite old verification reports. Every executable
+workflow must compile on the target. Mark missing credentials as a **live-run** limitation,
+not as permission to ship an uncompilable example. Leave the global baseline/edition bump
+and publication to the orchestrator after whole-book verification and review.
+
 ## Principles
 - **Teach the why before the how.** Lead with the problem and concept; introduce the syntax as the answer.
 - **Show, don't just tell.** Every capability gets at least one concrete, minimal example workflow.

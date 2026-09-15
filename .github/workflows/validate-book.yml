@@ -1,0 +1,161 @@
+name: Validate book
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      source-ref:
+        description: "Exact source to build; release repairs pass the existing tag's commit."
+        type: string
+        default: ""
+      comparison-base:
+        description: "Explicit comparison ref; otherwise use PR base, push before, or a reachable edition tag."
+        type: string
+        default: ""
+      artifact-name:
+        type: string
+        default: validated-book
+    outputs:
+      source-sha:
+        value: ${{ jobs.validate.outputs.source-sha }}
+      content-version:
+        value: ${{ jobs.validate.outputs.content-version }}
+      framework-version:
+        value: ${{ jobs.validate.outputs.framework-version }}
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      source-sha: ${{ steps.meta.outputs.source_sha }}
+      content-version: ${{ steps.meta.outputs.version }}
+      framework-version: ${{ steps.meta.outputs.framework_version }}
+    steps:
+      - name: Checkout validation tooling
+        uses: actions/checkout@v4
+        with:
+          path: tooling
+          persist-credentials: false
+
+      - name: Checkout the exact book source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source-ref || github.sha }}
+          path: source
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install existing build dependencies
+        run: python -m pip install pyyaml -r source/scripts/requirements-pdf.txt
+
+      - name: Test release tooling
+        run: python -m unittest discover -s tooling/scripts/tests -v
+
+      - name: Check content edition and editorial acceptance
+        id: meta
+        env:
+          COMPARISON_BASE: ${{ inputs.comparison-base }}
+        run: |
+          ARGS=()
+          if [[ -n "$COMPARISON_BASE" ]]; then
+            ARGS+=(--base "$COMPARISON_BASE")
+          fi
+          python tooling/scripts/release_content.py --root source check "${ARGS[@]}" > validation.json
+          cat validation.json
+          python - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          data = json.loads(Path("validation.json").read_text())
+          data["source_sha"] = subprocess.check_output(
+              ["git", "-C", "source", "rev-parse", "HEAD"], text=True
+          ).strip()
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              for key in ("version", "framework_version", "source_sha", "base"):
+                  output.write(f"{key}={data[key]}\n")
+          PY
+
+      - name: Install the exact framework compiler
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FRAMEWORK_VERSION: ${{ steps.meta.outputs.framework_version }}
+        run: gh extension install github/gh-aw --pin "$FRAMEWORK_VERSION"
+
+      - name: Strictly compile every example, including imported policies
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python tooling/scripts/verify_examples.py --root source --report verification.json
+
+      - name: Preserve compiler diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name || 'validated-book' }}-diagnostics
+          path: verification.json
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: source/package-lock.json
+
+      - name: Build analytics beacon
+        working-directory: source
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build:analytics
+
+      - name: Regenerate site from the validated source
+        working-directory: source
+        env:
+          APPINSIGHTS_CONNECTION_STRING: ${{ vars.APPINSIGHTS_CONNECTION_STRING }}
+        run: python site/generate.py
+
+      - name: Build the PDF from the same source
+        working-directory: source
+        run: |
+          python -m playwright install --with-deps chromium
+          python scripts/build_pdf.py
+
+      - name: Check generated versions and seal the validated artifact
+        env:
+          COMPARISON_BASE: ${{ steps.meta.outputs.base }}
+          SOURCE_SHA: ${{ steps.meta.outputs.source_sha }}
+        run: |
+          python tooling/scripts/release_content.py --root source check-generated
+          # Reject any new/scaffolded source or edits made during the build.
+          python tooling/scripts/release_content.py --root source check --base "$COMPARISON_BASE" > validation.json
+          mkdir -p artifact
+          cp -a source/site artifact/site
+          rm -rf artifact/site/__pycache__
+          python tooling/scripts/release_content.py --root source notes > artifact/release-notes.md
+          cp verification.json artifact/verification.json
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          data = json.loads(Path("validation.json").read_text())
+          data["source_sha"] = os.environ["SOURCE_SHA"]
+          Path("artifact/validation.json").write_text(json.dumps(data, indent=2) + "\n")
+          PY
+
+      - name: Upload the exact validated site and PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name || 'validated-book' }}
+          path: artifact/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7

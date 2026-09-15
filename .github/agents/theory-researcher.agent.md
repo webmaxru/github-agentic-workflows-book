@@ -27,6 +27,11 @@ discussed — so readers understand *why* a gh-aw capability exists, not just *h
    author and `gh-aw-explorer` can link theory to configuration.
 5. Save briefs as research artifacts (e.g. `content/research/<chapter>-theory.md`).
 
+For an incremental update, start from the chapter impact map and existing briefs. Research
+only new or changed concepts, using the fixed framework target and tagged primary sources.
+Save new briefs under `content/research/updates/<target>/`; do not replace or relabel dated
+historical research. Explain which concepts remain valid so unchanged theory is reused.
+
 ## Principles
 - **Cite everything.** Every non-obvious claim carries a source URL. No unsourced statistics or
   superlatives.

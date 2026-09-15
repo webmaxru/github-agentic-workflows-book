@@ -1,89 +1,116 @@
 name: Release book content
 
-# Publishes a GitHub Release for the book's CONTENT edition whenever content/VERSION changes.
-#
-# The book is a living document: its prose (content/) is versioned independently of the site
-# generator and tooling. content/VERSION is the source of truth, content/CHANGELOG.md is the
-# history, and each version is shipped here as a Release tagged `content-vX.Y` with the matching
-# single-file PDF attached — so every published state stays reproducible and downloadable.
-#
-# This job is CONTENT-only: it is not triggered by site/tooling changes, and it is idempotent —
-# if a release for the current version already exists, it does nothing.
-
+# Content editions are independent of tooling/framework pins. Existing complete
+# releases are no-ops. Missing assets are built from their existing tag, never
+# from a newer checkout that happens to have the same content/VERSION.
 on:
   push:
     branches: [main]
     paths:
-      - "content/VERSION"
-      # CHANGELOG is included so a notes-only fix can retrigger a release that
-      # failed on a previous push (the idempotency guard prevents duplicates).
-      - "content/CHANGELOG.md"
-  # Manual runs (re)cut the release for whatever ref they are dispatched against:
-  # the version, PDF, and notes always come from that ref's content/VERSION and
-  # content/CHANGELOG.md, so a dispatched release can never be mislabeled.
+      - "content/**"
+      - "examples/**"
+      - "scripts/**"
+      - ".github/workflows/release-content.yml"
+      - ".github/workflows/validate-book.yml"
   workflow_dispatch:
 
-# Creating a release and pushing the tag needs write access to repository contents.
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: release-content
   cancel-in-progress: false
 
 jobs:
-  release:
+  plan:
     runs-on: ubuntu-latest
+    outputs:
+      action: ${{ steps.plan.outputs.action }}
+      version: ${{ steps.plan.outputs.version }}
+      tag: ${{ steps.plan.outputs.tag }}
+      asset: ${{ steps.plan.outputs.asset }}
+      source_sha: ${{ steps.plan.outputs.source_sha }}
+      framework_version: ${{ steps.plan.outputs.framework_version }}
+      comparison_base: ${{ steps.plan.outputs.comparison_base }}
+      tag_exists: ${{ steps.plan.outputs.tag_exists }}
     steps:
-      - name: Checkout
+      - name: Checkout the triggering source and all edition tags
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Resolve content version, tag, and asset name
-        id: meta
-        run: |
-          # Always derive from the checked-out content/VERSION so the tag, PDF,
-          # and notes describe exactly this ref — no override can desync them.
-          VERSION="$(python scripts/content_version.py version)"
-          TAG="$(python scripts/content_version.py tag "$VERSION")"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-          echo "asset=gh-aw-book-v$VERSION.pdf" >> "$GITHUB_OUTPUT"
-          echo "Resolved content version $VERSION -> tag $TAG"
-
-      - name: Decide whether to create, repair, or skip this release
-        id: guard
+      - name: Select create, exact-tag repair, or idempotent skip
+        id: plan
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ steps.meta.outputs.tag }}"
-          ASSET="${{ steps.meta.outputs.asset }}"
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            if gh release view "$TAG" --json assets --jq '.assets[].name' | grep -Fxq "$ASSET"; then
-              echo "Release $TAG already exists with asset $ASSET — nothing to do."
-              echo "action=skip" >> "$GITHUB_OUTPUT"
-            else
-              echo "Release $TAG exists but PDF asset $ASSET is missing — will (re)upload it."
-              echo "action=upload" >> "$GITHUB_OUTPUT"
-            fi
-          else
-            echo "No release for $TAG yet — will create it."
-            echo "action=create" >> "$GITHUB_OUTPUT"
-          fi
+          python scripts/release_content.py release-plan --repo "$GITHUB_REPOSITORY" > release-plan.json
+          cat release-plan.json
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          data = json.loads(Path("release-plan.json").read_text())
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              for key, value in data.items():
+                  if isinstance(value, bool):
+                      value = str(value).lower()
+                  output.write(f"{key}={value}\n")
+          PY
 
-      - name: Write release notes from the changelog
-        if: steps.guard.outputs.action == 'create'
+  validate:
+    needs: plan
+    if: needs.plan.outputs.action != 'skip'
+    uses: ./.github/workflows/validate-book.yml
+    with:
+      source-ref: ${{ needs.plan.outputs.source_sha }}
+      comparison-base: ${{ needs.plan.outputs.comparison_base }}
+      artifact-name: validated-release
+
+  release:
+    needs: [plan, validate]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ACTION: ${{ needs.plan.outputs.action }}
+      TAG: ${{ needs.plan.outputs.tag }}
+      VERSION: ${{ needs.plan.outputs.version }}
+      ASSET: ${{ needs.plan.outputs.asset }}
+      SOURCE_SHA: ${{ needs.plan.outputs.source_sha }}
+      FRAMEWORK_VERSION: ${{ needs.plan.outputs.framework_version }}
+      TAG_EXISTS: ${{ needs.plan.outputs.tag_exists }}
+    steps:
+      - name: Download the gated artifact, without rebuilding
+        uses: actions/download-artifact@v4
+        with:
+          name: validated-release
+          path: artifact
+
+      - name: Check artifact identity and prepare release notes
         run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          data = json.loads(Path("artifact/validation.json").read_text())
+          for key, env in (("version", "VERSION"), ("tag", "TAG"), ("source_sha", "SOURCE_SHA"),
+                           ("framework_version", "FRAMEWORK_VERSION")):
+              if data.get(key) != os.environ[env]:
+                  raise SystemExit(f"Validated artifact mismatch: {key}")
+          if data.get("status") != "PASS":
+              raise SystemExit("The artifact did not pass validation.")
+          PY
+          cp artifact/site/gh-aw-book.pdf "$ASSET"
           {
-            echo "## GitHub Agentic Workflows — content ${{ steps.meta.outputs.tag }}"
+            echo "## GitHub Agentic Workflows — content $TAG"
             echo
-            python scripts/content_version.py notes "${{ steps.meta.outputs.version }}"
+            cat artifact/release-notes.md
             echo
             echo "---"
             echo
@@ -91,35 +118,32 @@ jobs:
             echo
             echo "📄 The single-file PDF for this version is attached below."
           } > release-notes.md
-          cat release-notes.md
 
-      - name: Build the versioned PDF edition
-        if: steps.guard.outputs.action != 'skip'
+      - name: Create or verify the tag without overwriting another source
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install pyyaml
-          python site/generate.py
-          python -m pip install -r scripts/requirements-pdf.txt
-          python -m playwright install --with-deps chromium
-          python scripts/build_pdf.py
-          cp site/gh-aw-book.pdf "${{ steps.meta.outputs.asset }}"
+          if [[ "$TAG_EXISTS" != "true" ]]; then
+            # Atomic creation fails if another publisher created the ref meanwhile.
+            gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" \
+              -f ref="refs/tags/$TAG" -f sha="$SOURCE_SHA" --silent
+          fi
+          ACTUAL_SHA="$(gh api "repos/$GITHUB_REPOSITORY/commits/$TAG" --jq .sha)"
+          if [[ "$ACTUAL_SHA" != "$SOURCE_SHA" ]]; then
+            echo "::error::Tag $TAG no longer points to the validated source; refusing to publish."
+            exit 1
+          fi
 
-      - name: Create the GitHub Release
-        if: steps.guard.outputs.action == 'create'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create the content release
+        if: env.ACTION == 'create'
         run: |
-          gh release create "${{ steps.meta.outputs.tag }}" \
-            "${{ steps.meta.outputs.asset }}#GitHub Agentic Workflows — v${{ steps.meta.outputs.version }} (PDF)" \
-            --title "Content v${{ steps.meta.outputs.version }}" \
-            --notes-file release-notes.md \
-            --target "${GITHUB_SHA}"
+          gh release create "$TAG" \
+            "$ASSET#GitHub Agentic Workflows — v$VERSION (PDF)" \
+            --repo "$GITHUB_REPOSITORY" --verify-tag \
+            --title "Content v$VERSION" --notes-file release-notes.md
 
-      - name: Attach the missing PDF to the existing release
-        if: steps.guard.outputs.action == 'upload'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Repair the missing PDF using only the exact-tag artifact
+        if: env.ACTION == 'upload'
         run: |
-          gh release upload "${{ steps.meta.outputs.tag }}" \
-            "${{ steps.meta.outputs.asset }}#GitHub Agentic Workflows — v${{ steps.meta.outputs.version }} (PDF)" \
-            --clobber
+          # Do not clobber an asset uploaded concurrently by another publisher.
+          gh release upload "$TAG" \
+            "$ASSET#GitHub Agentic Workflows — v$VERSION (PDF)" \
+            --repo "$GITHUB_REPOSITORY"

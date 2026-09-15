@@ -1,74 +1,99 @@
 ---
-description: Cut a new versioned release of the book's CONTENT — bump the version, update the changelog, verify, and publish the GitHub Release with the PDF attached.
+description: Prepare a content-only book release with fresh editorial evidence, an edition bump, changelog, and verified HTML/PDF output; leave publishing behind a reviewed PR.
 ---
 
 # Release Content
 
-Publish a new **content version** of the GitHub Agentic Workflows interactive book. Versioning
-applies to the **prose under `content/` only** — never the site generator, PDF tooling, analytics,
-or any other part of the repo.
+Prepare a new **content edition** of the GitHub Agentic Workflows book. This prompt packages
+reviewed material; it does not discover upstream changes or update chapters. For a framework
+refresh, first run `.github/prompts/update-book.prompt.md`.
 
-**What changed:** <one-line summary of the content edits, or "read the diff since the last release">
-**Version bump:** <major | minor | patch, or an explicit `x.y` — decide from the rules below if unset>
+**What changed:** <content-change summary, or inspect the pending content diff>
+**Baseline release:** <last published content-v tag; resolve it if unset>
+**Version bump:** <major | minor | patch | explicit x.y or x.y.z>
+**Publication boundary:** open a PR and stop; a human reviews and merges it.
 
-## Versioning model (read first)
-- **Source of truth:** `content/VERSION` — a single line, e.g. `1.1`.
-- **History / release notes:** `content/CHANGELOG.md` — Keep-a-Changelog style; the release notes
-  are generated from this file.
-- **Shared helper:** `scripts/content_version.py` (`version` / `tag` / `notes`) — the stdlib-only
-  parser used by the site generator, the PDF builder, and the release workflow.
-- **Tag & Release:** each version ships as a GitHub Release tagged `content-vX.Y` with the matching
-  single-file PDF (`gh-aw-book-vX.Y.pdf`) attached, so every past state stays reproducible.
-- **Automation:** `.github/workflows/release-content.yml` cuts the release automatically when
-  `content/VERSION` changes on `main`. It is idempotent (skips if the release exists) and
-  self-healing (re-attaches the PDF if it went missing). You normally just prepare the bump — the
-  workflow publishes.
+## Sources of truth
 
-**SemVer for prose** — pick the bump:
-- **MAJOR** — structural rewrite or reordering of the book.
-- **MINOR** — new chapters, sections, or material.
-- **PATCH** — corrections and clarifications only.
+- `content/VERSION`: the book's content edition, independent of framework/tooling versions.
+- `content/FRAMEWORK_VERSION`: the exact gh-aw tag the current book has been verified against.
+- `content/CHANGELOG.md`: per-edition reader-facing notes, preserved for older editions.
+- `content/release-review.json`: actual editorial ACCEPT, bound to manuscript/example/TOC/
+  framework inputs and its referenced review report. It is not an identity signature.
+- `scripts/content_version.py`: version/tag/notes parsing.
+- `scripts/release_content.py`: source-change, release, and fresh-review guards.
+- `scripts/verify_examples.py`: strict, isolated, pinned whole-corpus compilation.
 
 ## Steps
-1. **Confirm the scope.** Show what content changed since the last release:
-   `git diff $(python scripts/content_version.py tag)..HEAD -- content/`. Summarize it for the
-   reader. If nothing under `content/` changed, **stop** — there is nothing to release.
-2. **Pick the new version** `x.y` from the bump rules. The current version is
-   `python scripts/content_version.py version`.
-3. **Update `content/CHANGELOG.md`.** Add a new section at the very top (keep older entries intact):
-   ```
-   ## [x.y] - YYYY-MM-DD      (today's date)
-   One-line summary of this release.
 
-   ### Added / ### Changed / ### Fixed
-   - **Bold lead:** what changed and why it matters to the reader.
+1. **Resolve the actual baseline.** Read the latest published `content-v*` release and its
+   commit, not the proposed new edition's nonexistent tag. Ensure the baseline is locally
+   available. Read git status and preserve unrelated work.
+2. **Confirm reader-visible changes**, including committed, staged, unstaged, untracked,
+   moved, and deleted source files:
+   ```powershell
+   python scripts\release_content.py changes --base <baseline-tag>
    ```
-4. **Bump `content/VERSION`** to `x.y` (single line, nothing else).
-5. **Verify locally — all must pass:**
-   - `python scripts/content_version.py version` → `x.y`; `python scripts/content_version.py notes x.y`
-     prints your new notes.
-   - `python site/generate.py` → clean build; the header version pill and `site/versions.html` show
-     `vx.y`.
-   - `python scripts/build_pdf.py` → the PDF running footer reads `vx.y`.
-6. **Commit** the bump plus the regenerated site output: `content/VERSION`, `content/CHANGELOG.md`,
-   and the changed `site/**` files. Message: `Release content vx.y`. Include the trailer
+   The release scope is authored chapter content and meaningful TOC changes. VERSION,
+   CHANGELOG, framework/evidence metadata, research, the brief, examples alone, generated
+   HTML, analytics, and tooling do not justify a new prose edition. If there are no
+   reader-visible changes, stop without a bump.
+3. **Require real acceptance.** Read the verification and editorial reports; never infer
+   ACCEPT from a successful build. The report must contain exactly one standalone
+   `Verdict: ACCEPT` line consistent with the attestation. Any changes to covered inputs
+   require renewed review.
+   Use the current `content/FRAMEWORK_VERSION` for all compilation; do not install "latest".
+4. **Choose the edition from the actual scope:**
+   - MAJOR: structural rewrite or reordering.
+   - MINOR: new chapters, sections, or substantive material (`1.1` -> `1.2`).
+   - PATCH: corrections/clarifications only (`1.1` -> `1.1.1`).
+   Book versions must be well-formed and increase; they never mirror gh-aw's version number.
+5. **Add a changelog entry** above the existing entries and update `content/VERSION`:
+   ```markdown
+   ## [1.2] - YYYY-MM-DD
+
+   One-line reader-facing summary, including the verified gh-aw target when it changed.
+
+   ### Added
+   - **Topic:** what the reader can now learn or do.
+
+   ### Fixed
+   - **Correction:** what changed and why it matters.
+   ```
+   Use today's date and only headings/items that apply. Never rewrite old release history.
+6. **Run the complete local gate** (provide `--compiler <absolute-executable>` when using
+   the Windows isolated installer):
+   ```powershell
+   python -m unittest discover -s scripts\tests
+   python scripts\release_content.py check --base <baseline-tag>
+   python scripts\verify_examples.py
+   python site\generate.py
+   python scripts\build_pdf.py
+   python scripts\release_content.py check-generated
+   ```
+   The compiler must match `content/FRAMEWORK_VERSION` exactly. Every standalone example
+   must compile; live execution may be omitted, compile failures may not. Inspect the
+   generated site's version history, framework coverage, and PDF edition stamps.
+7. **Commit only this release's files:** reviewed chapter/TOC/example changes, versioned
+   research and review evidence, framework baseline, changelog/edition, and regenerated
+   tracked `site` output. Do not commit PDFs, binaries, raw downloads, secrets, or unrelated
+   work. Suggested message: `Prepare content v<edition> for gh-aw <target>`, with trailer:
    `Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>`.
-7. **Publish:**
-   - **Preferred — merge to `main`.** Open a PR and merge it. The deploy workflow republishes the
-     site (now showing `vx.y`) and `release-content.yml` builds the versioned PDF, pulls the notes
-     from the changelog, and creates `content-vx.y` as Latest. Re-runs are safe (idempotent).
-   - **Manual fallback** (only if you must publish without merging). Write the notes to a file
-     **from Python** (capturing `python` stdout into a PowerShell variable mangles em-dashes on
-     Windows), then:
-     ```
-     python scripts/content_version.py notes x.y   # write output to notes.md
-     gh release create content-vx.y \
-       "gh-aw-book-vx.y.pdf#GitHub Agentic Workflows — vx.y (PDF)" \
-       --title "Content vx.y" --notes-file notes.md --target <content-commit-sha>
-     ```
-8. **Confirm.** `gh release list` shows `content-vx.y` as **Latest** with the PDF asset attached,
-   and the online **Version history** page (`versions.html`) lists it.
+8. **Open a PR using the available PR-creation tool.** Describe the baseline/target,
+   reader-visible changes, verification, and editorial verdict. Wait for the validation
+   workflow and leave the PR for human review. Do not merge, create a release/tag, or
+   dispatch publishing as part of preparation.
 
-**Guardrails:** never bump the version for non-content changes; never attach a PDF that predates the
-content it claims to represent (that's why the first release, `content-v1.0`, ships notes-only —
-the PDF feature postdated it).
+## After the human merges
+
+`validate-book.yml` builds and gates the exact artifacts consumed by both publishing
+workflows. `deploy-pages.yml` publishes that site/PDF without rebuilding;
+`release-content.yml` creates `content-v<edition>` with the matching
+`gh-aw-book-v<edition>.pdf` and changelog notes. Verify both workflow outcomes, the release
+asset, and the live version-history page before calling the edition published.
+
+An existing complete release is a no-op. A missing-asset repair must use the original tagged
+source; never attach a newly built HEAD PDF to an older tag. Legacy releases that predate
+the build/version metadata need an explicit historical recovery procedure, not invented
+defaults. Manual publication is a separate, explicitly authorized operation, not a shortcut
+around the review and compilation gates.
