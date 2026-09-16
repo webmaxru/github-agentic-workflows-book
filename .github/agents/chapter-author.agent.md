@@ -34,6 +34,11 @@ slots, and still-valid concepts. Keep source example files and embedded HTML sni
 sync, including changed defaults and runtime caveats. Do not remove a feature or weaken
 strict mode just to make a failing example pass.
 
+Give every complete copyable workflow a source under `examples/`; a behaviorally different
+annotated/abridged variant needs a distinct source and clear caption, not a misleading link
+to the full recipe. Label partial configuration as an excerpt and use a complete verified
+fixture for its syntax.
+
 Use new versioned research; do not rewrite old verification reports. Every executable
 workflow must compile on the target. Mark missing credentials as a **live-run** limitation,
 not as permission to ship an uncompilable example. Leave the global baseline/edition bump

@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "purpose": "Technical pilot verification only; not editorial ACCEPT, deployment/secret approval, publication, or a global review attestation.",
+  "checked_at_utc": "2026-09-15T23:38:38.329394+00:00",
+  "target": "v0.88.7",
+  "status": "PASS",
+  "canonical_verifier_exit_code_observed": 0,
+  "canonical_started_at_utc": "2026-09-15T23:33:55.5862934Z",
+  "canonical_finished_at_utc": "2026-09-15T23:34:41.2889386Z",
+  "canonical_command": [
+    "python",
+    "scripts\\verify_examples.py",
+    "--compiler",
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+    "--version",
+    "v0.88.7",
+    "--report",
+    "content\\research\\updates\\v0.88.7\\pilot-verification.json"
+  ],
+  "canonical": {
+    "status": "PASS",
+    "passed": 14,
+    "failed": 0,
+    "nonempty_locks": 14,
+    "exact_version_and_strict_metadata_verified": true,
+    "repository_context": {
+      "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+      "source": "source-origin"
+    },
+    "environment_errors": [],
+    "cleanup_pending": null,
+    "warnings": [
+      {
+        "path": "examples/ch05/repo-assistant-claude.md",
+        "warning_count": 1,
+        "security_review_required": true
+      },
+      {
+        "path": "examples/ch12/repo-assistant-observable.md",
+        "warning_count": 1,
+        "security_review_required": true
+      }
+    ]
+  },
+  "shared_fragments": [
+    {
+      "path": "examples/ch11/shared/triage-policy.md",
+      "importer": "examples/ch11/repo-assistant-shared.md",
+      "status": "PASS as import",
+      "compiler_version": "v0.88.7",
+      "importer_lock_emitted": true
+    },
+    {
+      "path": "examples/ch14/shared/triage-policy.md",
+      "importer": "examples/ch14/fleet-triage.md",
+      "status": "PASS as import",
+      "compiler_version": "v0.88.7",
+      "importer_lock_emitted": true
+    }
+  ],
+  "embedded": {
+    "status": "PASS",
+    "verifier_exit_code": 0,
+    "passed": 3,
+    "failed": 0,
+    "nonempty_locks": 3,
+    "repository_context": {
+      "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+      "source": "book-default"
+    },
+    "environment_errors": [],
+    "cleanup_pending": null,
+    "new_ch12_block": {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "block_number": 9,
+      "start_line": 158,
+      "end_line": 190,
+      "caption": "examples/ch12/repo-assistant-observable.md — complete, unchanged workflow; runtime NOT RUN",
+      "source": "examples/ch12/repo-assistant-observable.md",
+      "temporary_example_path": "examples/embedded/observability-and-debugging.md",
+      "comparison": "MATCH",
+      "extracted_sha256": "13c1f2250130ef2939cfc924d854c2fc0561542a6628744ad1ff9a480b46f7d6",
+      "source_sha256": "9e1b8dbe78d05e56916332228aad9fe9fa04144541ae48ad75ef38177dabe79f",
+      "diff_source_to_embedded": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "compiler_version": "v0.88.7",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "0f942b2daa673f2866c66f9c371d7593db2c11a9b73186924091f46035ed12c9",
+        "body_hash": "441eaec1b6fc277b15506ec78a82e40fd04c3b99534b4daad60e6b3625696f12",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "metadata_error": null,
+      "runtime": "NOT RUN"
+    },
+    "ch12_source_and_embedded_lock_frontmatter_body_hashes_match": true
+  },
+  "cli": {
+    "status": "PASS",
+    "captured_subcommand_help_count": 4,
+    "unique_recipes": 24,
+    "help_only_recipe_probes": 22,
+    "operational_commands_executed": false
+  },
+  "unchanged_input_file_count": 40,
+  "preserved_preflight_artifact_count": 5,
+  "six_ch12_slots_retained": true,
+  "compiler_sha256": "8d88047c1e162f16a01e1920124092c80a8bdf98c1635357067a0ac34c00d4c7",
+  "verifier_sha256": "783491d5c44e14dba37a0ffbabd91174ea02faadc370d7a386ab094c9d057273",
+  "report_sha256": {
+    "content/research/updates/v0.88.7/pilot-cli-help.json": "7fc0af2fd2a7a07c66adfd1baf95ecbf05a7d28cb1043e074f5c81cd26598902",
+    "content/research/updates/v0.88.7/pilot-cli-verification.json": "f621bf92b0aeb02d4b743ad84833395f8e56ea6475a0792a871e888a551adbda",
+    "content/research/updates/v0.88.7/pilot-embedded-inventory.json": "14c23985873d6b9e3706dfd2de23a2b0d955d1a1203b6a7d4dc30ea482192d27",
+    "content/research/updates/v0.88.7/pilot-embedded-verification.json": "a641aa069321a8242c92b544989f6c33242ca9f716beeb91f4e0df456265bbb6",
+    "content/research/updates/v0.88.7/pilot-inputs.json": "f726bd252014c9c9fc1e807e0037d716b808148d847a89f4d6d70f6b59ed3d04",
+    "content/research/updates/v0.88.7/pilot-verification.json": "fdc2d9b86c950b42e4d4feb0e1515c70df6eae531fd3dc97989a57574a13cc05"
+  },
+  "source_edits": false,
+  "minimal_fixes": [],
+  "runtime": "NOT RUN",
+  "optional_validate_scanners_and_telemetry_delivery": "NOT RUN / NOT VERIFIED",
+  "approval_granted": false,
+  "framework_baseline_unchanged": "v0.81.6",
+  "content_edition_unchanged": "1.1"
+}

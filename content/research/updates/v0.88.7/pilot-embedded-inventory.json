@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "target": "v0.88.7",
+  "scope": "Pilot ch12 source equivalence plus current strict metadata verification of all three complete manuscript workflows; separate from canonical 14 source workflows.",
+  "started_at_utc": "2026-09-15T23:33:56.171584+00:00",
+  "finished_at_utc": "2026-09-15T23:34:06.794091+00:00",
+  "chapter_count": 14,
+  "pre_code_block_count": 67,
+  "complete_workflow_count": 3,
+  "other_pre_code_block_count": 64,
+  "complete_workflow_definition": "Opening and closing YAML frontmatter delimiters, an on: key within frontmatter and a nonempty Markdown body.",
+  "comparison_normalization": "HTML entity decoding; LF line endings; outer whitespace stripped and one final newline added. No comments, fields or body text changed.",
+  "chapters": [
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "pre_code_blocks": 3,
+      "complete_workflows": 0
+    },
+    {
+      "chapter": "content/chapters/continuous-review-and-testing.html",
+      "pre_code_blocks": 4,
+      "complete_workflows": 0
+    },
+    {
+      "chapter": "content/chapters/continuous-triage-and-docs.html",
+      "pre_code_blocks": 5,
+      "complete_workflows": 0
+    },
+    {
+      "chapter": "content/chapters/defense-in-depth.html",
+      "pre_code_blocks": 3,
+      "complete_workflows": 0
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "pre_code_blocks": 4,
+      "complete_workflows": 0
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "pre_code_blocks": 3,
+      "complete_workflows": 0
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "pre_code_blocks": 6,
+      "complete_workflows": 0
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "pre_code_blocks": 10,
+      "complete_workflows": 1
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "pre_code_blocks": 5,
+      "complete_workflows": 0
+    },
+    {
+      "chapter": "content/chapters/safe-outputs.html",
+      "pre_code_blocks": 3,
+      "complete_workflows": 0
+    },
+    {
+      "chapter": "content/chapters/tools-and-mcp.html",
+      "pre_code_blocks": 3,
+      "complete_workflows": 0
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "pre_code_blocks": 6,
+      "complete_workflows": 0
+    },
+    {
+      "chapter": "content/chapters/what-are-agentic-workflows.html",
+      "pre_code_blocks": 1,
+      "complete_workflows": 1
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "pre_code_blocks": 11,
+      "complete_workflows": 1
+    }
+  ],
+  "complete_workflows": [
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "block_number": 9,
+      "start_line": 158,
+      "end_line": 190,
+      "caption": "examples/ch12/repo-assistant-observable.md — complete, unchanged workflow; runtime NOT RUN",
+      "source": "examples/ch12/repo-assistant-observable.md",
+      "temporary_example_path": "examples/embedded/observability-and-debugging.md",
+      "comparison": "MATCH",
+      "extracted_sha256": "13c1f2250130ef2939cfc924d854c2fc0561542a6628744ad1ff9a480b46f7d6",
+      "source_sha256": "9e1b8dbe78d05e56916332228aad9fe9fa04144541ae48ad75ef38177dabe79f",
+      "diff_source_to_embedded": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "compiler_version": "v0.88.7",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "0f942b2daa673f2866c66f9c371d7593db2c11a9b73186924091f46035ed12c9",
+        "body_hash": "441eaec1b6fc277b15506ec78a82e40fd04c3b99534b4daad60e6b3625696f12",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "metadata_error": null,
+      "runtime": "NOT RUN"
+    },
+    {
+      "chapter": "content/chapters/what-are-agentic-workflows.html",
+      "block_number": 1,
+      "start_line": 83,
+      "end_line": 105,
+      "caption": "examples/ch02/repo-assistant-triage.md — read it as five concepts in one file",
+      "source": "examples/ch02/repo-assistant-triage.md",
+      "temporary_example_path": "examples/embedded/what-are-agentic-workflows.md",
+      "comparison": "DIFFERS",
+      "extracted_sha256": "c2886369ee1abee29256da1970701911867f454ce771a921d799283d55dc0eae",
+      "source_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "diff_source_to_embedded": "--- examples/ch02/repo-assistant-triage.md\n+++ content/chapters/what-are-agentic-workflows.html:83-105\n@@ -1,14 +1,14 @@\n ---\n on:\n   issues:\n-    types: [opened]\n-  workflow_dispatch:\n+    types: [opened]        # (2) an OUTER-LOOP trigger: a new issue\n+  workflow_dispatch:        #     also runnable by hand\n permissions:\n-  contents: read\n+  contents: read            # (5) READ-ONLY: the agent cannot write directly\n   issues: read\n-engine: copilot\n+engine: copilot             # (1) the ENGINE: the judgment that reads the issue\n network: defaults\n-safe-outputs:\n+safe-outputs:               # (5) mediated writes: proposed, then applied by a scoped job\n   add-comment:\n     max: 1\n   add-labels:\n@@ -18,20 +18,6 @@\n \n # Repo Assistant — triage a new issue\n \n-You are the **Repo Assistant**. A new issue was just opened in this repository.\n-\n-Read the triggering issue's title and body, then triage it:\n-\n-1. Decide what kind of issue it is (a bug report, a feature request, a question,\n-   or a documentation gap) and how a maintainer should treat it.\n-2. Post **one** short, friendly triage comment that (a) restates the request in a\n-   sentence, (b) names the category you chose and why, and (c) lists any missing\n-   information the reporter should add.\n-3. Apply **at most one** label from the allowed set that best matches the issue.\n-\n-If the issue is empty or too vague to categorize, post a comment asking for the\n-missing details and do not apply a label.\n-\n-This workflow demonstrates **safe-outputs**: the agent runs read-only and never\n-writes to GitHub directly — it *requests* a comment and a label, which gh-aw\n-applies from separate, permission-scoped jobs.\n+You are the **Repo Assistant**. A new issue was just opened.\n+Read its title and body, decide what kind of issue it is, post one short\n+triage comment, and apply at most one label from the allowed set.",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "compiler_version": "v0.88.7",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "c5c0eb3fa12ff7aad655b557d8dedea06cc641056296888dbb1730e86bb259b7",
+        "body_hash": "d415f42d186d63152a94f87ae4b263858f9ba19fd8b688c1d257c000a06cc0dd",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "metadata_error": null,
+      "runtime": "NOT RUN"
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "block_number": 8,
+      "start_line": 142,
+      "end_line": 178,
+      "caption": "examples/ch02/repo-assistant-triage.md — the complete workflow (frontmatter + body)",
+      "source": "examples/ch02/repo-assistant-triage.md",
+      "temporary_example_path": "examples/embedded/your-first-workflow.md",
+      "comparison": "MATCH",
+      "extracted_sha256": "db15365912439c756d22125e38c8bf77825ca66e365c06161fc3bea2d0f6fda6",
+      "source_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "diff_source_to_embedded": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "compiler_version": "v0.88.7",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "metadata_error": null,
+      "runtime": "NOT RUN"
+    }
+  ],
+  "pilot_source_equivalence": "PASS",
+  "historical_ch01_difference": "Annotated frontmatter and abridged prompt were already recorded during preflight; no new ch01 change.",
+  "verifier_command": [
+    "C:\\Users\\masalnik\\scoop\\apps\\python312\\current\\python.exe",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\scripts\\verify_examples.py",
+    "--root",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\pe-jcl5l1n6",
+    "--compiler",
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+    "--version",
+    "v0.88.7",
+    "--report",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\content\\research\\updates\\v0.88.7\\pilot-embedded-verification.json"
+  ],
+  "verifier_sha256": "783491d5c44e14dba37a0ffbabd91174ea02faadc370d7a386ab094c9d057273",
+  "verifier_unchanged_during_run": true,
+  "verifier_exit_code": 0,
+  "overall_compile_gate": "PASS",
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "book-default"
+  },
+  "environment_errors": [],
+  "cleanup_pending": null,
+  "temporary_corpus_removed": true,
+  "runtime": "NOT RUN",
+  "source_edits": false
+}

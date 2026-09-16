@@ -1,0 +1,705 @@
+{
+  "schema_version": 1,
+  "baseline": "v0.81.6",
+  "target": "v0.88.7",
+  "release_url": "https://github.com/github/gh-aw/releases/tag/v0.88.7",
+  "compare_url": "https://github.com/github/gh-aw/compare/v0.81.6...v0.88.7",
+  "inspected_at": "2026-09-15",
+  "status": "authoring",
+  "research_status": "complete",
+  "content_baseline_tag": "content-v1.1",
+  "proposed_content_edition": "1.2",
+  "selected_pilot": "ch12-observability-and-debugging",
+  "pilot_selection_note": "The orchestrator started the observability pilot from fresh compiler evidence and the fixed latest-release notes; the completed interval assessment is included before review. The researcher's original proposed waves are retained below as research history.",
+  "editorial_acceptance": false,
+  "publication_authorized_by_this_artifact": false,
+  "framework_baseline_advanced_by_this_phase": false,
+  "notes": "content/research/updates/v0.88.7/framework-delta.md",
+  "book_snapshot": {
+    "commit": "95e9e56b4e193ed41568ce4004f3498fdcd86f26",
+    "branch": "webmaxru-book-release-workflow",
+    "chapter_count": 14,
+    "standalone_example_count": 14,
+    "shared_fragment_count": 2
+  },
+  "compiler": {
+    "path": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+    "actual_version_output": "gh aw version v0.88.7",
+    "asset_url": "https://github.com/github/gh-aw/releases/download/v0.88.7/windows-amd64.exe",
+    "asset_bytes": 38490624,
+    "sha256": "8d88047c1e162f16a01e1920124092c80a8bdf98c1635357067a0ac34c00d4c7",
+    "checksums_url": "https://github.com/github/gh-aw/releases/download/v0.88.7/checksums.txt",
+    "checksums_sha256": "86362178802e83fbfb35d82c7b6a097d538adff9e659a14954ecb3c2e1f9e90c",
+    "verified_against": [
+      "published checksums.txt",
+      "release API asset digest",
+      "local Get-FileHash SHA256",
+      "actual version command"
+    ],
+    "personal_extension_unchanged": true,
+    "personal_extension_actual_version": "v0.81.6",
+    "gh_version": "2.98.0"
+  },
+  "upstream_coverage": {
+    "release_range": "(v0.81.6, v0.88.7]",
+    "baseline_commit": "eed4304d8740f0593f2797276cb8299d228ffd9b",
+    "target_commit": "bde367913adeb3132f0a171594c88a17f4b7d08c",
+    "baseline_is_ancestor": true,
+    "latest_stable_api_confirmed_target": true,
+    "release_pages_fetched": 1,
+    "release_page_size": 100,
+    "release_pagination_stopped_at_baseline": true,
+    "release_count_after_baseline": 49,
+    "stable_release_count_after_baseline": 10,
+    "prerelease_count_after_baseline": 39,
+    "all_release_bodies_archived": true,
+    "commit_count": 3727,
+    "comparison_pages_fetched": 38,
+    "all_comparison_commits_archived": true,
+    "comparison_file_cap_detected": 300,
+    "uncapped_inspected_source_paths_changed": 3054,
+    "source_subtrees_compared": [
+      "pkg/parser",
+      "pkg/workflow",
+      "pkg/cli",
+      "pkg/constants",
+      "docs/src/content/docs",
+      "actions/setup/js",
+      ".github/aw",
+      "schemas"
+    ],
+    "baseline_source_entries_hashed": 3294,
+    "target_source_entries_hashed": 4153,
+    "workflow_schema_structural_diff_records": 175,
+    "method": "Complete release bodies and comparison metadata archived; reader-facing commit leads and selected immutable patches inspected; tagged schema, docs and implementation compared with real compiler output. This is not a manual line-by-line review of every commit.",
+    "unversioned_live_docs_used_as_target_behavior_proof": false,
+    "baseline_release": {
+      "tag": "v0.81.6",
+      "published_at": "2026-06-27T05:44:37Z",
+      "url": "https://github.com/github/gh-aw/releases/tag/v0.81.6",
+      "prerelease": false
+    }
+  },
+  "releases": [
+    {"tag": "v0.82.0", "published_at": "2026-06-29T17:02:19Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.0", "prerelease": true},
+    {"tag": "v0.82.1", "published_at": "2026-06-30T22:58:31Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.1", "prerelease": true},
+    {"tag": "v0.82.2", "published_at": "2026-07-02T17:11:52Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.2", "prerelease": true},
+    {"tag": "v0.82.3", "published_at": "2026-07-07T10:00:07Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.3", "prerelease": true},
+    {"tag": "v0.82.4", "published_at": "2026-07-08T05:36:35Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.4", "prerelease": true},
+    {"tag": "v0.82.5", "published_at": "2026-07-08T10:26:40Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.5", "prerelease": true},
+    {"tag": "v0.82.6", "published_at": "2026-07-08T13:30:54Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.6", "prerelease": true},
+    {"tag": "v0.82.7", "published_at": "2026-07-09T03:56:04Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.7", "prerelease": true},
+    {"tag": "v0.82.8", "published_at": "2026-07-11T08:56:57Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.8", "prerelease": true},
+    {"tag": "v0.82.9", "published_at": "2026-07-13T16:42:32Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.9", "prerelease": true},
+    {"tag": "v0.82.10", "published_at": "2026-07-16T06:35:14Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.10", "prerelease": true},
+    {"tag": "v0.82.11", "published_at": "2026-07-16T19:50:40Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.11", "prerelease": true},
+    {"tag": "v0.82.12", "published_at": "2026-07-17T07:19:15Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.12", "prerelease": true},
+    {"tag": "v0.82.13", "published_at": "2026-07-18T09:17:15Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.13", "prerelease": false},
+    {"tag": "v0.82.14", "published_at": "2026-07-20T17:59:08Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.14", "prerelease": false},
+    {"tag": "v0.82.15", "published_at": "2026-07-21T08:22:00Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.82.15", "prerelease": true},
+    {"tag": "v0.83.0", "published_at": "2026-07-22T16:04:21Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.83.0", "prerelease": true},
+    {"tag": "v0.83.1", "published_at": "2026-07-23T12:11:52Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.83.1", "prerelease": false},
+    {"tag": "v0.83.2", "published_at": "2026-07-24T06:19:51Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.83.2", "prerelease": true},
+    {"tag": "v0.83.3", "published_at": "2026-07-25T11:44:00Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.83.3", "prerelease": true},
+    {"tag": "v0.83.4", "published_at": "2026-07-27T09:09:29Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.83.4", "prerelease": false},
+    {"tag": "v0.83.5", "published_at": "2026-07-29T10:42:48Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.83.5", "prerelease": true},
+    {"tag": "v0.84.0", "published_at": "2026-07-29T20:58:17Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.84.0", "prerelease": true},
+    {"tag": "v0.84.1", "published_at": "2026-07-31T14:10:50Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.84.1", "prerelease": true},
+    {"tag": "v0.84.2", "published_at": "2026-08-01T08:20:22Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.84.2", "prerelease": true},
+    {"tag": "v0.84.3", "published_at": "2026-08-03T05:22:04Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.84.3", "prerelease": false},
+    {"tag": "v0.84.4", "published_at": "2026-08-04T17:57:12Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.84.4", "prerelease": true},
+    {"tag": "v0.85.0", "published_at": "2026-08-04T23:53:04Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.85.0", "prerelease": true},
+    {"tag": "v0.85.1", "published_at": "2026-08-05T15:45:16Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.85.1", "prerelease": true},
+    {"tag": "v0.85.4", "published_at": "2026-08-06T06:18:41Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.85.4", "prerelease": false},
+    {"tag": "v0.86.0", "published_at": "2026-08-07T04:12:14Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.86.0", "prerelease": true},
+    {"tag": "v0.86.1", "published_at": "2026-08-07T21:47:59Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.86.1", "prerelease": true},
+    {"tag": "v0.86.2", "published_at": "2026-08-11T16:19:07Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.86.2", "prerelease": false},
+    {"tag": "v0.86.3", "published_at": "2026-08-15T17:18:49Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.86.3", "prerelease": true},
+    {"tag": "v0.87.0", "published_at": "2026-08-16T00:51:01Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.87.0", "prerelease": true},
+    {"tag": "v0.87.1", "published_at": "2026-08-18T22:15:31Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.87.1", "prerelease": true},
+    {"tag": "v0.87.2", "published_at": "2026-08-20T21:55:01Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.87.2", "prerelease": true},
+    {"tag": "v0.87.4", "published_at": "2026-08-22T04:46:39Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.87.4", "prerelease": true},
+    {"tag": "v0.87.5", "published_at": "2026-08-25T05:03:01Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.87.5", "prerelease": true},
+    {"tag": "v0.87.8", "published_at": "2026-08-28T01:33:57Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.87.8", "prerelease": true},
+    {"tag": "v0.87.9", "published_at": "2026-08-28T21:09:10Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.87.9", "prerelease": true},
+    {"tag": "v0.87.10", "published_at": "2026-08-31T03:06:42Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.87.10", "prerelease": false},
+    {"tag": "v0.88.0", "published_at": "2026-09-01T23:43:47Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.88.0", "prerelease": true},
+    {"tag": "v0.88.2", "published_at": "2026-09-03T05:05:06Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.88.2", "prerelease": false},
+    {"tag": "v0.88.3", "published_at": "2026-09-03T20:32:00Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.88.3", "prerelease": true},
+    {"tag": "v0.88.4", "published_at": "2026-09-04T06:22:42Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.88.4", "prerelease": true},
+    {"tag": "v0.88.5", "published_at": "2026-09-07T04:07:10Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.88.5", "prerelease": true},
+    {"tag": "v0.88.6", "published_at": "2026-09-07T23:04:48Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.88.6", "prerelease": true},
+    {"tag": "v0.88.7", "published_at": "2026-09-08T15:34:49Z", "url": "https://github.com/github/gh-aw/releases/tag/v0.88.7", "prerelease": false}
+  ],
+  "chapters": [
+    {
+      "id": "ch01-what-are-agentic-workflows",
+      "action": "update",
+      "priority": "P2",
+      "wave": 1,
+      "findings": ["F05", "F07"],
+      "reasons": [
+        "The chapter says pull requests are never merged automatically; the target supports opt-in merge capabilities. Human merge must be described as the book's policy, not a universal product prohibition.",
+        "Qualify mediated-write and safety claims rather than implying a compromised agent can never cause harmful authorized output."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs-pull-requests.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/threat-detection.md"
+      ],
+      "examples": ["examples/ch02/repo-assistant-triage.md"],
+      "theory_briefs": ["content/research/ch01-theory.md"],
+      "preserve": [
+        "Inner-loop/outer-loop and Continuous AI theory",
+        "Existing running example",
+        "Historical adopter statistics unless independently researched"
+      ],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch02-your-first-workflow",
+      "action": "update",
+      "priority": "P1",
+      "wave": 0,
+      "pilot": true,
+      "findings": ["F01", "F04"],
+      "reasons": [
+        "Pin the fixed framework target instead of promising an unpinned global install yields a particular version.",
+        "Replace blanket offline/API-free compilation claims with no-engine-invocation and validator/network qualifications.",
+        "Explain explicit copilot-requests: write, organization billing policy prerequisites, and that the unchanged example uses the PAT path.",
+        "Refresh compile output/version excerpts from emitted target locks."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/releases/tag/v0.88.7",
+        "https://github.com/github/gh-aw/blob/v0.88.7/pkg/workflow/compiler.go",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/auth.mdx",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/billing.md"
+      ],
+      "examples": ["examples/ch02/repo-assistant-triage.md"],
+      "theory_briefs": ["content/research/ch02-theory.md"],
+      "preserve": ["Triage as the low-risk first outcome", "Existing standalone workflow"],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch03-anatomy-and-compile-model",
+      "action": "update",
+      "priority": "P0",
+      "wave": 1,
+      "findings": ["F01", "F07"],
+      "reasons": [
+        "Generated metadata, engine pins, dependency references and job contents changed; old lock excerpts must not be relabeled.",
+        "AI also runs in threat detection, so exactly one non-deterministic job is an inaccurate boundary description.",
+        "Compilation may resolve network-backed data and write pin caches/gitattributes; status also must not be described as universally local.",
+        "Clarify reproducibility inputs and configuration/runtime-import distinctions."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compilation-process.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/pkg/cli/compile_config.go",
+        "https://github.com/github/gh-aw/blob/v0.88.7/pkg/workflow/compiler.go",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/threat-detection.md"
+      ],
+      "examples": ["examples/ch02/repo-assistant-triage.md"],
+      "theory_briefs": ["content/research/ch03-theory.md"],
+      "preserve": ["Markdown source to Actions lock architecture", "Two artifacts, one intent"],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch04-triggers",
+      "action": "update",
+      "priority": "P1",
+      "wave": 1,
+      "findings": ["F02"],
+      "reasons": [
+        "New on.cooldown has a literal-duration minimum and fails open if history cannot be queried.",
+        "Stacked-PR triggers now default to top-of-stack filtering.",
+        "Correct the claim that every recompile resets stop-after; the compiler has explicit refresh-stop-time behavior.",
+        "Confirm exact nested on.roles and command-trigger spelling, and repository-aware schedule scattering.",
+        "Target accepts workflow_run.conclusion, which the baseline rejected."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/triggers.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/schedule-syntax.md",
+        "https://github.com/github/gh-aw/commit/91c53ccc9e0c408546b384ad2e8cb3484b5e15d8",
+        "https://github.com/github/gh-aw/commit/88a72b0e38ffefbcea25be22863f5842d7c8b500"
+      ],
+      "examples": ["examples/ch04/repo-assistant-triggers.md"],
+      "theory_briefs": ["content/research/ch04-features.md#concept-theory"],
+      "preserve": ["Reactive versus proactive clock framing", "Existing compiling trigger source"],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch05-engines",
+      "action": "update",
+      "priority": "P0",
+      "wave": 1,
+      "findings": ["F03", "F04", "F08"],
+      "reasons": [
+        "Target lists five built-in engines and separates unsupported imported samples from built-ins.",
+        "Top-level model is new, engine.model remains valid with per-engine precedence, and Copilot fallback changed to auto.",
+        "Correct latest-install and max-turns claims using generated pins and the target capability matrix.",
+        "Engine changes can require different tools, authentication, model names and network configuration; strict Codex command allowlists now fail.",
+        "OAuth token rejection and WIF options change authentication guidance."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/pkg/constants/version_constants.go",
+        "https://github.com/github/gh-aw/commit/6058f2272599aed5fe00cbd9d572ca89298cf3ea",
+        "https://github.com/github/gh-aw/commit/b588b670994c62e6ac5c2b642e15098bcfedc4f7",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/auth.mdx"
+      ],
+      "examples": ["examples/ch05/repo-assistant-claude.md"],
+      "theory_briefs": ["content/research/ch05-features.md#concept-theory"],
+      "preserve": ["Portable intent as a design benefit", "Explicit Claude pin unless a separate update is justified"],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch06-safe-outputs",
+      "action": "update",
+      "priority": "P1",
+      "wave": 2,
+      "findings": ["F05"],
+      "reasons": [
+        "Distinguish allowed labels from label provisioning; create-if-missing is a new explicit option.",
+        "Retain explicit COMMENT-only and draft constraints instead of describing human merge as a universal framework restriction.",
+        "Staged mode is runtime preview and may incur costs, not compile-only validation.",
+        "Per-output Apps, review commit attribution, stacked PRs and steering expand the reference surface.",
+        "Qualify sanitization/security guarantees and prompt-only file restrictions."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs-pull-requests.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/staged-mode.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/pkg/parser/schemas/main_workflow_schema.json"
+      ],
+      "examples": ["examples/ch06/repo-assistant-open-pr.md"],
+      "theory_briefs": ["content/research/ch06-features.md#concept-theory"],
+      "preserve": ["Propose, validate, apply boundary", "Existing draft-PR recipe"],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch07-defense-in-depth",
+      "action": "update",
+      "priority": "P0",
+      "wave": 2,
+      "findings": ["F06", "F07", "F14"],
+      "reasons": [
+        "Legacy sandbox.agent.sudo is rejected; runtime profiles now encode privilege and host-access choices.",
+        "Default Docker is rootless/network-isolated, while provider domain bundles require explicit direct-egress opt-in.",
+        "External threat detection is default; detection may itself run AI and has an independent budget.",
+        "Artifact/OTLP/MCP/token redaction was hardened, but absolute no-leak or no-damage guarantees remain inappropriate.",
+        "New aw.json strict policy enforces effective strict compilation.",
+        "Target compatibility policy blocks v0.82.8 through v0.85.3; do not misstate a universal v0.85.3 floor."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/sandbox.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/agent-runtimes.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/network.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/threat-detection.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/.github/aw/compat.md"
+      ],
+      "examples": ["examples/ch07/repo-assistant-hardened.md"],
+      "theory_briefs": ["content/research/ch07-features.md#concept-theory"],
+      "preserve": ["Layered threat model", "Read-only permissions and narrow existing example"],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch08-tools-and-mcp",
+      "action": "update",
+      "priority": "P0",
+      "wave": 2,
+      "findings": ["F08", "F09"],
+      "reasons": [
+        "Built-in Playwright is CLI-only; mode:mcp is a target compile error despite a retained schema diagnostic enum.",
+        "Bash command allowlisting is engine-dependent and unsupported strict configurations now fail.",
+        "Explain stdio/container/remote HTTP transport boundaries rather than claiming every MCP server is a local isolated container.",
+        "Existing inline Slack MCP package is unpinned and outside the verified workflow corpus.",
+        "MCP prompt discovery, redaction and optional-server startup handling changed."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/playwright.md",
+        "https://github.com/github/gh-aw/commit/7206a58068deaf2662682016ede08f095d359eaa",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/mcp-gateway.md"
+      ],
+      "examples": ["examples/ch08/repo-assistant-tools.md"],
+      "theory_briefs": ["content/research/ch08-features.md#concept-theory"],
+      "preserve": ["Capability versus exposure framing", "Existing GitHub/web-fetch workflow"],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch09-continuous-triage-and-docs",
+      "action": "update",
+      "priority": "P2",
+      "wave": 3,
+      "findings": ["F02", "F05", "F12", "F13"],
+      "reasons": [
+        "Document Issues-enabled deployment prerequisite for the create-issue fallback; actual book-remote validation fails without it.",
+        "Clarify existing-label prerequisites, no-work outcomes and admission/budget limits rather than promising perpetual unattended operation.",
+        "Refresh context-qualified compiler output without claiming runtime verification."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/pkg/workflow/repository_features_validation.go",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/triggers.md"
+      ],
+      "examples": [
+        "examples/ch09/continuous-triage.md",
+        "examples/ch09/continuous-docs.md"
+      ],
+      "theory_briefs": ["content/research/ch09-features.md#concept-theory"],
+      "preserve": ["Mini-product pattern composition", "Both existing source recipes"],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch10-continuous-review-and-testing",
+      "action": "update",
+      "priority": "P1",
+      "wave": 3,
+      "findings": ["F02", "F05", "F08"],
+      "reasons": [
+        "The embedded workflow_run.conclusion snippet fails the baseline schema but passes the target; correct its verification provenance.",
+        "Review workflows now encounter default top-of-stack filtering.",
+        "Keep COMMENT-only reviews explicit and distinguish a tests-only prompt from enforceable file scope.",
+        "Retain a supporting engine for Bash allowlists; do not portray a Codex swap as equivalent enforcement."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/triggers.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs-pull-requests.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md"
+      ],
+      "examples": [
+        "examples/ch10/continuous-review.md",
+        "examples/ch10/daily-test-improver.md"
+      ],
+      "theory_briefs": ["content/research/ch10-features.md#concept-theory"],
+      "preserve": ["Quality-loop and human-review policy", "Both existing source recipes"],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch11-reuse-and-memory",
+      "action": "update",
+      "priority": "P0",
+      "wave": 4,
+      "findings": ["F10", "F11"],
+      "reasons": [
+        "Correct automatic central-update propagation and fully self-contained default lock claims.",
+        "Native skills and experimental plugins are distinct from workflow imports and independently versioned APM integration.",
+        "Memory now supports custom validation and filters ineligible files before persistence, potentially removing stale files after policy changes.",
+        "Correct nested glob behavior, seven-days-unused cache eviction, and artifact retention versus cache lifetime.",
+        "Shared policy does not automatically share repo memory across repositories.",
+        "Drive memory is private preview and should not enter the general recipe."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/imports.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/frontmatter.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/repo-memory.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/cache-memory.md",
+        "https://github.com/github/gh-aw/commit/6f063409a3d37f12a98c35a0cdcff27d2c0587d4",
+        "https://github.com/github/gh-aw/blob/v0.88.7/.github/aw/drive-memory.md"
+      ],
+      "examples": [
+        "examples/ch11/repo-assistant-shared.md",
+        "examples/ch11/shared/triage-policy.md"
+      ],
+      "theory_briefs": ["content/research/ch11-features.md#concept-theory"],
+      "preserve": ["DRY versus persistence distinction", "Existing import topology"],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch12-observability-and-debugging",
+      "action": "update",
+      "priority": "P0",
+      "wave": 4,
+      "findings": ["F07", "F12"],
+      "reasons": [
+        "Logs now supports multiple/cross-repository targets, cached audit reports, runtime/eval/grader filters and storage/API budgets.",
+        "Use exclude-staged and explicit count limits; date filters do not mean unlimited history.",
+        "Target help requires repository context for bare audit IDs.",
+        "report_incomplete now fails the conclusion step instead of silently succeeding.",
+        "Correct complete/durable-transcript and one-nondeterministic-job claims; artifact packaging/redaction and OTLP handling changed.",
+        "Do not automatically allowlist denied domains as the universal debugging fix."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/audit.md",
+        "https://github.com/github/gh-aw/commit/17102565c7209c3dc26b04a396f4afd0e33fe477",
+        "https://github.com/github/gh-aw/releases/tag/v0.88.6",
+        "https://github.com/github/gh-aw/releases/tag/v0.88.7"
+      ],
+      "examples": ["examples/ch12/repo-assistant-observable.md"],
+      "theory_briefs": ["content/research/ch12-features.md#concept-theory"],
+      "preserve": ["Observability before trust", "Existing OTLP workflow with explicit credential caveat"],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch13-governance-and-finops",
+      "action": "update",
+      "priority": "P0",
+      "wave": 5,
+      "findings": ["F04", "F13", "F14"],
+      "reasons": [
+        "Both binaries emit a 5000 AIC daily fallback; disabled-by-default is a baseline erratum, not target behavior.",
+        "Separate main-agent 1000 AIC, detector 400 AIC, Actions compute and step/job timeouts instead of claiming a complete bill cap.",
+        "Distinguish compiler-process defaults from runtime vars and runtime capability gates.",
+        "Add final models.allowed/blocked syntax, auto-model implications, models inspection and non-experimental but uncertain forecasts.",
+        "New repository strict policy prevents effective per-workflow opt-out.",
+        "Keep APM governance claims independently version-scoped and verified."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compiler-enterprise-environment-controls.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/cost-management.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/threat-detection.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/pkg/parser/schemas/repo_config_schema.json",
+        "https://github.com/github/gh-aw/releases/tag/v0.84.0",
+        "https://github.com/github/gh-aw/releases/tag/v0.88.2"
+      ],
+      "examples": ["examples/ch13/repo-assistant-budgeted.md"],
+      "theory_briefs": ["content/research/ch13-features.md#concept-theory"],
+      "preserve": ["Variable-spend and policy framing", "Explicit 200/2000 budget example"],
+      "mandatory_example_source_migration": false
+    },
+    {
+      "id": "ch14-fleets-and-adoption",
+      "action": "update",
+      "priority": "P1",
+      "wave": 5,
+      "findings": ["F10", "F14", "F15"],
+      "reasons": [
+        "Teach distinct package aw.yml, repository aw.json, workflow imports and APM formats.",
+        "Target supports recursive manifest includes and wildcard/source-destination mappings; packaged settings and resources can affect consumers.",
+        "Explain deliberate consumer updates and ref advancement instead of automatic pinned-source propagation.",
+        "Update/upgrade can perform action major bumps, codemods and recompilation; no-release-bump does not freeze core actions.",
+        "Qualify source/tracker metadata and inherited governance claims; the example has a synthetic, unexercised source.",
+        "Keep staged rollout and target compatibility remediation separate from automatic publishing."
+      ],
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/aw-yml-package-manifest.md",
+        "https://github.com/github/gh-aw/blob/v0.88.7/pkg/parser/schemas/aw_manifest_schema.json",
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md",
+        "https://github.com/github/gh-aw/commit/f8a0b360e107fef803bb3565890c79f65bf837e7",
+        "https://github.com/github/gh-aw/blob/v0.88.7/.github/aw/compat.md"
+      ],
+      "examples": [
+        "examples/ch14/fleet-triage.md",
+        "examples/ch14/shared/triage-policy.md"
+      ],
+      "theory_briefs": ["content/research/ch14-features.md#concept-theory"],
+      "preserve": ["Individual/team/organization maturity arc", "Existing local import topology"],
+      "mandatory_example_source_migration": false
+    }
+  ],
+  "unchanged_chapters": [],
+  "unchanged_chapter_rationale": "None: every chapter has a concrete reader-facing correction beyond a version stamp. Preserve valid theory and all 14 compiling source recipes; update is not a request for wholesale rewriting.",
+  "new_chapters_required": [],
+  "example_compatibility": {
+    "classification": "PASS_14_OF_14_WITH_WARNINGS_AND_VALIDATION_LIMITS",
+    "compiler_flags": [
+      "--strict",
+      "--validate",
+      "--no-check-update",
+      "--schedule-seed",
+      "webmaxru/github-agentic-workflows-book",
+      "--json"
+    ],
+    "sources_modified": false,
+    "shared_import_topology_preserved": true,
+    "locks_emitted": true,
+    "fix_or_approve_used": false,
+    "engine_credentials_required_for_compile": false,
+    "live_workflow_runs": 0,
+    "reference_remote": "https://github.com/github/gh-aw.git",
+    "reference_remote_use": "Read-only scratch repository context; no source upload, remote installation or workflow execution",
+    "initial_book_remote_result": {
+      "passed": 13,
+      "total": 14,
+      "failed_example": "examples/ch09/continuous-docs.md",
+      "reason": "Repository-feature validation sees Issues disabled on webmaxru/github-agentic-workflows-book.",
+      "classification": "deployment-context finding, not a source migration failure"
+    },
+    "docker_image_validation": "SKIPPED_DOCKER_DAEMON_UNAVAILABLE",
+    "optional_security_scanners": "NOT_EXECUTED",
+    "json_warning_arrays_incomplete": true,
+    "results": [
+      {"path": "examples/ch02/repo-assistant-triage.md", "exit_code": 0, "result": "PASS", "stderr_warnings": []},
+      {"path": "examples/ch04/repo-assistant-triggers.md", "exit_code": 0, "result": "PASS", "stderr_warnings": []},
+      {"path": "examples/ch05/repo-assistant-claude.md", "exit_code": 0, "result": "PASS", "stderr_warnings": ["safe-update review: ANTHROPIC_API_KEY"]},
+      {"path": "examples/ch06/repo-assistant-open-pr.md", "exit_code": 0, "result": "PASS", "stderr_warnings": []},
+      {"path": "examples/ch07/repo-assistant-hardened.md", "exit_code": 0, "result": "PASS", "stderr_warnings": []},
+      {"path": "examples/ch08/repo-assistant-tools.md", "exit_code": 0, "result": "PASS", "stderr_warnings": []},
+      {"path": "examples/ch09/continuous-docs.md", "exit_code": 0, "result": "PASS", "stderr_warnings": [], "context_note": "Reference context has Issues enabled; book-remote context fails."},
+      {"path": "examples/ch09/continuous-triage.md", "exit_code": 0, "result": "PASS", "stderr_warnings": []},
+      {"path": "examples/ch10/continuous-review.md", "exit_code": 0, "result": "PASS", "stderr_warnings": []},
+      {"path": "examples/ch10/daily-test-improver.md", "exit_code": 0, "result": "PASS", "stderr_warnings": []},
+      {"path": "examples/ch11/repo-assistant-shared.md", "exit_code": 0, "result": "PASS", "stderr_warnings": []},
+      {"path": "examples/ch12/repo-assistant-observable.md", "exit_code": 0, "result": "PASS", "stderr_warnings": ["safe-update review: OTLP_ENDPOINT, OTLP_TOKEN"]},
+      {"path": "examples/ch13/repo-assistant-budgeted.md", "exit_code": 0, "result": "PASS", "stderr_warnings": []},
+      {"path": "examples/ch14/fleet-triage.md", "exit_code": 0, "result": "PASS", "stderr_warnings": []}
+    ],
+    "shared_fragments_not_standalone_targets": [
+      "examples/ch11/shared/triage-policy.md",
+      "examples/ch14/shared/triage-policy.md"
+    ]
+  },
+  "probes": {
+    "session_relative_directory": "probes-v0.88.7/.github/workflows",
+    "paired_baseline_directory": "probes-v0.81.6/.github/workflows",
+    "purpose": "Diagnostic, compile-only positive and intentional negative fixtures; not automatically approved new book examples",
+    "paired_results": [
+      {"file": "defaults.md", "baseline_exit": 0, "target_exit": 0, "findings": ["F01", "F03", "F07", "F13"]},
+      {"file": "default-outputs.md", "baseline_exit": 0, "target_exit": 0, "findings": ["F05"]},
+      {"file": "model-top-level.md", "baseline_exit": 1, "target_exit": 0, "findings": ["F03", "F13"]},
+      {"file": "model-precedence.md", "baseline_exit": 1, "target_exit": 0, "findings": ["F03"]},
+      {"file": "models-policy.md", "baseline_exit": 1, "target_exit": 0, "findings": ["F13"]},
+      {"file": "cooldown.md", "baseline_exit": 1, "target_exit": 0, "findings": ["F02"]},
+      {"file": "workflow-run-conclusion.md", "baseline_exit": 1, "target_exit": 0, "findings": ["F02"], "note": "Baseline embedded ch10 syntax erratum now supported by target."},
+      {"file": "legacy-sudo.md", "baseline_exit": 0, "target_exit": 1, "findings": ["F06"], "intentional_target_failure": true},
+      {"file": "runtime-docker.md", "baseline_exit": 1, "target_exit": 0, "findings": ["F06"]},
+      {"file": "runtime-host-services.md", "baseline_exit": 1, "target_exit": 0, "findings": ["F06"]},
+      {"file": "playwright-mcp.md", "baseline_exit": 0, "target_exit": 1, "findings": ["F09"], "intentional_target_failure": true},
+      {"file": "playwright-cli.md", "baseline_exit": 0, "target_exit": 0, "findings": ["F09"]},
+      {"file": "codex-bash-allowlist.md", "baseline_exit": 0, "target_exit": 1, "findings": ["F08"], "intentional_target_failure": true},
+      {"file": "skills-local.md", "baseline_exit": 1, "target_exit": 0, "findings": ["F10"]},
+      {"file": "repo-memory-validation.md", "baseline_exit": 1, "target_exit": 0, "findings": ["F11"], "target_warning": "New memory validator requires safe-update review."},
+      {"file": "label-creation.md", "baseline_exit": 1, "target_exit": 0, "findings": ["F05"]},
+      {"file": "no-network.md", "baseline_exit": 0, "target_exit": 0, "findings": ["F07"]},
+      {"file": "copilot-org-auth.md", "baseline_exit": 0, "target_exit": 0, "findings": ["F04"]},
+      {"file": "pi-engine.md", "baseline_exit": 1, "target_exit": 0, "findings": ["F03"], "note": "Baseline recognizes Pi but requires explicit tools.github.mode: gh-proxy for this configuration; target warns about Copilot detection authentication."}
+    ],
+    "additional_results": [
+      {"directory": "probes-workspace-strict", "file": ".github/workflows/opt-out.md", "target_exit": 0, "cli_strict_flag": false, "emitted_strict": true, "findings": ["F14"]},
+      {"directory": "probes-workspace-strict", "file": ".github/workflows/unsafe-opt-out.md", "target_exit": 1, "cli_strict_flag": false, "intentional_target_failure": true, "findings": ["F14"]},
+      {"directory": "probes-package-v0.88.7", "file": "sub/workflows/package-worker.md", "target_exit": 0, "findings": ["F15"], "note": "Recursive includes manifest validation and compilation only; no remote installation."}
+    ]
+  },
+  "critical_source_disagreements": [
+    {
+      "topic": "engine.model",
+      "resolution": "Do not describe it as removed: top-level model was added and per-engine override precedence was restored before target.",
+      "sources": [
+        "https://github.com/github/gh-aw/commit/b588b670994c62e6ac5c2b642e15098bcfedc4f7",
+        "https://github.com/github/gh-aw/blob/v0.88.7/pkg/parser/schemas/main_workflow_schema.json"
+      ]
+    },
+    {
+      "topic": "daily budget",
+      "resolution": "Both binaries emit a 5000 AIC fallback. Disabled-by-default statements are baseline/target prose errata, not an interval behavior change.",
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compiler-enterprise-environment-controls.md"
+      ]
+    },
+    {
+      "topic": "ShellCheck default",
+      "resolution": "Target compile configuration makes --shellcheck opt-in despite earlier default-on release prose.",
+      "sources": ["https://github.com/github/gh-aw/blob/v0.88.7/pkg/cli/compile_config.go"]
+    },
+    {
+      "topic": "workspace strict",
+      "resolution": "A harmless strict:false declaration is overridden to true, not rejected just for its spelling. Unsafe opt-out permissions fail.",
+      "sources": [
+        "https://github.com/github/gh-aw/commit/25fb43e7898db2c8bcd6a9cdbadffed38242c03e"
+      ]
+    },
+    {
+      "topic": "package composition",
+      "resolution": "Target aw.yml uses includes entries naming child aw.yml files; no aw.yml imports property exists.",
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/pkg/parser/schemas/aw_manifest_schema.json"
+      ]
+    },
+    {
+      "topic": "security compatibility floor",
+      "resolution": "Target blocks v0.82.8 through v0.85.3, first unaffected v0.85.4; minimumVersion remains v0.65.3. Do not label baseline v0.81.6 blocked by this range.",
+      "sources": [
+        "https://github.com/github/gh-aw/blob/v0.88.7/.github/aw/compat.json",
+        "https://github.com/github/gh-aw/blob/v0.88.7/.github/aw/compat.md"
+      ]
+    }
+  ],
+  "waves": [
+    {"wave": 0, "name": "Low-risk pilot", "chapters": ["ch02-your-first-workflow"], "gate": "Retain source, correct installation/compile/auth prose, compile emitted lock, synchronize embedded example, obtain actual review."},
+    {"wave": 1, "name": "Foundations", "chapters": ["ch01-what-are-agentic-workflows", "ch03-anatomy-and-compile-model", "ch04-triggers", "ch05-engines"], "gate": "Correct shared mental models and use exact lock/probe evidence."},
+    {"wave": 2, "name": "Security and tool contract", "chapters": ["ch06-safe-outputs", "ch07-defense-in-depth", "ch08-tools-and-mcp"], "gate": "Review runtime, network, detection, write and tool-enforcement boundaries without blanket privilege widening."},
+    {"wave": 3, "name": "Applied patterns", "chapters": ["ch09-continuous-triage-and-docs", "ch10-continuous-review-and-testing"], "gate": "Keep compiling recipes and add deployment/context qualifications."},
+    {"wave": 4, "name": "State and operations", "chapters": ["ch11-reuse-and-memory", "ch12-observability-and-debugging"], "gate": "Review persistence/filtering and operational failure/retention semantics."},
+    {"wave": 5, "name": "Organization", "chapters": ["ch13-governance-and-finops", "ch14-fleets-and-adoption"], "gate": "Review budget/default timing, strict policy, packages and fleet updates."},
+    {"wave": 6, "name": "Parent-owned final integration", "chapters": "all", "gate": "Full final corpus emitted-lock strict PASS, embedded-source review and actual editorial ACCEPT before advancing coverage or preparing publication."}
+  ],
+  "blockers_and_limits": [
+    {
+      "id": "B01",
+      "scope": "image/scanner/runtime certification",
+      "blocking_for_core_strict_source_compilation": false,
+      "detail": "Docker daemon unavailable; image validation can be skipped by --validate. Native actionlint/ShellCheck absent; optional scanners not executed.",
+      "next_action": "Do not claim scanner/image coverage. If required, verifier must enable explicit validators in an appropriate environment."
+    },
+    {
+      "id": "B02",
+      "scope": "deployment-context verification",
+      "blocking_for_core_strict_source_compilation": false,
+      "detail": "Book remote has Issues disabled; continuous-docs create-issue feature check fails there while identical source passes in reference context.",
+      "next_action": "Keep source and deployment-context checks distinct; do not change book repository settings as a workaround."
+    },
+    {
+      "id": "B03",
+      "scope": "runtime/provider/OTLP/MCP claims",
+      "blocking_for_core_strict_source_compilation": false,
+      "detail": "No engine calls, live workflow dispatch, provider authentication, browser/MCP runtime, OTLP export or forecast measurement was performed.",
+      "next_action": "Label runtime requirements honestly; never use missing secrets to waive compilation."
+    },
+    {
+      "id": "B04",
+      "scope": "warning review",
+      "blocking_for_core_strict_source_compilation": false,
+      "detail": "Claude and OTLP examples plus new memory validator emit approval warnings on stderr even when JSON warnings is empty.",
+      "next_action": "Preserve stderr and obtain deliberate review rather than blanket --approve."
+    },
+    {
+      "id": "B05",
+      "scope": "optional new worked examples",
+      "blocking_for_core_strict_source_compilation": false,
+      "detail": "Remote plugins, per-output Apps, WIF, advanced steering, external tracker outputs, graders and enclaves are tagged-source findings, not fully verified new worked examples. Drive memory requires private-preview enrollment.",
+      "next_action": "Keep these optional and add verifier-owned fixtures before teaching complete configurations; exclude drive memory from general recipes."
+    },
+    {
+      "id": "B06",
+      "scope": "APM and inline examples",
+      "blocking_for_core_strict_source_compilation": false,
+      "detail": "APM is independently versioned; current inline APM/Slack examples are outside the 14-workflow corpus.",
+      "next_action": "Separately pin/verify or narrow claims. Do not infer APM policy guarantees from a live link in tagged gh-aw documentation."
+    },
+    {
+      "id": "B07",
+      "scope": "edition acceptance",
+      "blocking_for_edition_acceptance": true,
+      "detail": "This phase does not provide source-bound editorial ACCEPT or final post-author whole-corpus verification.",
+      "next_action": "Parent coordinates targeted author waves, complete corpus verification and real review; do not publish, merge or open a PR in this phase."
+    }
+  ],
+  "artifact_roots": {
+    "session": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files",
+    "raw_upstream": "upstream-v0.88.7",
+    "raw_release_bodies": "upstream-v0.88.7/release-interval.json",
+    "raw_commits": "upstream-v0.88.7/commits-interval.json",
+    "raw_source_diff": "upstream-v0.88.7/source-net-delta.json",
+    "raw_schema_diff": "upstream-v0.88.7/schema-semantic-delta.json",
+    "cli_help": "cli-help-comparison.json",
+    "new_cli_help": "cli-new-command-help.json",
+    "example_results": "compat-v0.88.7-neutral-results.json",
+    "initial_example_results": "compat-v0.88.7-results.json",
+    "target_probe_results": "probes-v0.88.7-results.json",
+    "baseline_probe_results": "probes-v0.81.6-results.json"
+  },
+  "ownership": {
+    "repository_artifacts_written": [
+      "content/research/updates/v0.88.7/framework-delta.md",
+      "content/research/updates/v0.88.7/impact.json"
+    ],
+    "historical_research_preserved": true,
+    "existing_examples_edited": false,
+    "chapters_edited": false,
+    "scripts_workflows_helpers_metadata_prompts_edited": false,
+    "agents_delegated": 0,
+    "live_workflows_dispatched": 0,
+    "pull_requests_opened": 0,
+    "published_or_merged": false
+  }
+}

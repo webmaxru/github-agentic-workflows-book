@@ -40,6 +40,10 @@ accurate, and teachable across authors.
 - Caption each code block with what it demonstrates.
 - Keep complete embedded workflows consistent with their `examples/` sources. Missing engine
   credentials can justify omitting a live run, not skipping strict compilation.
+- Every complete copyable workflow has a corresponding file under `examples/`. An
+  intentionally abridged/annotated variant is clearly captioned and has its own source
+  if its behavior differs; do not silently present it as the full recipe. Label partial
+  configuration blocks as excerpts and verify them in a complete workflow context.
 
 ## Edition maintenance
 - Preserve chapter slugs, section slots, and valid theory unless the impact map justifies a change.
