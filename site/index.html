@@ -6,6 +6,8 @@
   <title>GitHub Agentic Workflows: An Interactive Book</title>
   <meta name="description" content="Learn GitHub Agentic Workflows (gh-aw): write your repository&#x27;s outer loop in Markdown, compile it to hardened GitHub Actions, and run safe, reviewed Continuous AI.">
   <meta name="author" content="Maxim Salnikov">
+  <meta name="book-content-version" content="1.2">
+  <meta name="gh-aw-framework-version" content="v0.88.7">
   <link rel="canonical" href="https://aw.isainative.dev/">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -40,10 +42,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="assets/style.css">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer src="assets/app.js"></script>
   <script>window.__APPINSIGHTS_CONNECTION_STRING__="";</script>
   <script defer src="assets/analytics.js"></script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://aw.isainative.dev/#website","url":"https://aw.isainative.dev/","name":"GitHub Agentic Workflows: An Interactive Book","description":"Learn GitHub Agentic Workflows (gh-aw): write your repository's outer loop in Markdown, compile it to hardened GitHub Actions, and run safe, reviewed Continuous AI.","inLanguage":"en","publisher":{"@id":"https://aw.isainative.dev/#author"}},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"Book","@id":"https://aw.isainative.dev/#book","name":"GitHub Agentic Workflows: An Interactive Book","url":"https://aw.isainative.dev/","author":{"@id":"https://aw.isainative.dev/#author"},"inLanguage":"en","bookFormat":"https://schema.org/EBook","genre":"Software engineering","about":"GitHub Agentic Workflows (gh-aw)","numberOfPages":14,"image":"https://aw.isainative.dev/og-image.png","isPartOf":{"@id":"https://aw.isainative.dev/#website"}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://aw.isainative.dev/#website","url":"https://aw.isainative.dev/","name":"GitHub Agentic Workflows: An Interactive Book","description":"Learn GitHub Agentic Workflows (gh-aw): write your repository's outer loop in Markdown, compile it to hardened GitHub Actions, and run safe, reviewed Continuous AI.","inLanguage":"en","publisher":{"@id":"https://aw.isainative.dev/#author"}},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"Book","@id":"https://aw.isainative.dev/#book","name":"GitHub Agentic Workflows: An Interactive Book","url":"https://aw.isainative.dev/","author":{"@id":"https://aw.isainative.dev/#author"},"inLanguage":"en","bookFormat":"https://schema.org/EBook","bookEdition":"1.2","genre":"Software engineering","about":{"@type":"SoftwareApplication","name":"GitHub Agentic Workflows (gh-aw)","softwareVersion":"v0.88.7","url":"https://github.com/github/gh-aw/releases/tag/v0.88.7"},"numberOfPages":14,"image":"https://aw.isainative.dev/og-image.png","isPartOf":{"@id":"https://aw.isainative.dev/#website"}}]}</script>
 </head>
 <body class="home">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -57,7 +60,7 @@
         <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repo ↗</a>
         <a href="https://github.com/github/gh-aw" target="_blank" rel="noopener">gh-aw ↗</a>
       </nav>
-      <a class="version-pill" href="versions.html" title="Content version 1.1 — view version history">v1.1</a>
+      <a class="version-pill" href="versions.html" title="Content edition v1.2 — view version history" aria-label="Content edition v1.2 — view version history">v1.2</a>
       <div class="theme-toggle" role="group" aria-label="Reading theme">
         <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">☀</span><span class="visually-hidden">Light theme</span></button>
         <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">◑</span><span class="visually-hidden">Sepia theme</span></button>
@@ -84,11 +87,15 @@
           </div>
           <div class="cover-meta-item">
             <dt>Reading time</dt>
-            <dd>about 112 minutes</dd>
+            <dd>about 202 minutes</dd>
           </div>
           <div class="cover-meta-item">
-            <dt>Edition</dt>
-            <dd><a class="cover-meta-link" href="versions.html">v1.1</a></dd>
+            <dt>Content edition</dt>
+            <dd><a class="cover-meta-link" href="versions.html">v1.2</a></dd>
+          </div>
+          <div class="cover-meta-item">
+            <dt>Framework coverage</dt>
+            <dd><a class="cover-meta-link" href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></dd>
           </div>
         </dl>
       </div>
@@ -125,7 +132,7 @@
                   <span class="toc-title">What Are Agentic Workflows?</span>
                   <span class="toc-obj">Explain what an agentic workflow is, why the outer loop matters, and when to reach for gh-aw instead of plain GitHub Actions.</span>
                 </span>
-                <span class="toc-time">10 min</span>
+                <span class="toc-time">13 min</span>
               </a>
             </li>
             <li class="toc-row">
@@ -135,7 +142,7 @@
                   <span class="toc-title">The 10-Minute Win: Your First Workflow</span>
                   <span class="toc-obj">Install the gh aw CLI and ship a first working Repo Assistant that triages a new issue end to end.</span>
                 </span>
-                <span class="toc-time">15 min</span>
+                <span class="toc-time">20 min</span>
               </a>
             </li>
             <li class="toc-row">
@@ -145,7 +152,7 @@
                   <span class="toc-title">Anatomy &amp; the Compile Model</span>
                   <span class="toc-obj">Read any workflow&#x27;s frontmatter + Markdown, run the compile-and-iterate loop, and understand what the generated .lock.yml contains.</span>
                 </span>
-                <span class="toc-time">9 min</span>
+                <span class="toc-time">15 min</span>
               </a>
             </li>
             <li class="toc-row">
@@ -153,9 +160,9 @@
                 <span class="toc-num">04</span>
                 <span class="toc-text">
                   <span class="toc-title">Triggers: When Workflows Wake Up</span>
-                  <span class="toc-obj">Choose the right on: events so the Repo Assistant runs at exactly the right moments and no others.</span>
+                  <span class="toc-obj">Choose repository events and admission controls for the Repo Assistant&#x27;s intended work without assuming punctual or exclusive execution.</span>
                 </span>
-                <span class="toc-time">9 min</span>
+                <span class="toc-time">15 min</span>
               </a>
             </li>
             <li class="toc-row">
@@ -163,9 +170,9 @@
                 <span class="toc-num">05</span>
                 <span class="toc-text">
                   <span class="toc-title">Engines: Choosing the Agent&#x27;s Brain</span>
-                  <span class="toc-obj">Select and configure an engine (Copilot, Claude, Codex, or Gemini) and understand the portability that engine-neutral design buys you.</span>
+                  <span class="toc-obj">Select and configure Copilot, Claude, Codex, Gemini, or Pi, control CLI/model selection, and distinguish portable intent from engine-specific runtime requirements.</span>
                 </span>
-                <span class="toc-time">7 min</span>
+                <span class="toc-time">12 min</span>
               </a>
             </li>
           </ol>
@@ -184,7 +191,7 @@
                   <span class="toc-title">Safe Outputs: Acting Without Overreach</span>
                   <span class="toc-obj">Let the Repo Assistant write to the repo — issues, comments, PRs — through the sanitized safe-outputs boundary instead of raw permissions.</span>
                 </span>
-                <span class="toc-time">7 min</span>
+                <span class="toc-time">12 min</span>
               </a>
             </li>
             <li class="toc-row">
@@ -192,9 +199,9 @@
                 <span class="toc-num">07</span>
                 <span class="toc-text">
                   <span class="toc-title">Defense in Depth: Permissions, Firewall &amp; Strict Mode</span>
-                  <span class="toc-obj">Harden a workflow with least-privilege permissions, an egress firewall, and strict mode so a compromised prompt can do little damage.</span>
+                  <span class="toc-obj">Reduce a workflow&#x27;s authority and exposure with least-privilege permissions, runtime isolation, egress controls, and strict mode while explaining the remaining risks.</span>
                 </span>
-                <span class="toc-time">7 min</span>
+                <span class="toc-time">14 min</span>
               </a>
             </li>
             <li class="toc-row">
@@ -204,7 +211,7 @@
                   <span class="toc-title">Tools &amp; MCP: Real Capabilities, Governed</span>
                   <span class="toc-obj">Give the Repo Assistant real capabilities with the tools: block and MCP servers while keeping every capability governed.</span>
                 </span>
-                <span class="toc-time">7 min</span>
+                <span class="toc-time">12 min</span>
               </a>
             </li>
             <li class="toc-row">
@@ -214,7 +221,7 @@
                   <span class="toc-title">Continuous Triage &amp; Docs: Reading the Room</span>
                   <span class="toc-obj">Ship two production-shaped patterns — Continuous Triage and Continuous Docs — as mini-products the Repo Assistant runs on its own.</span>
                 </span>
-                <span class="toc-time">6 min</span>
+                <span class="toc-time">14 min</span>
               </a>
             </li>
             <li class="toc-row">
@@ -224,7 +231,7 @@
                   <span class="toc-title">Continuous Review, Testing &amp; CI-Doctor</span>
                   <span class="toc-obj">Close the quality loop with Review, Testing, CI-Doctor, and Refactoring patterns while keeping humans on the merge decision.</span>
                 </span>
-                <span class="toc-time">6 min</span>
+                <span class="toc-time">12 min</span>
               </a>
             </li>
           </ol>
@@ -243,7 +250,7 @@
                   <span class="toc-title">Reuse &amp; Memory: Shared Components and Repo Knowledge</span>
                   <span class="toc-obj">Factor common intent into imported shared components and give the Repo Assistant memory that persists across runs.</span>
                 </span>
-                <span class="toc-time">8 min</span>
+                <span class="toc-time">16 min</span>
               </a>
             </li>
             <li class="toc-row">
@@ -253,7 +260,7 @@
                   <span class="toc-title">Trust &amp; Operate: Observability and Debugging</span>
                   <span class="toc-obj">Inspect, debug, and audit runs with gh aw logs, gh aw audit, and OpenTelemetry so you can trust what the fleet does.</span>
                 </span>
-                <span class="toc-time">7 min</span>
+                <span class="toc-time">16 min</span>
               </a>
             </li>
             <li class="toc-row">
@@ -261,9 +268,9 @@
                 <span class="toc-num">13</span>
                 <span class="toc-text">
                   <span class="toc-title">Governance &amp; FinOps: Policy and Cost at Scale</span>
-                  <span class="toc-obj">Cap, meter, and gate agentic spend with AI Credits and max-ai-credits, and set org policy so the fleet stays affordable and compliant.</span>
+                  <span class="toc-obj">Separate agent, detector, admission, and compute costs; apply scoped budgets and policy; and use forecasts without mistaking them for a complete bill cap.</span>
                 </span>
-                <span class="toc-time">8 min</span>
+                <span class="toc-time">17 min</span>
               </a>
             </li>
             <li class="toc-row">
@@ -273,7 +280,7 @@
                   <span class="toc-title">Fleets &amp; Adoption: From One Repo to the Org</span>
                   <span class="toc-obj">Scale the Repo Assistant into a governed multi-repo fleet and follow an enterprise adoption playbook to roll it out.</span>
                 </span>
-                <span class="toc-time">6 min</span>
+                <span class="toc-time">14 min</span>
               </a>
             </li>
           </ol>
@@ -285,7 +292,7 @@
   <footer class="colophon">
     <div class="colophon-inner">
       <p class="colophon-author">By <strong>Maxim Salnikov</strong> · Microsoft</p>
-      <p class="colophon-meta"><a href="versions.html">Content edition v1.1</a> · <a href="gh-aw-book.pdf">Download the PDF</a> · <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub ↗</a></p>
+      <p class="colophon-meta"><a href="versions.html">Content edition v1.2</a> · <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a> · <a href="gh-aw-book.pdf">Download the PDF</a> · <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub ↗</a></p>
     </div>
   </footer>
 </body>
