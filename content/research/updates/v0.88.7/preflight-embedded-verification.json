@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "expected_version": "v0.88.7",
+  "compiler": [
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe"
+  ],
+  "strict": true,
+  "fragments": [],
+  "results": [
+    {
+      "path": "examples/embedded/ch01.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\ch01.md: info: Tip: set permissions.copilot-requests: write to use GitHub Actions token-based inference with the Copilot engine instead of a personal access token (COPILOT_GITHUB_TOKEN). This option requires that your organization has centralized Copilot billing enabled and may not be available in all organizations. To suppress this tip when using a PAT, set permissions.copilot-requests: none — see https://github.github.com/gh-aw/reference/billing/ for details.\n\n✓ .github\\workflows\\ch01.md (119.2 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true
+    },
+    {
+      "path": "examples/embedded/ch02.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\ch02.md: info: Tip: set permissions.copilot-requests: write to use GitHub Actions token-based inference with the Copilot engine instead of a personal access token (COPILOT_GITHUB_TOKEN). This option requires that your organization has centralized Copilot billing enabled and may not be available in all organizations. To suppress this tip when using a PAT, set permissions.copilot-requests: none — see https://github.github.com/gh-aw/reference/billing/ for details.\n\n✓ .github\\workflows\\ch02.md (119.2 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true
+    }
+  ],
+  "compiler_version": "v0.88.7",
+  "version_output": "gh aw version v0.88.7\n",
+  "passed": 2,
+  "failed": 0,
+  "status": "PASS"
+}

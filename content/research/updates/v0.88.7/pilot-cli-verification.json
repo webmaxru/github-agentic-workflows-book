@@ -1,0 +1,885 @@
+{
+  "schema_version": 1,
+  "target": "v0.88.7",
+  "compiler": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+  "actual_version_output": "gh aw version v0.88.7\n",
+  "checked_at_utc": "2026-09-15T23:36:49.556596+00:00",
+  "chapter": "content/chapters/observability-and-debugging.html",
+  "chapter_sha256": "dd09dcc4097c6976befcf7d6847be609f3d112d3a602f7e734b9599e27e2fc30",
+  "status": "PASS",
+  "scope": "Help-only flag/argument-parser checks, not live command behavior. All logs/audit recipe probes include --help and returned the captured help instead of executing operational handlers.",
+  "unique_recipe_count": 24,
+  "recipe_checks": [
+    {
+      "chapter_lines": [
+        7,
+        23,
+        27,
+        93,
+        113,
+        208
+      ],
+      "recipe": "gh aw logs",
+      "subcommand": "logs",
+      "flags": [],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {},
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        7,
+        69,
+        208
+      ],
+      "recipe": "gh aw audit",
+      "subcommand": "audit",
+      "flags": [],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {},
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        24,
+        32,
+        64
+      ],
+      "recipe": "gh aw logs --help",
+      "subcommand": "logs",
+      "flags": [
+        "--help"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--help": "-h, --help                            Show help for gh aw logs"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        28
+      ],
+      "recipe": "gh aw logs repo-assistant",
+      "subcommand": "logs",
+      "flags": [],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {},
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        29
+      ],
+      "recipe": "gh aw logs owner/repo/repo-assistant",
+      "subcommand": "logs",
+      "flags": [],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {},
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        30
+      ],
+      "recipe": "gh aw logs --artifacts all",
+      "subcommand": "logs",
+      "flags": [
+        "--artifacts"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--artifacts": "--artifacts strings               Artifact sets to download (default: usage — compact summary for faster downloads). Use 'all' for everything, or comma-separate sets. Valid sets: activation, agent, all, detection, evals, experiment, firewall, github-api, graders, mcp, usage (default [usage])"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        31
+      ],
+      "recipe": "gh aw logs --artifacts agent,firewall",
+      "subcommand": "logs",
+      "flags": [
+        "--artifacts"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--artifacts": "--artifacts strings               Artifact sets to download (default: usage — compact summary for faster downloads). Use 'all' for everything, or comma-separate sets. Valid sets: activation, agent, all, detection, evals, experiment, firewall, github-api, graders, mcp, usage (default [usage])"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        37
+      ],
+      "recipe": "gh aw logs repo-assistant repo-assistant-observable --count 20",
+      "subcommand": "logs",
+      "flags": [
+        "--count"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        38,
+        127
+      ],
+      "recipe": "gh aw logs repo-assistant --start-date -1w --count 20 --exclude-staged",
+      "subcommand": "logs",
+      "flags": [
+        "--count",
+        "--exclude-staged",
+        "--start-date"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--exclude-staged": "--exclude-staged                  Exclude workflow runs that executed in staged mode (safe outputs previewed but not applied)",
+        "--start-date": "--start-date string               Filter runs created after this date (YYYY-MM-DD or delta like -1d, -1w, -1mo)"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        47
+      ],
+      "recipe": "gh aw logs repo-assistant --runtime docker --count 10",
+      "subcommand": "logs",
+      "flags": [
+        "--count",
+        "--runtime"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--runtime": "--runtime string                  Filter to runs using a specific sandbox agent runtime (e.g., gvisor, docker-sbx, cloud-hypervisor)"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        48
+      ],
+      "recipe": "gh aw logs repo-assistant --evals --count 10",
+      "subcommand": "logs",
+      "flags": [
+        "--count",
+        "--evals"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--evals": "--evals                           Filter to runs containing evals results (evals.jsonl); automatically includes the usage artifact (which contains evals)"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        49
+      ],
+      "recipe": "gh aw logs repo-assistant --graders --count 10",
+      "subcommand": "logs",
+      "flags": [
+        "--count",
+        "--graders"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--graders": "--graders                         Filter to runs containing deterministic grader results; automatically includes grader artifacts"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        56
+      ],
+      "recipe": "gh aw logs repo-assistant --count 20 --max-storage 10240 --prune-older-runs",
+      "subcommand": "logs",
+      "flags": [
+        "--count",
+        "--max-storage",
+        "--prune-older-runs"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--max-storage": "--max-storage int                 Maximum logs storage in MB after pruning non-essential cache data (0 = unlimited)",
+        "--prune-older-runs": "--prune-older-runs                Remove oldest completed runs when non-essential cache pruning cannot satisfy --max-storage"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        57
+      ],
+      "recipe": "gh aw logs repo-assistant --count 20 --max-github-api-rate-limit -2000 --timeout 30",
+      "subcommand": "logs",
+      "flags": [
+        "--count",
+        "--max-github-api-rate-limit",
+        "--timeout"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--max-github-api-rate-limit": "--max-github-api-rate-limit int   Maximum used GitHub core API requests before waiting for reset (positive = absolute, negative = reserve from API limit; e.g. 12000 or -2000)",
+        "--timeout": "--timeout int                     Download timeout in minutes (0 = no timeout)"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        74
+      ],
+      "recipe": "gh aw audit 1234567890 --repo owner/repo",
+      "subcommand": "audit",
+      "flags": [
+        "--repo"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--repo": "-r, --repo string         Target repository ([HOST/]owner/repo format). Defaults to current repository"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        75,
+        93
+      ],
+      "recipe": "gh aw audit <run-url>",
+      "subcommand": "audit",
+      "flags": [],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {},
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        76
+      ],
+      "recipe": "gh aw audit <run-url>/job/<id>",
+      "subcommand": "audit",
+      "flags": [],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {},
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        77
+      ],
+      "recipe": "gh aw audit <baseline-url> <comparison-url>",
+      "subcommand": "audit",
+      "flags": [],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {},
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        80
+      ],
+      "recipe": "gh aw logs --audit",
+      "subcommand": "logs",
+      "flags": [
+        "--audit"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--audit": "--audit                           Generate audit.json in each workflow run cache directory (comparisons use downloaded runs only)"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        83
+      ],
+      "recipe": "gh aw logs owner/repo/repo-assistant --count 5 --artifacts agent,firewall --audit",
+      "subcommand": "logs",
+      "flags": [
+        "--artifacts",
+        "--audit",
+        "--count"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--artifacts": "--artifacts strings               Artifact sets to download (default: usage — compact summary for faster downloads). Use 'all' for everything, or comma-separate sets. Valid sets: activation, agent, all, detection, evals, experiment, firewall, github-api, graders, mcp, usage (default [usage])",
+        "--audit": "--audit                           Generate audit.json in each workflow run cache directory (comparisons use downloaded runs only)",
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        88,
+        210
+      ],
+      "recipe": "gh aw status",
+      "subcommand": "status",
+      "flags": [],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {},
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        137
+      ],
+      "recipe": "gh aw audit https://github.com/OWNER/REPO/actions/runs/1234567890",
+      "subcommand": "audit",
+      "flags": [],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {},
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        146
+      ],
+      "recipe": "gh aw logs repo-assistant --start-date -1w --count 20 --exclude-staged --artifacts all",
+      "subcommand": "logs",
+      "flags": [
+        "--artifacts",
+        "--count",
+        "--exclude-staged",
+        "--start-date"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--artifacts": "--artifacts strings               Artifact sets to download (default: usage — compact summary for faster downloads). Use 'all' for everything, or comma-separate sets. Valid sets: activation, agent, all, detection, evals, experiment, firewall, github-api, graders, mcp, usage (default [usage])",
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--exclude-staged": "--exclude-staged                  Exclude workflow runs that executed in staged mode (safe outputs previewed but not applied)",
+        "--start-date": "--start-date string               Filter runs created after this date (YYYY-MM-DD or delta like -1d, -1w, -1mo)"
+      },
+      "evidence": "pilot-cli-help.json"
+    },
+    {
+      "chapter_lines": [
+        150
+      ],
+      "recipe": "gh aw compile --strict .github/workflows/repo-assistant.md",
+      "subcommand": "compile",
+      "flags": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_flags": [],
+      "help_definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "evidence": "pilot-cli-help.json"
+    }
+  ],
+  "help_only_probe_count": 22,
+  "help_only_probes": [
+    {
+      "recipe": "gh aw logs",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw audit",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "audit",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ec636ed549aad81bcecd17b197d064e888cc36cc3a4c7eca55a95fe70fd6718d",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "audit"
+      }
+    },
+    {
+      "recipe": "gh aw logs --help",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw logs repo-assistant",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "repo-assistant",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw logs owner/repo/repo-assistant",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "owner/repo/repo-assistant",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw logs --artifacts all",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "--artifacts",
+        "all",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw logs --artifacts agent,firewall",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "--artifacts",
+        "agent,firewall",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw logs repo-assistant repo-assistant-observable --count 20",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "repo-assistant",
+        "repo-assistant-observable",
+        "--count",
+        "20",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw logs repo-assistant --start-date -1w --count 20 --exclude-staged",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "repo-assistant",
+        "--start-date",
+        "-1w",
+        "--count",
+        "20",
+        "--exclude-staged",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw logs repo-assistant --runtime docker --count 10",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "repo-assistant",
+        "--runtime",
+        "docker",
+        "--count",
+        "10",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw logs repo-assistant --evals --count 10",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "repo-assistant",
+        "--evals",
+        "--count",
+        "10",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw logs repo-assistant --graders --count 10",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "repo-assistant",
+        "--graders",
+        "--count",
+        "10",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw logs repo-assistant --count 20 --max-storage 10240 --prune-older-runs",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "repo-assistant",
+        "--count",
+        "20",
+        "--max-storage",
+        "10240",
+        "--prune-older-runs",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw logs repo-assistant --count 20 --max-github-api-rate-limit -2000 --timeout 30",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "repo-assistant",
+        "--count",
+        "20",
+        "--max-github-api-rate-limit",
+        "-2000",
+        "--timeout",
+        "30",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw audit 1234567890 --repo owner/repo",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "audit",
+        "1234567890",
+        "--repo",
+        "owner/repo",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ec636ed549aad81bcecd17b197d064e888cc36cc3a4c7eca55a95fe70fd6718d",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "audit"
+      }
+    },
+    {
+      "recipe": "gh aw audit <run-url>",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "audit",
+        "<run-url>",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ec636ed549aad81bcecd17b197d064e888cc36cc3a4c7eca55a95fe70fd6718d",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "audit"
+      }
+    },
+    {
+      "recipe": "gh aw audit <run-url>/job/<id>",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "audit",
+        "<run-url>/job/<id>",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ec636ed549aad81bcecd17b197d064e888cc36cc3a4c7eca55a95fe70fd6718d",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "audit"
+      }
+    },
+    {
+      "recipe": "gh aw audit <baseline-url> <comparison-url>",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "audit",
+        "<baseline-url>",
+        "<comparison-url>",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ec636ed549aad81bcecd17b197d064e888cc36cc3a4c7eca55a95fe70fd6718d",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "audit"
+      }
+    },
+    {
+      "recipe": "gh aw logs --audit",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "--audit",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw logs owner/repo/repo-assistant --count 5 --artifacts agent,firewall --audit",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "owner/repo/repo-assistant",
+        "--count",
+        "5",
+        "--artifacts",
+        "agent,firewall",
+        "--audit",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    },
+    {
+      "recipe": "gh aw audit https://github.com/OWNER/REPO/actions/runs/1234567890",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "audit",
+        "https://github.com/OWNER/REPO/actions/runs/1234567890",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ec636ed549aad81bcecd17b197d064e888cc36cc3a4c7eca55a95fe70fd6718d",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "audit"
+      }
+    },
+    {
+      "recipe": "gh aw logs repo-assistant --start-date -1w --count 20 --exclude-staged --artifacts all",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "logs",
+        "repo-assistant",
+        "--start-date",
+        "-1w",
+        "--count",
+        "20",
+        "--exclude-staged",
+        "--artifacts",
+        "all",
+        "--help"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "help_only": true,
+      "identical_to_captured_help": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b6cc41957bf2981ca7634586e77d1dea4cb2fef7dbc1510f048eea21b857dd01",
+      "exact_output_reference": {
+        "artifact": "pilot-cli-help.json",
+        "subcommand": "logs"
+      }
+    }
+  ],
+  "legacy_flag_check": {
+    "flag": "--no-staged",
+    "advertised_in_logs_help": false,
+    "chapter_treats_as_old_spelling": true,
+    "replacement": "--exclude-staged",
+    "status": "PASS"
+  },
+  "compile_flags_mentioned_in_prose": {
+    "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false",
+    "--validate": "--validate                       Enable GitHub Actions workflow schema validation, container image validation, and action SHA validation",
+    "--approve": "--approve                        Approve all safe update changes. When strict mode is active (the default), the compiler emits warnings for new restricted secrets or unapproved action additions/removals not present in the existing gh-aw-manifest. Use this flag to approve and skip safe update enforcement"
+  },
+  "limits": [
+    "No logs, audits, downloads, cache pruning/deletion, remote runs or status queries were executed.",
+    "--runtime is a string selector; help/parser acceptance of docker does not prove matching run availability or Docker functionality.",
+    "Placeholder URLs and repository names are illustrative; help-only checks do not validate their existence.",
+    "Optional --validate and --approve were not invoked; no Docker/scanner/runtime/deployment or security approval is claimed."
+  ],
+  "runtime": "NOT RUN"
+}

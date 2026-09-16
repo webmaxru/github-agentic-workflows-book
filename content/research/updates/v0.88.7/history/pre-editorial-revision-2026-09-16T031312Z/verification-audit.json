@@ -1,0 +1,599 @@
+{
+  "schema_version": 1,
+  "scope": "Final whole-book technical verification and authorized verification-only annotation audit; not editorial ACCEPT, deployment approval, or a global review attestation.",
+  "target": "v0.88.7",
+  "status": "PASS",
+  "checked_at_utc": "2026-09-16T03:26:25.254306+00:00",
+  "canonical_run": {
+    "command": [
+      "C:\\Users\\masalnik\\scoop\\apps\\python312\\current\\python.exe",
+      "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\scripts\\verify_examples.py",
+      "--root",
+      "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\q-_d8_vcwo",
+      "--compiler",
+      "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+      "--version",
+      "v0.88.7",
+      "--report",
+      "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\content\\research\\updates\\v0.88.7\\verification.json"
+    ],
+    "cli_exit_code": 0,
+    "started_at_utc": "2026-09-16T03:13:12.796770+00:00",
+    "finished_at_utc": "2026-09-16T03:14:32.348031+00:00",
+    "status": "PASS",
+    "report_sha256": "7c56125793d0fd3a3054c4bf0e4fd51e46100ec98572b041b862df1068bf9ee6"
+  },
+  "embedded_run": {
+    "command": [
+      "C:\\Users\\masalnik\\scoop\\apps\\python312\\current\\python.exe",
+      "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\scripts\\verify_examples.py",
+      "--root",
+      "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\q-_d8_vcwo\\embedded",
+      "--compiler",
+      "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+      "--version",
+      "v0.88.7",
+      "--report",
+      "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\content\\research\\updates\\v0.88.7\\embedded-verification.json"
+    ],
+    "cli_exit_code": 0,
+    "started_at_utc": "2026-09-16T03:13:13.116395+00:00",
+    "finished_at_utc": "2026-09-16T03:14:06.271091+00:00",
+    "status": "PASS",
+    "report_sha256": "15c99f4fff9a50bb71cbde7b22d38457935040da3f662a1b4a285fad6bf51970"
+  },
+  "canonical_workflows": 24,
+  "ordinary_cli_strict_workflows": 22,
+  "repository_policy_workflows": 2,
+  "embedded_workflows": 16,
+  "embedded_repository_policy_workflows": 1,
+  "shared_fragments": 2,
+  "non_markdown_inputs": 4,
+  "source_input_hashes_before_after": {
+    "examples/ch02/repo-assistant-triage.md": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+    "examples/ch04/repo-assistant-cooldown.md": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+    "examples/ch04/repo-assistant-issue-shorthand.md": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+    "examples/ch04/repo-assistant-triggers.md": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+    "examples/ch05/repo-assistant-claude.md": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9",
+    "examples/ch06/repo-assistant-open-pr.md": "08205f6984dda0f27449dd6be2cc1ccc092be948e2f2dcf95922208050582b84",
+    "examples/ch07/no-network.md": "48957eb463b349bd64865b1764583531713e557645a70a33b03cdde0d4e95a0f",
+    "examples/ch07/repo-assistant-hardened.md": "3c85e9bc89b516751355a578212bd2e76eadce6b55020e9d8be3880b21395b3d",
+    "examples/ch07/strict-policy/aw.json": "64f32f75325c11314f325e7eddfbd5e70beea7335cd87467ff446f7299436e1f",
+    "examples/ch07/strict-policy/opt-out.md": "3ba53a4d97306d95a216cb25e57ee7d0f6cd47922aff8b52a9d77dc279613f44",
+    "examples/ch08/mcp-shape.md": "1703e07cc94cb61d9091691af30604f431a1419613d9624e87be209b82d440e0",
+    "examples/ch08/playwright-cli.md": "b72e16c43dda78cc0cb61e2a983ac5d01f87065867d7e8ad03172931fa30c203",
+    "examples/ch08/repo-assistant-tools.md": "2c05579963d59092a7d24e7991d777dcedd6c02f9d99f0a7d456c6fb0ec5a1e3",
+    "examples/ch09/continuous-docs.md": "2f3be7fa9c3228cc8a080479000bbf11add3db90f8da2f10c0392b51d7761f0d",
+    "examples/ch09/continuous-triage.md": "bda49e0b752d71eaf5d7ebb711812fb16f06e425bf83c01f425d5b38f322e9f7",
+    "examples/ch10/continuous-review.md": "365f78f4fda15467bba087cc92746a53f16ca965ea01c16a159c9cd41d462cc9",
+    "examples/ch10/daily-test-improver.md": "4d8f5dc05d2c3e224b21758b3cf90b7c7d78e3000977bb1d81dbf73d46f49348",
+    "examples/ch10/workflow-run-conclusion.md": "33a47a525c6f97f285b5f112b735fb1361b53d0e03d14b70f2a030c6b102176a",
+    "examples/ch11/repo-assistant-shared.md": "74fdf84b2d99f0899bcb1be72da6b7e13abb8e76fdea76e64277881cb25c533f",
+    "examples/ch11/repo-memory-validation.md": "174eb0410ed4fb473e23e37d02be832f5a3b4fdf65c8ae50ed7e74c3e24ae5d2",
+    "examples/ch11/shared/triage-policy.md": "0b7516566d3dd0e19bc964b80d109fb0a1ae27c0fb53855b3cb21a63cef39745",
+    "examples/ch12/repo-assistant-observable.md": "70d7c20b2a47ce1797319ba6f659796ff59a047bac1dc4613bf8679d7eda8605",
+    "examples/ch13/apm-policy.excerpt.yml": "fcf0421aa04e87edd4dec9532173969be33c3d2ef1111adbf63ed6d1afc925ca",
+    "examples/ch13/models-policy.md": "e06a0f183d64e87fb49cf3ce4d8cb7bd12daecd44fe645a05c67ad570b683a57",
+    "examples/ch13/repo-assistant-budgeted.md": "6aefb71f774134503741e9b17cd01cc0344aee2111580ce8414d117b9277c3a5",
+    "examples/ch13/strict-policy/aw.json": "64f32f75325c11314f325e7eddfbd5e70beea7335cd87467ff446f7299436e1f",
+    "examples/ch13/strict-policy/opt-out.md": "3ba53a4d97306d95a216cb25e57ee7d0f6cd47922aff8b52a9d77dc279613f44",
+    "examples/ch13/verification-notes.txt": "72a04b4ac637b3a54288971c07cf43fc5cc9d299bc9cd937165c413313d4c629",
+    "examples/ch14/fleet-triage.md": "fbd116e521f6c013aa53302e77aa9eba083d6f26c3fcf65621c0b5778f29ff50",
+    "examples/ch14/shared/triage-policy.md": "915784a5b8fc3f75592ea0fef311ddea748038aaed248221e594ea427f4f50ac"
+  },
+  "source_lf_normalized_hashes_before_after": {
+    "examples/ch02/repo-assistant-triage.md": "db15365912439c756d22125e38c8bf77825ca66e365c06161fc3bea2d0f6fda6",
+    "examples/ch04/repo-assistant-cooldown.md": "fdf6ae282e9a89c0fb0d6f860263eb6cad44392d09490d61d8a61dec5e7c914e",
+    "examples/ch04/repo-assistant-issue-shorthand.md": "516fee4eb42732a0f085237f75696977863dd6b012cbef7fb1b0e4235275a5a2",
+    "examples/ch04/repo-assistant-triggers.md": "a7378bcaab5d55b20444ec142fdb72d9439566d1c15484060747ab7b7fdc7c27",
+    "examples/ch05/repo-assistant-claude.md": "dae117dcd03a2ba9b84112f8f725e63a465de1aa543061d4f990632d6215e909",
+    "examples/ch06/repo-assistant-open-pr.md": "466d8175649b090133a71e150a252ea551f4e0488f131edc5d2cf9fbad61807a",
+    "examples/ch07/no-network.md": "a94d5c64b883eb5a6573143c649402823bf9595f1b07e27cdb255e33a5e1d4d1",
+    "examples/ch07/repo-assistant-hardened.md": "7eb28dbfaed019d542f2e715d2ed287f391386e3a893fc6879cf00566b7df91a",
+    "examples/ch07/strict-policy/aw.json": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+    "examples/ch07/strict-policy/opt-out.md": "1747d05bfecfb5e8e019b0615bde80798ffb1e0a6f4b3b0827e82016ac24e74f",
+    "examples/ch08/mcp-shape.md": "2798055c609ccd34973480b3e3558d2a7e2acddd3f2ec3d6d4ffa745ccd6a730",
+    "examples/ch08/playwright-cli.md": "268185d1a1ca1c2cca8b369473e81ed01a22a3c0d77b00ffc311bd29e4f9ed1d",
+    "examples/ch08/repo-assistant-tools.md": "278cb9a8e9611a53d970a97ee29254c7b8e169265967549fea8dcf59d98bad22",
+    "examples/ch09/continuous-docs.md": "658325e68c3d71debda4cdd923388fc22dbe92e8133cbe2fc011fac6e19853ab",
+    "examples/ch09/continuous-triage.md": "3c8aa888912ec886278dc904242741c583f9e47e3c535afd04d9cef58bb1cb5f",
+    "examples/ch10/continuous-review.md": "7f0dba909bad0826521bfbe7831140283783089c924882847b19db33416afb0d",
+    "examples/ch10/daily-test-improver.md": "aabf914af011444327cf4193a68f21a043217a59d03c10562bbab23bb076162d",
+    "examples/ch10/workflow-run-conclusion.md": "975dc1f480020a117b248c3c3e6a7de9ffb4886aef91ea9cc4d3cddd0651e426",
+    "examples/ch11/repo-assistant-shared.md": "e2eda1f9903f79da0d06d98c22f8e45a794b9bad22d5741abe1814a3ae54481f",
+    "examples/ch11/repo-memory-validation.md": "0f1d859414e8eb07566075ca35c26e9b4c67ddc58512e60c532ceda36a5a7033",
+    "examples/ch11/shared/triage-policy.md": "e9ba3a8c10aa6f2bc7ad1b9718506986b00ce4d840e5b35d6392e2b5de42c7a4",
+    "examples/ch12/repo-assistant-observable.md": "aa2ef29036be7b01e408cb72fd7349c14a6596fbde4a94630787528c824cc3a4",
+    "examples/ch13/apm-policy.excerpt.yml": "c454c5ec2f539f4b0c4f69401ce5a541aacb94b18b0175e1376947f77f962794",
+    "examples/ch13/models-policy.md": "215e81ab5c2f1d8e4860a2102bd4ccbd1eb4e0770051a9b28675e711470fb1d7",
+    "examples/ch13/repo-assistant-budgeted.md": "19674dff12e38a8aceb295e7a13c389e4530d717c0bcc0ea5ddbb56bdf4d0433",
+    "examples/ch13/strict-policy/aw.json": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+    "examples/ch13/strict-policy/opt-out.md": "1747d05bfecfb5e8e019b0615bde80798ffb1e0a6f4b3b0827e82016ac24e74f",
+    "examples/ch13/verification-notes.txt": "f3b392edf58060f6f9b60c7e7d80969df36dfdec081eed5eb00d7fd805ae6a6c",
+    "examples/ch14/fleet-triage.md": "a6ea53d4ef94cd0cf7e0307dbc250daf355c828d441ac65ba97337a8c924523f",
+    "examples/ch14/shared/triage-policy.md": "a9a4f4185bd698d381de9feac3cda62b20b4183d6685e645e1471dfd845ba19f"
+  },
+  "all_30_compilation_inputs_unchanged": true,
+  "all_16_embedded_input_hashes_unchanged": true,
+  "all_shared_and_policy_inputs_unchanged": true,
+  "chapter_annotation_pre_post_hashes": [
+    {
+      "path": "content/chapters/anatomy-and-compile-model.html",
+      "pre_annotation_sha256": "1e1f18be6dbae452a33ea594a26ba563b755c8910147f554e62fbca0b50cd094",
+      "post_annotation_sha256": "1e1f18be6dbae452a33ea594a26ba563b755c8910147f554e62fbca0b50cd094",
+      "intentional_annotation_change": false,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "concept-natural-language-as-reviewable-source",
+        "in-gh-aw-frontmatter-markdown-to-gh-aw-compile-to-lock-yml",
+        "the-authoring-loop-compile-status-run-iterate",
+        "worked-example-reading-a-compiled-lock-yml-side-by-side",
+        "recap-and-what-s-next"
+      ]
+    },
+    {
+      "path": "content/chapters/continuous-review-and-testing.html",
+      "pre_annotation_sha256": "ab66eea9f40d830e5689785575cfd9e94c94d6b3e593b3e89fbc76bb1c94c6f3",
+      "post_annotation_sha256": "a8bc308aa898ed6ce5e2ef2102f9e38cffcd310dffb7ef0249a62d3c6c469234",
+      "intentional_annotation_change": true,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "concept-closing-the-quality-loop",
+        "in-gh-aw-the-review-testing-ci-doctor-and-refactoring-recipes",
+        "when-to-automate-quality-and-where-humans-stay-in-the-loop",
+        "worked-example-a-pr-review-plus-daily-test-improver-pair",
+        "recap-and-what-s-next"
+      ]
+    },
+    {
+      "path": "content/chapters/continuous-triage-and-docs.html",
+      "pre_annotation_sha256": "07fcfe3cb65499a659cbd4c3869db15fda8a57d958c91c99f9fbb3448c98d514",
+      "post_annotation_sha256": "07fcfe3cb65499a659cbd4c3869db15fda8a57d958c91c99f9fbb3448c98d514",
+      "intentional_annotation_change": false,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "concept-continuous-x-patterns-as-mini-products",
+        "in-gh-aw-the-triage-and-docs-recipes",
+        "when-these-patterns-pay-off-and-their-failure-modes",
+        "worked-example-the-triage-plus-docs-sync-duo",
+        "recap-and-what-s-next"
+      ]
+    },
+    {
+      "path": "content/chapters/defense-in-depth.html",
+      "pre_annotation_sha256": "5dde5b85659f2616dbb329b775970aa11cd0ef6643c1154a63ffb381d1bbd0ee",
+      "post_annotation_sha256": "55933f8442302d72e4c7670a5943d9df6ca042f7c2d4de583813e25774b4ee47",
+      "intentional_annotation_change": true,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "concept-the-lethal-trifecta-and-defense-in-depth",
+        "in-gh-aw-permissions-network-firewall-strict-mode-sandboxing",
+        "when-to-lock-down-and-how-much-is-enough",
+        "worked-example-a-hardened-least-privilege-repo-assistant",
+        "recap-and-what-s-next"
+      ]
+    },
+    {
+      "path": "content/chapters/engines.html",
+      "pre_annotation_sha256": "6d6d8cc6f25fcb3deb6286ad95d90f48d6fb5f65b273c6ededffcf8611f56b78",
+      "post_annotation_sha256": "6d6d8cc6f25fcb3deb6286ad95d90f48d6fb5f65b273c6ededffcf8611f56b78",
+      "intentional_annotation_change": false,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "concept-engine-neutral-by-design",
+        "in-gh-aw-the-engine-field-and-its-options",
+        "when-to-pick-which-engine-capability-cost-availability",
+        "worked-example-switching-the-repo-assistant-s-engine",
+        "recap-and-what-s-next"
+      ]
+    },
+    {
+      "path": "content/chapters/fleets-and-adoption.html",
+      "pre_annotation_sha256": "deea3f1a9155836c8b222d3ea8b8401935df4137957fa327188019c12dc01315",
+      "post_annotation_sha256": "4e2206bf257e088aa54093c714bc70e8b9a68e45cf75d45ccd9014f24cd7fcca",
+      "intentional_annotation_change": true,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "concept-from-one-assistant-to-a-governed-fleet",
+        "in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout",
+        "when-to-scale-org-wide-a-readiness-checklist",
+        "worked-example-cloning-the-repo-assistant-across-a-fleet",
+        "recap-and-the-road-ahead"
+      ]
+    },
+    {
+      "path": "content/chapters/governance-and-finops.html",
+      "pre_annotation_sha256": "9b42741c87e71c4217b7968ded297d15b7cd104db3e663e6fc377de08cb01b81",
+      "post_annotation_sha256": "b1fe33a4ff6c911d8c2e3d0c9acda375bf5af983a124be22e380a1ac80530a93",
+      "intentional_annotation_change": true,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "concept-agentic-work-has-a-budget-and-a-policy-surface",
+        "in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy",
+        "when-to-cap-meter-and-gate-cost-and-risk-trade-offs",
+        "worked-example-a-budgeted-policy-compliant-repo-assistant",
+        "recap-and-what-s-next"
+      ]
+    },
+    {
+      "path": "content/chapters/observability-and-debugging.html",
+      "pre_annotation_sha256": "68453b41dbaeaeb8f2ea605d6f4a0b336edbf2314072384cea8ddbd390a0651d",
+      "post_annotation_sha256": "d5f6887d613283d6efbaddac84ce4a3a56167359cbdffc83d8676dee95a64ea6",
+      "intentional_annotation_change": true,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "concept-you-can-t-govern-what-you-can-t-see",
+        "in-gh-aw-logs-audit-opentelemetry-run-summaries",
+        "when-to-inspect-versus-trust-human-in-the-loop",
+        "worked-example-debugging-a-failed-run-from-its-logs",
+        "recap-and-what-s-next"
+      ]
+    },
+    {
+      "path": "content/chapters/reuse-and-memory.html",
+      "pre_annotation_sha256": "cc15076427c4ce465139e31d38e1054454fce0132114c10b8ccb53f4f07fda3e",
+      "post_annotation_sha256": "28319658981ea677942cca7fac3993c59ed2ba238fd09103bc67d1441e71a555",
+      "intentional_annotation_change": true,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "concept-don-t-repeat-yourself-across-a-fleet",
+        "in-gh-aw-imports-shared-components-and-repo-memory",
+        "when-to-extract-a-shared-component-and-when-to-inline",
+        "worked-example-importing-a-shared-triage-policy-with-memory",
+        "recap-and-what-s-next"
+      ]
+    },
+    {
+      "path": "content/chapters/safe-outputs.html",
+      "pre_annotation_sha256": "90d56fccde99d6223b23bbf671d22794e0e9a8ace405636c9a3628b45c4d75ad",
+      "post_annotation_sha256": "3824b4f79801250a87444a39b285ea1d685716fcdfd59b14f44a0924b1e00d7d",
+      "intentional_annotation_change": true,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "concept-never-trust-the-model-s-raw-writes",
+        "in-gh-aw-the-safe-outputs-block",
+        "when-to-use-each-safe-output-and-why-not-raw-write-scopes",
+        "worked-example-repo-assistant-opens-a-pr-through-safe-outputs",
+        "recap-and-what-s-next"
+      ]
+    },
+    {
+      "path": "content/chapters/tools-and-mcp.html",
+      "pre_annotation_sha256": "c0332e095f816caa40648ac1ce08a669a676ee7d6c42c7a6e0a1111b384cdded",
+      "post_annotation_sha256": "59dfba863fc7b43f6cff1ea3055524103644c54397998aeb7a446611503d609c",
+      "intentional_annotation_change": true,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "concept-agents-need-tools-safely",
+        "in-gh-aw-the-tools-block-mcp-servers-the-mcp-gateway",
+        "when-to-add-a-tool-or-mcp-server-and-when-it-s-a-risk",
+        "worked-example-repo-assistant-queries-an-mcp-server",
+        "recap-and-what-s-next"
+      ]
+    },
+    {
+      "path": "content/chapters/triggers.html",
+      "pre_annotation_sha256": "10248589efe43b2bb149185eca6765f43abaaeb96ba63837934d22c6156accbd",
+      "post_annotation_sha256": "10248589efe43b2bb149185eca6765f43abaaeb96ba63837934d22c6156accbd",
+      "intentional_annotation_change": false,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "concept-event-driven-work-the-outer-loop-s-clock",
+        "in-gh-aw-the-on-block-and-its-events",
+        "when-to-use-which-trigger-and-safe-defaults",
+        "worked-example-repo-assistant-on-issues-plus-a-nightly-schedule",
+        "recap-and-what-s-next"
+      ]
+    },
+    {
+      "path": "content/chapters/what-are-agentic-workflows.html",
+      "pre_annotation_sha256": "9c7e311b2c5e5d8ffb5144a9a10b9c425833a9f627e9557f84af7de227a3078a",
+      "post_annotation_sha256": "9c7e311b2c5e5d8ffb5144a9a10b9c425833a9f627e9557f84af7de227a3078a",
+      "intentional_annotation_change": false,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "the-outer-loop-why-ci-cd-stops-short",
+        "in-gh-aw-continuous-ai-from-github-next",
+        "when-agentic-workflows-fit-and-when-they-don-t",
+        "worked-example-reading-the-repo-assistant-s-first-mission",
+        "recap-and-what-s-next"
+      ]
+    },
+    {
+      "path": "content/chapters/your-first-workflow.html",
+      "pre_annotation_sha256": "0221e6b1e5d31b629d90d7ff0be53d3dd17809598e59feff36b711906f3aaa10",
+      "post_annotation_sha256": "0221e6b1e5d31b629d90d7ff0be53d3dd17809598e59feff36b711906f3aaa10",
+      "intentional_annotation_change": false,
+      "all_pre_code_blocks_unchanged": true,
+      "slot_ids": [
+        "objective",
+        "the-problem-the-overnight-teammate-you-don-t-have",
+        "in-gh-aw-init-new-compile-run",
+        "when-to-ship-a-first-workflow-and-when-to-wait",
+        "worked-example-repo-assistant-triages-a-new-issue",
+        "recap-and-what-s-next"
+      ]
+    }
+  ],
+  "annotation_edits": [
+    {
+      "path": "content/chapters/defense-in-depth.html",
+      "label": "verification-provenance comment",
+      "before": "<!-- v0.88.7 authoring handoff: the pre-update Ch07 source passed target preflight.\n     The explicit default Docker profile and corrected prompt need final strict\n     compilation and embedded/source comparison. The no-network and strict-policy\n     diagnostics are verbatim copies of target-compiled session probes.\n     No live runtime, scanner, or secret-approval verification is claimed. -->",
+      "after": "<!-- Final technical verification: all three Ch07 sources passed with gh-aw v0.88.7,\n     exit 0, nonempty locks and strict:true metadata; the hardened complete embed\n     matches its source and also passed. The strict-policy case used adjacent\n     aw.json without CLI --strict; a separate no-policy control confirmed effective\n     strict:false. Evidence: content/research/updates/v0.88.7/{verification.json,\n     embedded-verification.json,policy-control-verification.json}.\n     Runtime/scanners and secret or deployment approval remain unverified. -->"
+    },
+    {
+      "path": "content/chapters/tools-and-mcp.html",
+      "label": "adopted-source verification status",
+      "before": "Adopted copies still go through the book verifier; these are not live-run reports.",
+      "after": "All three adopted Ch08 sources passed fresh strict v0.88.7 compilation with\n     nonempty exact-version/strict locks; see content/research/updates/v0.88.7/verification.json.\n     The MCP endpoint remains illustrative and non-runnable; Playwright is\n     compile-only provisioning evidence, not a browser test. No live authentication\n     or tool availability is certified."
+    },
+    {
+      "path": "content/chapters/continuous-review-and-testing.html",
+      "label": "verification-provenance comment",
+      "before": "<!-- Recorded recipe evidence: content/research/updates/v0.88.7/\n       preflight-verification.json and preflight-diagnostics.md. Preserve the\n       schedule-context warning; do not relabel the historical 0/0 transcript.\n       Post-author verification must compare the two complete embedded workflows\n       with their sources and include the retained CI-trigger fixture. -->",
+      "after": "<!-- Final technical verification: both complete HTML workflows match their sources;\n       those sources and the CI-conclusion fixture passed strict v0.88.7 compilation\n       with nonempty target/strict locks and exit 0. The complete max-stack:-1 context\n       also passed; no live stack admission ran. Evidence under\n       content/research/updates/v0.88.7/: verification.json,\n       embedded-verification.json and max-stack-verification.json.\n       Earlier preflight diagnostics remain historical, not relabeled. -->"
+    },
+    {
+      "path": "content/chapters/fleets-and-adoption.html",
+      "label": "verification-provenance comment",
+      "before": "<!-- Verification handoff: preflight-verification.json and preflight-inputs.json under\n       content/research/updates/v0.88.7 record the prior source's strict PASS and dependency\n       edge. This edit changes workflow Markdown and the fragment's description/Markdown,\n       not its capability fields. Require fresh source-bound emitted-lock verification\n       and embedded/source comparison before acceptance; do not relabel old evidence.\n       Package mappings above are tagged schema/reference excerpts, not installation probes. -->",
+      "after": "<!-- Final technical verification: fleet-triage.md and its local shared fragment\n       passed through the importer with v0.88.7, exit 0 and a nonempty strict target\n       lock. The complete workflow/shared HTML copies match their sources and the\n       embedded importer also passed. Evidence under content/research/updates/v0.88.7/:\n       verification.json and embedded-verification.json. Historical reports are preserved.\n       Package mappings remain schema/reference excerpts, not installation probes;\n       no remote installation, runtime result or editorial acceptance is claimed. -->"
+    },
+    {
+      "path": "content/chapters/safe-outputs.html",
+      "label": "final compilation provenance",
+      "before": "Final corpus verification is parent-owned.",
+      "after": "Final source and embedded compilation passed with v0.88.7, exit 0 and nonempty strict target locks; fresh technical evidence is in verification.json and embedded-verification.json in that directory, not a runtime or approval result."
+    },
+    {
+      "path": "content/chapters/reuse-and-memory.html",
+      "label": "memory-validator verification status",
+      "before": "the new-validator review warning. Fresh corpus verification is pending.",
+      "after": "the new-validator review warning. Fresh final source compilation passed with v0.88.7, exit 0 and a nonempty strict target lock; verification.json under content/research/updates/v0.88.7/ retains the warning. No live validator or persistence execution is claimed."
+    },
+    {
+      "path": "content/chapters/reuse-and-memory.html",
+      "label": "edited-source verification boundary",
+      "before": "the edited source still needs a fresh source-bound compile before release.",
+      "after": "the edited source and matching complete embedded workflow now also passed fresh v0.88.7 compilation with exit code 0 and nonempty strict target locks, recorded in <code>content/research/updates/v0.88.7/verification.json</code> and <code>embedded-verification.json</code>."
+    },
+    {
+      "path": "content/chapters/governance-and-finops.html",
+      "label": "policy-aware verifier provenance",
+      "before": "The normal book verification gate still compiles every workflow with <code>--strict</code>; that alone does not test whether repository <code>aw.json</code> was loaded.",
+      "after": "The final book verification gate uses CLI <code>--strict</code> for ordinary workflows, but stages adjacent <code>aw.json</code> and omits that flag for <code>strict-policy/</code> fixtures. The final run also recorded a separate no-policy control; positive fixtures still require exact-version, effective-strict metadata and nonempty locks."
+    },
+    {
+      "path": "content/chapters/governance-and-finops.html",
+      "label": "final authored-copy verification status",
+      "before": "The budget configuration passed shared strict preflight, and the new diagnostics reuse positive probes; final authored copies still require the dedicated verification and review pass before publication.",
+      "after": "The final authored source and embedded copies passed v0.88.7 compilation with exit code 0 and nonempty strict target locks; <code>content/research/updates/v0.88.7/verification.json</code> and <code>embedded-verification.json</code> record these technical results. Editorial review remains required before publication."
+    },
+    {
+      "path": "content/chapters/observability-and-debugging.html",
+      "label": "final evidence path",
+      "before": "Fresh evidence is recorded in <code>content/research/updates/v0.88.7/pilot-revision-verification.json</code>.",
+      "after": "Fresh final source and embedded evidence is recorded in <code>content/research/updates/v0.88.7/verification.json</code> and <code>embedded-verification.json</code>; the earlier pilot-revision report remains historical."
+    },
+    {
+      "path": "content/chapters/observability-and-debugging.html",
+      "label": "technical-versus-editorial scope tag",
+      "before": "This is Chapter 12 revision verification only, not whole-book acceptance or final-edition evidence; runtime remains <strong>NOT RUN</strong>.",
+      "after": "This is compile-time technical evidence, not editorial acceptance or deployment approval; runtime remains <strong>NOT RUN</strong>."
+    }
+  ],
+  "only_planned_annotation_byte_replacements": true,
+  "final_embedded_locations": [
+    {
+      "chapter": "content/chapters/continuous-review-and-testing.html",
+      "source": "examples/ch10/continuous-review.md",
+      "post_annotation_line_range": [
+        108,
+        144
+      ],
+      "input_sha256": "7f0dba909bad0826521bfbe7831140283783089c924882847b19db33416afb0d",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/continuous-review-and-testing.html",
+      "source": "examples/ch10/daily-test-improver.md",
+      "post_annotation_line_range": [
+        149,
+        185
+      ],
+      "input_sha256": "aabf914af011444327cf4193a68f21a043217a59d03c10562bbab23bb076162d",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/continuous-triage-and-docs.html",
+      "source": "examples/ch09/continuous-triage.md",
+      "post_annotation_line_range": [
+        131,
+        170
+      ],
+      "input_sha256": "3c8aa888912ec886278dc904242741c583f9e47e3c535afd04d9cef58bb1cb5f",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/continuous-triage-and-docs.html",
+      "source": "examples/ch09/continuous-docs.md",
+      "post_annotation_line_range": [
+        175,
+        216
+      ],
+      "input_sha256": "658325e68c3d71debda4cdd923388fc22dbe92e8133cbe2fc011fac6e19853ab",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/defense-in-depth.html",
+      "source": "examples/ch07/repo-assistant-hardened.md",
+      "post_annotation_line_range": [
+        142,
+        186
+      ],
+      "input_sha256": "7eb28dbfaed019d542f2e715d2ed287f391386e3a893fc6879cf00566b7df91a",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "source": "examples/ch14/fleet-triage.md",
+      "post_annotation_line_range": [
+        128,
+        161
+      ],
+      "input_sha256": "a6ea53d4ef94cd0cf7e0307dbc250daf355c828d441ac65ba97337a8c924523f",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "source": "examples/ch13/repo-assistant-budgeted.md",
+      "post_annotation_line_range": [
+        148,
+        191
+      ],
+      "input_sha256": "19674dff12e38a8aceb295e7a13c389e4530d717c0bcc0ea5ddbb56bdf4d0433",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "source": "examples/ch13/models-policy.md",
+      "post_annotation_line_range": [
+        206,
+        217
+      ],
+      "input_sha256": "215e81ab5c2f1d8e4860a2102bd4ccbd1eb4e0770051a9b28675e711470fb1d7",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "source": "examples/ch13/strict-policy/opt-out.md",
+      "post_annotation_line_range": [
+        224,
+        232
+      ],
+      "input_sha256": "1747d05bfecfb5e8e019b0615bde80798ffb1e0a6f4b3b0827e82016ac24e74f",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "source": "examples/ch12/repo-assistant-observable.md",
+      "post_annotation_line_range": [
+        159,
+        192
+      ],
+      "input_sha256": "aa2ef29036be7b01e408cb72fd7349c14a6596fbde4a94630787528c824cc3a4",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "source": "examples/ch11/repo-assistant-shared.md",
+      "post_annotation_line_range": [
+        197,
+        229
+      ],
+      "input_sha256": "e2eda1f9903f79da0d06d98c22f8e45a794b9bad22d5741abe1814a3ae54481f",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/safe-outputs.html",
+      "source": "examples/ch06/repo-assistant-open-pr.md",
+      "post_annotation_line_range": [
+        113,
+        151
+      ],
+      "input_sha256": "466d8175649b090133a71e150a252ea551f4e0488f131edc5d2cf9fbad61807a",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "source": "examples/ch04/repo-assistant-triggers.md",
+      "post_annotation_line_range": [
+        149,
+        195
+      ],
+      "input_sha256": "a7378bcaab5d55b20444ec142fdb72d9439566d1c15484060747ab7b7fdc7c27",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "source": "examples/ch04/repo-assistant-cooldown.md",
+      "post_annotation_line_range": [
+        204,
+        239
+      ],
+      "input_sha256": "fdf6ae282e9a89c0fb0d6f860263eb6cad44392d09490d61d8a61dec5e7c914e",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/what-are-agentic-workflows.html",
+      "source": "examples/ch02/repo-assistant-triage.md",
+      "post_annotation_line_range": [
+        86,
+        122
+      ],
+      "input_sha256": "db15365912439c756d22125e38c8bf77825ca66e365c06161fc3bea2d0f6fda6",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "source": "examples/ch02/repo-assistant-triage.md",
+      "post_annotation_line_range": [
+        165,
+        201
+      ],
+      "input_sha256": "db15365912439c756d22125e38c8bf77825ca66e365c06161fc3bea2d0f6fda6",
+      "status": "PASS"
+    }
+  ],
+  "policy_control": "PASS: no aw.json/CLI strict, effective false; optional false metadata field omitted by target encoding.",
+  "max_stack_context": "PASS: both full contexts compile; stack-position conditions removed for -1, task body and required-role declaration unchanged.",
+  "canonical_warnings": [
+    {
+      "path": "examples/ch05/repo-assistant-claude.md",
+      "count": 1,
+      "stderr": ".github\\workflows\\repo-assistant-claude.md: warning: safe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - ANTHROPIC_API_KEY\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\n✓ .github\\workflows\\repo-assistant-claude.md (121.1 KB)\n⚠ ⚠️  SECURITY REVIEW REQUIRED — safe update mode detected unapproved changes:\n\nsafe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - ANTHROPIC_API_KEY\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\nAction required for the calling agent:\n  1. Review every new secret and action listed above for potential malicious use\n     (e.g. credential exfiltration, supply-chain attacks, unexpected network access).\n  2. Add a security review note to the pull request description that:\n     - Lists any new or removed secrets, actions, and redirect changes from this compilation.\n     - Confirms you have reviewed each one and explains why it is safe to add.\n     - Flags any item you cannot fully verify so a human reviewer can inspect it.\n\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n"
+    },
+    {
+      "path": "examples/ch11/repo-memory-validation.md",
+      "count": 1,
+      "stderr": ".github\\workflows\\repo-memory-validation.md: warning: safe update mode detected unapproved changes\n\nMemory validation script changes:\n  - repo-memory:default (added)\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\n✓ .github\\workflows\\repo-memory-validation.md (123.4 KB)\n⚠ ⚠️  SECURITY REVIEW REQUIRED — safe update mode detected unapproved changes:\n\nsafe update mode detected unapproved changes\n\nMemory validation script changes:\n  - repo-memory:default (added)\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\nAction required for the calling agent:\n  1. Review every new secret and action listed above for potential malicious use\n     (e.g. credential exfiltration, supply-chain attacks, unexpected network access).\n  2. Add a security review note to the pull request description that:\n     - Lists any new or removed secrets, actions, and redirect changes from this compilation.\n     - Confirms you have reviewed each one and explains why it is safe to add.\n     - Flags any item you cannot fully verify so a human reviewer can inspect it.\n\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n"
+    },
+    {
+      "path": "examples/ch12/repo-assistant-observable.md",
+      "count": 1,
+      "stderr": ".github\\workflows\\repo-assistant-observable.md: warning: safe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - OTLP_ENDPOINT\n  - OTLP_TOKEN\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\n✓ .github\\workflows\\repo-assistant-observable.md (120.0 KB)\n⚠ ⚠️  SECURITY REVIEW REQUIRED — safe update mode detected unapproved changes:\n\nsafe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - OTLP_ENDPOINT\n  - OTLP_TOKEN\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\nAction required for the calling agent:\n  1. Review every new secret and action listed above for potential malicious use\n     (e.g. credential exfiltration, supply-chain attacks, unexpected network access).\n  2. Add a security review note to the pull request description that:\n     - Lists any new or removed secrets, actions, and redirect changes from this compilation.\n     - Confirms you have reviewed each one and explains why it is safe to add.\n     - Flags any item you cannot fully verify so a human reviewer can inspect it.\n\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n"
+    }
+  ],
+  "environment_errors": [],
+  "cleanup_pending": null,
+  "preserved_prior_evidence_count": 52,
+  "pre_annotation_fingerprint": "6d3fb1a2b0cc713ba44105a05714aa6212cd285b35588cc75c82ef2a527e68e7",
+  "post_annotation_fingerprint": "84244a31f0a03b71f6a6b4e07247ab6f0ca0730cc2ce89da88a3c0bd5369f83e",
+  "fingerprint_is_technical_snapshot_not_review_attestation": true,
+  "helper_sha256": {
+    "scripts/verify_examples.py": "8006500fdffe068d0f9117f3130fa92b2a25d1daa6b24161673c2bea22bb9638",
+    "scripts/release_content.py": "b182add4d0cfc65560c949baad249d4e84ff065433fd09bebb2af6c97fc9599e",
+    "scripts/install-gh-aw.ps1": "93adeb252d8cc07d8d5541190568fb8e6bfceddfac5434ef991fb848553fb877"
+  },
+  "compiler_sha256": "8d88047c1e162f16a01e1920124092c80a8bdf98c1635357067a0ac34c00d4c7",
+  "runtime": "NOT RUN",
+  "optional_scanners_validators_credentials_or_deployment": "NOT RUN / NOT VERIFIED",
+  "approval_granted": false,
+  "framework_baseline_unchanged": "v0.81.6",
+  "book_version_unchanged": "1.1",
+  "global_metadata_advanced": false
+}

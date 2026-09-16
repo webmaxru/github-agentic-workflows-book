@@ -37,5 +37,6 @@ have, say so via the missing-tool report rather than improvising.
 
 This example demonstrates **tools & MCP**: the agent is granted the read-only
 GitHub MCP server (scoped to the `issues` and `repos` toolsets) and web-fetch,
-each an explicit, governed capability. Nothing broadens the write path — every
-action still lands through `safe-outputs:`.
+each an explicit, governed capability. The intended triage comment is a
+repository-write request mediated through `safe-outputs:`. GitHub reads and web
+fetches use separate tool and network boundaries.

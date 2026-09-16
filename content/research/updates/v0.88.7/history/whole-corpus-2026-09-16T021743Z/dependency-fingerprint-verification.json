@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "scope": "Non-MD example-input fingerprint binding tested in an independent private clone; no authored or canonical snapshot input mutated.",
+  "target": "v0.88.7",
+  "started_at_utc": "2026-09-16T02:29:23.420406+00:00",
+  "status": "PASS",
+  "checks": [
+    {
+      "path": "examples/ch07/strict-policy/aw.json",
+      "lf_normalized_sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+      "baseline_fingerprint": "6d3fb1a2b0cc713ba44105a05714aa6212cd285b35588cc75c82ef2a527e68e7",
+      "mutated_fingerprint": "5a4774edd5ff452f010c50724a285f31186c9b8fad3fad026e6db9b8f046863d",
+      "restored_fingerprint": "6d3fb1a2b0cc713ba44105a05714aa6212cd285b35588cc75c82ef2a527e68e7",
+      "mutation": "Append one harmless newline in private clone only; restore exact bytes before next case.",
+      "status": "PASS"
+    },
+    {
+      "path": "examples/ch13/apm-policy.excerpt.yml",
+      "lf_normalized_sha256": "c454c5ec2f539f4b0c4f69401ce5a541aacb94b18b0175e1376947f77f962794",
+      "baseline_fingerprint": "6d3fb1a2b0cc713ba44105a05714aa6212cd285b35588cc75c82ef2a527e68e7",
+      "mutated_fingerprint": "ffd9d5b6be522099efe43b9c1ceeb8e8c04471fecedd53ed88471e9f7a573865",
+      "restored_fingerprint": "6d3fb1a2b0cc713ba44105a05714aa6212cd285b35588cc75c82ef2a527e68e7",
+      "mutation": "Append one harmless newline in private clone only; restore exact bytes before next case.",
+      "status": "PASS"
+    },
+    {
+      "path": "examples/ch13/strict-policy/aw.json",
+      "lf_normalized_sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+      "baseline_fingerprint": "6d3fb1a2b0cc713ba44105a05714aa6212cd285b35588cc75c82ef2a527e68e7",
+      "mutated_fingerprint": "303fab242d9ec0c31dbc13342a48b0a08d5739f5308f33b3edf82c7373cfd480",
+      "restored_fingerprint": "6d3fb1a2b0cc713ba44105a05714aa6212cd285b35588cc75c82ef2a527e68e7",
+      "mutation": "Append one harmless newline in private clone only; restore exact bytes before next case.",
+      "status": "PASS"
+    },
+    {
+      "path": "examples/ch13/verification-notes.txt",
+      "lf_normalized_sha256": "f3b392edf58060f6f9b60c7e7d80969df36dfdec081eed5eb00d7fd805ae6a6c",
+      "baseline_fingerprint": "6d3fb1a2b0cc713ba44105a05714aa6212cd285b35588cc75c82ef2a527e68e7",
+      "mutated_fingerprint": "095aa8de5ee3eda1f36db2f0253b27bf3aa809b8c2f78a2d8957ff48be038065",
+      "restored_fingerprint": "6d3fb1a2b0cc713ba44105a05714aa6212cd285b35588cc75c82ef2a527e68e7",
+      "mutation": "Append one harmless newline in private clone only; restore exact bytes before next case.",
+      "status": "PASS"
+    }
+  ],
+  "environment_errors": [],
+  "runtime": "NOT RUN",
+  "line_ending_normalization": {
+    "path": "examples/ch07/strict-policy/aw.json",
+    "status": "PASS",
+    "fingerprint": "6d3fb1a2b0cc713ba44105a05714aa6212cd285b35588cc75c82ef2a527e68e7"
+  },
+  "scratch_removed": true,
+  "finished_at_utc": "2026-09-16T02:29:28.453007+00:00"
+}

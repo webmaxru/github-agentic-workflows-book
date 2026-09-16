@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "expected_version": "v0.88.7",
+  "compiler": [
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe"
+  ],
+  "strict": true,
+  "fragments": [],
+  "results": [
+    {
+      "path": "examples/ch02/repo-assistant-triage.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-triage.md (119.6 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch04/repo-assistant-cooldown.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-cooldown.md (118.7 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "801e377666f95c0f1bb7fd3165ebbfe24620ccb0d31c7af8fed351f9dc628802",
+        "body_hash": "403133ab36ce0a024c3f392473fd6179da80fd23357e472e72d4ebf85ba00fe1",
+        "stop_time": "2026-10-16 01:04:15",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch04/repo-assistant-issue-shorthand.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-issue-shorthand.md (119.4 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "86c75ed6e9a37949c6e0d59995a4d325b45ebfdcc38dcbb8fba70bef8bf45c52",
+        "body_hash": "6e4c9fe14a2d966f979a664321723edffa3b49ba4ac66697a52b24c68f507713",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch04/repo-assistant-triggers.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-triggers.md (122.3 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+        "body_hash": "ddc9ffe739ae561569f62021eb708109bbfe9c50d4db70c4b84cc88f31299bb9",
+        "stop_time": "2026-10-16 01:04:20",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch05/repo-assistant-claude.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\repo-assistant-claude.md: warning: safe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - ANTHROPIC_API_KEY\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\n✓ .github\\workflows\\repo-assistant-claude.md (121.1 KB)\n⚠ ⚠️  SECURITY REVIEW REQUIRED — safe update mode detected unapproved changes:\n\nsafe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - ANTHROPIC_API_KEY\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\nAction required for the calling agent:\n  1. Review every new secret and action listed above for potential malicious use\n     (e.g. credential exfiltration, supply-chain attacks, unexpected network access).\n  2. Add a security review note to the pull request description that:\n     - Lists any new or removed secrets, actions, and redirect changes from this compilation.\n     - Confirms you have reviewed each one and explains why it is safe to add.\n     - Flags any item you cannot fully verify so a human reviewer can inspect it.\n\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "32dec13fb28a635513e7a83831a294f444733d6ab69886a0eae97b244d0cba96",
+        "body_hash": "4a625033204b035ebf3cb48827e337e7bfa479e14b9d12b992b15956e7de3e61",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "claude",
+        "agent_model": "claude-sonnet-4.5",
+        "engine_versions": {
+          "claude": "2.1.70"
+        }
+      }
+    }
+  ],
+  "environment_errors": [],
+  "compiler_version": "v0.88.7",
+  "version_output": "gh aw version v0.88.7\n",
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "book-default"
+  },
+  "passed": 5,
+  "failed": 0,
+  "status": "PASS"
+}

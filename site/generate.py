@@ -18,8 +18,8 @@ CHAPTERS_DIR = SITE / "chapters"
 CONTENT_CHAPTERS_DIR = ROOT / "content" / "chapters"
 TOC_PATH = ROOT / "content" / "toc.yml"
 
-# Content version + changelog live in content/ and are parsed by scripts/content_version.py.
-# The book is a living document: its prose is versioned independently of this generator.
+# Content edition, framework coverage, and changelog live in content/ and are read
+# by scripts/content_version.py. Neither version is the version of this generator.
 sys.path.insert(0, str(ROOT / "scripts"))
 import content_version  # noqa: E402  (path set up above)
 
@@ -65,6 +65,11 @@ CONTENT_VERSION_TAG = content_version.tag_for(CONTENT_VERSION)
 VERSIONS_PAGE = "versions.html"
 RELEASES_URL = f"{REPO_URL}/releases"
 RELEASE_URL = f"{REPO_URL}/releases/tag/{CONTENT_VERSION_TAG}"
+
+# Verified framework coverage is independent of the prose edition. The shared
+# reader validates the exact upstream tag and fails explicitly if metadata is missing.
+FRAMEWORK_VERSION = content_version.read_framework_version()
+FRAMEWORK_RELEASE_URL = f"{GH_AW_REPO}/releases/tag/{FRAMEWORK_VERSION}"
 
 # AI / LLM agent crawlers welcomed explicitly in robots.txt (default policy: allow).
 AI_AGENTS = [
@@ -205,12 +210,30 @@ def abs_url(path: str = "") -> str:
 
 
 def version_pill(prefix: str = "") -> str:
-    """A small "v1.1" pill linking to the version-history page. `prefix` is the root-relative
+    """A compact content-edition pill linking to version history. `prefix` is the root-relative
     path back to the site root ("" from root pages, "../" from chapter pages)."""
     return (
         f'<a class="version-pill" href="{prefix}{VERSIONS_PAGE}" '
-        f'title="Content version {esc(CONTENT_VERSION)} \u2014 view version history">'
+        f'title="Content edition v{esc(CONTENT_VERSION)} \u2014 view version history" '
+        f'aria-label="Content edition v{esc(CONTENT_VERSION)} \u2014 view version history">'
         f'v{esc(CONTENT_VERSION)}</a>'
+    )
+
+
+def framework_link(css_class: str = "") -> str:
+    """Current-book coverage linked to its exact upstream release, never to latest."""
+    class_attr = f' class="{esc(css_class)}"' if css_class else ""
+    return (
+        f'<a{class_attr} href="{esc(FRAMEWORK_RELEASE_URL)}">'
+        f'Verified with gh-aw {esc(FRAMEWORK_VERSION)}</a>'
+    )
+
+
+def version_meta() -> str:
+    """Keep prose and framework versions distinct in every edition's HTML metadata."""
+    return (
+        f'<meta name="book-content-version" content="{esc(CONTENT_VERSION)}">\n'
+        f'  <meta name="gh-aw-framework-version" content="{esc(FRAMEWORK_VERSION)}">'
     )
 
 
@@ -267,6 +290,16 @@ def author_node() -> dict[str, Any]:
     }
 
 
+def framework_node() -> dict[str, Any]:
+    """The versioned software this book covers, not the version of the book itself."""
+    return {
+        "@type": "SoftwareApplication",
+        "name": "GitHub Agentic Workflows (gh-aw)",
+        "softwareVersion": FRAMEWORK_VERSION,
+        "url": FRAMEWORK_RELEASE_URL,
+    }
+
+
 def home_json_ld(chapter_count: int) -> str:
     website = {
         "@type": "WebSite",
@@ -285,8 +318,9 @@ def home_json_ld(chapter_count: int) -> str:
         "author": {"@id": f"{SITE_ORIGIN}/#author"},
         "inLanguage": "en",
         "bookFormat": "https://schema.org/EBook",
+        "bookEdition": CONTENT_VERSION,
         "genre": "Software engineering",
-        "about": "GitHub Agentic Workflows (gh-aw)",
+        "about": framework_node(),
         "numberOfPages": chapter_count,
         "image": OG_IMAGE_URL,
         "isPartOf": {"@id": f"{SITE_ORIGIN}/#website"},
@@ -307,6 +341,8 @@ def chapter_json_ld(chapter: dict[str, Any], part_title: str) -> str:
         "author": {"@id": f"{SITE_ORIGIN}/#author"},
         "publisher": {"@id": f"{SITE_ORIGIN}/#author"},
         "isPartOf": {"@id": f"{SITE_ORIGIN}/#book"},
+        "version": CONTENT_VERSION,
+        "about": framework_node(),
         "image": OG_IMAGE_URL,
     }
     if part_title:
@@ -340,6 +376,7 @@ def root_head(
   <title>{esc(page_title)}</title>
   <meta name="description" content="{esc(description)}">
   <meta name="author" content="{esc(AUTHOR_NAME)}">
+  {version_meta()}
   <link rel="canonical" href="{esc(canonical_url)}">
   <meta name="robots" content="{robots}">
   <meta name="googlebot" content="{robots}">
@@ -374,6 +411,7 @@ def root_head(
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="{prefix}assets/style.css">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer src="{prefix}assets/app.js"></script>
   {analytics_head(prefix)}
   {json_ld}"""
@@ -551,8 +589,12 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
             <dd>{esc(reading_line)}</dd>
           </div>
           <div class="cover-meta-item">
-            <dt>Edition</dt>
+            <dt>Content edition</dt>
             <dd><a class="cover-meta-link" href="{VERSIONS_PAGE}">v{esc(CONTENT_VERSION)}</a></dd>
+          </div>
+          <div class="cover-meta-item">
+            <dt>Framework coverage</dt>
+            <dd>{framework_link("cover-meta-link")}</dd>
           </div>
         </dl>
       </div>
@@ -583,7 +625,7 @@ def render_index(grouped: list[dict[str, Any]]) -> str:
   <footer class="colophon">
     <div class="colophon-inner">
       <p class="colophon-author">By <strong>Maxim Salnikov</strong> \u00b7 Microsoft</p>
-      <p class="colophon-meta"><a href="{VERSIONS_PAGE}">Content edition v{esc(CONTENT_VERSION)}</a> \u00b7 <a href="{PDF_FILENAME}">Download the PDF</a> \u00b7 <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a></p>
+      <p class="colophon-meta"><a href="{VERSIONS_PAGE}">Content edition v{esc(CONTENT_VERSION)}</a> \u00b7 {framework_link()} \u00b7 <a href="{PDF_FILENAME}">Download the PDF</a> \u00b7 <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a></p>
     </div>
   </footer>
 </body>
@@ -702,7 +744,7 @@ def render_chapter(
 
     <div class="content-shell">
       <header class="chapter-header">
-        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter {esc(chapter["number"])} <span class="fm-sep">\u00b7</span> <a href="../{PDF_FILENAME}">Download PDF</a> <span class="fm-sep">\u00b7</span> <a href="../{VERSIONS_PAGE}">v{esc(CONTENT_VERSION)}</a></nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter {esc(chapter["number"])} <span class="fm-sep">\u00b7</span> <a href="../{PDF_FILENAME}">Download PDF</a> <span class="fm-sep">\u00b7</span> <a href="../{VERSIONS_PAGE}">Content edition v{esc(CONTENT_VERSION)}</a> <span class="fm-sep">\u00b7</span> {framework_link()}</nav>
         <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">{esc(chapter["number"]):0>2}</span><span class="fm-sep">\u00b7</span><span class="fm-k">part:</span> <span class="fm-v">{esc(part_title)}</span></p>
         <h1>{esc(chapter["title"])}</h1>
         <p class="lead">{esc(chapter["objective"])}</p>
@@ -727,7 +769,7 @@ def render_chapter(
       </main>
 
       <footer class="site-footer chapter-footer">
-        <p>By <strong>Maxim Salnikov</strong> \u00b7 Microsoft \u00b7 <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a> \u00b7 <a href="../{PDF_FILENAME}">Download the PDF</a> \u00b7 <a href="../{VERSIONS_PAGE}">Content edition v{esc(CONTENT_VERSION)}</a></p>
+        <p>By <strong>Maxim Salnikov</strong> \u00b7 Microsoft \u00b7 <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> \u00b7 <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub \u2197</a> \u00b7 <a href="../{PDF_FILENAME}">Download the PDF</a> \u00b7 <a href="../{VERSIONS_PAGE}">Content edition v{esc(CONTENT_VERSION)}</a> \u00b7 {framework_link()}</p>
       </footer>
     </div>
   </div>
@@ -746,7 +788,7 @@ def render_chapter(
 BOOK_CSS = """
 *{box-sizing:border-box;}
 html{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-scheme:light;}
-body.book{margin:0;background:#fff;color:var(--ink);font-family:var(--font-body);font-size:11pt;line-height:1.62;-webkit-font-smoothing:antialiased;}
+body.book{margin:0;background:#fff;color:var(--ink);font-family:var(--font-body);font-size:11pt;line-height:1.62;overflow-wrap:anywhere;-webkit-font-smoothing:antialiased;}
 :root{
   --surface-2:#f1f4fa;--ink:#181d29;--muted:#4f5768;--faint:#626b80;
   --line:#dce1ec;--line-strong:#c5cddd;
@@ -902,6 +944,7 @@ def render_book(
   <title>{esc(PLAYBOOK_TITLE)} \u2014 Single-page edition</title>
   <meta name="description" content="{esc(HOME_DESCRIPTION)}">
   <meta name="author" content="{esc(AUTHOR_NAME)}">
+  {version_meta()}
   <meta name="robots" content="noindex, follow">
   <meta name="color-scheme" content="light">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -912,6 +955,7 @@ def render_book(
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <style>{BOOK_CSS}</style>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer>
     window.addEventListener('load', function () {{
       try {{
@@ -923,6 +967,7 @@ def render_book(
       document.documentElement.setAttribute('data-book-ready', '1');
     }});
   </script>
+  {home_json_ld(chapter_count)}
 </head>
 <body class="book">
   <div class="book-toolbar" role="toolbar" aria-label="Book actions">
@@ -936,7 +981,8 @@ def render_book(
     <h1 class="book-cover-title">GitHub Agentic Workflows</h1>
     <p class="book-cover-sub">{esc(PLAYBOOK_INTRO)}</p>
     <p class="book-cover-author">By <strong>{esc(AUTHOR_NAME)}</strong> \u00b7 Microsoft</p>
-    <p class="book-cover-meta">Version {esc(CONTENT_VERSION)} \u00b7 {chapter_count} chapters \u00b7 Single-page edition \u00b7 Generated {today}</p>
+    <p class="book-cover-meta"><a href="{esc(abs_url(VERSIONS_PAGE))}">Content edition v{esc(CONTENT_VERSION)}</a> \u00b7 {chapter_count} chapters \u00b7 Single-page edition \u00b7 Generated {today}</p>
+    <p class="book-cover-meta">{framework_link()}</p>
   </header>
 
   <nav class="book-toc" aria-label="Table of contents">
@@ -951,6 +997,7 @@ def render_book(
   <footer class="book-colophon">
     <p>By <strong>{esc(AUTHOR_NAME)}</strong> \u00b7 Microsoft \u00b7 <a href="{esc(AUTHOR_URL)}">LinkedIn</a> \u00b7 <a href="{esc(REPO_URL)}">Book repository</a></p>
     <p>{esc(PLAYBOOK_TITLE)} \u00b7 Content edition v{esc(CONTENT_VERSION)} \u00b7 {esc(SITE_ORIGIN)}</p>
+    <p>{framework_link()}</p>
   </footer>
 </body>
 </html>
@@ -974,7 +1021,7 @@ def _release_card(release: "content_version.Release", *, is_current: bool) -> st
 
     return f'''      <article class="release{' release--current' if is_current else ''}" id="{esc(tag)}">
         <header class="release-head">
-          <h3 class="release-version">Version {esc(release.version)}{badge}</h3>
+          <h3 class="release-version">Content edition v{esc(release.version)}{badge}</h3>
           <p class="release-date"><time datetime="{esc(release.date)}">{esc(release.date)}</time> \u00b7 <a href="{esc(tag_url)}" target="_blank" rel="noopener">{esc(tag)} \u2197</a></p>
         </header>
         {summary_html}
@@ -1005,7 +1052,8 @@ def render_versions() -> str:
     page_title = f"Version history \u2014 {PLAYBOOK_TITLE}"
     description = (
         f"Version history for the GitHub Agentic Workflows book. The current content edition is "
-        f"v{CONTENT_VERSION}; every version is published as a GitHub Release with a downloadable PDF."
+        f"v{CONTENT_VERSION}, verified with gh-aw {FRAMEWORK_VERSION}. "
+        "Content releases have their own version history and downloadable PDFs."
     )
     return f'''<!doctype html>
 <html lang="en">
@@ -1042,9 +1090,13 @@ def render_versions() -> str:
         <h1 id="version-title">Version history</h1>
         <p class="guide-lead">This book keeps growing. The <strong>content</strong> \u2014 the chapters and
         their prose \u2014 carries its own version, independent of the site generator and tooling. The
-        current edition is <strong>v{esc(CONTENT_VERSION)}</strong>. Every version is published as a
-        <a href="{esc(RELEASES_URL)}" target="_blank" rel="noopener">GitHub Release</a> with the
-        matching single-file PDF attached, so any past state stays reproducible and downloadable.</p>
+        current content edition is <strong>v{esc(CONTENT_VERSION)}</strong>. Content editions have
+        <a href="{esc(RELEASES_URL)}" target="_blank" rel="noopener">GitHub Releases</a>; editions
+        produced by the PDF pipeline include their matching single-file PDF. Older releases may
+        be notes-only if they predate that pipeline.</p>
+        <p class="guide-lead"><strong>Current framework coverage:</strong> {framework_link()}.
+        Framework coverage is tracked separately from the content edition. This baseline applies
+        to the current book, not to past releases listed below.</p>
         <div class="cover-actions">
           <a class="btn btn-primary" href="{esc(RELEASE_URL)}" target="_blank" rel="noopener">Latest release \u2197</a>
           <a class="btn btn-quiet" href="{PDF_FILENAME}">\u2193 Download the PDF</a>
@@ -1063,7 +1115,7 @@ def render_versions() -> str:
   <footer class="colophon">
     <div class="colophon-inner">
       <p class="colophon-author">By <strong>{esc(AUTHOR_NAME)}</strong> \u00b7 Microsoft</p>
-      <p class="colophon-meta"><a href="index.html">Back to the book</a> \u00b7 <a href="{esc(RELEASES_URL)}" target="_blank" rel="noopener">All releases on GitHub \u2197</a> \u00b7 <a href="{PDF_FILENAME}">Download the PDF</a></p>
+      <p class="colophon-meta"><a href="{VERSIONS_PAGE}">Content edition v{esc(CONTENT_VERSION)}</a> \u00b7 {framework_link()} \u00b7 <a href="index.html">Back to the book</a> \u00b7 <a href="{esc(RELEASES_URL)}" target="_blank" rel="noopener">All releases on GitHub \u2197</a> \u00b7 <a href="{PDF_FILENAME}">Download the PDF</a></p>
     </div>
   </footer>
 </body>
@@ -1172,6 +1224,9 @@ def write_discovery_files(chapters: list[dict[str, Any]]) -> None:
              "patterns, reuse, observability, governance/FinOps, and fleet adoption. "
              f"Written by {AUTHOR_NAME}."),
             "",
+            f"Content edition v{CONTENT_VERSION}. "
+            f"[Verified with gh-aw {FRAMEWORK_VERSION}]({FRAMEWORK_RELEASE_URL}).",
+            "",
             "## Start here",
             f"- [Home & table of contents]({abs_url()}): Overview, reading guide, and the full chapter list.",
             f"- [Download the PDF]({abs_url(PDF_FILENAME)}): The complete book as a single downloadable PDF.",
@@ -1192,7 +1247,8 @@ def write_discovery_files(chapters: list[dict[str, Any]]) -> None:
     # llms-full.txt: full readable text of every chapter, concatenated for agents.
     full = [f"# {PLAYBOOK_TITLE}", "",
             f"> {HOME_DESCRIPTION}", "",
-            f"Source: {abs_url()} | Author: {AUTHOR_NAME} | Content edition: v{CONTENT_VERSION} | Generated: {today}", ""]
+            f"Source: {abs_url()} | Author: {AUTHOR_NAME} | Content edition: v{CONTENT_VERSION} | Generated: {today}",
+            f"Framework coverage: [Verified with gh-aw {FRAMEWORK_VERSION}]({FRAMEWORK_RELEASE_URL})", ""]
     for ch in chapters:
         ch_url = abs_url(f"chapters/{ch['slug']}.html")
         full += [f"## Chapter {ch['number']}: {ch['title']}", "",
@@ -1239,6 +1295,7 @@ def print_report(reports: list[dict[str, Any]]) -> None:
     print(f"Totals: {filled_slots}/{total_slots} slots authored \u00b7 {complete} complete \u00b7 {pending} pending.")
     print(f"Single-page edition: {SITE / BOOK_PAGE}  (PDF source)")
     print(f"Version history: {SITE / VERSIONS_PAGE}  (content edition v{CONTENT_VERSION})")
+    print(f"Framework coverage: Verified with gh-aw {FRAMEWORK_VERSION}  ({FRAMEWORK_RELEASE_URL})")
     print(f"Build the PDF ({PDF_FILENAME}): python scripts/build_pdf.py")
     print("Serve locally: python -m http.server -d site 8000")
 

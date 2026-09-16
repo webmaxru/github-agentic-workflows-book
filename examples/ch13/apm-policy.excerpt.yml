@@ -1,0 +1,6 @@
+name: "Org agent governance"
+enforcement: block
+dependencies:
+  allow:
+    - "org/approved-security-skills/*"
+  require_pinned_constraint: true

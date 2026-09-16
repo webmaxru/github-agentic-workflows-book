@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "expected_version": "v0.88.7",
+  "compiler": [
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe"
+  ],
+  "strict": true,
+  "fragments": [],
+  "results": [
+    {
+      "path": "examples/embedded/triggers-5.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\triggers-5.md (121.9 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+        "body_hash": "ddc9ffe739ae561569f62021eb708109bbfe9c50d4db70c4b84cc88f31299bb9",
+        "stop_time": "2026-10-16 01:12:23",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/embedded/triggers-6.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\triggers-6.md (118.3 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "801e377666f95c0f1bb7fd3165ebbfe24620ccb0d31c7af8fed351f9dc628802",
+        "body_hash": "403133ab36ce0a024c3f392473fd6179da80fd23357e472e72d4ebf85ba00fe1",
+        "stop_time": "2026-10-16 01:12:27",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/embedded/what-are-agentic-workflows-1.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\what-are-agentic-workflows-1.md (119.8 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/embedded/your-first-workflow-9.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\your-first-workflow-9.md (119.6 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    }
+  ],
+  "environment_errors": [],
+  "compiler_version": "v0.88.7",
+  "version_output": "gh aw version v0.88.7\n",
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "book-default"
+  },
+  "passed": 4,
+  "failed": 0,
+  "status": "PASS"
+}

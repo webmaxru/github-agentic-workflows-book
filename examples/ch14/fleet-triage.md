@@ -19,15 +19,16 @@ tools:
   repo-memory: true
 ---
 
-# Repo Assistant — fleet triage (installed from the central repo)
+# Repo Assistant — fleet triage
 
-You triage issues in this repository using the **central triage policy** shared
-across the whole fleet (its tools, labels, and safe outputs are imported).
+This example demonstrates governed policy reuse with repository-scoped memory.
+Use the imported triage policy's tools, labels, and safe outputs.
 
-Apply the shared policy to the triggering issue. Every asset you create is tagged
-with this workflow's `tracker-id`, so an org admin can find all of the Repo
-Assistant's work across every repository with a single GitHub search.
+Apply the shared policy to the triggering issue.
 
-This workflow was installed from the org's central `agentic-workflows` repository
-(see `source:`), pinned to a released version. Updating the fleet means bumping
-that one version — every repo picks up the change on its next update.
+The `source:` value is synthetic, unexercised origin metadata, not proof of an
+installation from a real publisher. The import is a local vendored fragment.
+
+The `tracker-id` helps locate body-bearing outputs such as triage comments; it
+does not mark label operations. Updating a real fleet requires reviewed consumer
+dependency changes, recompilation, and deployment, not just a central edit.

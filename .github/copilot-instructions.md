@@ -33,6 +33,9 @@ draft → verify → review → integrate.
 - `gh-aw-workflow-examples.instructions.md` — gh-aw example-workflow conventions (`examples/**/*.md`).
 
 ### Prompts — `.github/prompts/`
+- `update-book.prompt.md` — normal maintenance: upstream delta to reviewed next-edition PR.
+- `release-content.prompt.md` — package reviewed prose changes; stop before human merge.
+- `run-playbook.prompt.md` — explicit whole-book bootstrap only.
 - `new-chapter.prompt.md` — kick off one chapter end-to-end through the team.
 
 ## How they work together
@@ -42,19 +45,30 @@ See `.github/skills/playbook-orchestration/SKILL.md`. In short:
 `code-verifier` proves the examples compile → `chapter-reviewer` gates quality → `frontend-builder`
 integrates. Work proceeds in waves (pilot chapter first), with a checkpoint commit per chapter.
 
+For an existing edition, use maintenance mode instead: resolve a fixed upstream target,
+assess the entire delta from `content/FRAMEWORK_VERSION`, map every chapter, and update only
+affected material. Run the full example corpus before advancing the framework baseline.
+Preserve historical research and record fresh evidence under `content/research/updates/<target>/`.
+Bind the actual editorial ACCEPT report to sources with `scripts/release_content.py record-review`.
+Prepare the new content edition in a PR; human review/merge is the publishing boundary.
+
 ## Project conventions
 - **Theory before syntax.** Every capability is anchored to a concept introduced first.
-- **Verify before ship.** A chapter is done only when its examples compile (or are clearly marked
-  `SKIPPED-needs-secret`) and the reviewer returns ACCEPT.
+- **Verify before ship.** A chapter is done only when its examples strictly compile with the
+  pinned target and the reviewer returns ACCEPT. Missing secrets can skip runtime execution,
+  never compilation.
 - **No secrets in code.** Engine keys live in GitHub Actions secrets; examples validate at compile time.
 - **Version-aware.** Record the inspected `gh aw` version in research/verification artifacts.
+- **Independent versions.** `content/VERSION` is the prose edition; `content/FRAMEWORK_VERSION`
+  is verified framework coverage. Metadata or tooling changes alone are not a prose release.
 - **Content ⟂ presentation.** Authors write content; `frontend-builder` owns chrome/nav/theming.
 
 ## gh-aw reference (verified)
-- Install: `gh extension install github/gh-aw` (or the `install-gh-aw.sh` script) · initialize with
-  `gh aw init` · verify with `gh aw version`.
+- Install the exact baseline/update target using `scripts/install-gh-aw.ps1` in isolation, or
+  `gh extension install github/gh-aw --pin <tag>` on a fresh runner. Confirm the actual version.
 - Workflows are markdown + YAML frontmatter in `.github/workflows/*.md`, compiled to `*.lock.yml`
-  by `gh aw compile`. Engines: Copilot, Claude, Codex, Gemini. Writes route through `safe-outputs:`.
+  by `gh aw compile`. The v0.88.7 built-ins are Copilot, Claude, Codex, Gemini, and Pi;
+  provider authentication and tool enforcement differ. Writes route through `safe-outputs:`.
 - Docs: https://github.github.com/gh-aw/
 - Repo & samples: https://github.com/github/gh-aw
   (see the `.github/aw/*.md` reference files: `cli-commands`, `safe-outputs`, `triggers`, `syntax`, …)

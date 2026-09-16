@@ -1,0 +1,1403 @@
+{
+  "schema_version": 1,
+  "scope": "Current frozen manuscript command spellings/flags checked by captured help and installer signature; no live/interface/variable/model/forecast/download/install operation.",
+  "target": "v0.88.7",
+  "status": "FAIL",
+  "checked_at_utc": "2026-09-16T02:55:19.501564+00:00",
+  "checks": [
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "line": 11,
+      "text": "gh aw version v0.88.7",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "line": 36,
+      "text": "gh aw compile",
+      "command": "compile",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "line": 40,
+      "text": "gh aw compile .github/workflows/repo-assistant-triage.md --strict",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "line": 75,
+      "text": "gh aw compile --watch",
+      "command": "compile",
+      "options": [
+        "--watch"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--watch": "-w, --watch                          Watch for changes to workflow files and recompile automatically"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "line": 94,
+      "text": "gh aw list",
+      "command": "list",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "line": 94,
+      "text": "gh aw status",
+      "command": "status",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "line": 97,
+      "text": "gh aw run",
+      "command": "run",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/continuous-review-and-testing.html",
+      "line": 199,
+      "text": "gh aw version",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/continuous-review-and-testing.html",
+      "line": 200,
+      "text": "gh aw compile --strict examples/ch10/continuous-review.md",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/continuous-review-and-testing.html",
+      "line": 201,
+      "text": "gh aw compile --strict examples/ch10/daily-test-improver.md",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/continuous-review-and-testing.html",
+      "line": 202,
+      "text": "gh aw compile --strict examples/ch10/workflow-run-conclusion.md",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/continuous-triage-and-docs.html",
+      "line": 223,
+      "text": "gh aw version",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/continuous-triage-and-docs.html",
+      "line": 227,
+      "text": "gh aw compile examples/ch09/continuous-triage.md --strict",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/continuous-triage-and-docs.html",
+      "line": 228,
+      "text": "gh aw compile examples/ch09/continuous-docs.md --strict",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/defense-in-depth.html",
+      "line": 103,
+      "text": "gh aw audit <run-id>",
+      "command": "audit",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/defense-in-depth.html",
+      "line": 199,
+      "text": "gh aw version",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/defense-in-depth.html",
+      "line": 200,
+      "text": "gh aw compile --strict .github/workflows/repo-assistant-hardened.md",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "line": 147,
+      "text": "gh aw version",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "line": 149,
+      "text": "gh aw compile examples/ch05/repo-assistant-claude.md --strict --validate --no-check-update",
+      "command": "compile",
+      "options": [
+        "--no-check-update",
+        "--strict",
+        "--validate"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--no-check-update": "--no-check-update                Skip checking for gh-aw updates",
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false",
+        "--validate": "--validate                       Enable GitHub Actions workflow schema validation, container image validation, and action SHA validation"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "line": 59,
+      "text": "gh aw add",
+      "command": "add",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "line": 59,
+      "text": "gh aw add-wizard",
+      "command": "add-wizard",
+      "options": [],
+      "status": "FAIL",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "line": 62,
+      "text": "gh aw update",
+      "command": "update",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "line": 75,
+      "text": "gh aw upgrade",
+      "command": "upgrade",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "line": 75,
+      "text": "gh aw compile",
+      "command": "compile",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "line": 194,
+      "text": "gh aw version",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "line": 195,
+      "text": "gh aw compile examples/ch14/fleet-triage.md --strict --no-check-update",
+      "command": "compile",
+      "options": [
+        "--no-check-update",
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--no-check-update": "--no-check-update                Skip checking for gh-aw updates",
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "line": 212,
+      "text": "gh aw add my-org/agentic-workflows/workflows/triage.md@v1.2.0",
+      "command": "add",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "line": 55,
+      "text": "gh aw env",
+      "command": "env",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "line": 79,
+      "text": "gh aw env update",
+      "command": "env update",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "line": 87,
+      "text": "gh aw models --json --refresh-observed=false",
+      "command": "models",
+      "options": [
+        "--json",
+        "--refresh-observed"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--json": "-j, --json                Output results in JSON format",
+        "--refresh-observed": "--refresh-observed    Attempt to refresh local observed-model artifacts before reporting (default true)"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "line": 88,
+      "text": "gh aw forecast repo-assistant-budgeted --period week --days 7 --sample 50 --json",
+      "command": "forecast",
+      "options": [
+        "--days",
+        "--json",
+        "--period",
+        "--sample"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--days": "--days int          Historical window in days to sample run history (allowed values: 7, 30) (default 30)",
+        "--json": "-j, --json              Output results in JSON format",
+        "--period": "--period string     Aggregation period for projections: week or month (default \"month\")",
+        "--sample": "--sample int        Maximum number of completed runs to sample per workflow (default 100)"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "line": 94,
+      "text": "gh aw compile",
+      "command": "compile",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "line": 198,
+      "text": "gh aw version",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "line": 199,
+      "text": "gh aw compile examples/ch13/repo-assistant-budgeted.md --strict --no-check-update",
+      "command": "compile",
+      "options": [
+        "--no-check-update",
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--no-check-update": "--no-check-update                Skip checking for gh-aw updates",
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "line": 234,
+      "text": "gh aw compile opt-out --no-check-update",
+      "command": "compile",
+      "options": [
+        "--no-check-update"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--no-check-update": "--no-check-update                Skip checking for gh-aw updates"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "line": 241,
+      "text": "gh aw env get org-defaults.yml --scope org --org MY_ORG",
+      "command": "env get",
+      "options": [
+        "--org",
+        "--scope"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--org": "--org string          Target organization (required for --scope org unless inferable from --repo/current repo)",
+        "--scope": "--scope string        Variable scope (repo|org|ent). Defaults to repo"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "line": 243,
+      "text": "gh aw env update org-defaults.yml --scope org --org MY_ORG --dry-run",
+      "command": "env update",
+      "options": [
+        "--dry-run",
+        "--org",
+        "--scope"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--dry-run": "--dry-run             Preview updates without applying any changes",
+        "--org": "--org string          Target organization (required for --scope org unless inferable from --repo/current repo)",
+        "--scope": "--scope string        Variable scope (repo|org|ent)"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "line": 245,
+      "text": "gh aw env update org-defaults.yml --scope org --org MY_ORG",
+      "command": "env update",
+      "options": [
+        "--org",
+        "--scope"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--org": "--org string          Target organization (required for --scope org unless inferable from --repo/current repo)",
+        "--scope": "--scope string        Variable scope (repo|org|ent)"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "line": 246,
+      "text": "gh variable set GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST --org MY_ORG --body \"false\"",
+      "command": "variable set",
+      "options": [
+        "--body",
+        "--org"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--body": "-b, --body string          The value for the variable (reads from standard input if not specified)",
+        "--org": "-o, --org organization     Set organization variable"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 7,
+      "text": "gh aw logs",
+      "command": "logs",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 7,
+      "text": "gh aw audit",
+      "command": "audit",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 25,
+      "text": "gh aw logs --help",
+      "command": "logs",
+      "options": [
+        "--help"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--help": "-h, --help                            Show help for gh aw logs"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 29,
+      "text": "gh aw logs repo-assistant",
+      "command": "logs",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 30,
+      "text": "gh aw logs owner/repo/repo-assistant",
+      "command": "logs",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 31,
+      "text": "gh aw logs --artifacts all",
+      "command": "logs",
+      "options": [
+        "--artifacts"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--artifacts": "--artifacts strings               Artifact sets to download (default: usage — compact summary for faster downloads). Use 'all' for everything, or comma-separate sets. Valid sets: activation, agent, all, detection, evals, experiment, firewall, github-api, graders, mcp, usage (default [usage])"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 32,
+      "text": "gh aw logs --artifacts agent,firewall",
+      "command": "logs",
+      "options": [
+        "--artifacts"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--artifacts": "--artifacts strings               Artifact sets to download (default: usage — compact summary for faster downloads). Use 'all' for everything, or comma-separate sets. Valid sets: activation, agent, all, detection, evals, experiment, firewall, github-api, graders, mcp, usage (default [usage])"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 38,
+      "text": "gh aw logs repo-assistant repo-assistant-observable --count 20",
+      "command": "logs",
+      "options": [
+        "--count"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 39,
+      "text": "gh aw logs repo-assistant --start-date -1w --count 20 --exclude-staged",
+      "command": "logs",
+      "options": [
+        "--count",
+        "--exclude-staged",
+        "--start-date"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--exclude-staged": "--exclude-staged                  Exclude workflow runs that executed in staged mode (safe outputs previewed but not applied)",
+        "--start-date": "--start-date string               Filter runs created after this date (YYYY-MM-DD or delta like -1d, -1w, -1mo)"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 48,
+      "text": "gh aw logs repo-assistant --runtime docker --count 10",
+      "command": "logs",
+      "options": [
+        "--count",
+        "--runtime"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--runtime": "--runtime string                  Filter to runs using a specific sandbox agent runtime (e.g., gvisor, docker-sbx, cloud-hypervisor)"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 49,
+      "text": "gh aw logs repo-assistant --evals --count 10",
+      "command": "logs",
+      "options": [
+        "--count",
+        "--evals"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--evals": "--evals                           Filter to runs containing evals results (evals.jsonl); automatically includes the usage artifact (which contains evals)"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 50,
+      "text": "gh aw logs repo-assistant --graders --count 10",
+      "command": "logs",
+      "options": [
+        "--count",
+        "--graders"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--graders": "--graders                         Filter to runs containing deterministic grader results; automatically includes grader artifacts"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 57,
+      "text": "gh aw logs repo-assistant --count 20 --max-storage 10240 --prune-older-runs",
+      "command": "logs",
+      "options": [
+        "--count",
+        "--max-storage",
+        "--prune-older-runs"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--max-storage": "--max-storage int                 Maximum logs storage in MB after pruning non-essential cache data (0 = unlimited)",
+        "--prune-older-runs": "--prune-older-runs                Remove oldest completed runs when non-essential cache pruning cannot satisfy --max-storage"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 58,
+      "text": "gh aw logs repo-assistant --count 20 --max-github-api-rate-limit -2000 --timeout 30",
+      "command": "logs",
+      "options": [
+        "--count",
+        "--max-github-api-rate-limit",
+        "--timeout"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--max-github-api-rate-limit": "--max-github-api-rate-limit int   Maximum used GitHub core API requests before waiting for reset (positive = absolute, negative = reserve from API limit; e.g. 12000 or -2000)",
+        "--timeout": "--timeout int                     Download timeout in minutes (0 = no timeout)"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 75,
+      "text": "gh aw audit 1234567890 --repo owner/repo",
+      "command": "audit",
+      "options": [
+        "--repo"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--repo": "-r, --repo string         Target repository ([HOST/]owner/repo format). Defaults to current repository"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 76,
+      "text": "gh aw audit <run-url>",
+      "command": "audit",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 77,
+      "text": "gh aw audit <run-url>/job/<id>",
+      "command": "audit",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 78,
+      "text": "gh aw audit <baseline-url> <comparison-url>",
+      "command": "audit",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 81,
+      "text": "gh aw logs --audit",
+      "command": "logs",
+      "options": [
+        "--audit"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--audit": "--audit                           Generate audit.json in each workflow run cache directory (comparisons use downloaded runs only)"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 84,
+      "text": "gh aw logs owner/repo/repo-assistant --count 5 --artifacts agent,firewall --audit",
+      "command": "logs",
+      "options": [
+        "--artifacts",
+        "--audit",
+        "--count"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--artifacts": "--artifacts strings               Artifact sets to download (default: usage — compact summary for faster downloads). Use 'all' for everything, or comma-separate sets. Valid sets: activation, agent, all, detection, evals, experiment, firewall, github-api, graders, mcp, usage (default [usage])",
+        "--audit": "--audit                           Generate audit.json in each workflow run cache directory (comparisons use downloaded runs only)",
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 89,
+      "text": "gh aw status",
+      "command": "status",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 138,
+      "text": "gh aw audit https://github.com/OWNER/REPO/actions/runs/1234567890",
+      "command": "audit",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 147,
+      "text": "gh aw logs repo-assistant --start-date -1w --count 20 --exclude-staged --artifacts all",
+      "command": "logs",
+      "options": [
+        "--artifacts",
+        "--count",
+        "--exclude-staged",
+        "--start-date"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--artifacts": "--artifacts strings               Artifact sets to download (default: usage — compact summary for faster downloads). Use 'all' for everything, or comma-separate sets. Valid sets: activation, agent, all, detection, evals, experiment, firewall, github-api, graders, mcp, usage (default [usage])",
+        "--count": "-c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)",
+        "--exclude-staged": "--exclude-staged                  Exclude workflow runs that executed in staged mode (safe outputs previewed but not applied)",
+        "--start-date": "--start-date string               Filter runs created after this date (YYYY-MM-DD or delta like -1d, -1w, -1mo)"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 151,
+      "text": "gh aw compile --strict .github/workflows/repo-assistant.md",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "line": 194,
+      "text": "gh aw version v0.88.7",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "line": 92,
+      "text": "gh aw compile",
+      "command": "compile",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "line": 233,
+      "text": "gh aw version",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "line": 237,
+      "text": "gh aw compile --strict .github/workflows/repo-assistant-shared.md",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "line": 261,
+      "text": "gh aw logs",
+      "command": "logs",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "line": 261,
+      "text": "gh aw audit",
+      "command": "audit",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/safe-outputs.html",
+      "line": 159,
+      "text": "gh aw compile examples/ch06/repo-assistant-open-pr.md --strict",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/tools-and-mcp.html",
+      "line": 95,
+      "text": "gh aw mcp inspect",
+      "command": "mcp inspect",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/tools-and-mcp.html",
+      "line": 155,
+      "text": "gh aw version",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/tools-and-mcp.html",
+      "line": 157,
+      "text": "gh aw compile examples/ch08/repo-assistant-tools.md --strict",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "line": 50,
+      "text": "gh aw run",
+      "command": "run",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "line": 80,
+      "text": "gh aw compile",
+      "command": "compile",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "line": 247,
+      "text": "gh aw version",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "line": 248,
+      "text": "gh aw compile examples/ch04/repo-assistant-triggers.md --strict",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "line": 249,
+      "text": "gh aw compile examples/ch04/repo-assistant-issue-shorthand.md --strict",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "line": 250,
+      "text": "gh aw compile examples/ch04/repo-assistant-cooldown.md --strict",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "line": 255,
+      "text": "gh aw compile examples/ch04/repo-assistant-triggers.md --strict --refresh-stop-time",
+      "command": "compile",
+      "options": [
+        "--refresh-stop-time",
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--refresh-stop-time": "--refresh-stop-time              Force regeneration of stop-after times instead of preserving existing values from lock files",
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/what-are-agentic-workflows.html",
+      "line": 48,
+      "text": "gh aw compile",
+      "command": "compile",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 49,
+      "text": "gh aw version",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 52,
+      "text": "gh extension install github/gh-aw --pin v0.88.7",
+      "command": "extension install",
+      "options": [
+        "--pin"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--pin": "--pin string   Pin extension to a release tag or commit ref"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 55,
+      "text": "gh aw version v0.88.7",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 62,
+      "text": "& $aw version",
+      "kind": "version command/displayed output",
+      "status": "PASS",
+      "evidence": "Actual version output in verification.json is gh aw version v0.88.7."
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 66,
+      "text": "& $aw compile --strict .github/workflows/repo-assistant-triage.md",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 68,
+      "text": "gh aw init",
+      "command": "init",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 75,
+      "text": "gh aw new",
+      "command": "new",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 76,
+      "text": "gh aw new <workflow-id>",
+      "command": "new",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 79,
+      "text": "gh aw new repo-assistant-triage",
+      "command": "new",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 84,
+      "text": "gh aw add",
+      "command": "add",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 87,
+      "text": "gh aw compile",
+      "command": "compile",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 91,
+      "text": "gh aw compile --strict .github/workflows/repo-assistant-triage.md",
+      "command": "compile",
+      "options": [
+        "--strict"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--strict": "--strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false"
+      },
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 102,
+      "text": "gh aw run",
+      "command": "run",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 106,
+      "text": "gh aw run repo-assistant-triage",
+      "command": "run",
+      "options": [],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {},
+      "operational_command_executed": false
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line": 108,
+      "text": "gh aw run repo-assistant-triage --dry-run",
+      "command": "run",
+      "options": [
+        "--dry-run"
+      ],
+      "status": "PASS",
+      "missing_options": [],
+      "definitions": {
+        "--dry-run": "--dry-run                 Preview workflow execution without triggering runs on GitHub Actions"
+      },
+      "operational_command_executed": false
+    }
+  ],
+  "reused_target_help": {
+    "add": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Add one or more agentic workflows from repositories, local files, or URLs to .github/workflows.\n\nThis command adds workflows directly without interactive prompts. Use 'add-wizard'\nfor a guided setup that configures secrets, creates a pull request, and more.\n\nWorkflow specifications:\n  - Two parts: \"owner/repo[@version]\" (loads repository-root aw.yml package)\n  - Three+ parts without .md: \"owner/repo/folder[@version]\" (loads nested aw.yml package when present)\n  - Three parts: \"owner/repo/workflow-name[@version]\" (implicitly looks in workflows/ directory)\n  - Four+ parts: \"owner/repo/workflows/workflow-name.md[@version]\" (requires explicit .md extension)\n  - GitHub URL: \"https://github.com/owner/repo/blob/branch/path/to/workflow.md\"\n  - Arbitrary URL: \"https://example.com/workflow.md\" (fetches and dispatches on Content-Type)\n    - text/markdown → treated as a gh-aw workflow markdown file\n    - application/json → converted from a JSON workflow definition\n  - Local file: \"./path/to/workflow.md\" (adds a workflow from local filesystem)\n  - Local wildcard: \"./*.md\" or \"./dir/*.md\" (adds all .md files matching pattern)\n  - Version can be tag, branch, or SHA (for remote workflows)\n\nThe -n flag allows you to specify a custom name for the workflow file (not allowed when adding multiple workflows at once).\nThe --dir flag allows you to specify the workflow directory (default: .github/workflows).\nThe --create-pull-request flag creates a pull request with the workflow changes.\nThe --force flag overwrites existing workflow files.\nWhen a package contains .github/workflows/aw.json, its project settings are\nmerged into the target repository and the added package settings take precedence.\n\nNote: In GitHub Enterprise repos, shorthand source specs resolve on your enterprise host by default.\n      For github/*, githubnext/*, and microsoft/* sources, shorthand resolves on github.com.\n      Use full https://github.com/... source URLs for other public github.com workflows.\nNote: To create a new workflow from scratch, use the 'new' command instead.\nNote: For guided interactive setup, use the 'add-wizard' command instead.\n\nUsage:\n  gh aw add <workflow>... [flags]\n\nExamples:\n  gh aw add githubnext/agentics/daily-repo-status        # Add workflow directly\n  gh aw add githubnext/agentics/repo-assist              # Add package from repository root aw.yml\n  gh aw add githubnext/agentics/packages/repo-assist     # Add package from nested aw.yml\n  gh aw add githubnext/agentics/ci-doctor@v1.0.0         # Add with version\n  gh aw add githubnext/agentics/workflows/ci-doctor.md@main\n  gh aw add https://github.com/githubnext/agentics/blob/main/workflows/ci-doctor.md\n  gh aw add https://example.com/my-workflow.md           # Add workflow from any HTTPS URL\n  gh aw add https://example.com/workflow.json            # Import JSON workflow definition\n  gh aw add githubnext/agentics/ci-doctor --create-pull-request --force\n  gh aw add ./my-workflow.md                             # Add local workflow\n  gh aw add ./*.md                                       # Add all local workflows\n  gh aw add githubnext/agentics/ci-doctor --dir .github/workflows/shared   # Add to .github/workflows/shared/\n\nFlags:\n      --append string         Append extra content to the end of the agentic workflow on installation\n      --create-pull-request   Create a pull request with the workflow changes\n  -d, --dir string            Workflow directory (default: $GH_AW_WORKFLOWS_DIR or .github/workflows)\n  -e, --engine string         Override AI engine (copilot, claude, codex, gemini, pi)\n  -f, --force                 Overwrite existing workflow files without confirmation\n      --gh-aw-ref string      Pin compiled workflows to a branch, tag, or commit SHA of github/gh-aw; branch and tag names are resolved to an immutable full SHA\n  -h, --help                  Show help for gh aw add\n  -n, --name string           Specify name for the added workflow (without .md extension)\n      --no-gitattributes      Skip updating .gitattributes file\n      --no-security-scanner   Skip security scanning of workflow markdown content\n      --no-stop-after         Remove any stop-after field from the workflow\n      --stop-after string     Override stop-after value in the workflow (e.g., '+48h', '2025-12-31 23:59:59')\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "audit": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Audit one or more workflow runs by downloading artifacts and logs, detecting errors,\nanalyzing MCP tool usage, and generating a concise report suitable for AI agents.\n\nWhen a single run is provided, generates a detailed Markdown report for that run.\nWhen two or more runs are provided, the first is used as the base (reference) and the\nremaining runs are compared against it, producing a diff report.\n\nEach argument accepts:\n- A numeric run ID (e.g., 1234567890)\n- A GitHub Actions run URL (e.g., https://github.com/owner/repo/actions/runs/1234567890)\n- A GitHub Actions job URL (e.g., https://github.com/owner/repo/actions/runs/1234567890/job/9876543210)\n- A GitHub Actions job URL with step (e.g., https://github.com/owner/repo/actions/runs/1234567890/job/9876543210#step:7:1)\n- A GitHub workflow run URL (e.g., https://github.com/owner/repo/runs/1234567890)\n- GitHub Enterprise URLs (e.g., https://github.example.com/owner/repo/actions/runs/1234567890)\n\nWhen a job URL is provided (single-run mode only):\n- If a step number is included (#step:7:1), extracts that specific step's output\n- If no step number, finds and extracts the first failing step's output\n- Saves job logs to the output directory\n\nUsage:\n  gh aw audit <run-id-or-url> [run-id-or-url]... [flags]\n\nExamples:\n  gh aw audit 1234567890 --repo owner/repo  # Audit with bare run ID (--repo required)\n  gh aw audit https://github.com/owner/repo/actions/runs/1234567890  # Audit from run URL\n  gh aw audit https://github.com/owner/repo/actions/runs/1234567890/job/9876543210  # Audit job and extract first failing step\n  gh aw audit https://github.com/owner/repo/actions/runs/1234567890/job/9876543210#step:7:1  # Extract step 7 output\n  gh aw audit https://github.com/owner/repo/runs/1234567890  # Audit from workflow run URL\n  gh aw audit https://github.example.com/owner/repo/actions/runs/1234567890  # Audit from GitHub Enterprise\n  gh aw audit 1234567890 -o ./audit-reports # Custom output directory\n  gh aw audit 1234567890 -v                 # Verbose output\n  gh aw audit 1234567890 --parse            # Parse agent logs and firewall logs, generating log.md and firewall.md\n  gh aw audit 1234567890 --repo owner/repo  # Audit run from a specific repository\n  gh aw audit 1234567890 1234567891         # Diff two runs (base vs comparison)\n  gh aw audit 1234567890 1234567891 1234567892  # Diff base against multiple runs\n  gh aw audit 1234567890 1234567891 --format markdown  # Markdown diff output for PR comments\n  gh aw audit 1234567890 --runtime gvisor   # Skip run unless sandbox agent runtime matches\n\nFlags:\n      --artifacts strings   Artifact sets to download (default: all — comprehensive artifacts required for analysis). Valid sets: activation, agent, all, detection, evals, experiment, firewall, github-api, graders, mcp, usage\n      --evals               Filter to runs containing evals results (evals.jsonl); automatically downloads the usage artifact (which includes evals) when --artifacts is narrowed\n      --experiment string   Filter to runs that include this experiment name\n      --format string       Diff output format for multi-run mode: pretty, markdown (default \"pretty\")\n  -h, --help                Show help for gh aw audit\n  -j, --json                Output results in JSON format\n  -o, --output string       Output directory for generated files (default \".github/aw/logs\")\n      --parse               Run JavaScript parsers on agent logs and firewall logs, writing Markdown to log.md and firewall.md\n  -r, --repo string         Target repository ([HOST/]owner/repo format). Defaults to current repository\n      --runtime string      Filter to runs using a specific sandbox agent runtime (e.g., gvisor, docker-sbx, cloud-hypervisor)\n      --stdin               Read workflow run IDs or URLs from stdin (one per line) instead of positional arguments\n      --variant string      Filter to runs with a specific variant value (requires --experiment)\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "compile": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Compile agentic workflow Markdown files into GitHub Actions YAML.\n\nIf no workflows are specified, all Markdown files in .github/workflows will be compiled.\n\nThe workflow-id is the basename of the Markdown file without the .md extension.\nYou can provide either the workflow-id (e.g., 'ci-doctor') or the full filename (e.g., 'ci-doctor.md').\n\nThe --dependabot flag generates dependency manifests when dependencies are detected:\n  - For npm: Creates package.json and package-lock.json (requires npm in PATH)\n  - For Python: Creates requirements.txt for pip packages\n  - For Go: Creates go.mod for go install/get packages\n  - For all detected ecosystems: Generates .github/dependabot.yml\n  - Use --force to overwrite existing dependabot.yml\n  - Cannot be used with specific workflow files or custom --dir\n  - Only processes workflows in the default .github/workflows directory\n\nAction mode controls how gh-aw action scripts are referenced in compiled workflows.\nThree flags govern this. --gh-aw-ref is mutually exclusive with the other two;\n--action-tag and --action-mode may be combined (e.g. --action-mode action --action-tag v1.2.3):\n\nUnlike `gh aw upgrade`, `gh aw compile` only applies codemods when you opt in with `--fix`.\n\n  --action-mode <mode>\n    Explicit mode selection. Values:\n      dev      Local paths (./actions/...). For developing inside the gh-aw repo.\n      release  SHA-pinned refs from github/gh-aw (e.g. github/gh-aw/actions/setup@<sha>).\n               The SHA is derived from the binary version or from --action-tag.\n      action   SHA-pinned refs from the github/gh-aw-actions repository.\n               Used by release binaries. Can be combined with --action-tag to pin a version.\n    Auto-detected from the binary build type when not set.\n\n  --action-tag <sha-or-tag>\n    Pin to a specific SHA or version tag (e.g. v1, v1.2.3, <full-sha>).\n    Implies --action-mode release unless --action-mode action is also specified.\n    The value is used as-is without SHA resolution. Use --gh-aw-ref to resolve\n    branches or tags at compile time.\n\n  --gh-aw-ref <branch-tag-or-sha>\n    Resolve a branch name, tag, or SHA from github/gh-aw to its full commit SHA\n    at compile time and pin the compiled workflow to that immutable SHA.\n    Equivalent to --action-mode release --action-tag <resolved-sha>.\n    Branch and tag names are resolved via the GitHub API.\n    Cannot be combined with --action-tag or --action-mode.\n    Use this when E2E-testing compiled workflows against a specific gh-aw revision.\n\nUsage:\n  gh aw compile [workflow]... [flags]\n\nExamples:\n  gh aw compile                    # Compile all Markdown files\n  gh aw compile ci-doctor          # Compile a specific workflow\n  gh aw compile ci-doctor daily-plan  # Compile multiple workflows\n  gh aw compile workflow.md        # Compile by file path\n  gh aw compile .github/workflows  # Compile all workflows in a directory\n  gh aw compile --dir custom/workflows  # Compile from custom directory\n  gh aw compile ci-doctor --watch     # Watch and auto-compile\n  gh aw compile --trial --logical-repo owner/repo  # Compile for trial mode\n  gh aw compile --dependabot        # Generate Dependabot manifests\n  gh aw compile --dependabot --force  # Force overwrite existing dependabot.yml\n  gh aw compile --gh-aw-ref main       # Pin workflows to the SHA of github/gh-aw main at compile time\n  gh aw compile --action-tag v1.2.3    # Pin workflows to a specific release tag\n\nFlags:\n      --action-mode string             How gh-aw action scripts are referenced in compiled workflows: 'dev' uses local paths (for developing gh-aw itself), 'release' emits SHA-pinned remote refs from github/gh-aw, 'action' uses the github/gh-aw-actions repository. Auto-detected from the binary build type if not specified\n      --action-tag string              Pin compiled workflows to a specific version of gh-aw actions. Accepts a full commit SHA or a version tag (e.g. v1, v1.2.3). Sets --action-mode to 'release' unless --action-mode action is also specified. Cannot be combined with --gh-aw-ref; use --gh-aw-ref when you want to resolve a branch or tag name to its current SHA\n      --actionlint                     Run actionlint linter on generated .lock.yml files\n      --actions-repo string            Override the external actions repository used in action mode (default: github/gh-aw-actions)\n      --allow-action-refs              Allow unresolved action refs and emit warnings instead of failing validation\n      --approve                        Approve all safe update changes. When strict mode is active (the default), the compiler emits warnings for new restricted secrets or unapproved action additions/removals not present in the existing gh-aw-manifest. Use this flag to approve and skip safe update enforcement\n      --dependabot                     Generate dependency manifests (package.json, requirements.txt, go.mod) and Dependabot config when dependencies are detected\n  -d, --dir string                     Workflow directory (default: $GH_AW_WORKFLOWS_DIR or .github/workflows)\n  -e, --engine string                  Override AI engine (copilot, claude, codex, gemini, pi)\n      --fail-fast                      Stop at the first validation error instead of collecting all errors\n      --fix                            Apply automatic codemod fixes to workflows before compiling\n  -f, --force                          Force overwrite of existing dependency files (only applies when --dependabot is set; e.g., dependabot.yml)\n      --force-refresh-action-pins      Force refresh of action pins by clearing the cache and resolving all action SHAs from GitHub API\n      --force-refresh-container-pins   Force refresh existing container image digest pins before compiling\n      --gh-aw-ref string               Pin compiled workflows to a specific branch, tag, or commit SHA of github/gh-aw (e.g. main, my-feature, abc123). Branch and tag names are resolved to their full commit SHA at compile time so the baked-in ref is immutable. Equivalent to --action-mode release --action-tag <resolved-sha>. Cannot be combined with --action-tag or --action-mode. Use this to E2E-test workflows against a specific gh-aw revision\n      --ghes                           Enable GitHub Enterprise Server (GHES) compatibility mode: emit upload-artifact@v3.2.2 and download-artifact@v3.1.0. Overrides the aw.json ghes field.\n      --grant                          Run grant license scanner on container images referenced in compiled .lock.yml files (uses Docker image anchore/grant:v0.6.8@sha256:172463611795f43b77302cdfbd7b3f81295492a7330e0820cfe41c3674920237)\n      --grype                          Run grype vulnerability scanner on container images referenced in compiled .lock.yml files (uses Docker image anchore/grype:v0.117.0@sha256:ddf9e9f204049f3a4a0955ef70873cabab6a31432125ad4f20a490b54950a253)\n  -h, --help                           Show help for gh aw compile\n  -j, --json                           Output results in JSON format\n  -l, --logical-repo string            Repository to simulate workflow execution against (for trial mode)\n      --models                         Warn when models configured in models or engine.models are absent from the active model inventory\n      --no-check-update                Skip checking for gh-aw updates\n      --no-emit                        Validate workflow without generating lock files\n      --poutine                        Run poutine security scanner on generated .lock.yml files\n      --purge                          Delete .lock.yml files that were not regenerated during compilation (only when no specific files are provided)\n      --refresh-stop-time              Force regeneration of stop-after times instead of preserving existing values from lock files\n      --runner-guard                   Run runner-guard taint analysis scanner on generated .lock.yml files (uses Docker image ghcr.io/vigilant-llc/runner-guard:3.1.5@sha256:2df426ef96d21f1622e05b21329f26bd263fc46110609cefb6afe43457613ac0)\n      --schedule-seed string           Override the repository slug (owner/repo) used as seed for fuzzy schedule scattering (e.g., \"github/gh-aw\"). Bypasses git remote detection entirely. Use this when your git remote is not named \"origin\" and you have multiple remotes configured\n      --shellcheck                     Run shellcheck linting of run step scripts\n      --show-all                       Display all compilation errors instead of only the highest-priority subset (default: top 5)\n      --staged                         Force all safe-outputs into staged mode\n      --stats                          Display statistics table sorted by workflow file size (shows jobs, steps, scripts, and shells)\n      --strict                         Override frontmatter to enforce strict mode validation for all workflows (enforces action pinning, network config, safe-outputs, disallows write permissions and deprecated fields). Note: Workflows default to strict mode unless frontmatter sets strict: false\n      --syft                           Run syft SBOM scanner on container images referenced in compiled .lock.yml files (uses Docker image anchore/syft:v1.51.0@sha256:678bfa565b60f747aac0f8e964fe5588a24445b8d0a480e91f6efd70020dfbb0)\n      --trial                          Enable trial mode compilation (modifies workflows for trial execution)\n      --validate                       Enable GitHub Actions workflow schema validation, container image validation, and action SHA validation\n      --validate-images                Require Docker to be available for container image validation. Without this flag, container image validation is silently skipped when Docker is not installed or the daemon is not running\n  -w, --watch                          Watch for changes to workflow files and recompile automatically\n      --yamllint                       Run yamllint YAML linter on generated .lock.yml files (uses Docker image pipelinecomponents/yamllint:latest@sha256:5ab5eb7da0ed5e606b07c1723fc8b275e925189f70ac259b26b7329cb5f8f44d)\n      --zizmor                         Run zizmor security scanner on generated .lock.yml files\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "env": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Manage compiler default variables in bulk for a repository, organization, or enterprise scope.\n\nThe YAML file is flat and uses default_-prefixed lowercase keys (e.g., default_max_turns).\nSet a field to null (or omit it) in update mode to delete the variable from the selected scope.\nAny field with a non-null string value will be set or updated.\n\nUsage:\n  gh aw env [flags]\n  gh aw env [command]\n\nAvailable Commands:\n  get    Download default compiler variables into a YAML file\n  update Upload default compiler variables from a YAML file\n\nFlags:\n  -h, --help   Show help for gh aw env\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n\nUse \"gh aw env [command] --help\" for more information about a command.\n"
+    },
+    "env get": {
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "env",
+        "get",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Download compiler defaults into a YAML file.\n\nWhen [file] is omitted, the command writes to file.yml in the current directory.\n\nScope resolution:\n- --scope defaults to repo.\n- repo scope uses --repo owner/repo, or the current repository when --repo is omitted.\n- org scope uses --org when provided; otherwise it infers the organization from --repo (or the current repository).\n- ent scope requires --enterprise <slug>.\n\nUsage:\n  gh aw env get [file] [flags]\n\nFlags:\n      --enterprise string   Target enterprise slug (required for --scope ent)\n  -h, --help                Show help for gh aw env get\n      --org string          Target organization (required for --scope org unless inferable from --repo/current repo)\n  -r, --repo string         Target repository (owner/repo format only; GHES host prefixes are not supported). Defaults to current repository\n      --scope string        Variable scope (repo|org|ent). Defaults to repo\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n",
+      "help_only": true
+    },
+    "env update": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Upload compiler defaults from a YAML file.\n\nWhen [file] is omitted, the command reads from file.yml in the current directory.\n\nScope and flag behavior:\n- --scope is required (repo|org|ent).\n- repo scope uses --repo owner/repo, or the current repository when --repo is omitted.\n- org scope uses --org when provided; otherwise it infers the organization from --repo (or the current repository).\n- ent scope requires --enterprise <slug>.\n- --visibility controls access when creating org or ent variables (all|private|selected). Existing variables keep their visibility.\n- --dry-run previews planned changes and exits without applying updates.\n- --yes skips the confirmation prompt for real updates; it has no effect with --dry-run.\n\nUsage:\n  gh aw env update [file] [flags]\n\nFlags:\n      --dry-run             Preview updates without applying any changes\n      --enterprise string   Target enterprise slug (required for --scope ent)\n  -h, --help                Show help for gh aw env update\n      --org string          Target organization (required for --scope org unless inferable from --repo/current repo)\n  -r, --repo string         Target repository (owner/repo format only; GHES host prefixes are not supported). Defaults to current repository\n      --scope string        Variable scope (repo|org|ent)\n      --visibility string   Visibility for newly created org or ent variables (all|private|selected) (default \"all\")\n  -y, --yes                 Skip confirmation prompt\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "forecast": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Forecast AI Credit (AIC) usage for agentic workflows by sampling\nrecent run history and projecting forward on a per-week or per-month basis.\n\nThe forecaster downloads a sample of recent completed workflow runs and derives\nper-run metrics (AIC, duration, success rate). When runs have been\npreviously processed by 'gh aw logs', cached token-usage data is used. The\nobserved run frequency is then projected to the target period using a statistical\nsimulation that models three sources of uncertainty: run count (Poisson), per-run\nAIC usage (bootstrap resampling), and per-run success (Bernoulli).\n\nAll forecasts are estimates derived from historical samples and may be inaccurate.\n\nAccounts for:\n  - A/B experiment variants (results are split per variant when present)\n  - Observed run frequency from GitHub Actions history\n  - Per-run success rate\n\nIf no workflow arguments are provided, all agentic workflows in the repository\nare included and displayed side-by-side for easy comparison.\n\nMultiple workflow IDs may be provided to compare specific workflows.\n\nBacktesting (--eval):\n  Shifts the training window back by one projection period, builds the forecast,\n  then measures actual runs in that period and computes quality metrics:\n  P50 absolute/percentage error and whether the actual value fell inside the\n  P10–P90 confidence interval. Use this to validate the model before relying on\n  forward projections.\n\nThe workflow-id is the basename of the Markdown file without the .md extension.\nYou can provide either the workflow-id (e.g., 'ci-doctor') or the full filename (e.g., 'ci-doctor.md').\n\nUsage:\n  gh aw forecast [workflow]... [flags]\n\nExamples:\n  gh aw forecast                        # Forecast all workflows (monthly)\n  gh aw forecast ci-doctor              # Forecast a specific workflow\n  gh aw forecast ci-doctor daily-news    # Compare two workflows\n  gh aw forecast --period week           # Weekly projections\n  gh aw forecast --days 7               # Use 7-day history window\n  gh aw forecast --sample 50            # Sample up to 50 runs per workflow\n  gh aw forecast --timeout 10           # Stop gracefully after 10 minutes\n  gh aw forecast --json                 # Machine-readable JSON output\n  gh aw forecast --repo owner/repo      # Forecast in another repository\n  gh aw forecast --eval                 # Backtest: evaluate forecast quality against past data\n\nFlags:\n      --concurrency int   Maximum number of concurrent usage-artifact downloads (0 = use default)\n      --days int          Historical window in days to sample run history (allowed values: 7, 30) (default 30)\n      --eval              Evaluate forecast quality against past data (backtesting mode)\n  -h, --help              Show help for gh aw forecast\n  -j, --json              Output results in JSON format\n      --period string     Aggregation period for projections: week or month (default \"month\")\n  -r, --repo string       Target repository ([HOST/]owner/repo format). Defaults to current repository\n      --sample int        Maximum number of completed runs to sample per workflow (default 100)\n      --timeout int       Gracefully stop forecast computation after this many minutes (0 = no timeout)\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "init": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Initialize the repository for agentic workflows by configuring repository settings.\n\nThis command performs non-interactive repository setup and does not prompt for\nengine selection or secret configuration.\n\nThis command:\n- Configures .gitattributes to mark .lock.yml files as generated\n- Creates the dispatcher skill at .github/skills/agentic-workflows/SKILL.md\n- Removes old prompt files from .github/prompts/ if they exist\n- Configures VSCode settings (.vscode/settings.json)\n- Generates/updates .github/workflows/agentics-maintenance.yml if any workflows use the expires field for discussions or issues\n\nWith --engine copilot:\n- Creates the custom agent at .github/agents/agentic-workflows.md\n\nWith --engine copilot (without --no-mcp):\n- Creates .github/workflows/copilot-setup-steps.yml with gh-aw installation steps\n- Creates .github/mcp.json with gh-aw MCP server configuration\n\nWith --no-mcp flag:\n- Skips creating GitHub Copilot Agent MCP server configuration files\n\nWith --no-skill flag:\n- Skips creating the dispatcher skill\n\nWith --no-agent flag:\n- Skips creating the custom agent\n\nWith --codespaces flag:\n- Updates existing .devcontainer/devcontainer.json if present, otherwise creates new file at default location\n- Configures permissions for current repo: actions:write, contents:write, discussions:write, issues:write, pull-requests:write, workflows:write\n- Configures permissions for additional repos (in same org): actions:read, contents:read, discussions:read, issues:read, pull-requests:read, workflows:read\n- Adds GitHub Copilot extensions and gh aw CLI installation\n- Use without a value (--codespaces) for current repo only, or with comma-separated repos (--codespaces=repo1,repo2)\n\nWith --completions flag:\n- Automatically detects your shell (bash, zsh, fish, or PowerShell)\n- Installs shell completion configuration for the CLI\n- Provides instructions for enabling completions in your shell\n\nAfter running this command, you can:\n- Add workflows from the catalog with: gh aw add <workflow-name>\n- Create new workflows from scratch with: gh aw new <workflow-name>\n\nUsage:\n  gh aw init [flags]\n\nExamples:\n  gh aw init                                # Initialize repository with defaults\n  gh aw init -v                             # Initialize with verbose output\n  gh aw init --engine copilot               # Add Copilot MCP and agent files\n  gh aw init --engine claude                # Initialize for the Claude engine\n  gh aw init --no-mcp                       # Skip MCP configuration\n  gh aw init --no-skill                     # Skip dispatcher skill creation\n  gh aw init --no-agent                     # Skip custom agent creation\n  gh aw init --codespaces                   # Configure Codespaces for current repo only\n  gh aw init --codespaces=repo1,repo2       # Codespaces with additional repos\n  gh aw init --completions                  # Install shell completions\n  gh aw init --create-pull-request          # Initialize and create a pull request\n\nFlags:\n      --codespaces string[=\" \"]   Create devcontainer.json for GitHub Codespaces with agentic workflow support. Specify comma-separated repository names in the same organization (e.g., repo1,repo2), or use without a value for the current repo only\n      --completions               Install shell completion for the detected shell (bash, zsh, fish, or PowerShell)\n      --create-pull-request       Create a pull request with the initialization changes\n  -e, --engine string             Override AI engine (copilot, claude, codex, gemini, pi)\n  -h, --help                      Show help for gh aw init\n      --no-agent                  Skip creating the agentic-workflows custom agent\n      --no-mcp                    Skip configuring gh-aw MCP server integration for GitHub Copilot Agent\n      --no-skill                  Skip creating the agentic-workflows dispatcher skill\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "list": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "List all agentic workflows in a repository without checking their status.\n\nDisplays a simplified table with workflow name, AI engine, and compilation status.\nUnlike 'status', this command does not check GitHub workflow state or time remaining.\n\nThe optional pattern argument filters workflows by name (case-insensitive substring match).\nIt accepts workflow IDs (basename without .md) or full filenames.\n\nUsage:\n  gh aw list [pattern] [flags]\n\nExamples:\n  gh aw list                              # List all workflows in current repo\n  gh aw list --repo github/gh-aw          # List workflows from github/gh-aw repo\n  gh aw list --repo org/repo --path workflows  # List from custom path\n  gh aw list --dir custom/workflows        # List from custom local directory\n  gh aw list ci-                           # List workflows with 'ci-' in name\n  gh aw list --repo github/gh-aw ci-      # List workflows from github/gh-aw with 'ci-' in name\n  gh aw list --json                        # Output in JSON format\n  gh aw list --label automation            # List workflows with 'automation' label\n\nFlags:\n  -d, --dir string     Workflow directory (default: $GH_AW_WORKFLOWS_DIR or .github/workflows; ignored when --repo is set)\n  -h, --help           Show help for gh aw list\n  -j, --json           Output results in JSON format\n      --label string   Filter workflows by label\n      --path string    Path to workflows directory in the remote repository (used with --repo) (default \".github/workflows\")\n  -r, --repo string    Target repository ([HOST/]owner/repo format). Defaults to current repository\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "logs": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Download and analyze agentic workflow logs and artifacts from GitHub Actions.\n\nThis command fetches workflow runs, downloads their artifacts, and extracts them into\norganized folders named by run ID. It also provides an overview table with aggregate\nmetrics including duration, token usage, and cost information.\n\nPass multiple workflow arguments to download them concurrently and produce one combined\nreport. Cross-repository targets accept owner/repo/workflow or\n[HOST/]owner/repo/.github/workflows/workflow.yml paths. The count limit applies per workflow.\n\nBy default, only the compact usage artifact is downloaded (token usage, run metadata).\nUse --artifacts all to download all artifacts, or specify individual sets such as\n--artifacts agent,firewall to fetch only what you need.\n\nAll available artifact sets: activation, agent, all, detection, evals, experiment, firewall, github-api, graders, mcp, usage.\n\nDownloaded artifacts include (when using --artifacts all):\n- Workflow metadata: Engine configuration and run metadata\n- safe_output.jsonl: Agent's final output content (available when non-empty)\n- agent_output/: Agent logs directory (if the workflow produced logs)\n- agent-stdio.log: Agent standard output/error logs\n- aw.patch: Git patch of changes made during execution (legacy; see aw-{branch}.patch)\n- aw-{branch}.patch: Git patch of changes for each branch (one file per PR/push)\n- workflow-logs/: GitHub Actions workflow run logs (job logs organized in subdirectory)\n- summary.json: Complete metrics and run data for all downloaded runs\n\n\nThe workflow-id is the basename of the Markdown file without the .md extension.\nYou can provide either the workflow-id (e.g., 'ci-doctor') or the full filename (e.g., 'ci-doctor.md').\n\nUsage:\n  gh aw logs [workflow]... [flags]\n\nExamples:\n  # Basic usage\n  gh aw logs                           # Download logs for all workflows\n  gh aw logs weekly-research           # Download logs for a specific workflow\n  gh aw logs workflow-a workflow-b     # Download and combine reports concurrently\n  gh aw logs owner/repo/workflow-a     # Download using a full repository/workflow path\n  gh aw logs owner/repo/.github/workflows/workflow-a.yml # Full workflow file path\n  gh aw logs weekly-research.md        # Download logs (alternative format)\n  gh aw logs -c 10                     # Download last 10 matching runs\n\n  # Date filtering\n  gh aw logs --start-date 2024-01-01   # Download up to 10 runs after date\n  gh aw logs --end-date 2024-01-31     # Download up to 10 runs before date\n  gh aw logs --start-date -1w          # Download up to 10 runs from last week\n  gh aw logs --start-date -1w -c 5     # Download up to 5 runs from last week\n  gh aw logs --end-date -1d            # Download up to 10 runs before yesterday\n  gh aw logs --start-date -1mo         # Download up to 10 runs from last month\n\n  # Content filtering\n  gh aw logs --engine claude           # Filter logs by claude engine\n  gh aw logs --engine codex            # Filter logs by codex engine\n  gh aw logs --engine copilot          # Filter logs by copilot engine\n  gh aw logs --runtime gvisor          # Filter logs by sandbox agent runtime\n  gh aw logs --firewall                # Filter logs with firewall enabled\n  gh aw logs --no-firewall             # Filter logs without firewall\n  gh aw logs --safe-output missing-tool     # Filter logs with missing-tool messages\n  gh aw logs --safe-output missing-data     # Filter logs with missing-data messages\n  gh aw logs --safe-output create-issue     # Filter logs with create-issue messages\n  gh aw logs --safe-output noop             # Filter logs with noop messages\n  gh aw logs --safe-output report-incomplete # Filter logs with report-incomplete messages\n  gh aw logs --ref main                # Filter logs by branch or tag\n  gh aw logs --ref feature-xyz         # Filter logs by feature branch\n  gh aw logs --filtered-integrity      # Filter logs containing items that were filtered by gateway integrity checks\n  gh aw logs --evals                    # Filter logs from workflows with evals results\n  gh aw logs --graders                  # Filter logs from workflows with grader results\n  gh aw logs --exclude-staged          # Exclude staged workflow runs from results\n\n  # Run ID range filtering\n  gh aw logs --after-run-id 1000       # Filter runs after run ID 1000\n  gh aw logs --before-run-id 2000      # Filter runs before run ID 2000\n  gh aw logs --after-run-id 1000 --before-run-id 2000  # Filter runs in range\n\n  # Artifact selection (default: usage only - the compact conclusion artifact)\n  gh aw logs --artifacts all           # Download all artifacts (agent logs, firewall, etc.)\n  gh aw logs --artifacts agent         # Download only agent logs\n  gh aw logs --artifacts agent,firewall # Download agent and firewall artifacts\n  gh aw logs --artifacts mcp           # Download only MCP gateway logs\n\n  # Output options (default output is compact format optimized for agents)\n  gh aw logs -o ./my-logs              # Custom output directory\n  gh aw logs --tool-graph              # Generate Mermaid tool sequence graph\n  gh aw logs --parse                   # Parse logs and generate Markdown reports\n  gh aw logs --audit                   # Generate audit.json for each downloaded run\n  gh aw logs -v                        # Verbose compact output (extra columns + sections)\n  gh aw logs --json                    # JSON format (compact by default, use -v for full)\n  gh aw logs --json -v                 # Full JSON with audit metadata\n  gh aw logs --format tsv              # Tab-separated (minimal, raw data)\n  gh aw logs --format console          # Decorated console tables (human-friendly)\n  gh aw logs --format markdown         # Cross-run security audit report (Markdown)\n  gh aw logs --format pretty           # Cross-run security audit report (console)\n  gh aw logs weekly-research --format markdown --last 10  # Cross-run report for last 10 runs\n  gh aw logs --train                   # Train log pattern weights from last 10 runs\n  gh aw logs my-workflow --train -c 50 # Train log pattern weights from up to 50 runs of a specific workflow\n\n  # Cross-repository\n  gh aw logs weekly-research --repo owner/repo  # Download logs from specific repository\n\n  # Resource budgets\n  gh aw logs --timeout 30 --max-github-api-rate-limit 12000 # Wait after 12000 core API requests are used\n  gh aw logs --timeout 30 --max-github-api-rate-limit -2000 # Keep 2000 core API requests available\n  gh aw logs --timeout 30 --max-storage 10240                # Prune cache data and stop downloads at 10 GB\n  gh aw logs --max-storage 10240 --prune-older-runs          # Remove oldest runs if cache pruning is insufficient\n\n  # Cache maintenance\n  gh aw logs --cache-before -1w          # Evict local cache older than 1 week before downloading runs\n  gh aw logs --cache-before -30d         # Evict local cache older than 30 days before downloading runs\n  gh aw logs --cache-before -1mo         # Evict local cache older than 1 month before downloading runs\n  gh aw logs --cache-before 2024-01-01   # Evict local cache older than 2024-01-01 before downloading runs\n\nFlags:\n      --after-run-id int                Filter runs with database ID after this value (exclusive)\n      --artifacts strings               Artifact sets to download (default: usage — compact summary for faster downloads). Use 'all' for everything, or comma-separate sets. Valid sets: activation, agent, all, detection, evals, experiment, firewall, github-api, graders, mcp, usage (default [usage])\n      --audit                           Generate audit.json in each workflow run cache directory (comparisons use downloaded runs only)\n      --before-run-id int               Filter runs with database ID before this value (exclusive)\n      --cache-before string             (Cache eviction) Evict locally cached run folders for runs before this date, prior to downloading. Accepts deltas like -1d, -1w, -1mo (or explicit day counts like -30d), or an absolute date YYYY-MM-DD. Unlike --start-date, this only clears local cache and does not filter which runs are fetched.\n  -c, --count int                       Maximum matching workflow runs to return per workflow (after applying filters) (default 10)\n      --end-date string                 Filter runs created before this date (YYYY-MM-DD or delta like -1d, -1w, -1mo)\n  -e, --engine string                   Filter logs by AI engine (copilot, claude, codex, gemini, pi)\n      --evals                           Filter to runs containing evals results (evals.jsonl); automatically includes the usage artifact (which contains evals)\n      --exclude-staged                  Exclude workflow runs that executed in staged mode (safe outputs previewed but not applied)\n      --filtered-integrity              Filter to runs containing items that were filtered by gateway integrity checks\n      --firewall                        Filter to only runs with firewall enabled\n      --format string                   Output format: console (decorated tables), tsv (tab-separated), pretty (cross-run report), markdown (cross-run Markdown). Default: compact agent-optimized output\n      --graders                         Filter to runs containing deterministic grader results; automatically includes grader artifacts\n  -h, --help                            Show help for gh aw logs\n  -j, --json                            Output results in JSON format\n      --last int                        Alias for --count/-c: number of recent runs to download\n      --max-github-api-rate-limit int   Maximum used GitHub core API requests before waiting for reset (positive = absolute, negative = reserve from API limit; e.g. 12000 or -2000)\n      --max-storage int                 Maximum logs storage in MB after pruning non-essential cache data (0 = unlimited)\n      --no-firewall                     Filter to only runs without firewall enabled\n  -o, --output string                   Output directory for generated files (default \".github/aw/logs\")\n      --parse                           Run JavaScript parsers on agent logs and firewall logs, writing Markdown to log.md and firewall.md\n      --prune-older-runs                Remove oldest completed runs when non-essential cache pruning cannot satisfy --max-storage\n      --ref string                      Filter runs by branch or tag name (e.g., main, v1.0.0)\n  -r, --repo string                     Target repository ([HOST/]owner/repo format). Defaults to current repository\n      --report-file string              Write --format markdown output directly to this file path instead of stdout (creates parent directories as needed)\n      --runtime string                  Filter to runs using a specific sandbox agent runtime (e.g., gvisor, docker-sbx, cloud-hypervisor)\n      --safe-output string              Filter to runs containing a specific safe output type (e.g., create-issue, missing-tool, missing-data, noop, report-incomplete)\n      --start-date string               Filter runs created after this date (YYYY-MM-DD or delta like -1d, -1w, -1mo)\n      --stdin                           Read workflow run IDs or URLs from stdin (one per line) instead of discovering runs via the GitHub API\n      --summary-file string             Path to write the summary JSON file relative to output directory (use empty string to disable) (default \"summary.json\")\n      --timeout int                     Download timeout in minutes (0 = no timeout)\n      --tool-graph                      Generate Mermaid tool sequence graph from agent logs\n      --train                           Analyze log patterns across downloaded runs and save pattern weights to drain3_weights.json in the output directory\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "mcp inspect": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Inspect MCP servers used by a workflow and display available tools, resources, and roots.\n\nThis command starts each MCP server configured in the workflow, queries its capabilities,\nand displays the results in a formatted table. It supports stdio, Docker, and HTTP MCP servers.\n\nMCP Scripts servers are automatically detected and inspected when present in the workflow.\n\nThe workflow-id-or-file can be:\n- A workflow ID (basename without .md extension, e.g., \"weekly-research\")\n- A file path (e.g., \"weekly-research.md\" or \".github/workflows/weekly-research.md\")\n\nWhen no workflow is provided, this command lists workflows that have MCP server configurations\n(equivalent to 'gh aw mcp list'). To inspect tools/resources/roots, pass a specific workflow.\n\nThe command will:\n- Parse the workflow file to extract MCP server configurations\n- Start each MCP server (stdio, docker, http)\n- Automatically start and inspect mcp-scripts server if present\n- Query available tools, resources, and roots\n- Validate required secrets are available\n- Display results in formatted tables with error details\n\nUsage:\n  gh aw mcp inspect [workflow] [flags]\n\nExamples:\n  gh aw mcp inspect                    # List workflows with MCP servers\n  gh aw mcp inspect weekly-research    # Inspect MCP servers in weekly-research.md\n  gh aw mcp inspect daily-news --server tavily  # Inspect only the tavily server\n  gh aw mcp inspect weekly-research --server github --tool create_issue  # Show details for a specific tool\n  gh aw mcp inspect weekly-research -v # Verbose output with detailed connection info\n  gh aw mcp inspect weekly-research --inspector  # Launch @modelcontextprotocol/inspector\n  gh aw mcp inspect weekly-research --check-secrets  # Check GitHub Actions secrets\n\nFlags:\n      --check-secrets   Check GitHub Actions repository secrets for missing secrets\n  -h, --help            Show help for gh aw mcp inspect\n      --inspector       Launch the official @modelcontextprotocol/inspector tool\n      --server string   Filter to inspect only the specified MCP server\n      --tool string     Show detailed information about a specific tool (requires --server)\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "models": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "List model data to help pick a model alias or explicit model name.\n\nOutputs three dense sections:\n- Catalog models and per-token pricing from the embedded models catalog\n- Built-in model aliases and their resolution order\n- Models observed in local automation logs and AWF reflect artifacts\n\nBy default, the command attempts a lightweight log refresh focused on firewall artifacts\nso recent awf-reflect data can be discovered before reporting.\n\nUsage:\n  gh aw models [flags]\n\nExamples:\n  gh aw models\n  gh aw models --json\n  gh aw models --logs-dir .github/aw/logs\n  gh aw models --refresh-count 50\n  gh aw models --refresh-observed=false\n\nFlags:\n  -h, --help                Show help for gh aw models\n  -j, --json                Output results in JSON format\n      --logs-dir string     Directory containing downloaded logs/artifacts (default \".github/aw/logs\")\n      --refresh-count int   Maximum number of recent runs to inspect when refreshing observed models (default 20)\n      --refresh-observed    Attempt to refresh local observed-model artifacts before reporting (default true)\n  -r, --repo string         Target repository ([HOST/]owner/repo format). Defaults to current repository\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "new": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Create a new agentic workflow file with example configuration and explanations of all available options.\n\nWhen called without a workflow name (or with --interactive flag), launches an interactive wizard\nto guide you through creating a workflow with custom settings.\n\nWhen called with a workflow name, creates a template file with comprehensive examples of:\n- All trigger types (on: events)\n- Permissions configuration\n- AI engine settings\n- Tools configuration (GitHub, Claude, MCPs)\n- All frontmatter options with explanations\n\nThe workflow-id is the basename of the Markdown file without the .md extension.\nYou can provide either the workflow-id (e.g., 'ci-doctor') or the full filename (e.g., 'ci-doctor.md').\n\nUsage:\n  gh aw new [workflow] [flags]\n\nExamples:\n  gh aw new                      # Interactive mode\n  gh aw new my-workflow          # Create template file\n  gh aw new my-workflow.md       # Same as above (.md extension stripped)\n  gh aw new my-workflow --force  # Overwrite if exists\n  gh aw new my-workflow --engine copilot  # Create template with specific engine\n\nFlags:\n  -e, --engine string   Override AI engine (copilot, claude, codex, gemini, pi)\n  -f, --force           Overwrite existing workflow files without confirmation\n  -h, --help            Show help for gh aw new\n  -i, --interactive     Launch interactive workflow creation wizard\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "run": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Run one or more agentic workflows on GitHub Actions using the workflow_dispatch trigger.\n\nWhen called without workflow arguments, this command enters interactive mode and shows:\n- List of workflows that support workflow_dispatch\n- Display of required and optional inputs\n- Input collection with validation\n- Command display for future reference\n\nThis command accepts one or more workflow IDs.\nThe workflows must have been compiled into GitHub Actions YAML files.\n\nThis command only works with workflows that have workflow_dispatch triggers.\n\nThe workflow-id is the basename of the Markdown file without the .md extension.\nYou can provide either the workflow-id (e.g., 'ci-doctor') or the full filename (e.g., 'ci-doctor.md').\n\nUsage:\n  gh aw run [workflow]... [flags]\n\nExamples:\n  gh aw run                          # Interactive mode\n  gh aw run daily-perf-improver\n  gh aw run daily-perf-improver.md   # Alternative format\n  gh aw run daily-perf-improver --ref main  # Run on specific branch\n  gh aw run daily-perf-improver --repeat 3  # Run 4 times total (1 initial + 3 repeats)\n  gh aw run daily-perf-improver --enable-if-needed  # Enable if disabled, run, then restore state\n  gh aw run daily-perf-improver --auto-merge-prs  # Auto-merge any PRs created during execution\n  gh aw run daily-perf-improver --raw-field name=value --raw-field env=prod  # Pass workflow inputs\n  gh aw run daily-perf-improver --push  # Commit, push, and dispatch the workflow\n  gh aw run daily-perf-improver --dry-run  # Preview without triggering workflow runs\n  gh aw run daily-perf-improver --json  # Output results in JSON format\n\nFlags:\n      --approve                 Approve all safe update changes. When strict mode is active (the default), the compiler emits warnings for new restricted secrets or unapproved action additions/removals not present in the existing gh-aw-manifest. Use this flag to approve and skip safe update enforcement\n      --auto-merge-prs          Auto-merge any pull requests created during the workflow execution\n      --dry-run                 Preview workflow execution without triggering runs on GitHub Actions\n      --enable-if-needed        Enable the workflow before running if needed, and restore state afterward\n  -e, --engine string           Override AI engine (copilot, claude, codex, gemini, pi)\n  -h, --help                    Show help for gh aw run\n  -j, --json                    Output results in JSON format\n      --push                    Commit and push workflow files (including transitive imports) before running. Refuses to proceed when unrelated files are already staged.\n      --raw-field stringArray   Pass a workflow dispatch input in key=value format (can be specified multiple times)\n      --ref string              Branch or tag name to run the workflow on (default: current branch)\n      --repeat int              Number of additional times to run after the initial execution (e.g., --repeat 3 runs 4 times total)\n  -r, --repo string             Target repository ([HOST/]owner/repo format). Defaults to current repository\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "status": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Show status of all agentic workflows in the repository.\n\nDisplays a table with workflow name, AI engine, compilation status, enabled/disabled state,\nand time remaining until expiration (if stop-after is configured).\n\nThe optional pattern argument filters workflows by name (case-insensitive substring match).\nIt accepts workflow IDs (basename without .md) or full filenames.\n\nUsage:\n  gh aw status [pattern] [flags]\n\nExamples:\n  gh aw status                           # Show all workflow status\n  gh aw status ci-                       # Show workflows with 'ci-' in name\n  gh aw status --json                    # Output in JSON format\n  gh aw status --ref main                # Show latest run status for main branch\n  gh aw status --label automation        # Show workflows with 'automation' label\n  gh aw status --repo owner/other-repo   # Check status in different repository\n\nFlags:\n  -h, --help           Show help for gh aw status\n  -j, --json           Output results in JSON format\n      --label string   Filter workflows by label\n      --ref string     Filter runs by branch or tag name (e.g., main, v1.0.0)\n  -r, --repo string    Target repository ([HOST/]owner/repo format). Defaults to current repository\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "update": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Update one or more agentic workflows from their source repositories.\n\nThe update command fetches the latest version of each workflow from its source\nrepository, merges upstream changes with any local modifications, and recompiles.\n\nIf no workflow names are specified, all workflows with a 'source' field are updated.\n\nBy default, the update performs a 3-way merge to preserve your local changes.\nUse --no-merge to override local changes with the upstream version.\n\nBy default, update also bumps all referenced GitHub Actions to their latest major version.\nUse --no-release-bump to restrict auto-bumping to core actions/* actions only.\n\nFor workflow updates, it fetches the latest version based on the current ref:\n- If the ref is a tag, it updates to the latest release (use --major for major version updates)\n- If the ref is a branch, it fetches the latest commit from that branch\n- If the ref is a commit SHA, it fetches the latest commit from the default branch\n\nFor extension updates, action updates, agent files, and codemods, use 'gh aw upgrade'.\n\nNote: In GitHub Enterprise repos, shorthand source specs resolve on your enterprise host by default.\n      For github/*, githubnext/*, and microsoft/* sources, shorthand resolves on github.com.\n      Use full https://github.com/... source URLs for other public github.com workflows.\n\nThe workflow-id is the basename of the Markdown file without the .md extension.\nYou can provide either the workflow-id (e.g., 'ci-doctor') or the full filename (e.g., 'ci-doctor.md').\n\nUsage:\n  gh aw update [workflow]... [flags]\n\nExamples:\n  gh aw update                    # Update all workflows from source\n  gh aw update repo-assist        # Update a specific workflow\n  gh aw update repo-assist.md     # Same (alternative format)\n  gh aw update --org my-org       # Preview workflow updates across an organization\n  gh aw update --org my-org --repos '*-service'  # Limit org mode to matching repositories\n  gh aw update --org my-org --create-issue  # Open issues in repos with pending updates\n  gh aw update --org my-org --create-issue --yes  # Auto-accept per-repo confirmations (required in CI)\n  gh aw update --org my-org --create-pull-request --yes  # Auto-accept per-repo confirmations for PR creation (required in CI)\n  gh aw update --no-merge         # Override local changes with upstream\n  gh aw update repo-assist --major # Allow major version updates\n  gh aw update --force            # Force update even if no changes\n  gh aw update --no-release-bump     # Disable force-bumping non-core actions (core actions/* are still force-updated)\n  gh aw update --no-compile           # Update without regenerating lock files\n  gh aw update --no-redirect          # Refuse workflows that use redirect frontmatter\n  gh aw update --dir custom/workflows  # Update workflows in custom directory\n  gh aw update --repo owner/repo        # Update workflows in another repository\n  gh aw update --create-pull-request   # Update and open a pull request\n  gh aw update --cool-down 0           # Disable cooldown and apply all pending releases immediately\n  gh aw update --cool-down 3d          # Apply a custom 3-day cooldown period\n\nFlags:\n      --approve               Approve all safe update changes. When strict mode is active (the default), the compiler emits warnings for new restricted secrets or unapproved action additions/removals not present in the existing gh-aw-manifest. Use this flag to approve and skip safe update enforcement\n      --cool-down string      Cool-down period before applying a new release (e.g., 7d, 24h, 0 to disable). Does not apply to actions/* or github/* repositories. Commit-tracked sources use a fixed 3d cooldown when cool-down is enabled. (default \"7d\")\n      --create-issue          Open a GitHub issue in each org repository that has pending workflow updates (requires --org)\n      --create-pull-request   Create a pull request with the update changes\n  -d, --dir string            Workflow directory (default: $GH_AW_WORKFLOWS_DIR or .github/workflows)\n  -e, --engine string         Override AI engine (copilot, claude, codex, gemini, pi)\n  -f, --force                 Force update of workflow files even if no changes are detected\n  -h, --help                  Show help for gh aw update\n      --major                 Allow major version updates when updating tagged releases\n      --no-compile            Skip recompiling workflows during update (do not modify lock files)\n      --no-merge              Skip merging; override local changes with the upstream version\n      --no-redirect           Skip following redirects; refuse updates when redirect frontmatter is present\n      --no-release-bump       Skip automatic major version bumps for non-core actions (only core actions/* are bumped)\n      --no-security-scanner   Skip security scanning of workflow markdown content\n      --no-stop-after         Remove any stop-after field from the workflow\n      --org string            Preview or create workflow update pull requests across an organization\n  -r, --repo string           Target repository ([HOST/]owner/repo format). Defaults to current repository\n      --repos strings         Limit --org mode to repositories matching one or more glob patterns\n      --stop-after string     Override stop-after value in the workflow (e.g., '+48h', '2025-12-31 23:59:59')\n  -y, --yes                   Auto-accept org-mode update confirmations (required in CI)\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    },
+    "upgrade": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Upgrade the repository to the latest version of agentic workflows.\n\nThis command:\n  1. Updates the dispatcher agent file to the latest template (like 'init' command)\n  2. Applies automatic codemods to fix deprecated fields in all workflows (like 'fix --write')\n  3. Updates GitHub Actions versions in .github/aw/actions-lock.json (unless --no-actions is set)\n  4. Compiles all workflows to generate lock files (like 'compile' command)\n\nFlag behavior:\n- Upgrade runs codemods, action version updates, and workflow compilation by default; use --no-fix to skip all three steps\n- --no-actions and --no-compile are only applied when --no-fix is not set\n\nDEPENDENCY HEALTH AUDIT:\nUse --audit to check dependency health without performing upgrades. This includes:\n- Outdated Go dependencies with available updates\n- Security advisories from GitHub Security Advisory API\n- Dependency maturity analysis (v0.x vs stable versions)\n- Comprehensive dependency health report\n\nThe --audit flag skips the normal upgrade process.\n\nThis command always upgrades all Markdown files in .github/workflows.\n\nUsage:\n  gh aw upgrade [flags]\n\nExamples:\n  gh aw upgrade                              # Upgrade all workflows\n  gh aw upgrade --no-fix                    # Update agent files only (skip codemods, actions, and compilation)\n  gh aw upgrade --no-actions                # Skip updating GitHub Actions versions\n  gh aw upgrade --no-compile                # Skip recompiling workflows (do not modify lock files)\n  gh aw upgrade --create-pull-request       # Upgrade and open a pull request\n  gh aw upgrade --dir custom/workflows      # Upgrade workflows in custom directory\n  gh aw upgrade --engine claude             # Override AI engine for compilation\n  gh aw upgrade --repo owner/repo           # Upgrade workflows in another repository\n  gh aw upgrade --org my-org                # Preview upgrade pull requests across an organization\n  gh aw upgrade --org my-org --repos '*-service'  # Limit org mode to matching repositories\n  gh aw upgrade --org my-org --create-pull-request  # Open upgrade pull requests in org repositories\n  gh aw upgrade --org my-org --create-pull-request --yes  # Auto-accept per-repo confirmations for PR creation (required in CI)\n  gh aw upgrade --org my-org --create-issue  # Open issues in org repos with agentic workflows\n  gh aw upgrade --org my-org --create-issue --yes  # Auto-accept per-repo confirmations (required in CI)\n  gh aw upgrade --audit                     # Check dependency health without upgrading\n  gh aw upgrade --audit --json              # Output audit results in JSON format\n  gh aw upgrade --pre-releases              # Include pre-release versions when upgrading the extension (stable releases are the default)\n\nFlags:\n      --approve                   Approve all safe update changes. When strict mode is active (the default), the compiler emits warnings for new restricted secrets or unapproved action additions/removals not present in the existing gh-aw-manifest. Use this flag to approve and skip safe update enforcement\n      --audit                     Check dependency health without performing upgrades\n      --create-issue              Open a GitHub issue in each org repository with agentic workflows (requires --org)\n      --create-pull-request       Create a pull request with the upgrade changes\n  -d, --dir string                Workflow directory (default: $GH_AW_WORKFLOWS_DIR or .github/workflows)\n      --disable-codemod strings   Disable specific codemod IDs during the fix step (repeatable)\n  -e, --engine string             Override AI engine (copilot, claude, codex, gemini, pi)\n  -h, --help                      Show help for gh aw upgrade\n  -j, --json                      Output results in JSON format\n      --no-actions                Skip updating GitHub Actions versions (ignored when --no-fix is set)\n      --no-compile                Skip recompiling workflows (do not modify lock files; ignored when --no-fix is set)\n      --no-fix                    Skip codemods, action version updates, and workflow compilation (only update agent files)\n      --org string                Preview or create upgrade pull requests across an organization\n      --pre-releases              Include pre-release versions when checking for extension upgrades; pre-releases are installed by exact tag\n  -r, --repo string               Target repository ([HOST/]owner/repo format). Defaults to current repository\n      --repos strings             Limit --org mode to repositories matching one or more glob patterns\n  -y, --yes                       Auto-accept org-mode upgrade confirmations (required in CI)\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n"
+    }
+  },
+  "help_archives": {
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\cli-help-comparison.json": "47a45627cf3a5cdc3f6d74f8594307eb996473ddc26736e6f5321e42771d294e",
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\cli-new-command-help.json": "1967b58a35f3538f4e2b1a1df320f0cb47e6128359e10ffba2e47dadadd811e2"
+  },
+  "fresh_help_only_calls": [
+    {
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "env",
+        "get",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Download compiler defaults into a YAML file.\n\nWhen [file] is omitted, the command writes to file.yml in the current directory.\n\nScope resolution:\n- --scope defaults to repo.\n- repo scope uses --repo owner/repo, or the current repository when --repo is omitted.\n- org scope uses --org when provided; otherwise it infers the organization from --repo (or the current repository).\n- ent scope requires --enterprise <slug>.\n\nUsage:\n  gh aw env get [file] [flags]\n\nFlags:\n      --enterprise string   Target enterprise slug (required for --scope ent)\n  -h, --help                Show help for gh aw env get\n      --org string          Target organization (required for --scope org unless inferable from --repo/current repo)\n  -r, --repo string         Target repository (owner/repo format only; GHES host prefixes are not supported). Defaults to current repository\n      --scope string        Variable scope (repo|org|ent). Defaults to repo\n\nGlobal Flags:\n      --banner    Display ASCII logo banner with purple GitHub color theme\n  -v, --verbose   Enable verbose output showing detailed information\n",
+      "help_only": true
+    },
+    {
+      "command": [
+        "gh",
+        "help",
+        "variable",
+        "set"
+      ],
+      "exit_code": 0,
+      "stdout": "Set a value for a variable on one of the following levels:\n- repository (default): available to GitHub Actions runs or Dependabot in a repository\n- environment: available to GitHub Actions runs for a deployment environment in a repository\n- organization: available to GitHub Actions runs or Dependabot within an organization\n\nOrganization variable can optionally be restricted to only be available to\nspecific repositories.\n\n\nUSAGE\n  gh variable set <variable-name> [flags]\n\nFLAGS\n  -b, --body string          The value for the variable (reads from standard input if not specified)\n  -e, --env environment      Set deployment environment variable\n  -f, --env-file file        Load variable names and values from a dotenv-formatted file\n  -o, --org organization     Set organization variable\n  -r, --repos repositories   List of repositories that can access an organization variable\n  -v, --visibility string    Set visibility for an organization variable: {all|private|selected} (default \"private\")\n\nINHERITED FLAGS\n      --help                     Show help for command\n  -R, --repo [HOST/]OWNER/REPO   Select another repository using the [HOST/]OWNER/REPO format\n\nEXAMPLES\n  # Add variable value for the current repository in an interactive prompt\n  $ gh variable set MYVARIABLE\n  \n  # Read variable value from an environment variable\n  $ gh variable set MYVARIABLE --body \"$ENV_VALUE\"\n  \n  # Read variable value from a file\n  $ gh variable set MYVARIABLE < myfile.txt\n  \n  # Set variable for a deployment environment in the current repository\n  $ gh variable set MYVARIABLE --env myenvironment\n  \n  # Set organization-level variable visible to both public and private repositories\n  $ gh variable set MYVARIABLE --org myOrg --visibility all\n  \n  # Set organization-level variable visible to specific repositories\n  $ gh variable set MYVARIABLE --org myOrg --repos repo1,repo2,repo3\n  \n  # Set multiple variables imported from the \".env\" file\n  $ gh variable set -f .env\n\nLEARN MORE\n  Use `gh <command> <subcommand> --help` for more information about a command.\n  Read the manual at https://cli.github.com/manual\n  Learn about exit codes using `gh help exit-codes`\n  Learn about accessibility experiences using `gh help accessibility`\n\n",
+      "stderr": "",
+      "help_only": true
+    }
+  ],
+  "reused_extension_install_help": {
+    "command": [
+      "gh",
+      "help",
+      "extension",
+      "install"
+    ],
+    "exit_code": 0,
+    "stdout": "Install a GitHub CLI extension from a GitHub or local repository.\n\nFor GitHub repositories, the repository argument can be specified in\n`OWNER/REPO` format or as a full repository URL.\nThe URL format is useful when the repository is not hosted on `github.com`.\n\nFor remote repositories, the GitHub CLI first looks for the release artifacts assuming\nthat it's a binary extension i.e. prebuilt binaries provided as part of the release.\nIn the absence of a release, the repository itself is cloned assuming that it's a\nscript extension i.e. prebuilt executable or script exists on its root.\n\nThe `--pin` flag may be used to specify a tag or commit for binary and script\nextensions respectively, the latest version is used otherwise.\n\nFor local repositories, often used while developing extensions, use `.` as the\nvalue of the repository argument. Note the following:\n\n- After installing an extension from a locally cloned repository, the GitHub CLI will\nmanage this extension as a symbolic link (or equivalent mechanism on Windows) pointing\nto an executable file with the same name as the repository in the repository's root.\nFor example, if the repository is named `gh-foobar`, the symbolic link will point\nto `gh-foobar` in the extension repository's root.\n- When executing the extension, the GitHub CLI will run the executable file found\nby following the symbolic link. If no executable file is found, the extension\nwill fail to execute.\n- If the extension is precompiled, the executable file must be built manually and placed\nin the repository's root.\n\nFor the list of available extensions, see <https://github.com/topics/gh-extension>.\n\n\nUSAGE\n  gh extension install <repository> [flags]\n\nFLAGS\n  --force        Force upgrade extension, or ignore if latest already installed\n  --pin string   Pin extension to a release tag or commit ref\n\nINHERITED FLAGS\n  --help   Show help for command\n\nEXAMPLES\n  # Install an extension from a remote repository hosted on GitHub\n  $ gh extension install owner/gh-extension\n  \n  # Install an extension from a remote repository via full URL\n  $ gh extension install https://my.ghes.com/owner/gh-extension\n  \n  # Install an extension from a local repository in the current working directory\n  $ gh extension install .\n\nLEARN MORE\n  Use `gh <command> <subcommand> --help` for more information about a command.\n  Read the manual at https://cli.github.com/manual\n  Learn about exit codes using `gh help exit-codes`\n  Learn about accessibility experiences using `gh help accessibility`\n\n",
+    "stderr": "",
+    "operation": "Help only; no extension installation performed."
+  },
+  "installer_signature_valid": true,
+  "installer_sha256": "93adeb252d8cc07d8d5541190568fb8e6bfceddfac5434ef991fb848553fb877",
+  "forecast_values": {
+    "days": 7,
+    "period": "week",
+    "sample": 50,
+    "supported_by_help": true,
+    "forecast_executed": false
+  },
+  "runtime": "NOT RUN",
+  "source_edits": false,
+  "no_approval": true
+}

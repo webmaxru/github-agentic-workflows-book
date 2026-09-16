@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "expected_version": "v0.88.7",
+  "compiler": [
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe"
+  ],
+  "strict": true,
+  "inputs": [
+    "examples/embedded/continuous-triage.md",
+    "examples/source/continuous-triage.md"
+  ],
+  "fragments": [],
+  "results": [
+    {
+      "path": "examples/embedded/continuous-triage.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\continuous-triage.md (121.1 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "79257831ec311bf101a9a0bc0f5f341442302ea537026c801323cf0957a2c74b",
+        "body_hash": "ca4bab5c43af79d42ab27c927a64781d7e488f72a836e718e95616eee3bcc3fb",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/source/continuous-triage.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\continuous-triage.md (121.1 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "79257831ec311bf101a9a0bc0f5f341442302ea537026c801323cf0957a2c74b",
+        "body_hash": "ca4bab5c43af79d42ab27c927a64781d7e488f72a836e718e95616eee3bcc3fb",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    }
+  ],
+  "environment_errors": [],
+  "compiler_version": "v0.88.7",
+  "version_output": "gh aw version v0.88.7\n",
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "book-default"
+  },
+  "passed": 2,
+  "failed": 0,
+  "status": "PASS"
+}

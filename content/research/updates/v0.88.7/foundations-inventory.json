@@ -1,0 +1,462 @@
+{
+  "schema_version": 1,
+  "scope": "Frozen Ch01-Ch05 only; no out-of-scope chapter inventory.",
+  "target": "v0.88.7",
+  "status": "PASS",
+  "chapter_count": 5,
+  "chapter_slots": {
+    "content/chapters/what-are-agentic-workflows.html": [
+      "objective",
+      "the-outer-loop-why-ci-cd-stops-short",
+      "in-gh-aw-continuous-ai-from-github-next",
+      "when-agentic-workflows-fit-and-when-they-don-t",
+      "worked-example-reading-the-repo-assistant-s-first-mission",
+      "recap-and-what-s-next"
+    ],
+    "content/chapters/your-first-workflow.html": [
+      "objective",
+      "the-problem-the-overnight-teammate-you-don-t-have",
+      "in-gh-aw-init-new-compile-run",
+      "when-to-ship-a-first-workflow-and-when-to-wait",
+      "worked-example-repo-assistant-triages-a-new-issue",
+      "recap-and-what-s-next"
+    ],
+    "content/chapters/anatomy-and-compile-model.html": [
+      "objective",
+      "concept-natural-language-as-reviewable-source",
+      "in-gh-aw-frontmatter-markdown-to-gh-aw-compile-to-lock-yml",
+      "the-authoring-loop-compile-status-run-iterate",
+      "worked-example-reading-a-compiled-lock-yml-side-by-side",
+      "recap-and-what-s-next"
+    ],
+    "content/chapters/triggers.html": [
+      "objective",
+      "concept-event-driven-work-the-outer-loop-s-clock",
+      "in-gh-aw-the-on-block-and-its-events",
+      "when-to-use-which-trigger-and-safe-defaults",
+      "worked-example-repo-assistant-on-issues-plus-a-nightly-schedule",
+      "recap-and-what-s-next"
+    ],
+    "content/chapters/engines.html": [
+      "objective",
+      "concept-engine-neutral-by-design",
+      "in-gh-aw-the-engine-field-and-its-options",
+      "when-to-pick-which-engine-capability-cost-availability",
+      "worked-example-switching-the-repo-assistant-s-engine",
+      "recap-and-what-s-next"
+    ]
+  },
+  "pre_code_block_count": 37,
+  "complete_workflows": [
+    {
+      "chapter": "content/chapters/what-are-agentic-workflows.html",
+      "block": 1,
+      "line_range": [
+        86,
+        122
+      ],
+      "source": "examples/ch02/repo-assistant-triage.md",
+      "fixture_path": "examples/embedded/what-are-agentic-workflows-1.md",
+      "comparison": "MATCH",
+      "input_sha256": "db15365912439c756d22125e38c8bf77825ca66e365c06161fc3bea2d0f6fda6",
+      "source_snapshot_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "runtime": "NOT RUN"
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "block": 9,
+      "line_range": [
+        165,
+        201
+      ],
+      "source": "examples/ch02/repo-assistant-triage.md",
+      "fixture_path": "examples/embedded/your-first-workflow-9.md",
+      "comparison": "MATCH",
+      "input_sha256": "db15365912439c756d22125e38c8bf77825ca66e365c06161fc3bea2d0f6fda6",
+      "source_snapshot_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "runtime": "NOT RUN"
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "block": 5,
+      "line_range": [
+        149,
+        195
+      ],
+      "source": "examples/ch04/repo-assistant-triggers.md",
+      "fixture_path": "examples/embedded/triggers-5.md",
+      "comparison": "MATCH",
+      "input_sha256": "a7378bcaab5d55b20444ec142fdb72d9439566d1c15484060747ab7b7fdc7c27",
+      "source_snapshot_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+        "body_hash": "ddc9ffe739ae561569f62021eb708109bbfe9c50d4db70c4b84cc88f31299bb9",
+        "stop_time": "2026-10-16 01:12:23",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "runtime": "NOT RUN"
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "block": 6,
+      "line_range": [
+        204,
+        239
+      ],
+      "source": "examples/ch04/repo-assistant-cooldown.md",
+      "fixture_path": "examples/embedded/triggers-6.md",
+      "comparison": "MATCH",
+      "input_sha256": "fdf6ae282e9a89c0fb0d6f860263eb6cad44392d09490d61d8a61dec5e7c914e",
+      "source_snapshot_sha256": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "801e377666f95c0f1bb7fd3165ebbfe24620ccb0d31c7af8fed351f9dc628802",
+        "body_hash": "403133ab36ce0a024c3f392473fd6179da80fd23357e472e72d4ebf85ba00fe1",
+        "stop_time": "2026-10-16 01:12:27",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "runtime": "NOT RUN"
+    }
+  ],
+  "configuration_excerpts": [
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "block": 7,
+      "line_range": [
+        123,
+        123
+      ],
+      "context": "examples/ch02/repo-assistant-triage.md",
+      "context_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "status": "PASS",
+      "check": "YAML mapping/scalar excerpt agrees with corresponding fields in a complete workflow context; not treated as a standalone workflow."
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "block": 8,
+      "line_range": [
+        131,
+        136
+      ],
+      "context": "examples/ch02/repo-assistant-triage.md",
+      "context_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "status": "PASS",
+      "check": "YAML mapping/scalar excerpt agrees with corresponding fields in a complete workflow context; not treated as a standalone workflow."
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 2,
+      "line_range": [
+        119,
+        133
+      ],
+      "context": "examples/ch02/repo-assistant-triage.md",
+      "context_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "status": "PASS",
+      "check": "YAML mapping/scalar excerpt agrees with corresponding fields in a complete workflow context; not treated as a standalone workflow."
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "block": 1,
+      "line_range": [
+        33,
+        35
+      ],
+      "context": "examples/ch04/repo-assistant-triggers.md",
+      "context_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+      "status": "PASS",
+      "check": "YAML mapping/scalar excerpt agrees with corresponding fields in a complete workflow context; not treated as a standalone workflow."
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "block": 2,
+      "line_range": [
+        60,
+        61
+      ],
+      "context": "examples/ch04/repo-assistant-triggers.md",
+      "context_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+      "status": "PASS",
+      "check": "YAML mapping/scalar excerpt agrees with corresponding fields in a complete workflow context; not treated as a standalone workflow."
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "block": 3,
+      "line_range": [
+        70,
+        70
+      ],
+      "context": "examples/ch04/repo-assistant-issue-shorthand.md",
+      "context_sha256": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+      "status": "PASS",
+      "check": "YAML mapping/scalar excerpt agrees with corresponding fields in a complete workflow context; not treated as a standalone workflow."
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "block": 4,
+      "line_range": [
+        89,
+        93
+      ],
+      "context": "examples/ch04/repo-assistant-cooldown.md",
+      "context_sha256": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+      "status": "PASS",
+      "check": "YAML mapping/scalar excerpt agrees with corresponding fields in a complete workflow context; not treated as a standalone workflow."
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "block": 1,
+      "line_range": [
+        28,
+        28
+      ],
+      "context": "examples/ch02/repo-assistant-triage.md",
+      "context_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "status": "PASS",
+      "check": "YAML mapping/scalar excerpt agrees with corresponding fields in a complete workflow context; not treated as a standalone workflow."
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "block": 2,
+      "line_range": [
+        53,
+        56
+      ],
+      "context": "examples/ch05/repo-assistant-claude.md",
+      "context_sha256": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9",
+      "status": "PASS",
+      "check": "YAML mapping/scalar excerpt agrees with corresponding fields in a complete workflow context; not treated as a standalone workflow."
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "block": 3,
+      "line_range": [
+        69,
+        70
+      ],
+      "context": "references/model-top-level.md",
+      "context_sha256": "b12084b828c82cfcc072c99c41ce64bfee7e622c43e95ce377bd14cb51312bda",
+      "status": "PASS",
+      "check": "YAML mapping/scalar excerpt agrees with corresponding fields in a complete workflow context; not treated as a standalone workflow."
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "block": 4,
+      "line_range": [
+        75,
+        78
+      ],
+      "context": "references/model-precedence.md",
+      "context_sha256": "acf048798fd9fc39abe6f8e467995eeb0ce738a05f09e0b5bd9fcae69ca20762",
+      "status": "PASS",
+      "check": "YAML mapping/scalar excerpt agrees with corresponding fields in a complete workflow context; not treated as a standalone workflow."
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "block": 5,
+      "line_range": [
+        122,
+        139
+      ],
+      "context": "examples/ch05/repo-assistant-claude.md",
+      "context_sha256": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9",
+      "status": "PASS",
+      "check": "YAML mapping/scalar excerpt agrees with corresponding fields in a complete workflow context; not treated as a standalone workflow."
+    }
+  ],
+  "ch03_generated_lock_excerpts": [
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 3,
+      "line_range": [
+        140,
+        140
+      ],
+      "retained_lock": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch02\\repo-assistant-triage.lock.yml",
+      "retained_lock_sha256": "208e4123a571d90f21f2577726f31684bef51bc6b7007d431e74c408bde224c8",
+      "retained_lock_line_range": [
+        1,
+        1
+      ],
+      "status": "PASS",
+      "comparison": "Exact HTML-decoded lines, including indentation; newline normalization only.",
+      "diff": ""
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 4,
+      "line_range": [
+        148,
+        149
+      ],
+      "retained_lock": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch02\\repo-assistant-triage.lock.yml",
+      "retained_lock_sha256": "208e4123a571d90f21f2577726f31684bef51bc6b7007d431e74c408bde224c8",
+      "retained_lock_line_range": [
+        37,
+        38
+      ],
+      "status": "PASS",
+      "comparison": "Exact HTML-decoded lines, including indentation; newline normalization only.",
+      "diff": ""
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 5,
+      "line_range": [
+        157,
+        157
+      ],
+      "retained_lock": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch02\\repo-assistant-triage.lock.yml",
+      "retained_lock_sha256": "208e4123a571d90f21f2577726f31684bef51bc6b7007d431e74c408bde224c8",
+      "retained_lock_line_range": [
+        300,
+        300
+      ],
+      "status": "PASS",
+      "comparison": "Exact HTML-decoded lines, including indentation; newline normalization only.",
+      "diff": ""
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 6,
+      "line_range": [
+        166,
+        169
+      ],
+      "retained_lock": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch02\\repo-assistant-triage.lock.yml",
+      "retained_lock_sha256": "208e4123a571d90f21f2577726f31684bef51bc6b7007d431e74c408bde224c8",
+      "retained_lock_line_range": [
+        862,
+        865
+      ],
+      "status": "PASS",
+      "comparison": "Exact HTML-decoded lines, including indentation; newline normalization only.",
+      "diff": ""
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 7,
+      "line_range": [
+        173,
+        182
+      ],
+      "retained_lock": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch02\\repo-assistant-triage.lock.yml",
+      "retained_lock_sha256": "208e4123a571d90f21f2577726f31684bef51bc6b7007d431e74c408bde224c8",
+      "retained_lock_line_range": [
+        1546,
+        1555
+      ],
+      "status": "PASS",
+      "comparison": "Exact HTML-decoded lines, including indentation; newline normalization only.",
+      "diff": ""
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 8,
+      "line_range": [
+        188,
+        197
+      ],
+      "retained_lock": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch02\\repo-assistant-triage.lock.yml",
+      "retained_lock_sha256": "208e4123a571d90f21f2577726f31684bef51bc6b7007d431e74c408bde224c8",
+      "retained_lock_line_range": [
+        1722,
+        1731
+      ],
+      "status": "PASS",
+      "comparison": "Exact HTML-decoded lines, including indentation; newline normalization only.",
+      "diff": ""
+    }
+  ],
+  "retained_lock_metadata": {
+    "schema_version": "v4",
+    "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+    "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+    "compiler_version": "v0.88.7",
+    "strict": true,
+    "agent_id": "copilot",
+    "engine_versions": {
+      "copilot": "1.0.80"
+    }
+  },
+  "ch02_historical_preflight_summary_matches": true,
+  "reference_file_sha256": {
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\workflows\\defaults.md": "5d30327d21ed4035b77d4a83384096b6e1388abb64f51cf11f276922ad9f3b8e",
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\workflows\\model-top-level.md": "b12084b828c82cfcc072c99c41ce64bfee7e622c43e95ce377bd14cb51312bda",
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\workflows\\model-precedence.md": "acf048798fd9fc39abe6f8e467995eeb0ce738a05f09e0b5bd9fcae69ca20762",
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\workflows\\pi-engine.md": "a044c6befdc89ef290552a24d829326865c8b4c0cdff2c440082e03db1817918"
+  },
+  "embedded_command": [
+    "C:\\Users\\masalnik\\scoop\\apps\\python312\\current\\python.exe",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\scripts\\verify_examples.py",
+    "--root",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\f-26nilw1o\\embedded",
+    "--compiler",
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+    "--version",
+    "v0.88.7",
+    "--report",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\content\\research\\updates\\v0.88.7\\foundations-embedded-verification.json"
+  ],
+  "embedded_started_at_utc": "2026-09-16T01:12:22.638853+00:00",
+  "embedded_finished_at_utc": "2026-09-16T01:12:38.682988+00:00",
+  "embedded_cli_exit_code": 0,
+  "embedded_compile_gate": "PASS",
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "book-default"
+  },
+  "environment_errors": [],
+  "cleanup_pending": null,
+  "runtime": "NOT RUN",
+  "annotation_edits_applied": false
+}

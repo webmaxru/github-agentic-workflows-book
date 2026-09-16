@@ -21,6 +21,7 @@ Requirements (see scripts/requirements-pdf.txt):
 from __future__ import annotations
 
 import functools
+import html
 import http.server
 import socketserver
 import sys
@@ -32,21 +33,26 @@ SITE = ROOT / "site"
 BOOK_PAGE = "book.html"
 PDF_PATH = SITE / "gh-aw-book.pdf"
 
-# Content version stamped into the PDF footer (source of truth: content/VERSION).
+# Independent source metadata stamped into the PDF footer, matching the book cover:
+# content/VERSION is the prose edition; content/FRAMEWORK_VERSION is verified gh-aw coverage.
 sys.path.insert(0, str(ROOT / "scripts"))
 import content_version  # noqa: E402  (path set up above)
 
 CONTENT_VERSION = content_version.read_version()
+FRAMEWORK_VERSION = content_version.read_framework_version()
+FRAMEWORK_RELEASE_URL = f"https://github.com/github/gh-aw/releases/tag/{FRAMEWORK_VERSION}"
 
-# Running footer: book title + content version on the left, "Page N / M" on the right. The
-# pageNumber / totalPages spans are filled in by Chromium.
+# Running footer: book title + prose edition + framework coverage on the left,
+# "Page N / M" on the right. pageNumber / totalPages are filled in by Chromium.
 FOOTER_TEMPLATE = (
     '<div style="width:100%;font-family:\'Hanken Grotesk\',Arial,sans-serif;'
     'font-size:8px;color:#8a93a6;padding:0 14mm;display:flex;'
     'justify-content:space-between;align-items:center;">'
     '<span>GitHub Agentic Workflows \u2014 An Interactive Book '
-    f'\u00b7 v{CONTENT_VERSION}</span>'
-    '<span>Page <span class="pageNumber"></span> / <span class="totalPages"></span></span>'
+    f'\u00b7 Content edition v{html.escape(CONTENT_VERSION)} \u00b7 '
+    f'<a href="{html.escape(FRAMEWORK_RELEASE_URL)}" style="color:inherit;text-decoration:none;">'
+    f'Verified with gh-aw {html.escape(FRAMEWORK_VERSION)}</a></span>'
+    '<span style="white-space:nowrap;flex-shrink:0;">Page <span class="pageNumber"></span> / <span class="totalPages"></span></span>'
     "</div>"
 )
 HEADER_TEMPLATE = '<div style="height:0"></div>'

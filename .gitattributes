@@ -1,1 +1,5 @@
 .github/workflows/*.lock.yml linguist-generated=true merge=ours
+
+# Preserve the LF bytes of generated JSON evidence across checkouts.
+content/research/updates/**/*.json text eol=lf
+content/release-review.json text eol=lf

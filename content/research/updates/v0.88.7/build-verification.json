@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "verified_on": "2026-09-16",
+  "content_version": "1.2",
+  "framework_version": "v0.88.7",
+  "reviewed_source_fingerprint": "e188a1835a5d8522b21cb370d281690674815fa11f4ed3578f4f38561a3a3427",
+  "release_check": {
+    "base": "content-v1.1",
+    "base_sha": "837261c650a74f61e5e60313695c895b30d5743a",
+    "before_build": "PASS",
+    "after_build": "PASS",
+    "fresh_editorial_attestation": true
+  },
+  "build": {
+    "analytics": "PASS after npm ci restored the missing locked esbuild dependency",
+    "html_pages": 17,
+    "chapters": 14,
+    "filled_slots": 84,
+    "new_source_scaffolding": false,
+    "pdf_pages": 145,
+    "actual_pdf_edition_framework_and_page_counters_checked_on_every_page": true,
+    "generated_version_checks": "PASS"
+  },
+  "browser": {
+    "pages_checked": 17,
+    "viewport_widths": [1440, 390],
+    "all_http_statuses": 200,
+    "all_metadata_pairs_match_source": true,
+    "horizontal_overflow": false
+  },
+  "local_analytics_connection_string": "empty",
+  "pdf_committed": false,
+  "published": false
+}

@@ -1,0 +1,806 @@
+{
+  "schema_version": 1,
+  "scope": "Ch04 compile-only supplemental checks from frozen source inputs.",
+  "target": "v0.88.7",
+  "compiler": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+  "strict": true,
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "explicit-scratch-origin",
+    "schedule_seed": "webmaxru/github-agentic-workflows-book"
+  },
+  "runtime": "NOT RUN",
+  "scheduler_executed": false,
+  "approval_granted": false,
+  "phases": [
+    {
+      "name": "fresh-lock",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        "--strict",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        ".github\\workflows\\repo-assistant-triggers.md",
+        ".github\\workflows\\repo-assistant-cooldown.md",
+        ".github\\workflows\\repo-assistant-issue-shorthand.md"
+      ],
+      "cwd": "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\fb-ws3u6yxh\\a",
+      "started_at_utc": "2026-09-16T01:14:53.796443+00:00",
+      "finished_at_utc": "2026-09-16T01:14:56.759219+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ Compiled 3 workflows: 3 succeeded, 0 warnings\n",
+      "results": [
+        {
+          "source": "examples/ch04/repo-assistant-triggers.md",
+          "lock_emitted": true,
+          "lock_metadata": {
+            "schema_version": "v4",
+            "frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+            "body_hash": "ddc9ffe739ae561569f62021eb708109bbfe9c50d4db70c4b84cc88f31299bb9",
+            "stop_time": "2026-10-16 01:14:54",
+            "compiler_version": "v0.88.7",
+            "strict": true,
+            "agent_id": "copilot",
+            "engine_versions": {
+              "copilot": "1.0.80"
+            }
+          },
+          "lock_sha256": "39eb8012149a7e089a9594ba454960609f5fa00e69d03aabcd703aba99057673",
+          "source_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+          "cron": [
+            "20 3 * * *"
+          ],
+          "compiled_issues": {
+            "types": [
+              "opened",
+              "reopened"
+            ]
+          },
+          "workflow_dispatch_present": true,
+          "pre_activation_permissions": null,
+          "cooldown_lines": [],
+          "status": "PASS",
+          "fresh_deadline_within_compile_window_plus_30_days": true
+        },
+        {
+          "source": "examples/ch04/repo-assistant-cooldown.md",
+          "lock_emitted": true,
+          "lock_metadata": {
+            "schema_version": "v4",
+            "frontmatter_hash": "801e377666f95c0f1bb7fd3165ebbfe24620ccb0d31c7af8fed351f9dc628802",
+            "body_hash": "403133ab36ce0a024c3f392473fd6179da80fd23357e472e72d4ebf85ba00fe1",
+            "stop_time": "2026-10-16 01:14:55",
+            "compiler_version": "v0.88.7",
+            "strict": true,
+            "agent_id": "copilot",
+            "engine_versions": {
+              "copilot": "1.0.80"
+            }
+          },
+          "lock_sha256": "d2d9f89acecf59360998d3f284a58817894177cb7ff13b2270a9876e9cd1b521",
+          "source_sha256": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+          "cron": [
+            "14 */1 * * *"
+          ],
+          "compiled_issues": null,
+          "workflow_dispatch_present": true,
+          "pre_activation_permissions": {
+            "actions": "read"
+          },
+          "cooldown_lines": [
+            "name: \"Repo Assistant — maintenance digest with cooldown\"",
+            "  # cooldown: 4h # Cooldown processed as run history check in pre-activation job",
+            "run-name: \"Repo Assistant — maintenance digest with cooldown\"",
+            "  OTEL_SERVICE_NAME: gh-aw.repo-assistant-cooldown",
+            "  OTEL_RESOURCE_ATTRIBUTES: 'gh-aw.workflow.name=Repo%20Assistant%20%E2%80%94%20maintenance%20digest%20with%20cooldown,gh-aw.repository=${{ github.repository }},gh-aw.run.id=${{ github.run_id }},github.run_id=${{ github.run_id }},gh-aw.engine.id=copilot'",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "          GH_AW_INFO_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+            "          restore-keys: agentic-workflow-usage-repoassistantcooldown-",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "          GH_AW_WORKFLOW_FILE: \"repo-assistant-cooldown.lock.yml\"",
+            "          GH_AW_PROMPT_CONTENT_0005: \"{{#runtime-import .github/workflows/repo-assistant-cooldown.md}}\\n\"",
+            "      GH_AW_WORKFLOW_ID_SANITIZED: repoassistantcooldown",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "      group: \"gh-aw-conclusion-repo-assistant-cooldown\"",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+            "          restore-keys: agentic-workflow-usage-repoassistantcooldown-",
+            "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "          WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "      activated: ${{ steps.check_stop_time.outputs.stop_time_ok == 'true' && steps.check_cooldown.outputs.cooldown_ok == 'true' }}",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "      - name: Check workflow cooldown",
+            "        id: check_cooldown",
+            "          GH_AW_COOLDOWN_SECONDS: \"14400\"",
+            "            const { main } = require(path.join(actionsDir, 'check_cooldown.cjs'));",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "      GH_AW_CALLER_WORKFLOW_ID: \"${{ github.repository }}/repo-assistant-cooldown\"",
+            "      GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "      GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "      GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}"
+          ],
+          "status": "PASS",
+          "fresh_deadline_within_compile_window_plus_30_days": true
+        },
+        {
+          "source": "examples/ch04/repo-assistant-issue-shorthand.md",
+          "lock_emitted": true,
+          "lock_metadata": {
+            "schema_version": "v4",
+            "frontmatter_hash": "86c75ed6e9a37949c6e0d59995a4d325b45ebfdcc38dcbb8fba70bef8bf45c52",
+            "body_hash": "6e4c9fe14a2d966f979a664321723edffa3b49ba4ac66697a52b24c68f507713",
+            "compiler_version": "v0.88.7",
+            "strict": true,
+            "agent_id": "copilot",
+            "engine_versions": {
+              "copilot": "1.0.80"
+            }
+          },
+          "lock_sha256": "1019aaf31d5a21442d771322d2b2773d6dea4ebf0a6fed9b509c9b7832f50e6d",
+          "source_sha256": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+          "cron": [],
+          "compiled_issues": {
+            "types": [
+              "opened"
+            ]
+          },
+          "workflow_dispatch_present": true,
+          "pre_activation_permissions": null,
+          "cooldown_lines": [],
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "name": "ordinary-recompile",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        "--strict",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        ".github\\workflows\\repo-assistant-triggers.md",
+        ".github\\workflows\\repo-assistant-cooldown.md",
+        ".github\\workflows\\repo-assistant-issue-shorthand.md"
+      ],
+      "cwd": "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\fb-ws3u6yxh\\a",
+      "started_at_utc": "2026-09-16T01:14:59.201837+00:00",
+      "finished_at_utc": "2026-09-16T01:15:00.820693+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ Compiled 3 workflows: 3 succeeded, 0 warnings\n",
+      "results": [
+        {
+          "source": "examples/ch04/repo-assistant-triggers.md",
+          "lock_emitted": true,
+          "lock_metadata": {
+            "schema_version": "v4",
+            "frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+            "body_hash": "ddc9ffe739ae561569f62021eb708109bbfe9c50d4db70c4b84cc88f31299bb9",
+            "stop_time": "2026-10-16 01:14:54",
+            "compiler_version": "v0.88.7",
+            "strict": true,
+            "agent_id": "copilot",
+            "engine_versions": {
+              "copilot": "1.0.80"
+            }
+          },
+          "lock_sha256": "39eb8012149a7e089a9594ba454960609f5fa00e69d03aabcd703aba99057673",
+          "source_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+          "cron": [
+            "20 3 * * *"
+          ],
+          "compiled_issues": {
+            "types": [
+              "opened",
+              "reopened"
+            ]
+          },
+          "workflow_dispatch_present": true,
+          "pre_activation_permissions": null,
+          "cooldown_lines": [],
+          "status": "PASS"
+        },
+        {
+          "source": "examples/ch04/repo-assistant-cooldown.md",
+          "lock_emitted": true,
+          "lock_metadata": {
+            "schema_version": "v4",
+            "frontmatter_hash": "801e377666f95c0f1bb7fd3165ebbfe24620ccb0d31c7af8fed351f9dc628802",
+            "body_hash": "403133ab36ce0a024c3f392473fd6179da80fd23357e472e72d4ebf85ba00fe1",
+            "stop_time": "2026-10-16 01:14:55",
+            "compiler_version": "v0.88.7",
+            "strict": true,
+            "agent_id": "copilot",
+            "engine_versions": {
+              "copilot": "1.0.80"
+            }
+          },
+          "lock_sha256": "d2d9f89acecf59360998d3f284a58817894177cb7ff13b2270a9876e9cd1b521",
+          "source_sha256": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+          "cron": [
+            "14 */1 * * *"
+          ],
+          "compiled_issues": null,
+          "workflow_dispatch_present": true,
+          "pre_activation_permissions": {
+            "actions": "read"
+          },
+          "cooldown_lines": [
+            "name: \"Repo Assistant — maintenance digest with cooldown\"",
+            "  # cooldown: 4h # Cooldown processed as run history check in pre-activation job",
+            "run-name: \"Repo Assistant — maintenance digest with cooldown\"",
+            "  OTEL_SERVICE_NAME: gh-aw.repo-assistant-cooldown",
+            "  OTEL_RESOURCE_ATTRIBUTES: 'gh-aw.workflow.name=Repo%20Assistant%20%E2%80%94%20maintenance%20digest%20with%20cooldown,gh-aw.repository=${{ github.repository }},gh-aw.run.id=${{ github.run_id }},github.run_id=${{ github.run_id }},gh-aw.engine.id=copilot'",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "          GH_AW_INFO_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+            "          restore-keys: agentic-workflow-usage-repoassistantcooldown-",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "          GH_AW_WORKFLOW_FILE: \"repo-assistant-cooldown.lock.yml\"",
+            "          GH_AW_PROMPT_CONTENT_0005: \"{{#runtime-import .github/workflows/repo-assistant-cooldown.md}}\\n\"",
+            "      GH_AW_WORKFLOW_ID_SANITIZED: repoassistantcooldown",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "      group: \"gh-aw-conclusion-repo-assistant-cooldown\"",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+            "          restore-keys: agentic-workflow-usage-repoassistantcooldown-",
+            "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "          WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "      activated: ${{ steps.check_stop_time.outputs.stop_time_ok == 'true' && steps.check_cooldown.outputs.cooldown_ok == 'true' }}",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "      - name: Check workflow cooldown",
+            "        id: check_cooldown",
+            "          GH_AW_COOLDOWN_SECONDS: \"14400\"",
+            "            const { main } = require(path.join(actionsDir, 'check_cooldown.cjs'));",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "      GH_AW_CALLER_WORKFLOW_ID: \"${{ github.repository }}/repo-assistant-cooldown\"",
+            "      GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "      GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "      GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}"
+          ],
+          "status": "PASS"
+        },
+        {
+          "source": "examples/ch04/repo-assistant-issue-shorthand.md",
+          "lock_emitted": true,
+          "lock_metadata": {
+            "schema_version": "v4",
+            "frontmatter_hash": "86c75ed6e9a37949c6e0d59995a4d325b45ebfdcc38dcbb8fba70bef8bf45c52",
+            "body_hash": "6e4c9fe14a2d966f979a664321723edffa3b49ba4ac66697a52b24c68f507713",
+            "compiler_version": "v0.88.7",
+            "strict": true,
+            "agent_id": "copilot",
+            "engine_versions": {
+              "copilot": "1.0.80"
+            }
+          },
+          "lock_sha256": "1019aaf31d5a21442d771322d2b2773d6dea4ebf0a6fed9b509c9b7832f50e6d",
+          "source_sha256": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+          "cron": [],
+          "compiled_issues": {
+            "types": [
+              "opened"
+            ]
+          },
+          "workflow_dispatch_present": true,
+          "pre_activation_permissions": null,
+          "cooldown_lines": [],
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "name": "explicit-refresh",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        "--strict",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        "--refresh-stop-time",
+        ".github\\workflows\\repo-assistant-triggers.md",
+        ".github\\workflows\\repo-assistant-cooldown.md",
+        ".github\\workflows\\repo-assistant-issue-shorthand.md"
+      ],
+      "cwd": "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\fb-ws3u6yxh\\a",
+      "started_at_utc": "2026-09-16T01:15:03.213148+00:00",
+      "finished_at_utc": "2026-09-16T01:15:04.324002+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ Compiled 3 workflows: 3 succeeded, 0 warnings\n",
+      "results": [
+        {
+          "source": "examples/ch04/repo-assistant-triggers.md",
+          "lock_emitted": true,
+          "lock_metadata": {
+            "schema_version": "v4",
+            "frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+            "body_hash": "ddc9ffe739ae561569f62021eb708109bbfe9c50d4db70c4b84cc88f31299bb9",
+            "stop_time": "2026-10-16 01:15:03",
+            "compiler_version": "v0.88.7",
+            "strict": true,
+            "agent_id": "copilot",
+            "engine_versions": {
+              "copilot": "1.0.80"
+            }
+          },
+          "lock_sha256": "95229f0cdc394f8043eba4f38516ce6fb92a37c7414cf585d66efa50bed40989",
+          "source_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+          "cron": [
+            "20 3 * * *"
+          ],
+          "compiled_issues": {
+            "types": [
+              "opened",
+              "reopened"
+            ]
+          },
+          "workflow_dispatch_present": true,
+          "pre_activation_permissions": null,
+          "cooldown_lines": [],
+          "status": "PASS"
+        },
+        {
+          "source": "examples/ch04/repo-assistant-cooldown.md",
+          "lock_emitted": true,
+          "lock_metadata": {
+            "schema_version": "v4",
+            "frontmatter_hash": "801e377666f95c0f1bb7fd3165ebbfe24620ccb0d31c7af8fed351f9dc628802",
+            "body_hash": "403133ab36ce0a024c3f392473fd6179da80fd23357e472e72d4ebf85ba00fe1",
+            "stop_time": "2026-10-16 01:15:03",
+            "compiler_version": "v0.88.7",
+            "strict": true,
+            "agent_id": "copilot",
+            "engine_versions": {
+              "copilot": "1.0.80"
+            }
+          },
+          "lock_sha256": "9b19439813c2b9ccbee90d6e30bdddcd8278ed884b376f46bb4aada15b454bcc",
+          "source_sha256": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+          "cron": [
+            "14 */1 * * *"
+          ],
+          "compiled_issues": null,
+          "workflow_dispatch_present": true,
+          "pre_activation_permissions": {
+            "actions": "read"
+          },
+          "cooldown_lines": [
+            "name: \"Repo Assistant — maintenance digest with cooldown\"",
+            "  # cooldown: 4h # Cooldown processed as run history check in pre-activation job",
+            "run-name: \"Repo Assistant — maintenance digest with cooldown\"",
+            "  OTEL_SERVICE_NAME: gh-aw.repo-assistant-cooldown",
+            "  OTEL_RESOURCE_ATTRIBUTES: 'gh-aw.workflow.name=Repo%20Assistant%20%E2%80%94%20maintenance%20digest%20with%20cooldown,gh-aw.repository=${{ github.repository }},gh-aw.run.id=${{ github.run_id }},github.run_id=${{ github.run_id }},gh-aw.engine.id=copilot'",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "          GH_AW_INFO_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+            "          restore-keys: agentic-workflow-usage-repoassistantcooldown-",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "          GH_AW_WORKFLOW_FILE: \"repo-assistant-cooldown.lock.yml\"",
+            "          GH_AW_PROMPT_CONTENT_0005: \"{{#runtime-import .github/workflows/repo-assistant-cooldown.md}}\\n\"",
+            "      GH_AW_WORKFLOW_ID_SANITIZED: repoassistantcooldown",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "      group: \"gh-aw-conclusion-repo-assistant-cooldown\"",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+            "          restore-keys: agentic-workflow-usage-repoassistantcooldown-",
+            "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "          WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "      activated: ${{ steps.check_stop_time.outputs.stop_time_ok == 'true' && steps.check_cooldown.outputs.cooldown_ok == 'true' }}",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "      - name: Check workflow cooldown",
+            "        id: check_cooldown",
+            "          GH_AW_COOLDOWN_SECONDS: \"14400\"",
+            "            const { main } = require(path.join(actionsDir, 'check_cooldown.cjs'));",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "      GH_AW_CALLER_WORKFLOW_ID: \"${{ github.repository }}/repo-assistant-cooldown\"",
+            "      GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "      GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "      GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}"
+          ],
+          "status": "PASS"
+        },
+        {
+          "source": "examples/ch04/repo-assistant-issue-shorthand.md",
+          "lock_emitted": true,
+          "lock_metadata": {
+            "schema_version": "v4",
+            "frontmatter_hash": "86c75ed6e9a37949c6e0d59995a4d325b45ebfdcc38dcbb8fba70bef8bf45c52",
+            "body_hash": "6e4c9fe14a2d966f979a664321723edffa3b49ba4ac66697a52b24c68f507713",
+            "compiler_version": "v0.88.7",
+            "strict": true,
+            "agent_id": "copilot",
+            "engine_versions": {
+              "copilot": "1.0.80"
+            }
+          },
+          "lock_sha256": "1019aaf31d5a21442d771322d2b2773d6dea4ebf0a6fed9b509c9b7832f50e6d",
+          "source_sha256": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+          "cron": [],
+          "compiled_issues": {
+            "types": [
+              "opened"
+            ]
+          },
+          "workflow_dispatch_present": true,
+          "pre_activation_permissions": null,
+          "cooldown_lines": [],
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "name": "independent-fresh-lock",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        "--strict",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        ".github\\workflows\\repo-assistant-triggers.md",
+        ".github\\workflows\\repo-assistant-cooldown.md",
+        ".github\\workflows\\repo-assistant-issue-shorthand.md"
+      ],
+      "cwd": "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\fb-ws3u6yxh\\b",
+      "started_at_utc": "2026-09-16T01:15:07.018952+00:00",
+      "finished_at_utc": "2026-09-16T01:15:10.182160+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ Compiled 3 workflows: 3 succeeded, 0 warnings\n",
+      "results": [
+        {
+          "source": "examples/ch04/repo-assistant-triggers.md",
+          "lock_emitted": true,
+          "lock_metadata": {
+            "schema_version": "v4",
+            "frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+            "body_hash": "ddc9ffe739ae561569f62021eb708109bbfe9c50d4db70c4b84cc88f31299bb9",
+            "stop_time": "2026-10-16 01:15:07",
+            "compiler_version": "v0.88.7",
+            "strict": true,
+            "agent_id": "copilot",
+            "engine_versions": {
+              "copilot": "1.0.80"
+            }
+          },
+          "lock_sha256": "cc92dbe2af037e18ab840654dbce8897b31fe9ce58d95619ecf6aa101dda7efe",
+          "source_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+          "cron": [
+            "20 3 * * *"
+          ],
+          "compiled_issues": {
+            "types": [
+              "opened",
+              "reopened"
+            ]
+          },
+          "workflow_dispatch_present": true,
+          "pre_activation_permissions": null,
+          "cooldown_lines": [],
+          "status": "PASS",
+          "fresh_deadline_within_compile_window_plus_30_days": true
+        },
+        {
+          "source": "examples/ch04/repo-assistant-cooldown.md",
+          "lock_emitted": true,
+          "lock_metadata": {
+            "schema_version": "v4",
+            "frontmatter_hash": "801e377666f95c0f1bb7fd3165ebbfe24620ccb0d31c7af8fed351f9dc628802",
+            "body_hash": "403133ab36ce0a024c3f392473fd6179da80fd23357e472e72d4ebf85ba00fe1",
+            "stop_time": "2026-10-16 01:15:09",
+            "compiler_version": "v0.88.7",
+            "strict": true,
+            "agent_id": "copilot",
+            "engine_versions": {
+              "copilot": "1.0.80"
+            }
+          },
+          "lock_sha256": "acb2cb615e54aa79b9c668d1f16e6486e218e18189365987e0b0a3883973dc7f",
+          "source_sha256": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+          "cron": [
+            "14 */1 * * *"
+          ],
+          "compiled_issues": null,
+          "workflow_dispatch_present": true,
+          "pre_activation_permissions": {
+            "actions": "read"
+          },
+          "cooldown_lines": [
+            "name: \"Repo Assistant — maintenance digest with cooldown\"",
+            "  # cooldown: 4h # Cooldown processed as run history check in pre-activation job",
+            "run-name: \"Repo Assistant — maintenance digest with cooldown\"",
+            "  OTEL_SERVICE_NAME: gh-aw.repo-assistant-cooldown",
+            "  OTEL_RESOURCE_ATTRIBUTES: 'gh-aw.workflow.name=Repo%20Assistant%20%E2%80%94%20maintenance%20digest%20with%20cooldown,gh-aw.repository=${{ github.repository }},gh-aw.run.id=${{ github.run_id }},github.run_id=${{ github.run_id }},gh-aw.engine.id=copilot'",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "          GH_AW_INFO_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+            "          restore-keys: agentic-workflow-usage-repoassistantcooldown-",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "          GH_AW_WORKFLOW_FILE: \"repo-assistant-cooldown.lock.yml\"",
+            "          GH_AW_PROMPT_CONTENT_0005: \"{{#runtime-import .github/workflows/repo-assistant-cooldown.md}}\\n\"",
+            "      GH_AW_WORKFLOW_ID_SANITIZED: repoassistantcooldown",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "      group: \"gh-aw-conclusion-repo-assistant-cooldown\"",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+            "          restore-keys: agentic-workflow-usage-repoassistantcooldown-",
+            "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "          WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "      activated: ${{ steps.check_stop_time.outputs.stop_time_ok == 'true' && steps.check_cooldown.outputs.cooldown_ok == 'true' }}",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+            "      - name: Check workflow cooldown",
+            "        id: check_cooldown",
+            "          GH_AW_COOLDOWN_SECONDS: \"14400\"",
+            "            const { main } = require(path.join(actionsDir, 'check_cooldown.cjs'));",
+            "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "      GH_AW_CALLER_WORKFLOW_ID: \"${{ github.repository }}/repo-assistant-cooldown\"",
+            "      GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+            "      GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "      GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+            "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+            "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}"
+          ],
+          "status": "PASS",
+          "fresh_deadline_within_compile_window_plus_30_days": true
+        },
+        {
+          "source": "examples/ch04/repo-assistant-issue-shorthand.md",
+          "lock_emitted": true,
+          "lock_metadata": {
+            "schema_version": "v4",
+            "frontmatter_hash": "86c75ed6e9a37949c6e0d59995a4d325b45ebfdcc38dcbb8fba70bef8bf45c52",
+            "body_hash": "6e4c9fe14a2d966f979a664321723edffa3b49ba4ac66697a52b24c68f507713",
+            "compiler_version": "v0.88.7",
+            "strict": true,
+            "agent_id": "copilot",
+            "engine_versions": {
+              "copilot": "1.0.80"
+            }
+          },
+          "lock_sha256": "1019aaf31d5a21442d771322d2b2773d6dea4ebf0a6fed9b509c9b7832f50e6d",
+          "source_sha256": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+          "cron": [],
+          "compiled_issues": {
+            "types": [
+              "opened"
+            ]
+          },
+          "workflow_dispatch_present": true,
+          "pre_activation_permissions": null,
+          "cooldown_lines": [],
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    }
+  ],
+  "checks": [
+    {
+      "source": "examples/ch04/repo-assistant-triggers.md",
+      "fresh_stop_time": "2026-10-16 01:14:54",
+      "ordinary_stop_time": "2026-10-16 01:14:54",
+      "refreshed_stop_time": "2026-10-16 01:15:03",
+      "independent_fresh_stop_time": "2026-10-16 01:15:07",
+      "ordinary_preserves_deadline": true,
+      "refresh_advances_deadline": true,
+      "independent_fresh_resolves_new_deadline": true,
+      "cron_by_phase": {
+        "fresh-lock": [
+          "20 3 * * *"
+        ],
+        "ordinary-recompile": [
+          "20 3 * * *"
+        ],
+        "explicit-refresh": [
+          "20 3 * * *"
+        ],
+        "independent-fresh-lock": [
+          "20 3 * * *"
+        ]
+      },
+      "same_seed_identity_and_source_keep_cron_stable": true,
+      "frontmatter_body_hashes_unchanged": true,
+      "status": "PASS"
+    },
+    {
+      "source": "examples/ch04/repo-assistant-cooldown.md",
+      "fresh_stop_time": "2026-10-16 01:14:55",
+      "ordinary_stop_time": "2026-10-16 01:14:55",
+      "refreshed_stop_time": "2026-10-16 01:15:03",
+      "independent_fresh_stop_time": "2026-10-16 01:15:09",
+      "ordinary_preserves_deadline": true,
+      "refresh_advances_deadline": true,
+      "independent_fresh_resolves_new_deadline": true,
+      "cron_by_phase": {
+        "fresh-lock": [
+          "14 */1 * * *"
+        ],
+        "ordinary-recompile": [
+          "14 */1 * * *"
+        ],
+        "explicit-refresh": [
+          "14 */1 * * *"
+        ],
+        "independent-fresh-lock": [
+          "14 */1 * * *"
+        ]
+      },
+      "same_seed_identity_and_source_keep_cron_stable": true,
+      "frontmatter_body_hashes_unchanged": true,
+      "status": "PASS"
+    }
+  ],
+  "environment_errors": [],
+  "status": "PASS",
+  "compiler_version": "v0.88.7",
+  "version_output": "gh aw version v0.88.7\n",
+  "scratch_root": "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\fb-ws3u6yxh",
+  "cooldown_plumbing": {
+    "pre_activation_actions_read": true,
+    "generated_cooldown_evidence": [
+      "name: \"Repo Assistant — maintenance digest with cooldown\"",
+      "  # cooldown: 4h # Cooldown processed as run history check in pre-activation job",
+      "run-name: \"Repo Assistant — maintenance digest with cooldown\"",
+      "  OTEL_SERVICE_NAME: gh-aw.repo-assistant-cooldown",
+      "  OTEL_RESOURCE_ATTRIBUTES: 'gh-aw.workflow.name=Repo%20Assistant%20%E2%80%94%20maintenance%20digest%20with%20cooldown,gh-aw.repository=${{ github.repository }},gh-aw.run.id=${{ github.run_id }},github.run_id=${{ github.run_id }},gh-aw.engine.id=copilot'",
+      "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+      "          GH_AW_INFO_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+      "          restore-keys: agentic-workflow-usage-repoassistantcooldown-",
+      "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+      "          GH_AW_WORKFLOW_FILE: \"repo-assistant-cooldown.lock.yml\"",
+      "          GH_AW_PROMPT_CONTENT_0005: \"{{#runtime-import .github/workflows/repo-assistant-cooldown.md}}\\n\"",
+      "      GH_AW_WORKFLOW_ID_SANITIZED: repoassistantcooldown",
+      "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+      "      group: \"gh-aw-conclusion-repo-assistant-cooldown\"",
+      "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+      "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+      "          restore-keys: agentic-workflow-usage-repoassistantcooldown-",
+      "          key: agentic-workflow-usage-repoassistantcooldown-${{ github.run_id }}",
+      "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+      "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+      "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+      "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+      "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+      "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+      "          GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+      "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+      "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+      "          WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "      activated: ${{ steps.check_stop_time.outputs.stop_time_ok == 'true' && steps.check_cooldown.outputs.cooldown_ok == 'true' }}",
+      "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}",
+      "      - name: Check workflow cooldown",
+      "        id: check_cooldown",
+      "          GH_AW_COOLDOWN_SECONDS: \"14400\"",
+      "            const { main } = require(path.join(actionsDir, 'check_cooldown.cjs'));",
+      "          GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "      GH_AW_CALLER_WORKFLOW_ID: \"${{ github.repository }}/repo-assistant-cooldown\"",
+      "      GH_AW_WORKFLOW_ID: \"repo-assistant-cooldown\"",
+      "      GH_AW_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "      GH_AW_WORKFLOW_SOURCE_URL: \"${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name }}/.github/workflows/repo-assistant-cooldown.md\"",
+      "          GH_AW_SETUP_WORKFLOW_NAME: \"Repo Assistant — maintenance digest with cooldown\"",
+      "          GH_AW_CURRENT_WORKFLOW_REF: ${{ github.repository }}/.github/workflows/repo-assistant-cooldown.lock.yml@${{ github.ref }}"
+    ],
+    "live_admission_semantics_tested": false
+  },
+  "shorthand_expansion": {
+    "issues_opened": true,
+    "workflow_dispatch_added": true,
+    "runtime_dispatch_tested": false
+  },
+  "scratch_removed": true
+}

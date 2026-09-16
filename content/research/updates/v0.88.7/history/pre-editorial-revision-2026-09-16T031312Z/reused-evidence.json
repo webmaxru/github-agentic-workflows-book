@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "scope": "Final technical evidence reuse and Ch10 context supplement; no archaeological or operational reruns.",
+  "target": "v0.88.7",
+  "status": "PASS",
+  "checked_at_utc": "2026-09-16T03:20:21.355319+00:00",
+  "reused_checks": [
+    {
+      "artifact": "content/research/updates/v0.88.7/history/whole-corpus-2026-09-16T021743Z/cli-verification.json",
+      "sha256": "a6f62b4fc1f399a1b65b765036a76930262b014f5b153ab8c6a78f16ce0b57cd",
+      "status": "PASS",
+      "reuse_basis": "Exact 30 example input bytes and 14 chapter texts unchanged; verifier/release helpers unchanged."
+    },
+    {
+      "artifact": "content/research/updates/v0.88.7/history/whole-corpus-2026-09-16T021743Z/excerpt-verification.json",
+      "sha256": "1333be4ddf0727cc03820b45b5743e7c53e053c1d7fb3c740843304d1ef24fbc",
+      "status": "PASS",
+      "reuse_basis": "Exact 30 example input bytes and 14 chapter texts unchanged; verifier/release helpers unchanged."
+    },
+    {
+      "artifact": "content/research/updates/v0.88.7/history/whole-corpus-2026-09-16T021743Z/dependency-fingerprint-verification.json",
+      "sha256": "87188a1f43df598af71c27a25c09c49fee670b0a659a71deb9c4f08859e1dc9c",
+      "status": "PASS",
+      "reuse_basis": "Exact 30 example input bytes and 14 chapter texts unchanged; verifier/release helpers unchanged."
+    },
+    {
+      "artifact": "content/research/updates/v0.88.7/history/whole-corpus-2026-09-16T021743Z/staging-verification.json",
+      "sha256": "c32647e10d1b3a0457751b1faf25f716420ffbd5d02ea8425f41edcabfd1ab96",
+      "status": "PASS",
+      "reuse_basis": "Exact 30 example input bytes and 14 chapter texts unchanged; verifier/release helpers unchanged."
+    },
+    {
+      "artifact": "content/research/updates/v0.88.7/foundations-behavior-verification.json",
+      "sha256": "4c851cb47649a4300f7118ca73d59d93f7b5f7478f8a4efc707f705280e679d2",
+      "status": "PASS",
+      "reuse_basis": "All three Ch04 sources and compiler binary remain unchanged; no scheduler/behavior rerun needed."
+    }
+  ],
+  "cli_checks_reused": 96,
+  "excerpt_checks_reused": 38,
+  "ch04_behavior_reused": true,
+  "ch03_generated_lock_ranges_reused": 6,
+  "ch10_max_stack_context": {
+    "report": "max-stack-verification.json",
+    "status": "PASS",
+    "stack_position_condition_removed": true,
+    "required_role_declaration_unchanged": true,
+    "task_body_hash_unchanged": true,
+    "runtime_admission_not_tested": true
+  },
+  "runtime": "NOT RUN",
+  "source_edits": false
+}

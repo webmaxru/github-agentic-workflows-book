@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "scope": "Ch03/Ch05 retained positive contexts and tagged turn-limit claims; not additional canonical book examples.",
+  "target": "v0.88.7",
+  "status": "PASS",
+  "cases": [
+    {
+      "fixture_path": "examples/context/defaults.md",
+      "kind": "exact retained positive fixture",
+      "retained_source": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\workflows\\defaults.md",
+      "retained_source_sha256": "5d30327d21ed4035b77d4a83384096b6e1388abb64f51cf11f276922ad9f3b8e",
+      "input_sha256": "5d30327d21ed4035b77d4a83384096b6e1388abb64f51cf11f276922ad9f3b8e",
+      "retained_positive_command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        ".github/workflows/defaults.md",
+        "--strict",
+        "--validate",
+        "--no-check-update",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        "--json"
+      ],
+      "retained_positive_exit_code": 0,
+      "retained_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "c753e2633befff2f65ef9f4b26c4530f7c461365ee00edcc00d5347d47edcdc9",
+        "body_hash": "7d51af844fe1d76e5f7a39d5b6e142b74b23c18a2b663bf1fdc5bea44ca9e0a8",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "c753e2633befff2f65ef9f4b26c4530f7c461365ee00edcc00d5347d47edcdc9",
+        "body_hash": "7d51af844fe1d76e5f7a39d5b6e142b74b23c18a2b663bf1fdc5bea44ca9e0a8",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "runtime": "NOT RUN",
+      "retained_metadata_matches_fresh": true
+    },
+    {
+      "fixture_path": "examples/context/model-top-level.md",
+      "kind": "exact retained positive fixture",
+      "retained_source": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\workflows\\model-top-level.md",
+      "retained_source_sha256": "b12084b828c82cfcc072c99c41ce64bfee7e622c43e95ce377bd14cb51312bda",
+      "input_sha256": "b12084b828c82cfcc072c99c41ce64bfee7e622c43e95ce377bd14cb51312bda",
+      "retained_positive_command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        ".github/workflows/model-top-level.md",
+        "--strict",
+        "--validate",
+        "--no-check-update",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        "--json"
+      ],
+      "retained_positive_exit_code": 0,
+      "retained_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a7bc7f72834ad49b845eda2f0ed1a8ae300d5b819dc73bea610427b0ecec702b",
+        "body_hash": "1e7c1043405e7c851ef91dc3c8174001ef99632a95a42413781a2b8b3f16e59f",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "agent_model": "auto",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a7bc7f72834ad49b845eda2f0ed1a8ae300d5b819dc73bea610427b0ecec702b",
+        "body_hash": "1e7c1043405e7c851ef91dc3c8174001ef99632a95a42413781a2b8b3f16e59f",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "agent_model": "auto",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "runtime": "NOT RUN",
+      "retained_metadata_matches_fresh": true
+    },
+    {
+      "fixture_path": "examples/context/model-precedence.md",
+      "kind": "exact retained positive fixture",
+      "retained_source": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\workflows\\model-precedence.md",
+      "retained_source_sha256": "acf048798fd9fc39abe6f8e467995eeb0ce738a05f09e0b5bd9fcae69ca20762",
+      "input_sha256": "acf048798fd9fc39abe6f8e467995eeb0ce738a05f09e0b5bd9fcae69ca20762",
+      "retained_positive_command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        ".github/workflows/model-precedence.md",
+        "--strict",
+        "--validate",
+        "--no-check-update",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        "--json"
+      ],
+      "retained_positive_exit_code": 0,
+      "retained_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "e224afafb85ccf280418c28545e37dcfba355d239175fa949ded704befa5f6dd",
+        "body_hash": "e31d7f84a2d54d4b22445e54223c71a6d3e08804ee3f5af8dbccae5cb356b92f",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "agent_model": "claude-sonnet-4.6",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "e224afafb85ccf280418c28545e37dcfba355d239175fa949ded704befa5f6dd",
+        "body_hash": "e31d7f84a2d54d4b22445e54223c71a6d3e08804ee3f5af8dbccae5cb356b92f",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "agent_model": "claude-sonnet-4.6",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "runtime": "NOT RUN",
+      "retained_metadata_matches_fresh": true
+    },
+    {
+      "fixture_path": "examples/context/pi-engine.md",
+      "kind": "exact retained positive fixture",
+      "retained_source": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\workflows\\pi-engine.md",
+      "retained_source_sha256": "a044c6befdc89ef290552a24d829326865c8b4c0cdff2c440082e03db1817918",
+      "input_sha256": "a044c6befdc89ef290552a24d829326865c8b4c0cdff2c440082e03db1817918",
+      "retained_positive_command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        ".github/workflows/pi-engine.md",
+        "--strict",
+        "--validate",
+        "--no-check-update",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        "--json"
+      ],
+      "retained_positive_exit_code": 0,
+      "retained_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "3980c69bb73a2361baa637d2cc7b874253b647f8550a6edd6a2ddc529b7e5a9f",
+        "body_hash": "eae4be7ea89c277c03a4db64a0139dcae304b0efa41509c20de1f0dce8508763",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "pi",
+        "engine_versions": {
+          "pi": "0.84.3"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "3980c69bb73a2361baa637d2cc7b874253b647f8550a6edd6a2ddc529b7e5a9f",
+        "body_hash": "eae4be7ea89c277c03a4db64a0139dcae304b0efa41509c20de1f0dce8508763",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "pi",
+        "engine_versions": {
+          "pi": "0.84.3"
+        }
+      },
+      "runtime": "NOT RUN",
+      "retained_metadata_matches_fresh": true
+    },
+    {
+      "fixture_path": "examples/context/max-turns-copilot.md",
+      "kind": "diagnostic complete context for tagged cross-engine max-turns claim",
+      "engine": "copilot",
+      "max_turns": 7,
+      "input_sha256": "a8319c7368cdc26b00493f35068e6f037f9e0f98f9015fdf0477812c02984e5e",
+      "context_recipe": "Retained defaults probe shape plus explicit engine and top-level max-turns: 7; diagnostic body, not a published no-write recipe.",
+      "tagged_reference": "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md#engine-feature-comparison",
+      "status": "PASS",
+      "exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "18bfff7db972f4c9af60e833c763180bfa726e21f5ff52c8c217caf2efff9cf0",
+        "body_hash": "8b07008f708c9af56950eb009a41c26bad9128be216c0927f91c579dd9eabc65",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "runtime": "NOT RUN"
+    },
+    {
+      "fixture_path": "examples/context/max-turns-claude.md",
+      "kind": "diagnostic complete context for tagged cross-engine max-turns claim",
+      "engine": "claude",
+      "max_turns": 7,
+      "input_sha256": "8cbc59b61677ea28408721aa73718e263ade3d1e4b8fbcd580484b95017ec868",
+      "context_recipe": "Retained defaults probe shape plus explicit engine and top-level max-turns: 7; diagnostic body, not a published no-write recipe.",
+      "tagged_reference": "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md#engine-feature-comparison",
+      "status": "PASS",
+      "exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "fe63f018a9118b15ec7cece36e533d037285c6b17de62a42427292ca7af6e438",
+        "body_hash": "f468aa8c94e8d244cf065062f7bdb7a5c2048fb202cc570818cf5b5382c3f2a6",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "claude",
+        "engine_versions": {
+          "claude": "2.1.247"
+        }
+      },
+      "runtime": "NOT RUN"
+    },
+    {
+      "fixture_path": "examples/context/max-turns-codex.md",
+      "kind": "diagnostic complete context for tagged cross-engine max-turns claim",
+      "engine": "codex",
+      "max_turns": 7,
+      "input_sha256": "a3ccf9734da0ef8b1617dcf211dcf9bbb44a61ceac81f23bac730fca91dd0db7",
+      "context_recipe": "Retained defaults probe shape plus explicit engine and top-level max-turns: 7; diagnostic body, not a published no-write recipe.",
+      "tagged_reference": "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md#engine-feature-comparison",
+      "status": "PASS",
+      "exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "f7cda4defe479deb39ff59c6cd79a1f7c92a532bb3f7e1bd32867a31a064b40d",
+        "body_hash": "628c587a3c879fa5e0a67e22cafae11912eea6a795a058c71fbfb120016b7d67",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "codex",
+        "engine_versions": {
+          "codex": "0.150.1"
+        }
+      },
+      "runtime": "NOT RUN"
+    },
+    {
+      "fixture_path": "examples/context/max-turns-gemini.md",
+      "kind": "diagnostic complete context for tagged cross-engine max-turns claim",
+      "engine": "gemini",
+      "max_turns": 7,
+      "input_sha256": "515705d5eff1acb242860dae5d70ad1d895fd914da3bc3d03e61f949a40822c1",
+      "context_recipe": "Retained defaults probe shape plus explicit engine and top-level max-turns: 7; diagnostic body, not a published no-write recipe.",
+      "tagged_reference": "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md#engine-feature-comparison",
+      "status": "PASS",
+      "exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "ac06ae85497378a848cc2263d1e72bcfe9d08a07077d041d80a59cf3162972ea",
+        "body_hash": "945d90ff29a734d764d6547747437af20181b1dec77691410ce66379b468f160",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "gemini",
+        "engine_versions": {
+          "gemini": "0.55.1"
+        }
+      },
+      "runtime": "NOT RUN"
+    },
+    {
+      "fixture_path": "examples/context/max-turns-pi.md",
+      "kind": "diagnostic complete context for tagged cross-engine max-turns claim",
+      "engine": "pi",
+      "max_turns": 7,
+      "input_sha256": "3480973387e5691fdc9f6e226344edc01f11c2850771ee641b58885405f017bb",
+      "context_recipe": "Retained defaults probe shape plus explicit engine and top-level max-turns: 7; diagnostic body, not a published no-write recipe.",
+      "tagged_reference": "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md#engine-feature-comparison",
+      "status": "PASS",
+      "exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "6636fde9265a597656df13e2d88e97e8df9da858ca6b3b6b6b44d8f0595f0656",
+        "body_hash": "2a40458a4fe3a537ef6a44e260a1806a6b490898f96b9ea615ab60dffe2c2d39",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "pi",
+        "engine_versions": {
+          "pi": "0.84.3"
+        }
+      },
+      "runtime": "NOT RUN"
+    }
+  ],
+  "checks": [
+    {
+      "fixture": "examples/context/model-top-level.md",
+      "claim": "effective compiled model",
+      "expected": "auto",
+      "observed": "auto",
+      "status": "PASS"
+    },
+    {
+      "fixture": "examples/context/model-precedence.md",
+      "claim": "effective compiled model",
+      "expected": "claude-sonnet-4.6",
+      "observed": "claude-sonnet-4.6",
+      "status": "PASS"
+    },
+    {
+      "fixture": "examples/context/max-turns-copilot.md",
+      "claim": "compiled CLI default before overrides",
+      "expected": "1.0.80",
+      "observed": "1.0.80",
+      "status": "PASS"
+    },
+    {
+      "fixture": "examples/context/max-turns-claude.md",
+      "claim": "compiled CLI default before overrides",
+      "expected": "2.1.247",
+      "observed": "2.1.247",
+      "status": "PASS"
+    },
+    {
+      "fixture": "examples/context/max-turns-codex.md",
+      "claim": "compiled CLI default before overrides",
+      "expected": "0.150.1",
+      "observed": "0.150.1",
+      "status": "PASS"
+    },
+    {
+      "fixture": "examples/context/max-turns-gemini.md",
+      "claim": "compiled CLI default before overrides",
+      "expected": "0.55.1",
+      "observed": "0.55.1",
+      "status": "PASS"
+    },
+    {
+      "fixture": "examples/context/max-turns-pi.md",
+      "claim": "compiled CLI default before overrides",
+      "expected": "0.84.3",
+      "observed": "0.84.3",
+      "status": "PASS"
+    },
+    {
+      "fixture": "examples/context/pi-engine.md",
+      "claim": "Pi default detection authentication warning retained",
+      "status": "PASS"
+    }
+  ],
+  "command": [
+    "C:\\Users\\masalnik\\scoop\\apps\\python312\\current\\python.exe",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\scripts\\verify_examples.py",
+    "--root",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\f-26nilw1o\\contexts",
+    "--compiler",
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+    "--version",
+    "v0.88.7",
+    "--report",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\content\\research\\updates\\v0.88.7\\foundations-context-verification.json"
+  ],
+  "started_at_utc": "2026-09-16T01:14:53.561226+00:00",
+  "finished_at_utc": "2026-09-16T01:15:19.433058+00:00",
+  "cli_exit_code": 0,
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "book-default"
+  },
+  "environment_errors": [],
+  "cleanup_pending": null,
+  "runtime": "NOT RUN",
+  "credentials_or_model_access_verified": false,
+  "approval_granted": false
+}

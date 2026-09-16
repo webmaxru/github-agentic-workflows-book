@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "archived_at_utc": "2026-09-16T03:07:56.645459+00:00",
+  "reason": "Preserve the earlier whole-corpus run before the explicitly requested final rerun; original report bytes are unchanged.",
+  "original_canonical_started_at_utc": "2026-09-16T02:17:43.469408+00:00",
+  "original_target": "v0.88.7",
+  "files": {
+    "verification.json": "5e7f57c28b8e447a143bb2e8d0f3bf410f5a535e1f3892c0f9b5a07aa3252a8c",
+    "verification-notes.md": "2a46feeac2949a3cbb9d6f6a5729d9ad6e5336b5fd3351a476ca39eaa6be45b1",
+    "verification-inputs.json": "a6660548fa9dd0087fa39bc6e5e1e5f7e82f6d4d4206cab82170b1e6c7fdf7f9",
+    "verification-audit.json": "79b9c376d19b7e8fb5f040cfc397d68d6daddb093e0b0dc3a89ef00ab6e1c33a",
+    "verified-inputs-archive.json": "cdec78a2b7c09f9c18b16e33f0a9694e80928cef7c370b1dfa71ae58d6db9232",
+    "embedded-verification.json": "cdf63d7531344ddb73ed56670f7b25b91f3a498f4c839459cc80692b90c56a05",
+    "embedded-inventory.json": "7f49f1ba03f1bf62359338b42bd885a30b5df9f664a4dbeb26f948a7bc7e47d8",
+    "excerpt-verification.json": "1333be4ddf0727cc03820b45b5743e7c53e053c1d7fb3c740843304d1ef24fbc",
+    "cli-verification.json": "a6f62b4fc1f399a1b65b765036a76930262b014f5b153ab8c6a78f16ce0b57cd",
+    "cli-verification-attempt-1.json": "0273190023484323bbbe89b8e2442b500cb9eb34b732c4913f8c71f2e62455a9",
+    "policy-control-verification.json": "da62d09c6bf2151d3fb94053710cac6f8398cd39836170d10cd0ed8a43f06072",
+    "policy-control-attempt-1.json": "155a020b572a3e4ed43432695fbdd698a07f0387f831f789aea549143e06a38a",
+    "dependency-fingerprint-verification.json": "87188a1f43df598af71c27a25c09c49fee670b0a659a71deb9c4f08859e1dc9c",
+    "staging-verification.json": "c32647e10d1b3a0457751b1faf25f716420ffbd5d02ea8425f41edcabfd1ab96"
+  }
+}

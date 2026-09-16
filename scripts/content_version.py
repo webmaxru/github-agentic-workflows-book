@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Single source of truth for the book's **content** version and changelog.
+"""Shared readers for the book's prose edition, framework pin, and changelog.
 
 The book is a living document: its prose (the chapters under ``content/``) is versioned
 independently of the site generator, PDF renderer, and other tooling. The current version is a
@@ -28,10 +28,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 VERSION_PATH = ROOT / "content" / "VERSION"
+FRAMEWORK_VERSION_PATH = ROOT / "content" / "FRAMEWORK_VERSION"
 CHANGELOG_PATH = ROOT / "content" / "CHANGELOG.md"
 
 # Git tag / GitHub Release naming for a content version, e.g. "content-v1.1".
 TAG_PREFIX = "content-v"
+_VERSION_RE = re.compile(r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:\.(?:0|[1-9][0-9]*))?")
+_FRAMEWORK_VERSION_RE = re.compile(
+    r"v(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)"
+)
 
 # "## [1.1] - 2026-07-08"  ->  version + date
 _HEADER_RE = re.compile(r"^##\s+\[(?P<version>[^\]]+)\]\s*-\s*(?P<date>.+?)\s*$")
@@ -64,30 +69,59 @@ class Release:
         return f"{TAG_PREFIX}{self.version}"
 
 
-def read_version() -> str:
+def validate_version(version: str) -> str:
+    """Require a two- or three-component prose edition, without a leading ``v``."""
+    if not _VERSION_RE.fullmatch(version):
+        raise ValueError(
+            f"Invalid content version {version!r}; expected MAJOR.MINOR or "
+            "MAJOR.MINOR.PATCH without a leading v or leading zeroes."
+        )
+    return version
+
+
+def read_version(path: Path | None = None) -> str:
     """Return the current content version string (e.g. "1.1")."""
+    path = path if path is not None else VERSION_PATH
     try:
-        text = VERSION_PATH.read_text(encoding="utf-8").strip()
-    except FileNotFoundError:
-        return "0.0"
-    # Tolerate an accidental leading "v".
-    return text.lstrip("vV").strip() or "0.0"
+        text = path.read_text(encoding="utf-8").strip()
+    except FileNotFoundError as exc:
+        raise ValueError(f"Missing required content version file: {path}") from exc
+    return validate_version(text)
+
+
+def validate_framework_version(version: str) -> str:
+    """Require an exact stable upstream tag, independently of the prose edition."""
+    if not _FRAMEWORK_VERSION_RE.fullmatch(version):
+        raise ValueError(
+            f"Invalid framework version {version!r}; expected an exact stable tag such as v0.88.7."
+        )
+    return version
+
+
+def read_framework_version(path: Path | None = None) -> str:
+    """Return the validated coverage pin; never infer it from the prose edition."""
+    path = path if path is not None else FRAMEWORK_VERSION_PATH
+    try:
+        text = path.read_text(encoding="utf-8").strip()
+    except FileNotFoundError as exc:
+        raise ValueError(f"Missing required framework version file: {path}") from exc
+    return validate_framework_version(text)
 
 
 def tag_for(version: str) -> str:
-    return f"{TAG_PREFIX}{version}"
+    return f"{TAG_PREFIX}{validate_version(version)}"
 
 
-def _read_changelog() -> str:
+def _read_changelog(path: Path | None = None) -> str:
     try:
-        return CHANGELOG_PATH.read_text(encoding="utf-8")
+        return (path if path is not None else CHANGELOG_PATH).read_text(encoding="utf-8")
     except FileNotFoundError:
         return ""
 
 
-def parse_changelog() -> list[Release]:
+def parse_changelog(path: Path | None = None) -> list[Release]:
     """Parse ``content/CHANGELOG.md`` into an ordered list of releases (newest first)."""
-    lines = _read_changelog().splitlines()
+    lines = _read_changelog(path).splitlines()
 
     # Find each "## [version] - date" header and the line range of its body.
     headers: list[tuple[int, str, str]] = []
@@ -156,6 +190,7 @@ def release_for(version: str) -> Release | None:
 
 def notes_for(version: str) -> str:
     """Return the changelog body (markdown) for ``version``, suitable as release notes."""
+    validate_version(version)
     release = release_for(version)
     return release.body if release else ""
 
@@ -182,4 +217,8 @@ def _cli(argv: list[str]) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(_cli(sys.argv[1:]))
+    try:
+        raise SystemExit(_cli(sys.argv[1:]))
+    except (OSError, ValueError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        raise SystemExit(1) from exc

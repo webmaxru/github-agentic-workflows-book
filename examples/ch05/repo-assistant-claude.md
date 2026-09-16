@@ -30,7 +30,7 @@ Read the triggering issue's title and body, then:
    lists any missing information the reporter should add.
 2. Apply **at most one** label from the allowed set that best matches the issue.
 
-The *instructions above are identical* to the Copilot version of this workflow.
-Only the `engine:` block changed — this demonstrates that the workflow's intent
-and its safe-outputs boundary are **engine-neutral**: you swap the agent's brain
-by changing one field (and its secret), not by rewriting the workflow.
+This workflow illustrates **engine selection**: the Repo Assistant uses Claude
+for a triage mission bounded by read-only permissions and safe outputs.
+It is not a controlled same-prompt comparison between engines. Switching engines
+still requires review of authentication, tools, model behavior, and network access.

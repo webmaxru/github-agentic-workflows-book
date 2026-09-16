@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "expected_version": "v0.88.7",
+  "compiler": [
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe"
+  ],
+  "strict": true,
+  "fragments": [],
+  "results": [
+    {
+      "path": "examples/embedded/repo-assistant-observable.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\repo-assistant-observable.md: warning: safe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - OTLP_ENDPOINT\n  - OTLP_TOKEN\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\n✓ .github\\workflows\\repo-assistant-observable.md (120.0 KB)\n⚠ ⚠️  SECURITY REVIEW REQUIRED — safe update mode detected unapproved changes:\n\nsafe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - OTLP_ENDPOINT\n  - OTLP_TOKEN\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\nAction required for the calling agent:\n  1. Review every new secret and action listed above for potential malicious use\n     (e.g. credential exfiltration, supply-chain attacks, unexpected network access).\n  2. Add a security review note to the pull request description that:\n     - Lists any new or removed secrets, actions, and redirect changes from this compilation.\n     - Confirms you have reviewed each one and explains why it is safe to add.\n     - Flags any item you cannot fully verify so a human reviewer can inspect it.\n\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "0f942b2daa673f2866c66f9c371d7593db2c11a9b73186924091f46035ed12c9",
+        "body_hash": "4447a9caa0eda4967f97321fd2191447666430b5997abb8b2f64f2eb7f457a67",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/source/repo-assistant-observable.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\repo-assistant-observable.md: warning: safe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - OTLP_ENDPOINT\n  - OTLP_TOKEN\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\n✓ .github\\workflows\\repo-assistant-observable.md (120.0 KB)\n⚠ ⚠️  SECURITY REVIEW REQUIRED — safe update mode detected unapproved changes:\n\nsafe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - OTLP_ENDPOINT\n  - OTLP_TOKEN\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\nAction required for the calling agent:\n  1. Review every new secret and action listed above for potential malicious use\n     (e.g. credential exfiltration, supply-chain attacks, unexpected network access).\n  2. Add a security review note to the pull request description that:\n     - Lists any new or removed secrets, actions, and redirect changes from this compilation.\n     - Confirms you have reviewed each one and explains why it is safe to add.\n     - Flags any item you cannot fully verify so a human reviewer can inspect it.\n\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "0f942b2daa673f2866c66f9c371d7593db2c11a9b73186924091f46035ed12c9",
+        "body_hash": "4447a9caa0eda4967f97321fd2191447666430b5997abb8b2f64f2eb7f457a67",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    }
+  ],
+  "environment_errors": [],
+  "compiler_version": "v0.88.7",
+  "version_output": "gh aw version v0.88.7\n",
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "book-default"
+  },
+  "passed": 2,
+  "failed": 0,
+  "status": "PASS"
+}

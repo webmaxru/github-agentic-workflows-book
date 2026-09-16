@@ -4,8 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Version history — GitHub Agentic Workflows: An Interactive Book</title>
-  <meta name="description" content="Version history for the GitHub Agentic Workflows book. The current content edition is v1.1; every version is published as a GitHub Release with a downloadable PDF.">
+  <meta name="description" content="Version history for the GitHub Agentic Workflows book. The current content edition is v1.2, verified with gh-aw v0.88.7. Content releases have their own version history and downloadable PDFs.">
   <meta name="author" content="Maxim Salnikov">
+  <meta name="book-content-version" content="1.2">
+  <meta name="gh-aw-framework-version" content="v0.88.7">
   <link rel="canonical" href="https://aw.isainative.dev/versions.html">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -21,7 +23,7 @@
   <meta property="og:site_name" content="GitHub Agentic Workflows: An Interactive Book">
   <meta property="og:locale" content="en_US">
   <meta property="og:title" content="Version history — GitHub Agentic Workflows: An Interactive Book">
-  <meta property="og:description" content="Version history for the GitHub Agentic Workflows book. The current content edition is v1.1; every version is published as a GitHub Release with a downloadable PDF.">
+  <meta property="og:description" content="Version history for the GitHub Agentic Workflows book. The current content edition is v1.2, verified with gh-aw v0.88.7. Content releases have their own version history and downloadable PDFs.">
   <meta property="og:url" content="https://aw.isainative.dev/versions.html">
   <meta property="og:image" content="https://aw.isainative.dev/og-image.png">
   <meta property="og:image:type" content="image/png">
@@ -30,7 +32,7 @@
   <meta property="og:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Version history — GitHub Agentic Workflows: An Interactive Book">
-  <meta name="twitter:description" content="Version history for the GitHub Agentic Workflows book. The current content edition is v1.1; every version is published as a GitHub Release with a downloadable PDF.">
+  <meta name="twitter:description" content="Version history for the GitHub Agentic Workflows book. The current content edition is v1.2, verified with gh-aw v0.88.7. Content releases have their own version history and downloadable PDFs.">
   <meta name="twitter:image" content="https://aw.isainative.dev/og-image.png">
   <meta name="twitter:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,6 +42,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="assets/style.css">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer src="assets/app.js"></script>
   <script>window.__APPINSIGHTS_CONNECTION_STRING__="";</script>
   <script defer src="assets/analytics.js"></script>
@@ -56,7 +59,7 @@
         <a href="gh-aw-book.pdf">Download PDF</a>
         <a href="https://github.com/webmaxru/github-agentic-workflows-book/releases" target="_blank" rel="noopener">Releases ↗</a>
       </nav>
-      <a class="version-pill" href="versions.html" title="Content version 1.1 — view version history">v1.1</a>
+      <a class="version-pill" href="versions.html" title="Content edition v1.2 — view version history" aria-label="Content edition v1.2 — view version history">v1.2</a>
       <div class="theme-toggle" role="group" aria-label="Reading theme">
         <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">☀</span><span class="visually-hidden">Light theme</span></button>
         <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">◑</span><span class="visually-hidden">Sepia theme</span></button>
@@ -72,11 +75,15 @@
         <h1 id="version-title">Version history</h1>
         <p class="guide-lead">This book keeps growing. The <strong>content</strong> — the chapters and
         their prose — carries its own version, independent of the site generator and tooling. The
-        current edition is <strong>v1.1</strong>. Every version is published as a
-        <a href="https://github.com/webmaxru/github-agentic-workflows-book/releases" target="_blank" rel="noopener">GitHub Release</a> with the
-        matching single-file PDF attached, so any past state stays reproducible and downloadable.</p>
+        current content edition is <strong>v1.2</strong>. Content editions have
+        <a href="https://github.com/webmaxru/github-agentic-workflows-book/releases" target="_blank" rel="noopener">GitHub Releases</a>; editions
+        produced by the PDF pipeline include their matching single-file PDF. Older releases may
+        be notes-only if they predate that pipeline.</p>
+        <p class="guide-lead"><strong>Current framework coverage:</strong> <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a>.
+        Framework coverage is tracked separately from the content edition. This baseline applies
+        to the current book, not to past releases listed below.</p>
         <div class="cover-actions">
-          <a class="btn btn-primary" href="https://github.com/webmaxru/github-agentic-workflows-book/releases/tag/content-v1.1" target="_blank" rel="noopener">Latest release ↗</a>
+          <a class="btn btn-primary" href="https://github.com/webmaxru/github-agentic-workflows-book/releases/tag/content-v1.2" target="_blank" rel="noopener">Latest release ↗</a>
           <a class="btn btn-quiet" href="gh-aw-book.pdf">↓ Download the PDF</a>
           <a class="btn btn-quiet" href="https://github.com/webmaxru/github-agentic-workflows-book/blob/main/content/CHANGELOG.md" target="_blank" rel="noopener">Full changelog ↗</a>
         </div>
@@ -85,9 +92,17 @@
 
     <section class="version-list" aria-label="Releases">
       <div class="reading-column">
-      <article class="release release--current" id="content-v1.1">
+      <article class="release release--current" id="content-v1.2">
         <header class="release-head">
-          <h3 class="release-version">Version 1.1<span class="release-badge release-badge--current">Current</span></h3>
+          <h3 class="release-version">Content edition v1.2<span class="release-badge release-badge--current">Current</span></h3>
+          <p class="release-date"><time datetime="2026-09-16">2026-09-16</time> · <a href="https://github.com/webmaxru/github-agentic-workflows-book/releases/tag/content-v1.2" target="_blank" rel="noopener">content-v1.2 ↗</a></p>
+        </header>
+        <p class="release-summary">Updated all fourteen chapters for [gh-aw v0.88.7](https://github.com/github/gh-aw/releases/tag/v0.88.7), covering the changes since the book&#x27;s v0.81.6 framework baseline while retaining its Individual, Team, and Organization progression.</p>
+        <h4 class="release-group-title">Added</h4><ul class="release-changes"><li><strong>Engines and admission controls:</strong> Pi, model selection and override precedence, cooldown, stacked-PR filtering, and explicit stop-time refresh guidance.</li><li><strong>Runtime and tool capabilities:</strong> rootless runtime profiles, independent AI threat detection, explicit egress boundaries, Playwright CLI, and transport-specific MCP guidance.</li><li><strong>State, operations, and policy:</strong> memory filtering and validation, bounded log downloads and cached audits, incomplete-work outcomes, model policy, forecasts, and repository strictness.</li><li><strong>Compile-checked examples:</strong> ten additional workflow/configuration fixtures bring the corpus to 24, with 16 complete embedded workflow copies. Policy examples prove effective strictness without a CLI override; compilation does not certify runtime integrations.</li></ul><h4 class="release-group-title">Changed</h4><ul class="release-changes"><li><strong>Reuse and fleets:</strong> distinguish imports, native skills, experimental plugins, independently versioned APM 0.28.0 integration, and package manifests; explain deliberate consumer updates rather than automatic propagation.</li><li><strong>Reader prerequisites:</strong> make authentication, labels, Issues support, review, and runtime requirements explicit, and separate book policy from optional product capabilities.</li></ul><h4 class="release-group-title">Fixed</h4><ul class="release-changes"><li><strong>Claims and operating contracts:</strong> qualify offline compilation, deterministic inference, safety, reversibility, retention, and file-scope promises. Daily triage now selects at most one issue to respect its one-comment-per-run limit.</li><li><strong>Budget defaults:</strong> correct the existing 5,000-AIC daily fallback and separate main-agent, detector, admission, compute, and timeout scopes rather than promising a complete bill cap.</li><li><strong>Integration accuracy:</strong> correct APM lock/policy/isolation/scanning/proxy descriptions, replace the unverified Slack command with an explicitly illustrative MCP configuration, and use version-bound references for consequential behavior.</li></ul>
+      </article>
+      <article class="release" id="content-v1.1">
+        <header class="release-head">
+          <h3 class="release-version">Content edition v1.1</h3>
           <p class="release-date"><time datetime="2026-07-08">2026-07-08</time> · <a href="https://github.com/webmaxru/github-agentic-workflows-book/releases/tag/content-v1.1" target="_blank" rel="noopener">content-v1.1 ↗</a></p>
         </header>
         <p class="release-summary">Added Agent Package Manager (APM) coverage so the fleet chapters explain how shared agentic components are distributed and governed as supply-chain dependencies.</p>
@@ -95,7 +110,7 @@
       </article>
       <article class="release" id="content-v1.0">
         <header class="release-head">
-          <h3 class="release-version">Version 1.0</h3>
+          <h3 class="release-version">Content edition v1.0</h3>
           <p class="release-date"><time datetime="2026-07-03">2026-07-03</time> · <a href="https://github.com/webmaxru/github-agentic-workflows-book/releases/tag/content-v1.0" target="_blank" rel="noopener">content-v1.0 ↗</a></p>
         </header>
         <p class="release-summary">Initial release of the complete book: fourteen chapters across three parts, each anchored to a concept and carrying a verified, compilable example workflow, following the Repo Assistant from a single triage workflow to a governed multi-repo fleet.</p>
@@ -108,7 +123,7 @@
   <footer class="colophon">
     <div class="colophon-inner">
       <p class="colophon-author">By <strong>Maxim Salnikov</strong> · Microsoft</p>
-      <p class="colophon-meta"><a href="index.html">Back to the book</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book/releases" target="_blank" rel="noopener">All releases on GitHub ↗</a> · <a href="gh-aw-book.pdf">Download the PDF</a></p>
+      <p class="colophon-meta"><a href="versions.html">Content edition v1.2</a> · <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a> · <a href="index.html">Back to the book</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book/releases" target="_blank" rel="noopener">All releases on GitHub ↗</a> · <a href="gh-aw-book.pdf">Download the PDF</a></p>
     </div>
   </footer>
 </body>

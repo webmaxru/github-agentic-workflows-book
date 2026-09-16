@@ -41,4 +41,7 @@ issue is still relevant. Be conservative: when in doubt, leave the issue alone.
 
 This example demonstrates **triggers**: the same Repo Assistant responds to a
 per-issue event *and* runs on a recurring `daily` schedule, reacts with :eyes: on
-the triggering item, and automatically stops firing 30 days after compilation.
+the triggering item, and sets a relative 30-day stop deadline. A fresh compile
+with no existing lock resolves that deadline; ordinary recompilation preserves
+the existing stop time. Renew it deliberately with `--refresh-stop-time`, not by
+assuming every compile extends it.

@@ -28,6 +28,7 @@ comment summarizing it and any missing information.
 
 This example is about **operating** the workflow, not the triage itself. It
 exports distributed traces to an OpenTelemetry (OTLP) backend via the
-`observability:` block, so runs show up in your tracing tool alongside their
-token usage and timing. Combined with `gh aw logs` and `gh aw audit`, that gives
-you a full picture of what the agent did and why.
+`observability:` block when the runtime is configured. Traces, token usage,
+timing, and the records from `gh aw logs` and `gh aw audit` provide
+complementary evidence about observable activity and reported outcomes,
+bounded by collection, redaction, and retention.

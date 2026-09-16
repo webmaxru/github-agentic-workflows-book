@@ -26,6 +26,22 @@ or voice/structure drift from the rest of the book.
    - **Completeness** — examples present, compiled, and "when to use / pitfalls" covered.
 3. Cross-check facts against citations; flag any unsourced or contradicted claims.
 
+## Incremental edition gate
+
+Read the fixed-target impact map, old/new behavior evidence, changed chapters, and the
+whole-corpus verification report. Account for every chapter decision, check source examples
+against embedded snippets, and preserve claims that remain valid. Review cross-chapter
+terminology and current-facing framework-version statements; historical reports should
+retain their original inspected versions.
+
+Write an actual report for `content/research/updates/<target>/review.md` through the
+orchestrator if your tool grant is read-only. Include exactly one standalone canonical
+`Verdict: ACCEPT` or `Verdict: REVISE` line. End with ACCEPT only when all must-fixes are
+closed and strict example compilation has passed. The orchestrator can then bind this
+report to the source fingerprint with `scripts/release_content.py record-review`.
+Do not manufacture acceptance, treat a build as editorial review, or call a pending review
+accepted. Source changes after acceptance require renewed review.
+
 ## Principles
 - **High signal-to-noise.** Report substantive issues; do not nitpick style the instructions already cover.
 - **Evidence-based.** Tie each finding to a source, a verification result, or a concrete inconsistency.

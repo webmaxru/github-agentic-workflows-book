@@ -1,0 +1,866 @@
+{
+  "schema_version": 1,
+  "scope": "Configuration, dependency, package, negative-example and generated-lock excerpts in the current frozen manuscript; complete workflows are reported separately.",
+  "target": "v0.88.7",
+  "status": "PASS",
+  "checked_at_utc": "2026-09-16T02:52:21.467811+00:00",
+  "checks": [
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 2,
+      "line_range": [
+        119,
+        133
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch02/repo-assistant-triage.md",
+      "context_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/continuous-review-and-testing.html",
+      "block": 1,
+      "line_range": [
+        52,
+        57
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch10/workflow-run-conclusion.md",
+      "context_sha256": "33a47a525c6f97f285b5f112b735fb1361b53d0e03d14b70f2a030c6b102176a",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "4665c368664643c13c631013deb70eff8be4d509e8e3c8854068e891e1af382e",
+        "body_hash": "43473bb69e263803e50ab9c0406f659638201a140ddb991087a8c94b91d4f224",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/continuous-triage-and-docs.html",
+      "block": 1,
+      "line_range": [
+        31,
+        45
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch09/continuous-triage.md",
+      "context_sha256": "bda49e0b752d71eaf5d7ebb711812fb16f06e425bf83c01f425d5b38f322e9f7",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "79257831ec311bf101a9a0bc0f5f341442302ea537026c801323cf0957a2c74b",
+        "body_hash": "d6590fb13410036d10aa8a06fb6ce4da8bcca3a3af2f7837943e9227ab7bcf5b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/continuous-triage-and-docs.html",
+      "block": 2,
+      "line_range": [
+        53,
+        69
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch09/continuous-docs.md",
+      "context_sha256": "2f3be7fa9c3228cc8a080479000bbf11add3db90f8da2f10c0392b51d7761f0d",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "f6e923da02b1d3557e8717bf0725fafd48954576dddc8f7efcd67a90cdd636fc",
+        "body_hash": "243fc806a6542f3eccc5778574463fbe863aa3d6ed5a023e0c43f47ec1788928",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/defense-in-depth.html",
+      "block": 1,
+      "line_range": [
+        64,
+        66
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch07/repo-assistant-hardened.md",
+      "context_sha256": "3c85e9bc89b516751355a578212bd2e76eadce6b55020e9d8be3880b21395b3d",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "9e2e01b0e0f2712652e88615217732a5c47da6c7c9f6d7302341c605da7e8a4e",
+        "body_hash": "6f8f001e58f916b2fdf0dce23b5cc540761727e05af1f7c310595d0dc7563a3d",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "block": 1,
+      "line_range": [
+        28,
+        28
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch02/repo-assistant-triage.md",
+      "context_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "block": 2,
+      "line_range": [
+        53,
+        56
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch05/repo-assistant-claude.md",
+      "context_sha256": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "32dec13fb28a635513e7a83831a294f444733d6ab69886a0eae97b244d0cba96",
+        "body_hash": "4a625033204b035ebf3cb48827e337e7bfa479e14b9d12b992b15956e7de3e61",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "claude",
+        "agent_model": "claude-sonnet-4.5",
+        "engine_versions": {
+          "claude": "2.1.70"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "block": 3,
+      "line_range": [
+        69,
+        70
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\workflows\\model-top-level.md",
+      "context_sha256": "b12084b828c82cfcc072c99c41ce64bfee7e622c43e95ce377bd14cb51312bda",
+      "status": "PASS",
+      "evidence": "Retained exact-target positive compile context, not rerun here.",
+      "recorded_command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        ".github/workflows/model-top-level.md",
+        "--strict",
+        "--validate",
+        "--no-check-update",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        "--json"
+      ],
+      "recorded_exit_code": 0,
+      "retained_lock_sha256": "ae5afa27ba49a7e146424e08d34a05319ce1a63795b7c58e270cce6e862d9a73",
+      "retained_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a7bc7f72834ad49b845eda2f0ed1a8ae300d5b819dc73bea610427b0ecec702b",
+        "body_hash": "1e7c1043405e7c851ef91dc3c8174001ef99632a95a42413781a2b8b3f16e59f",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "agent_model": "auto",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "block": 4,
+      "line_range": [
+        75,
+        78
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\workflows\\model-precedence.md",
+      "context_sha256": "acf048798fd9fc39abe6f8e467995eeb0ce738a05f09e0b5bd9fcae69ca20762",
+      "status": "PASS",
+      "evidence": "Retained exact-target positive compile context, not rerun here.",
+      "recorded_command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        ".github/workflows/model-precedence.md",
+        "--strict",
+        "--validate",
+        "--no-check-update",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        "--json"
+      ],
+      "recorded_exit_code": 0,
+      "retained_lock_sha256": "e2ac6079623b2b921a99626f3e773f24c91aa2830d1a0c8e8a3f008b006c4b3d",
+      "retained_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "e224afafb85ccf280418c28545e37dcfba355d239175fa949ded704befa5f6dd",
+        "body_hash": "e31d7f84a2d54d4b22445e54223c71a6d3e08804ee3f5af8dbccae5cb356b92f",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "agent_model": "claude-sonnet-4.6",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/engines.html",
+      "block": 5,
+      "line_range": [
+        122,
+        139
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch05/repo-assistant-claude.md",
+      "context_sha256": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "32dec13fb28a635513e7a83831a294f444733d6ab69886a0eae97b244d0cba96",
+        "body_hash": "4a625033204b035ebf3cb48827e337e7bfa479e14b9d12b992b15956e7de3e61",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "claude",
+        "agent_model": "claude-sonnet-4.5",
+        "engine_versions": {
+          "claude": "2.1.70"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "block": 1,
+      "line_range": [
+        45,
+        47
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch13/repo-assistant-budgeted.md",
+      "context_sha256": "6aefb71f774134503741e9b17cd01cc0344aee2111580ce8414d117b9277c3a5",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "dcdf7001b31ec6295171885166bbd0a883ec22abbc4daac9947b406b9ff70ca2",
+        "body_hash": "5b7b0fb32772ae51fc76adf8ea5b2fb922667e78adb29d2b6f99d37e418dd127",
+        "stop_time": "2026-10-16 02:18:56",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "block": 1,
+      "line_range": [
+        30,
+        31
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch11/repo-assistant-shared.md",
+      "context_sha256": "74fdf84b2d99f0899bcb1be72da6b7e13abb8e76fdea76e64277881cb25c533f",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "2566c0c9621fd31f5cec44211ab49d3ba41cb9c3a8071d8c1092d6972280fc8f",
+        "body_hash": "273ee709f61d28ca38c7c966320ec8fea7e64396ade8dd608eee928062a48435",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "block": 2,
+      "line_range": [
+        67,
+        68
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\workflows\\skills-local.md",
+      "context_sha256": "21f7910eff4783710e3d581144936882a7f0d86f8aecff2c86f882cd232c8406",
+      "status": "PASS",
+      "evidence": "Retained exact-target positive compile context, not rerun here.",
+      "recorded_command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        ".github/workflows/skills-local.md",
+        "--strict",
+        "--validate",
+        "--no-check-update",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        "--json"
+      ],
+      "recorded_exit_code": 0,
+      "retained_lock_sha256": "92554fcdd9d31877e01f9a21ad0a8d039741783b5d88dc0fdfc8e36caa4ebab3",
+      "retained_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "9622625a03585a06088fc3f4b158743655ee640937a13547a4570dd4ebfe836a",
+        "body_hash": "880e461d265c233de4242b75ff7868f9b6ec1fcaae07e44640ad70eba82573a6",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "required_dependency": {
+        "path": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\skills\\probe\\SKILL.md",
+        "sha256": "06e7c4797907b310ac4833e756b401eb8d2b6335d7fc3e498dac536bc2665add",
+        "vendored_in_book_example": false
+      }
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "block": 3,
+      "line_range": [
+        83,
+        89
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\integrations-v0.88.7\\probe\\.github\\workflows\\apm-bridge-pinned.md",
+      "context_sha256": "42c3dd87e316eb76e03ec4439501811a397f5db2ac96cb8f5980e79415584b45",
+      "status": "PASS",
+      "evidence": "Retained exact-target positive compile context, not rerun here.",
+      "recorded_command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        ".github/workflows/apm-bridge-pinned.md",
+        "--strict",
+        "--no-check-update",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        "--json"
+      ],
+      "recorded_exit_code": 0,
+      "retained_lock_sha256": "2b4a664abb3a3ae1a977f219380d5f69bcacd83c7bf118f8c21c36a1198461d4",
+      "retained_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "c7ad092a2b1ebc1afca875383992ff69ef56a8264f0b23ebd3988d0cd109ba51",
+        "body_hash": "6d78b9209e72a64c12d1a0729d68dfc238460ecd7e5229329b9797b674abec82",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "required_dependency": {
+        "path": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\integrations-v0.88.7\\probe\\.github\\workflows\\shared\\apm-pinned.md",
+        "sha256": "b80f4d8c895f0d8e1df07f856ef0ad95d29b461dbfeb5df7ae37c4ebbd457f52",
+        "vendored_in_book_example": false
+      }
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "block": 4,
+      "line_range": [
+        124,
+        131
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch11/repo-memory-validation.md",
+      "context_sha256": "174eb0410ed4fb473e23e37d02be832f5a3b4fdf65c8ae50ed7e74c3e24ae5d2",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "c8c8775adeb0c597b0a8f67ef58100f32384737ac8e759e6e1b49d66f1e7554d",
+        "body_hash": "4d8ffc34c67afc8e96df115a2460a694c1942172d69cac4226999fbf511024c0",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/safe-outputs.html",
+      "block": 1,
+      "line_range": [
+        30,
+        38
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch02/repo-assistant-triage.md",
+      "context_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/safe-outputs.html",
+      "block": 2,
+      "line_range": [
+        89,
+        92
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch10/continuous-review.md",
+      "context_sha256": "365f78f4fda15467bba087cc92746a53f16ca965ea01c16a159c9cd41d462cc9",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "ceafec436596445cb41bd989ed996ae1b4b8f3adaef39b6c244986a93f1d56ca",
+        "body_hash": "a011ca16bafe1007a998b84b49fff3c13c600a4ee07c5b1902056093599414bb",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/tools-and-mcp.html",
+      "block": 1,
+      "line_range": [
+        58,
+        61
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch08/playwright-cli.md",
+      "context_sha256": "b72e16c43dda78cc0cb61e2a983ac5d01f87065867d7e8ad03172931fa30c203",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "0d1e37248d29cbf471ed487cf92f5a491daedd9db68571d3eed7236a9367b61c",
+        "body_hash": "95f11e37cc4d44dc8cbf0db471476196884c379019c75954daa63cc1dfe28f04",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/tools-and-mcp.html",
+      "block": 2,
+      "line_range": [
+        71,
+        76
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch08/mcp-shape.md",
+      "context_sha256": "1703e07cc94cb61d9091691af30604f431a1419613d9624e87be209b82d440e0",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "da269a07ab69adfade0dceaca4909d202fa5e9cbb4686b477bb70dfc42e21d22",
+        "body_hash": "4439182882d6571dd2820251ba4cec6d9cde02b05d8486223e66cd2669aeb0a4",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/tools-and-mcp.html",
+      "block": 3,
+      "line_range": [
+        131,
+        145
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch08/repo-assistant-tools.md",
+      "context_sha256": "2c05579963d59092a7d24e7991d777dcedd6c02f9d99f0a7d456c6fb0ec5a1e3",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "cbb0a71d9c13a2fbc21fc21120525e8b1e75e581a5de4aec46cbdcbd7e1c337b",
+        "body_hash": "901a3d2ddf5fe10735da270710fa3eb142f6ea740fcc393766e9435cd911e857",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "block": 1,
+      "line_range": [
+        33,
+        35
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch04/repo-assistant-triggers.md",
+      "context_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+        "body_hash": "ddc9ffe739ae561569f62021eb708109bbfe9c50d4db70c4b84cc88f31299bb9",
+        "stop_time": "2026-10-16 02:17:56",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "block": 2,
+      "line_range": [
+        60,
+        61
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch04/repo-assistant-triggers.md",
+      "context_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+        "body_hash": "ddc9ffe739ae561569f62021eb708109bbfe9c50d4db70c4b84cc88f31299bb9",
+        "stop_time": "2026-10-16 02:17:56",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "block": 3,
+      "line_range": [
+        70,
+        70
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch04/repo-assistant-issue-shorthand.md",
+      "context_sha256": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "86c75ed6e9a37949c6e0d59995a4d325b45ebfdcc38dcbb8fba70bef8bf45c52",
+        "body_hash": "6e4c9fe14a2d966f979a664321723edffa3b49ba4ac66697a52b24c68f507713",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "block": 4,
+      "line_range": [
+        89,
+        93
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch04/repo-assistant-cooldown.md",
+      "context_sha256": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "801e377666f95c0f1bb7fd3165ebbfe24620ccb0d31c7af8fed351f9dc628802",
+        "body_hash": "403133ab36ce0a024c3f392473fd6179da80fd23357e472e72d4ebf85ba00fe1",
+        "stop_time": "2026-10-16 02:17:48",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "block": 7,
+      "line_range": [
+        123,
+        123
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch02/repo-assistant-triage.md",
+      "context_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "block": 8,
+      "line_range": [
+        131,
+        136
+      ],
+      "kind": "frontmatter excerpt in complete context",
+      "context": "examples/ch02/repo-assistant-triage.md",
+      "context_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "status": "PASS",
+      "evidence": "Fresh canonical source compilation",
+      "source_compile_status": "PASS",
+      "source_lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "chapter": "content/chapters/defense-in-depth.html",
+      "block": 3,
+      "kind": "repository JSON excerpt",
+      "context": "examples/ch07/strict-policy/aw.json",
+      "context_lf_normalized_sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+      "status": "PASS",
+      "evidence": "Fresh repository-policy positive cases plus separate no-policy control"
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "block": 2,
+      "kind": "repository JSON excerpt",
+      "context": "examples/ch13/strict-policy/aw.json",
+      "context_lf_normalized_sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+      "status": "PASS",
+      "evidence": "Fresh repository-policy positive cases plus separate no-policy control"
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "block": 2,
+      "kind": "repository JSON excerpt",
+      "context": "examples/ch07/strict-policy/aw.json",
+      "context_lf_normalized_sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+      "status": "PASS",
+      "evidence": "Fresh repository-policy positive cases plus separate no-policy control"
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "block": 4,
+      "kind": "APM YAML excerpt, not gh-aw workflow",
+      "context": "examples/ch13/apm-policy.excerpt.yml",
+      "context_lf_normalized_sha256": "c454c5ec2f539f4b0c4f69401ce5a541aacb94b18b0175e1376947f77f962794",
+      "status": "PASS",
+      "live_policy_enforcement_tested": false
+    },
+    {
+      "chapter": "content/chapters/defense-in-depth.html",
+      "block": 2,
+      "kind": "explicit expected-invalid configuration excerpt; not a canonical workflow",
+      "context": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\probes-v0.88.7\\.github\\workflows\\legacy-sudo.md",
+      "context_sha256": "e6ee1dfad860cfc45837b1b72b88fd3dce3d1619b717786642e679c9d99e6c07",
+      "expected_result": "compiler rejection",
+      "recorded_exit_code": 1,
+      "recorded_stdout": "[\n  {\n    \"workflow\": \"legacy-sudo.md\",\n    \"valid\": false,\n    \"errors\": [\n      {\n        \"type\": \"parse_error\",\n        \"message\": \".github\\\\workflows\\\\legacy-sudo.md:6:5: error: Unknown property: sudo. Valid fields are: agent, config, mcp, type. Did you mean 'side'? It belongs under 'safe-outputs/create-pull-request-review-comment'\\n3 |   workflow_dispatch:\\r\\n4 | sandbox:\\r\\n5 |   agent:\\r\\n6 |     sudo: true\\r\\n        ^^^^\\n7 | safe-outputs:\\r\\n8 |   noop:\\r\\n9 | ---\"\n      }\n    ],\n    \"warnings\": []\n  }\n]\n",
+      "recorded_stderr": "✗ compilation failed\n",
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "block": 1,
+      "kind": "package aw.yml excerpt in schema-only context",
+      "schema": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\upstream-v0.88.7\\github-gh-aw-bde3679\\pkg\\parser\\schemas\\aw_manifest_schema.json",
+      "schema_sha256": "5ada4b6eaefad5580f0f4c92d26dd554430cb339e5dd7dfd893a11816f2fcf5c",
+      "added_context": {
+        "name": "Schema-only excerpt context"
+      },
+      "errors": [],
+      "status": "PASS",
+      "payload_files_resolved_or_installed": false
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 3,
+      "kind": "exact generated-lock excerpt",
+      "context": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch02\\repo-assistant-triage.lock.yml",
+      "context_sha256": "208e4123a571d90f21f2577726f31684bef51bc6b7007d431e74c408bde224c8",
+      "retained_lines": [
+        1,
+        1
+      ],
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 4,
+      "kind": "exact generated-lock excerpt",
+      "context": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch02\\repo-assistant-triage.lock.yml",
+      "context_sha256": "208e4123a571d90f21f2577726f31684bef51bc6b7007d431e74c408bde224c8",
+      "retained_lines": [
+        37,
+        38
+      ],
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 5,
+      "kind": "exact generated-lock excerpt",
+      "context": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch02\\repo-assistant-triage.lock.yml",
+      "context_sha256": "208e4123a571d90f21f2577726f31684bef51bc6b7007d431e74c408bde224c8",
+      "retained_lines": [
+        300,
+        300
+      ],
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 6,
+      "kind": "exact generated-lock excerpt",
+      "context": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch02\\repo-assistant-triage.lock.yml",
+      "context_sha256": "208e4123a571d90f21f2577726f31684bef51bc6b7007d431e74c408bde224c8",
+      "retained_lines": [
+        862,
+        865
+      ],
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 7,
+      "kind": "exact generated-lock excerpt",
+      "context": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch02\\repo-assistant-triage.lock.yml",
+      "context_sha256": "208e4123a571d90f21f2577726f31684bef51bc6b7007d431e74c408bde224c8",
+      "retained_lines": [
+        1546,
+        1555
+      ],
+      "status": "PASS"
+    },
+    {
+      "chapter": "content/chapters/anatomy-and-compile-model.html",
+      "block": 8,
+      "kind": "exact generated-lock excerpt",
+      "context": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch02\\repo-assistant-triage.lock.yml",
+      "context_sha256": "208e4123a571d90f21f2577726f31684bef51bc6b7007d431e74c408bde224c8",
+      "retained_lines": [
+        1722,
+        1731
+      ],
+      "status": "PASS"
+    }
+  ],
+  "runtime": "NOT RUN",
+  "source_edits": false,
+  "not_claimed": [
+    "Package installability or actual installation",
+    "Native skill/APM full deployment",
+    "Runtime MCP/browser/memory validation",
+    "Secret or model access",
+    "Approval of warnings"
+  ]
+}

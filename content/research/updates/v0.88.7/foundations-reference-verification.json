@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "scope": "Ch01-Ch05 snapshot supporting evidence only. Existing tagged references/probes inspected; no release-delta rediscovery or runtime credential checks.",
+  "target": "v0.88.7",
+  "status": "PASS",
+  "checked_at_utc": "2026-09-16T01:23:49.844565+00:00",
+  "tagged_reference_files": {
+    "pkg/constants/version_constants.go": {
+      "path": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\upstream-v0.88.7\\github-gh-aw-bde3679\\pkg\\constants\\version_constants.go",
+      "sha256": "a6ee3d70aed56713063a85858ad8ed5eb1b8e8f4c795f4f4d9538c19cc3209f6",
+      "url": "https://github.com/github/gh-aw/blob/v0.88.7/pkg/constants/version_constants.go"
+    },
+    "docs/src/content/docs/reference/engines.md": {
+      "path": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\upstream-v0.88.7\\github-gh-aw-bde3679\\docs\\src\\content\\docs\\reference\\engines.md",
+      "sha256": "853de6f43436ed4bc02701d172a746cec36c318b7d687732b4345f8f370a66c2",
+      "url": "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md"
+    },
+    "docs/src/content/docs/reference/compiler-enterprise-environment-controls.md": {
+      "path": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\upstream-v0.88.7\\github-gh-aw-bde3679\\docs\\src\\content\\docs\\reference\\compiler-enterprise-environment-controls.md",
+      "sha256": "cda40409340fd0679a209b17bc23192c16450e07b886d3fb1f4be26b189d36bd",
+      "url": "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compiler-enterprise-environment-controls.md"
+    },
+    "docs/src/content/docs/engines/pi.md": {
+      "path": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\upstream-v0.88.7\\github-gh-aw-bde3679\\docs\\src\\content\\docs\\engines\\pi.md",
+      "sha256": "37b15cc9799ff7b3acfd08bf3f30f9072dcf454b40cd2a9109d2548f51ba0451",
+      "url": "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/engines/pi.md"
+    },
+    "docs/src/content/docs/reference/triggers.md": {
+      "path": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\upstream-v0.88.7\\github-gh-aw-bde3679\\docs\\src\\content\\docs\\reference\\triggers.md",
+      "sha256": "a4affee19d2e6cb67e2c793f1e04759808cbb4e4d5c6d9eae7fbbbff10ee61bc",
+      "url": "https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/triggers.md"
+    }
+  },
+  "checks": [
+    {
+      "claim": "DefaultCopilotVersion",
+      "expected": "1.0.80",
+      "observed": "1.0.80",
+      "status": "PASS"
+    },
+    {
+      "claim": "DefaultClaudeCodeVersion",
+      "expected": "2.1.247",
+      "observed": "2.1.247",
+      "status": "PASS"
+    },
+    {
+      "claim": "DefaultCodexVersion",
+      "expected": "0.150.1",
+      "observed": "0.150.1",
+      "status": "PASS"
+    },
+    {
+      "claim": "DefaultGeminiVersion",
+      "expected": "0.55.1",
+      "observed": "0.55.1",
+      "status": "PASS"
+    },
+    {
+      "claim": "DefaultPiVersion",
+      "expected": "0.84.3",
+      "observed": "0.84.3",
+      "status": "PASS"
+    },
+    {
+      "claim": "max-turns default 500 and AIC default 1000 for all engines",
+      "tagged_reference": "docs/src/content/docs/reference/engines.md",
+      "evidence": [
+        {
+          "line": 65,
+          "text": "`max-turns` (default `500`, legacy alias `max-runs`) and `max-ai-credits` (default `1000`) are top-level frontmatter fields supported by all engines. `engine.max-turns` is a deprecated nested alias that still limits Claude iterations when present; `max-continuations` enables Copilot continuation mode. Claude and Codex have native web search support; Codex requires explicit `tools: web-search:` configuration. Copilot and Gemini can use a third-party MCP server for search. Top-level `plugins` is experimental, uses the [Agent Plugins](https://agent-plugins.org) format, and is supported by Copilot, Claude, Codex, and any imported engine definition that declares a `behaviors.plugins` block (such as the shared Cursor and Kiro engines). See [Using Web Search](/gh-aw/reference/web-search/) and [Agent Plugins](/gh-aw/reference/frontmatter/#agent-plugins-plugins)."
+        }
+      ],
+      "status": "PASS",
+      "runtime_enforcement_tested": false
+    },
+    {
+      "claim": "proxy-enforced cross-engine cap and Claude-only nested alias",
+      "tagged_reference": "docs/src/content/docs/reference/engines.md",
+      "evidence": [
+        {
+          "line": 563,
+          "text": "The top-level `max-turns` field applies to every engine because the proxy enforces the AWF invocation cap. In addition, Copilot uses `max-continuations` for autopilot runs, and Claude supports the deprecated nested `engine.max-turns` to cap its own iterations. Beyond `max-turns`, Codex and Gemini rely solely on `timeout-minutes` and `tools.timeout`."
+        }
+      ],
+      "status": "PASS",
+      "runtime_enforcement_tested": false
+    },
+    {
+      "claim": "Pi default detector uses Copilot regardless of main provider and needs separate Copilot auth",
+      "tagged_reference": "docs/src/content/docs/engines/pi.md",
+      "evidence": [
+        {
+          "line": 53,
+          "text": "By default, threat detection for Pi workflows runs on the GitHub Copilot CLI, regardless of Pi's model provider. Grant [`copilot-requests: write`](/gh-aw/reference/auth/#copilot-requests-write-permission) or provide a [`COPILOT_GITHUB_TOKEN`](/gh-aw/reference/auth/#copilot_github_token) secret for detection. This credential is separate from the OpenAI or Anthropic key used by the Pi agent."
+        }
+      ],
+      "status": "PASS",
+      "credentials_verified": false
+    },
+    {
+      "claim": "Omitted Copilot model falls back to auto after runtime model variables",
+      "retained_lock": "references/retained-triage.lock.yml",
+      "evidence": [
+        {
+          "line": 925,
+          "text": "          COPILOT_MODEL: ${{ vars.GH_AW_MODEL_AGENT_COPILOT || vars.GH_AW_DEFAULT_MODEL_COPILOT || 'auto' }}"
+        }
+      ],
+      "status": "PASS",
+      "runtime_variable_resolution_tested": false
+    },
+    {
+      "claim": "Authored YAML unchanged since pilot",
+      "path": "examples/ch04/repo-assistant-triggers.md",
+      "old_frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+      "new_frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+      "status": "PASS"
+    },
+    {
+      "claim": "Authored YAML unchanged since pilot",
+      "path": "examples/ch05/repo-assistant-claude.md",
+      "old_frontmatter_hash": "32dec13fb28a635513e7a83831a294f444733d6ab69886a0eae97b244d0cba96",
+      "new_frontmatter_hash": "32dec13fb28a635513e7a83831a294f444733d6ab69886a0eae97b244d0cba96",
+      "status": "PASS"
+    },
+    {
+      "claim": "Claude YAML, pins and task instructions retained; only explanatory footer revised",
+      "path": "examples/ch05/repo-assistant-claude.md",
+      "status": "PASS",
+      "comparison": "Exact lines 1-32 agree, through the final task instruction and separating blank line; only footer lines 33-36 differ.",
+      "preserved_line_range": [
+        1,
+        32
+      ],
+      "old_footer_line": 33,
+      "new_footer_line": 33,
+      "old_source": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral\\examples\\ch05\\repo-assistant-claude.md",
+      "old_source_sha256": "a69db1f67cbb97c4d71ba814ba235596adb90f65fdd5919bb083d1363d495f6f",
+      "snapshot_source_sha256": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9",
+      "task_prefix_sha256": "8c946aba3a7877668cd412ed507fe1b3bfa6e8d74d589973c98588e2db6dd224",
+      "actual_diff": "--- retained:examples/ch05/repo-assistant-claude.md\n+++ snapshot:examples/ch05/repo-assistant-claude.md\n@@ -30,7 +30,7 @@\n    lists any missing information the reporter should add.\n 2. Apply **at most one** label from the allowed set that best matches the issue.\n \n-The *instructions above are identical* to the Copilot version of this workflow.\n-Only the `engine:` block changed — this demonstrates that the workflow's intent\n-and its safe-outputs boundary are **engine-neutral**: you swap the agent's brain\n-by changing one field (and its secret), not by rewriting the workflow.\n+This workflow illustrates **engine selection**: the Repo Assistant uses Claude\n+for a triage mission bounded by read-only permissions and safe outputs.\n+It is not a controlled same-prompt comparison between engines. Switching engines\n+still requires review of authentication, tools, model behavior, and network access."
+    },
+    {
+      "claim": "Ch05 historical strict+validate warning excerpt matches retained stderr, not a newly invented transcript",
+      "source": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\compat-v0.88.7-neutral-results.json",
+      "source_sha256": "1308bfe6d96f33790e98ab48bd3898833a89a5cdda75b1b447835981fba9bc0b",
+      "recorded_exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "claim": "Ch03 APM caveat is supported by retained compile-only evidence",
+      "recorded_command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        ".github/workflows/apm-bridge.md",
+        "--strict",
+        "--no-check-update",
+        "--schedule-seed",
+        "webmaxru/github-agentic-workflows-book",
+        "--json"
+      ],
+      "recorded_exit_code": 0,
+      "retained_capture_sha256": "d7dca65bb60690302813629b07e127e8fc92d380d679ea05b934f43ebfc8ee9e",
+      "retained_lock": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\integrations-v0.88.7\\probe\\.github\\workflows\\apm-bridge.lock.yml",
+      "retained_lock_sha256": "de49038feb286ee5bd8c5a47dc5af4c90bdf7d85088489e6ede92bca93172b19",
+      "metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "7e8b1e97581feb249156658bde2994890a4293a9201826b13cf9c3bad4cc3617",
+        "body_hash": "a0accf6e584de75f853a6ef6ad4f8598fedcb0e425ced3f6371b5fd3e3e17fd8",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "action_steps": [
+        {
+          "job": "agent",
+          "uses": "microsoft/apm-action@v1.10.0",
+          "apm-version": "0.28.0"
+        },
+        {
+          "job": "apm",
+          "uses": "microsoft/apm-action@v1.10.0",
+          "apm-version": "0.28.0"
+        }
+      ],
+      "resolution_failures": [
+        {
+          "repo": "microsoft/apm-action",
+          "ref": "v1.10.0",
+          "error_type": "dynamic_resolution_failed"
+        }
+      ],
+      "stderr_review_warning_retained": true,
+      "status": "PASS",
+      "integration_recompiled_in_this_batch": false
+    }
+  ],
+  "runtime": "NOT RUN",
+  "source_edits": false,
+  "previous_attempt": {
+    "artifact": "foundations-reference-attempt-1.json",
+    "sha256": "c6ac92a08e79d6386d055bf544b8e3735a1cc35b06e29677c0f95b244929ef49",
+    "status": "FAIL",
+    "failed_check": "Claude YAML, pins and task instructions retained; only explanatory footer revised",
+    "diagnosis": "Supplemental comparison-harness false negative: the initial split used the new footer marker against the old source, where that marker does not exist. The compiler/helper did not fail.",
+    "resolution": "Corrected to the explicit observed task/footer boundary and compared the complete preserved lines 1-32. Initial attempt retained; no source or hardened-helper edit.",
+    "owner": "code-verifier supplemental harness; resolved"
+  },
+  "rechecked_at_utc": "2026-09-16T01:26:55.823819+00:00"
+}

@@ -1,0 +1,79 @@
+Chapter 13 author handoff — preparation only
+Authored 2026-09-16; target gh-aw v0.88.7.
+APM is independently scoped to 0.28.0 (apm-action contract v1.10.0).
+
+No compiler or runtime commands were executed by this author. No final-copy
+PASS, live outcome, policy installation, measured forecast, or publication
+acceptance is claimed. Dedicated verifier and reviewer follow.
+
+Research:
+- content/research/updates/v0.88.7/impact.json, Ch13
+- framework-delta.md F04/F13/F14 (inspection 2026-09-15)
+- theory-delta.md C/E/G (brief 2026-09-16)
+- integration-notes.md, Ch13 (inspection 2026-09-16)
+
+Existing example:
+- repo-assistant-budgeted.md: frontmatter unchanged, including 200/2000 budgets,
+  timeout 10, triggers, permissions, network, and safe outputs. Shared target
+  preflight passed this configuration. Prompt now distinguishes control scopes
+  and explicitly reports no work when a scheduled/manual run has no issue target.
+  Recompile this final source; do not relabel the old preflight report.
+- preflight-verification.json records an informational Copilot PAT/org-billing
+  tip and a fuzzy-schedule warning without repository context. Preserve actual
+  stderr from the final run rather than copying the old zero-warning caption.
+
+Adopted positive probes (same workflow text, apart from line endings):
+- models-policy.md from $ART/probes-v0.88.7/.github/workflows/models-policy.md.
+  $ART/probes-v0.88.7-results.json records exit 0 and an emitted v0.88.7 lock;
+  the inspected lock metadata has strict:true and agent_model:auto.
+- strict-policy/opt-out.md and strict-policy/aw.json from
+  $ART/probes-workspace-strict/.github/workflows/{opt-out.md,aw.json}.
+  $ART/probe-workspace-strict-result.json records exit 0 WITHOUT --strict;
+  its inspected lock has compiler_version:v0.88.7 and strict:true.
+  The separate unsafe write-permission probe failed. Do not add a failing
+  unsafe source to the standalone examples corpus.
+
+Verifier needs:
+1. Run the canonical exact-target strict gate for all three Markdown workflows
+   and their complete embedded HTML copies. Require emitted locks, exact target,
+   effective strict:true, exit 0, report PASS, and preserve stderr.
+2. The canonical gate recognizes strict-policy/ as a self-contained fixture:
+   it stages aw.json and opt-out.md together under .github/workflows, compiles
+   WITHOUT a CLI --strict override, and requires effective strict:true plus
+   the exact compiler version in the emitted lock metadata. Inspect the
+   compilation_mode and repository_policy context in the report. Missing,
+   malformed, or ineffective policy must fail rather than force strictness
+   through a CLI fallback. The dedicated verifier also runs a separate
+   no-policy control once; ordinary examples still compile with --strict.
+3. Confirm the JSON excerpt matches aw.json and the APM YAML excerpt matches
+   apm-policy.excerpt.yml. These are DIFFERENT configuration formats, not
+   standalone gh-aw workflows.
+
+APM excerpt:
+- Fields source-checked against the APM 0.28.0 Policy Reference.
+- The single allow pattern is the one used by the shared pure-source matcher
+  diagnostic. A nonempty allowlist rejects unmatched sources; "*" is
+  single-segment, "**" cross-segment, and a matching deny beats an allow.
+- $ART/integrations-v0.88.7/policy-matcher-result.json records those cases.
+  This is NOT a full parser/install/runtime policy-enforcement test.
+- Package path is illustrative. No APM install, full dependency-graph replay,
+  policy-fetch or live enforcement was tested. Do not apply the excerpt to the
+  book's own APM project configuration.
+
+CLI examples:
+- Models/forecast/env commands use inspected target help/reference spellings.
+- No catalog refresh, forecast, billing measurement, org-variable change,
+  secret setup, APM install, or live workflow run was performed by this author.
+
+Live-run limitations:
+- Samples do not declare permissions.copilot-requests:write; the default
+  Copilot path needs COPILOT_GITHUB_TOKEN PAT authentication.
+- Centralized org billing additionally needs the explicit permission, allowing
+  org policy, and a regenerated/deployed lock. Compile success tests none of
+  these runtime prerequisites.
+- Budgeted triage needs Issues enabled and pre-existing allowed labels.
+- The two noop-only diagnostics emitted automatic create_issue fallback in the
+  shared probes. They are not production recipes for disabling all writes.
+
+$ART =
+C:\Users\masalnik\.copilot\session-state\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\files

@@ -33,6 +33,11 @@ implements and the problem it solves.
 5. Maintain the **TOC as the single source of truth** in the repo (e.g. `content/toc.yml` or
    `content/outline.md`) and update it when scope changes.
 
+For maintenance of an existing edition, start from the upstream impact map and current
+TOC. Preserve chapter numbers, slugs, prerequisites, and narrative unless a concrete new
+capability warrants a structural change. A new framework version is not itself a reason
+to rerun bootstrap architecture or expand the book.
+
 ## Principles
 - **Theory before syntax.** Every gh-aw capability must be anchored to a concept introduced earlier.
 - **Progressive disclosure.** Order chapters so each builds only on prior ones; record dependencies.
@@ -53,7 +58,7 @@ Keep specs declarative. Do not write chapter body prose or example workflows —
 - Repo & samples: https://github.com/github/gh-aw
 - Core capability areas to cover: workflow file format (markdown + YAML frontmatter), triggers
   (`on:` — issues, pull_request, schedule, workflow_dispatch, workflow_run, command), engines
-  (Copilot, Claude, Codex, Gemini), permissions, network firewall, tools & MCP servers,
+  (Copilot, Claude, Codex, Gemini, Pi at v0.88.7), permissions, network firewall, tools & MCP servers,
   safe-outputs, the security/defense-in-depth model & sandboxing, imports & shared components,
   sub-agents, skills, memory/persistence, observability (`gh aw logs`/`audit`, OpenTelemetry),
   the `gh aw` CLI, strict mode, and cost controls (max-ai-credits).
