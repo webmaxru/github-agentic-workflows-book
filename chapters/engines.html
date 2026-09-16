@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Engines: Choosing the Agent&#x27;s Brain | GitHub Agentic Workflows: An Interactive Book</title>
+  <meta name="description" content="Select and configure Copilot, Claude, Codex, Gemini, or Pi, control CLI/model selection, and distinguish portable intent from engine-specific runtime requirements.">
+  <meta name="author" content="Maxim Salnikov">
+  <meta name="book-content-version" content="1.2">
+  <meta name="gh-aw-framework-version" content="v0.88.7">
+  <link rel="canonical" href="https://aw.isainative.dev/chapters/engines.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e9edf4">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1220">
+  <script>(function(){try{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GitHub Agentic Workflows: An Interactive Book">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Engines: Choosing the Agent&#x27;s Brain">
+  <meta property="og:description" content="Select and configure Copilot, Claude, Codex, Gemini, or Pi, control CLI/model selection, and distinguish portable intent from engine-specific runtime requirements.">
+  <meta property="og:url" content="https://aw.isainative.dev/chapters/engines.html">
+  <meta property="og:image" content="https://aw.isainative.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Engines: Choosing the Agent&#x27;s Brain">
+  <meta name="twitter:description" content="Select and configure Copilot, Claude, Codex, Gemini, or Pi, control CLI/model selection, and distinguish portable intent from engine-specific runtime requirements.">
+  <meta name="twitter:image" content="https://aw.isainative.dev/og-image.png">
+  <meta name="twitter:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+  <script>window.__APPINSIGHTS_CONNECTION_STRING__="InstrumentationKey=c9860cc2-58c1-4516-80c7-aba8338b8f74;IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/;ApplicationId=8c8c1e42-8fa6-42cc-bf96-362cac52d3d5";</script>
+  <script defer src="../assets/analytics.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/engines.html#article","headline":"Engines: Choosing the Agent's Brain","name":"Engines: Choosing the Agent's Brain","description":"Select and configure Copilot, Claude, Codex, Gemini, or Pi, control CLI/model selection, and distinguish portable intent from engine-specific runtime requirements.","url":"https://aw.isainative.dev/chapters/engines.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"version":"1.2","about":{"@type":"SoftwareApplication","name":"GitHub Agentic Workflows (gh-aw)","softwareVersion":"v0.88.7","url":"https://github.com/github/gh-aw/releases/tag/v0.88.7"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Individual (one workflow)","keywords":"engine: field, Copilot engine, Claude engine, Codex engine, Gemini engine, Pi engine, model selection, model / engine.model precedence, authentication and tool portability"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/engines.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Individual (one workflow)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"Engines: Choosing the Agent's Brain","item":"https://aw.isainative.dev/chapters/engines.html"}]}]}</script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <div class="sidebar-top">
+          <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+          <div class="theme-toggle" role="group" aria-label="Reading theme">
+        <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">☀</span><span class="visually-hidden">Light theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">◑</span><span class="visually-hidden">Sepia theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="dark" aria-pressed="false" title="Dark"><span aria-hidden="true">☾</span><span class="visually-hidden">Dark theme</span></button>
+      </div>
+        </div>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a class="is-current" aria-current="page" href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 5 <span class="fm-sep">·</span> <a href="../gh-aw-book.pdf">Download PDF</a> <span class="fm-sep">·</span> <a href="../versions.html">Content edition v1.2</a> <span class="fm-sep">·</span> <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></nav>
+        <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">05</span><span class="fm-sep">·</span><span class="fm-k">part:</span> <span class="fm-v">The Individual (one workflow)</span></p>
+        <h1>Engines: Choosing the Agent&#x27;s Brain</h1>
+        <p class="lead">Select and configure Copilot, Claude, Codex, Gemini, or Pi, control CLI/model selection, and distinguish portable intent from engine-specific runtime requirements.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#concept-engine-neutral-by-design">Concept: engine-neutral by design</a></li>
+              <li><a href="#in-gh-aw-the-engine-field-and-its-options">In gh-aw: the engine: field and its options</a></li>
+              <li><a href="#when-to-pick-which-engine-capability-cost-availability">When to pick which engine (capability, cost, availability)</a></li>
+              <li><a href="#worked-example-switching-the-repo-assistant-s-engine">Worked example: switching the Repo Assistant&#x27;s engine</a></li>
+              <li><a href="#recap-and-what-s-next">Recap &amp; what&#x27;s next</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>engine: field</li>
+            <li>Copilot engine</li>
+            <li>Claude engine</li>
+            <li>Codex engine</li>
+            <li>Gemini engine</li>
+            <li>Pi engine</li>
+            <li>model selection</li>
+            <li>model / engine.model precedence</li>
+            <li>authentication and tool portability</li>
+            </ul>
+          </aside>
+          <aside class="metadata-card" aria-labelledby="depends-heading">
+            <h2 id="depends-heading">Prerequisites</h2>
+            <ul>
+            <li><a href="triggers.html">Chapter 4: Triggers: When Workflows Wake Up</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p>By the end of this chapter you can <strong>select and configure one of gh-aw's five built-in engines</strong>, control its CLI version and model selection, and distinguish portable workflow intent from engine-specific runtime requirements.</p>
+  <p>This chapter targets the inspected <strong>gh aw v0.88.7</strong> (<a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">fixed release</a>). We keep the Repo Assistant's triage mission and its existing Claude example, then examine what swapping its brain does &mdash; and does not &mdash; preserve.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="concept-engine-neutral-by-design">
+          <h2 id="concept-engine-neutral-by-design"><a class="anchor-link" href="#concept-engine-neutral-by-design" aria-label="Link to Concept: engine-neutral by design section">Concept: engine-neutral by design</a></h2>
+          <div class="section-content" data-content-slot="concept-engine-neutral-by-design">
+<p>A workflow has two separable parts: <strong>what you want done</strong> (the Markdown intent and the safe-outputs boundary) and <strong>who does the thinking</strong> (the coding-agent CLI and the model it invokes). gh-aw keeps these apart on purpose. The engine is a <em>pluggable</em> component, so you can reuse the task and governed-output pattern without tying them to a vendor's API.</p>
+
+  <h3 id="portable-intent">Why decouple the brain?</h3>
+  <p>Tying automation to one vendor's model is a bet you might regret. Prices change, your org standardizes on a provider you already pay for, or a model you depend on is deprecated. Keeping the task separate reduces the rewrite. But <strong>portable intent is not an interchangeable security contract</strong>: changing engines may require different authentication, tools, model names, and network access (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md">AI Engines at v0.88.7</a>).</p>
+  <p>This is the same &ldquo;prose is the source&rdquo; idea from <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a>, viewed from the other side. Your intent can <em>survive</em> a change of engine, while you recompile and review the runtime that implements it. The event-driven mission from <a class="xref" href="triggers.html">Chapter 4</a> need not change just because the agent does.</p>
+  <p>Keep three choices separate: the <strong>engine</strong> supplies the tool-using agent, its <strong>CLI version</strong> is an executable dependency, and its <strong>model</strong> supplies inference. The <a href="#engine-version-and-model">version and model settings</a> let you control these independently. Pinning a CLI reduces dependency drift; controlling model selection makes comparisons more meaningful. Neither makes inference deterministic. Cost also has separate scopes: main-agent inference, threat detection, and Actions compute are not one budget (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/billing.md">billing</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/threat-detection.md#detection-budget">detection budget</a>).</p>
+  <aside class="callout callout--leader" aria-label="Leader takeaway">
+    <p class="callout-title">Leader lens: portable intent, reviewed migration</p>
+    <p>Engine-neutrality is a procurement and risk hedge. Start with an approved provider and reuse the task descriptions when your needs change. Still budget for identity setup, security review, and representative live evaluation before moving a fleet. Portability reduces migration work; it does not eliminate it.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-the-engine-field-and-its-options">
+          <h2 id="in-gh-aw-the-engine-field-and-its-options"><a class="anchor-link" href="#in-gh-aw-the-engine-field-and-its-options" aria-label="Link to In gh-aw: the engine: field and its options section">In gh-aw: the engine: field and its options</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-the-engine-field-and-its-options">
+<p>The <code>engine:</code> frontmatter field implements that separation of <a href="#portable-intent">portable intent</a> from execution: it selects the coding agent that interprets your Markdown. Copilot is the default, so its selection can be omitted (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md#built-in-ai-engines">built-in engines</a>).</p>
+  <figure class="code">
+    <figcaption>Frontmatter excerpt &mdash; the selection used in Chapter 2's complete triage source</figcaption>
+    <pre><code class="language-yaml">engine: copilot</code></pre>
+  </figure>
+
+  <h3>The five built-in engines</h3>
+  <p>The target lists <strong>Copilot, Claude, Codex, Gemini, and Pi</strong> as built-ins. Authentication below is for inference, not permission to write to the repository. Store static keys as Actions secrets, never literal values in a workflow (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/auth.mdx">authentication</a>).</p>
+  <table>
+    <caption>v0.88.7 built-ins: standard live-run authentication paths and compiled CLI defaults before overrides</caption>
+    <thead>
+      <tr><th scope="col">Engine</th><th scope="col"><code>engine:</code></th><th scope="col">Inference authentication</th><th scope="col">CLI default</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>GitHub Copilot CLI <strong>(default)</strong></td><td><code>copilot</code></td><td>Org-billed Actions token with <code>copilot-requests: write</code>, or <code>COPILOT_GITHUB_TOKEN</code></td><td><code>1.0.80</code></td></tr>
+      <tr><td>Claude Code (Anthropic)</td><td><code>claude</code></td><td><code>ANTHROPIC_API_KEY</code> or Anthropic WIF</td><td><code>2.1.247</code></td></tr>
+      <tr><td>OpenAI Codex</td><td><code>codex</code></td><td><code>CODEX_API_KEY</code> or <code>OPENAI_API_KEY</code>; the former takes precedence when both are present</td><td><code>0.150.1</code></td></tr>
+      <tr><td>Google Gemini CLI</td><td><code>gemini</code></td><td><code>GEMINI_API_KEY</code> or Google WIF</td><td><code>0.55.1</code></td></tr>
+      <tr><td>Pi</td><td><code>pi</code></td><td>Copilot authentication by default; provider-specific key for an Anthropic or OpenAI/Codex model</td><td><code>0.84.3</code></td></tr>
+    </tbody>
+  </table>
+  <p>These versions come from the target's <a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/constants/version_constants.go">version constants</a> and compiled defaults, not a live query for the newest CLI releases.</p>
+  <p>OpenCode, Aider, Crush, Cursor, DeepSeek Harness, Kiro, and Pydantic AI integrations are <strong>unsupported samples</strong>, with no gh-aw compatibility or maintenance commitment. Other integrations need an owner-maintained definition imported at a pinned tag or commit, and object-form <code>engine.id</code> matching that definition. There is no arbitrary scalar <code>engine: custom</code>. Treat such imports as dependencies to review, as in <a class="xref" href="reuse-and-memory.html">Chapter 11</a> (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md#shared-imported-engines">imported-engine contract</a>).</p>
+
+  <h3 id="engine-version-and-model">The object form: version and model</h3>
+  <p>When you need more than the default, <code>engine:</code> becomes an object. Its <code>version</code> selects a CLI release; its <code>model</code> selects the model for that engine. They control different sources of change:</p>
+  <figure class="code">
+    <figcaption>Frontmatter excerpt from <code>examples/ch05/repo-assistant-claude.md</code> &mdash; the existing CLI and model pins, unchanged</figcaption>
+    <pre><code class="language-yaml">engine:
+  id: claude
+  version: "2.1.70"
+  model: claude-sonnet-4.5</code></pre>
+  </figure>
+  <p><strong>Omitted version does not mean &ldquo;always install latest.&rdquo;</strong> The table records compiler defaults; Copilot's target installer can also select a compatible cached CLI at runtime before using its fallback. An explicit <code>engine.version</code> overrides that selection, an expression-backed version resolves at runtime, and a custom <code>engine.command</code> can bypass normal CLI installation. Review the generated install steps and runtime inputs, not just the metadata (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/workflow/copilot_engine_installation.go">target installation logic</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md#pinning-a-specific-engine-version">version configuration</a>).</p>
+  <p>Use deliberate dependency updates rather than <code>version: latest</code>. The explicit Claude <code>2.1.70</code> pin still compiles on v0.88.7 and is retained here; that is not an endorsement that it is the best operational pin today. Pinning improves repeatability, but does not by itself certify supply-chain safety or model availability.</p>
+
+  <h3>Top-level model selection and per-engine precedence</h3>
+  <p>The target adds a top-level <code>model</code> field, letting you express model selection alongside a simple engine selection:</p>
+  <!-- Syntax evidence: the supplied v0.88.7 model-top-level.md and model-precedence.md
+       complete probes passed strict compilation plus validation and emitted strict target locks.
+       Only configuration excerpts are reproduced; their noop-only diagnostic bodies
+       are not published as no-write recipes. See framework-delta.md F03. -->
+  <figure class="code">
+    <figcaption>Configuration excerpt &mdash; top-level model selection, compile-checked in the v0.88.7 <code>model-top-level.md</code> probe; not a complete workflow</figcaption>
+    <pre><code class="language-yaml">engine: copilot
+model: auto</code></pre>
+  </figure>
+  <p><strong><code>engine.model</code> remains valid and wins when both scopes are set.</strong> An interim deprecation was reversed: the target restores the per-engine override rather than requiring you to remove it (<a href="https://github.com/github/gh-aw/commit/b588b670994c62e6ac5c2b642e15098bcfedc4f7">override restoration</a>).</p>
+  <figure class="code">
+    <figcaption>Configuration excerpt &mdash; the v0.88.7 <code>model-precedence.md</code> probe emits <code>claude-sonnet-4.6</code>, not <code>auto</code>; not a complete workflow</figcaption>
+    <pre><code class="language-yaml">model: auto
+engine:
+  id: copilot
+  model: claude-sonnet-4.6</code></pre>
+  </figure>
+  <p>With no explicit Copilot model, the generated fallback is now <code>auto</code>, after configured runtime model variables, rather than v0.81.6's <code>claude-sonnet-4.6</code> (<a href="https://github.com/github/gh-aw/commit/6058f2272599aed5fe00cbd9d572ca89298cf3ea">fallback change</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/environment-variables.md#model-override-variables">runtime overrides</a>). Automatic selection does not hold the effective model or its cost constant. The probes establish syntax and precedence, not access to a named model or measured performance.</p>
+
+  <h3>Authentication is part of the engine contract</h3>
+  <p>For <strong>Copilot organization billing</strong>, your organization needs a Copilot subscription and the policy allowing Copilot CLI usage billed to the organization. You must explicitly declare <code>copilot-requests: write</code> under top-level <code>permissions:</code>, recompile, and deploy the updated lock. The compiler does not add this permission to arbitrary source. In this mode the Actions token authenticates inference and the PAT is ignored for inference; it is not a fallback if org access fails. This permission does not grant repository writes (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/billing.md">billing prerequisites</a>).</p>
+  <p>For the <strong>personal/seat path</strong>, store a fine-grained PAT in <code>COPILOT_GITHUB_TOKEN</code>: resource owner your user account, account permission <strong>Copilot Requests: Read</strong>, and an account with Copilot entitlement. <code>GH_AW_GITHUB_TOKEN</code> is a separate GitHub-operations fallback, not a substitute for Copilot inference authentication. Activation rejects OAuth tokens beginning <code>gho_</code> in either secret; do not reuse an interactive CLI session token. Claude's <code>CLAUDE_CODE_OAUTH_TOKEN</code> is unsupported and ignored, not a substitute for <code>ANTHROPIC_API_KEY</code> (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/auth.mdx">token types and scopes</a>).</p>
+  <p>For <strong>Pi</strong>, unprefixed or <code>copilot/</code> models use Copilot authentication; <code>anthropic/</code> uses the Anthropic key, and <code>openai/</code> or <code>codex/</code> uses the OpenAI/Codex key. But Pi's <strong>default threat detector still runs on Copilot</strong>, regardless of the main model's provider. The target <code>engine: pi</code> probe passes with a warning: without the org-billing permission, detection needs <code>COPILOT_GITHUB_TOKEN</code>. Another provider's key alone is not enough (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/engines/pi.md#authenticating-threat-detection">Pi detection authentication</a>).</p>
+  <aside class="callout callout--note" aria-label="Optional advanced identity integration">
+    <p class="callout-title">Optional: federated identity, not a runnable recipe here</p>
+    <p>Workload Identity Federation (WIF) exchanges GitHub OIDC identity for short-lived provider credentials. Claude requires an Anthropic federation rule and the matching organization, workspace, and service-account identifiers. Gemini requires a Google Cloud WIF pool/provider, a service account with Vertex AI User permissions, and permission to impersonate it. Both require the appropriate <code>engine.auth</code> configuration and <code>id-token: write</code> under <code>permissions:</code>; have your identity administrator scope trust to the intended repository and workflow. Follow the <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/auth.mdx">tagged authentication reference</a>. These integrations have not been live-run verified here, and the preserved Claude recipe uses the static-key path.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="when-to-pick-which-engine-capability-cost-availability">
+          <h2 id="when-to-pick-which-engine-capability-cost-availability"><a class="anchor-link" href="#when-to-pick-which-engine-capability-cost-availability" aria-label="Link to When to pick which engine (capability, cost, availability) section">When to pick which engine (capability, cost, availability)</a></h2>
+          <div class="section-content" data-content-slot="when-to-pick-which-engine-capability-cost-availability">
+<p>Choose by the task's required capabilities, your approved identity path, and provider access &mdash; then evaluate cost. The <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md#engine-feature-comparison">target feature matrix</a> gives useful starting points, not a quality ranking:</p>
+  <table>
+    <thead>
+      <tr><th scope="col">Consider&hellip;</th><th scope="col">When&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Copilot</strong> (default)</td><td>you need native custom-agent selection (<code>engine.agent</code>) or continuation mode (<code>max-continuations</code>), and have a working Copilot authentication path.</td></tr>
+      <tr><td><strong>Claude</strong></td><td>Anthropic is already an approved provider and Claude's tool support fits your task.</td></tr>
+      <tr><td><strong>Codex</strong></td><td>OpenAI access fits your tooling or budget, and the workflow does not depend on per-command Bash allowlisting.</td></tr>
+      <tr><td><strong>Gemini</strong></td><td>Google's identity path fits your organization; per-command Bash restrictions are supported.</td></tr>
+      <tr><td><strong>Pi</strong></td><td>you want provider selection behind one CLI and can accommodate proxy-based tools rather than native MCP integration, plus Copilot authentication for the default detector.</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Turn limits are not a reason to choose Claude alone.</strong> Top-level <code>max-turns</code> is the cross-engine invocation cap enforced by the Agentic Workflow Firewall (AWF) proxy, with a built-in fallback of <code>500</code>. The deprecated nested <code>engine.max-turns</code> alias is Claude-specific; do not generalize it to other engines. Top-level <code>max-ai-credits</code> also works across engines, with a main-agent fallback of <code>1000</code> AIC before overrides. Detection has its own budget, and Actions compute is billed separately: this is not a complete bill cap (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compiler-enterprise-environment-controls.md">scoped defaults</a>; <a class="xref" href="governance-and-finops.html">Chapter 13</a>).</p>
+
+  <h3>When <em>not</em> to fiddle with engines</h3>
+  <ul>
+    <li><strong>Don't switch without a concrete need.</strong> Start with the smallest supported configuration your team can authenticate. Clear instructions and appropriate tools still need attention even when you change the brain.</li>
+    <li><strong>Don't discard enforcement to get a green compile.</strong> A strict Codex workflow with a restricted <code>tools.bash</code> command list is rejected because Codex would ignore that restriction at runtime. If the allowlist matters, choose Copilot, Claude, or Gemini; do not remove it or weaken strict mode (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md#engine-feature-comparison">engine enforcement matrix</a>; <a class="xref" href="tools-and-mcp.html">Chapter 8</a>).</li>
+    <li><strong>Don't assume the same YAML means the same runtime.</strong> Recheck authentication, tool transport and enforcement, model identifiers, and effective network paths. Keeping <code>network: defaults</code> in the source does not establish equivalent provider access or egress behavior (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md">engine setup contracts</a>).</li>
+    <li><strong>Don't call an engine swap a model experiment.</strong> With <code>auto</code>, an unchanged prompt need not use the same model. For a deliberate comparison, select a model your account supports, control the other inputs, and record actual model and usage evidence using <a class="xref" href="observability-and-debugging.html">Chapter 12</a>. This chapter reports no live model or cost comparison.</li>
+  </ul>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-switching-the-repo-assistant-s-engine">
+          <h2 id="worked-example-switching-the-repo-assistant-s-engine"><a class="anchor-link" href="#worked-example-switching-the-repo-assistant-s-engine" aria-label="Link to Worked example: switching the Repo Assistant&#x27;s engine section">Worked example: switching the Repo Assistant&#x27;s engine</a></h2>
+          <div class="section-content" data-content-slot="worked-example-switching-the-repo-assistant-s-engine">
+<p>Let's make portable intent concrete. The Claude Repo Assistant carries the same triage mission as <a class="xref" href="your-first-workflow.html">Chapter 2</a>: request one comment and at most one allowed label. We retain its task instructions and YAML, including CLI <code>2.1.70</code> and model <code>claude-sonnet-4.5</code>. This is an engine-selection illustration, not a controlled same-prompt comparison between engines.</p>
+
+  <figure class="code">
+    <figcaption>Frontmatter excerpt from <code>examples/ch05/repo-assistant-claude.md</code> &mdash; unchanged YAML; prior source verification: strict compilation PASS on v0.88.7 with a restricted-secret review warning; use the complete Markdown source, not this excerpt alone</figcaption>
+    <pre><code class="language-yaml">on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+engine:
+  id: claude
+  version: "2.1.70"
+  model: claude-sonnet-4.5
+permissions:
+  contents: read
+  issues: read
+network: defaults
+safe-outputs:
+  add-comment:
+    max: 1
+  add-labels:
+    allowed: [bug, enhancement, question, documentation]
+    max: 1</code></pre>
+  </figure>
+
+  <p>In the configuration, the scalar <code>engine: copilot</code> becomes the Claude object. The triggers, read-only repository permissions, declared <code>network: defaults</code>, and explicit safe-output limits remain the same. The <em>declared task boundary</em> survives; that does not make the engine's authentication or generated runtime identical.</p>
+
+  <p>Reproduce compilation with the fixed v0.88.7 installation from Chapter 2, using a scratch Git checkout so generated locks and compiler side files stay out of your deployment until review:</p>
+  <figure class="code">
+    <figcaption>Reproduction commands &mdash; check the installed target, then compile strictly without approving changes</figcaption>
+    <pre><code class="language-bash">gh aw version
+# Expected: gh aw version v0.88.7
+gh aw compile examples/ch05/repo-assistant-claude.md --strict --validate --no-check-update</code></pre>
+  </figure>
+  <p>The supplied target verification predates the explanatory-footer correction; the YAML and task instructions are unchanged. That run exited successfully and emitted a lock with <code>compiler_version: v0.88.7</code>, <code>strict: true</code>, Claude CLI <code>2.1.70</code>, and model <code>claude-sonnet-4.5</code>. It also emitted this warning on stderr, even though the JSON result's warnings array was empty:</p>
+  <figure class="code">
+    <figcaption>Selected stderr excerpt from the v0.88.7 strict + validate run &mdash; the warning remains part of the verification result</figcaption>
+    <pre><code class="language-text">examples\ch05\repo-assistant-claude.md: warning: safe update mode detected unapproved changes
+
+New restricted secret(s):
+  - ANTHROPIC_API_KEY</code></pre>
+  </figure>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: a passing compile still needs secret review</p>
+    <p>Switching engines can introduce a new credential exposure. The safe-update warning asks you to review that change; it does not validate the key or approve its use. Retain the warning, check the intended provider and credential/network boundaries, and route unresolved concerns to a human reviewer. Do not automatically approve changes to clear the output. See <a class="xref" href="defense-in-depth.html">Chapter 7</a> for the security model.</p>
+  </aside>
+  <aside class="callout callout--note" aria-label="Compile evidence and live-run prerequisites">
+    <p class="callout-title">Compile-tested, not live-run certified</p>
+    <p>Compilation invoked no engine and needed no Anthropic key. That does <em>not</em> mean compilation is universally offline: dependency resolution and validation can use the network, as discussed in <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a>.</p>
+    <p>A live run still needs a valid <code>ANTHROPIC_API_KEY</code>, provider access to the requested model, and an Issues-enabled deployment repository with the allowed labels already present. The book repository has Issues disabled; the target compatibility check also used an Issues-enabled reference context, not a live deployment. Test the issue-triggered mission with an issue event &mdash; manual dispatch alone supplies no triggering issue. Missing credentials limit live-run verification, not the strict-compilation requirement.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-what-s-next">
+          <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
+          <div class="section-content" data-content-slot="recap-and-what-s-next">
+<p>You can now choose and configure the agent's brain with confidence:</p>
+  <ul>
+    <li><strong>Intent and the governed-output pattern are portable.</strong> Authentication, tool enforcement, network paths, and model behavior still need review when an engine changes.</li>
+    <li>The five target built-ins are <strong>Copilot</strong> (default), <strong>Claude</strong>, <strong>Codex</strong>, <strong>Gemini</strong>, and <strong>Pi</strong>. Imported samples have a separate owner-maintained support contract.</li>
+    <li>CLI version and model are different choices. The compiler has version defaults; explicit pins and runtime inputs affect reproducibility. Top-level <code>model</code> is available, <code>engine.model</code> wins per-engine precedence, and omitted Copilot model selection now falls back to <code>auto</code>.</li>
+    <li>Top-level <code>max-turns</code> works across engines; the deprecated nested alias remains Claude-specific. Choose an engine that enforces the restrictions your workflow needs, and budget for detection and Actions separately.</li>
+    <li>The Claude configuration's prior verification <strong>passed strict compilation with a secret-review warning</strong>. That is evidence of compiler compatibility, not approval of a credential, a model-availability check, or a successful live run.</li>
+  </ul>
+  <p><strong>What's next.</strong> That's Part I complete: you can author, compile, trigger, and power a workflow. But so far the Repo Assistant only ever <em>proposed</em> writes through <code>safe-outputs:</code> without our examining how. In <a class="xref" href="safe-outputs.html">Chapter 6: Safe Outputs</a> &mdash; the opening of Part II &mdash; we open that boundary and see how permission-separated jobs apply the agent's proposed changes.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <a class="pager-link" rel="prev" href="triggers.html">← Chapter 4: Triggers: When Workflows Wake Up</a>
+          <a class="pager-link" rel="next" href="safe-outputs.html">Chapter 6: Safe Outputs: Acting Without Overreach →</a>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>By <strong>Maxim Salnikov</strong> · Microsoft · <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub ↗</a> · <a href="../gh-aw-book.pdf">Download the PDF</a> · <a href="../versions.html">Content edition v1.2</a> · <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Fleets &amp; Adoption: From One Repo to the Org | GitHub Agentic Workflows: An Interactive Book</title>
+  <meta name="description" content="Scale the Repo Assistant into a governed multi-repo fleet and follow an enterprise adoption playbook to roll it out.">
+  <meta name="author" content="Maxim Salnikov">
+  <meta name="book-content-version" content="1.2">
+  <meta name="gh-aw-framework-version" content="v0.88.7">
+  <link rel="canonical" href="https://aw.isainative.dev/chapters/fleets-and-adoption.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e9edf4">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1220">
+  <script>(function(){try{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GitHub Agentic Workflows: An Interactive Book">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Fleets &amp; Adoption: From One Repo to the Org">
+  <meta property="og:description" content="Scale the Repo Assistant into a governed multi-repo fleet and follow an enterprise adoption playbook to roll it out.">
+  <meta property="og:url" content="https://aw.isainative.dev/chapters/fleets-and-adoption.html">
+  <meta property="og:image" content="https://aw.isainative.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Fleets &amp; Adoption: From One Repo to the Org">
+  <meta name="twitter:description" content="Scale the Repo Assistant into a governed multi-repo fleet and follow an enterprise adoption playbook to roll it out.">
+  <meta name="twitter:image" content="https://aw.isainative.dev/og-image.png">
+  <meta name="twitter:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+  <script>window.__APPINSIGHTS_CONNECTION_STRING__="InstrumentationKey=c9860cc2-58c1-4516-80c7-aba8338b8f74;IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/;ApplicationId=8c8c1e42-8fa6-42cc-bf96-362cac52d3d5";</script>
+  <script defer src="../assets/analytics.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/fleets-and-adoption.html#article","headline":"Fleets \u0026 Adoption: From One Repo to the Org","name":"Fleets \u0026 Adoption: From One Repo to the Org","description":"Scale the Repo Assistant into a governed multi-repo fleet and follow an enterprise adoption playbook to roll it out.","url":"https://aw.isainative.dev/chapters/fleets-and-adoption.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"version":"1.2","about":{"@type":"SoftwareApplication","name":"GitHub Agentic Workflows (gh-aw)","softwareVersion":"v0.88.7","url":"https://github.com/github/gh-aw/releases/tag/v0.88.7"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Organization (fleet at scale)","keywords":"multi-repo fleets, dispatcher agent pattern, cross-repo composition, enterprise adoption playbook, gh-aw-fleet (community), aw.yml packages and recursive includes, reviewed consumer updates and action-bump semantics"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/fleets-and-adoption.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Organization (fleet at scale)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"Fleets \u0026 Adoption: From One Repo to the Org","item":"https://aw.isainative.dev/chapters/fleets-and-adoption.html"}]}]}</script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <div class="sidebar-top">
+          <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+          <div class="theme-toggle" role="group" aria-label="Reading theme">
+        <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">☀</span><span class="visually-hidden">Light theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">◑</span><span class="visually-hidden">Sepia theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="dark" aria-pressed="false" title="Dark"><span aria-hidden="true">☾</span><span class="visually-hidden">Dark theme</span></button>
+      </div>
+        </div>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a class="is-current" aria-current="page" href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 14 <span class="fm-sep">·</span> <a href="../gh-aw-book.pdf">Download PDF</a> <span class="fm-sep">·</span> <a href="../versions.html">Content edition v1.2</a> <span class="fm-sep">·</span> <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></nav>
+        <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">14</span><span class="fm-sep">·</span><span class="fm-k">part:</span> <span class="fm-v">The Organization (fleet at scale)</span></p>
+        <h1>Fleets &amp; Adoption: From One Repo to the Org</h1>
+        <p class="lead">Scale the Repo Assistant into a governed multi-repo fleet and follow an enterprise adoption playbook to roll it out.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#concept-from-one-assistant-to-a-governed-fleet">Concept: from one assistant to a governed fleet</a></li>
+              <li><a href="#in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout">In gh-aw: multi-repo fleets, the dispatcher pattern, rollout</a></li>
+              <li><a href="#when-to-scale-org-wide-a-readiness-checklist">When to scale org-wide (a readiness checklist)</a></li>
+              <li><a href="#worked-example-cloning-the-repo-assistant-across-a-fleet">Worked example: cloning the Repo Assistant across a fleet</a></li>
+              <li><a href="#recap-and-the-road-ahead">Recap &amp; the road ahead</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>multi-repo fleets</li>
+            <li>dispatcher agent pattern</li>
+            <li>cross-repo composition</li>
+            <li>enterprise adoption playbook</li>
+            <li>gh-aw-fleet (community)</li>
+            <li>aw.yml packages and recursive includes</li>
+            <li>reviewed consumer updates and action-bump semantics</li>
+            </ul>
+          </aside>
+          <aside class="metadata-card" aria-labelledby="depends-heading">
+            <h2 id="depends-heading">Prerequisites</h2>
+            <ul>
+            <li><a href="governance-and-finops.html">Chapter 13: Governance &amp; FinOps: Policy and Cost at Scale</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p>By the end of this chapter you can take the Repo Assistant from <strong>one repo to a governed, multi-repo fleet</strong> &mdash; choosing a distribution format, reviewing consumer updates, coordinating cross-repo work, and planning a phased rollout.</p>
+  <p>The inspected target is <strong><a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">gh aw v0.88.7</a></strong>. The assistant that triaged one issue in Chapter 2 becomes an organization-wide practice, with centrally maintained intent and deliberately deployed consumers.</p>
+  <p>Build on <a class="xref" href="reuse-and-memory.html">Chapter 11: reuse and memory</a>, <a class="xref" href="observability-and-debugging.html">Chapter 12: observability</a>, and <a class="xref" href="governance-and-finops.html">Chapter 13: governance and FinOps</a>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="concept-from-one-assistant-to-a-governed-fleet">
+          <h2 id="concept-from-one-assistant-to-a-governed-fleet"><a class="anchor-link" href="#concept-from-one-assistant-to-a-governed-fleet" aria-label="Link to Concept: from one assistant to a governed fleet section">Concept: from one assistant to a governed fleet</a></h2>
+          <div class="section-content" data-content-slot="concept-from-one-assistant-to-a-governed-fleet">
+<p>Beyond a single repository, workflows can coordinate organization-wide maintenance, assess code quality across repositories, or aggregate issue tracking into a control repository (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/guides/using-at-scale.mdx">Using at Scale</a>). A fleet isn't just many copies of one workflow; it's a <em>managed practice</em>.</p>
+  <p>This is the arc the whole book has followed: <strong>the Individual</strong> (one workflow), <strong>the Team</strong> (safe, reviewed, patterned), and now <strong>the Organization</strong> (a fleet at scale). Each level reused everything below it &mdash; the fleet is just Parts I and II, governed and multiplied.</p>
+  <p id="reviewed-distribution">Separate three decisions: <strong>what intent you share</strong>, <strong>which revision each consumer accepts</strong>, and <strong>when you authorize its effects</strong>. Central maintenance reduces duplicated work; it does not remove consumer review. Pinned imports and vendored copies need deliberate dependency updates, recompilation, and deployment before a central change reaches them (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/imports.md">imports</a>).</p>
+  <p>Governance has the same boundary: a default supplies a preference, a compiler policy constrains generated workflows, and a runtime gate controls a supported capability. None is shorthand for &ldquo;every repository inherited every control.&rdquo; This is the scoped-policy model from Chapter 13.</p>
+  <aside class="callout callout--leader" aria-label="Real impact">
+    <p class="callout-title">A historical example of fleet impact</p>
+    <p>GitHub Next's <a href="https://github.com/githubnext/repo-assist-impact">repo-assist-impact</a> report measured a Repo Assistant fleet across <strong>15 repositories</strong>: a net reduction of <strong>651 issues</strong> and a <strong>median 9&times; velocity</strong> improvement. Its thesis puts human decision-making at the throughput bottleneck. These are that report's historical results, not measurements of this chapter's recipe or a forecast for your organization.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout">
+          <h2 id="in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout"><a class="anchor-link" href="#in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout" aria-label="Link to In gh-aw: multi-repo fleets, the dispatcher pattern, rollout section">In gh-aw: multi-repo fleets, the dispatcher pattern, rollout</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-multi-repo-fleets-the-dispatcher-pattern-rollout">
+<p>The mechanics below implement <a href="#reviewed-distribution">reviewed distribution</a>: package the shared intent, accept changes in each consumer, then authorize a rollout.</p>
+
+  <h3 id="distribution-formats">1. Install and compose: four separate formats</h3>
+  <table>
+    <caption>Similar names, different consumers</caption>
+    <thead>
+      <tr><th scope="col">Format</th><th scope="col">What it controls</th><th scope="col">Do not confuse it with&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Package <code>aw.yml</code></td><td>The installable bundle at a publisher's repository root or nested package root: <code>includes</code>, resources, and setup configuration.</td><td>Workflow frontmatter. Recursive package composition uses <code>includes</code>, <strong>not <code>imports</code></strong> (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/parser/schemas/aw_manifest_schema.json">package schema</a>).</td></tr>
+      <tr><td>Repository <code>.github/workflows/aw.json</code></td><td>Consumer project settings, including repository-wide strict compilation.</td><td>A package manifest or a per-workflow import (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/parser/schemas/repo_config_schema.json">repository schema</a>).</td></tr>
+      <tr><td>Workflow Markdown <code>imports:</code></td><td>Composition of shared workflow configuration and prompt dependencies; remote gh-aw refs use <code>@ref</code>.</td><td>Package installation or a guarantee that all prompt content is inlined into the lock. See <a class="xref" href="reuse-and-memory.html">Chapter 11</a> and the <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/imports.md">imports reference</a>.</td></tr>
+      <tr><td>APM <code>apm.yml</code></td><td>The independently versioned APM dependency graph under <code>dependencies.apm</code>, using <code>#ref</code> constraints and <code>apm.lock.yaml</code>.</td><td>Any of the three gh-aw formats. The separately pinned APM bridge runs package preparation in Actions; local gh-aw compilation does not install that graph (<a href="https://github.com/microsoft/apm/blob/v0.28.0/docs/src/content/docs/reference/manifest-schema.md">APM 0.28.0 manifest</a>, <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/dependencies.md">gh-aw integration</a>).</td></tr>
+    </tbody>
+  </table>
+
+  <p>A package can keep workflow sources inert outside the publisher's <code>.github/workflows/</code> while mapping them into that directory in a consumer. It can also assemble child packages rather than maintaining one long file list.</p>
+  <figure class="code">
+    <figcaption>Package <code>aw.yml</code> excerpt &mdash; v0.88.7 schema/reference syntax, not an installable package or a workflow; package name, README, child manifests, and payload files are omitted.</figcaption>
+    <pre><code class="language-yaml">includes:
+  - sub/aw.yml
+  - source: payload/workflows/reviewer.md
+    destination: .github/workflows/reviewer.md
+    kind: agentic-workflow
+  - source: payload/extra-workflows/*
+    destination: .github/workflows/</code></pre>
+  </figure>
+  <p>The <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/aw-yml-package-manifest.md">tagged package reference</a> and schema define the boundaries:</p>
+  <ul>
+    <li><strong>Recursive includes:</strong> a child <code>aw.yml</code> path is relative to the declaring manifest and must remain within the top-level package root. Child assets are combined; metadata and <code>config</code> still come from the top-level manifest. An include-only manifest does not also auto-discover workflows in its own directory.</li>
+    <li><strong>Mappings:</strong> <code>source</code> is package-relative; <code>destination</code> is consumer-repository-relative. An individual workflow destination must be a direct child of <code>.github/workflows/</code>. Markdown workflows are compiled; raw Actions <code>.yml</code> files are copied verbatim, not compiled as agentic workflows.</li>
+    <li><strong>Wildcards:</strong> only a trailing <code>/*</code> is supported. It selects supported direct children, not an entire recursive tree. A wildcard mapping targets the <code>.github/workflows/</code> folder and preserves source filenames.</li>
+    <li><strong>Validation:</strong> cycles and case-insensitive destination collisions are rejected. Mappings reject absolute paths, traversal, symlinks, unsupported extensions, and <code>.lock.yml</code> sources; source and destination extensions must agree. A package needs a nonempty <code>name</code> and a package-root <code>README.md</code>.</li>
+  </ul>
+  <p>Installation can change more than one <code>.md</code>. Package resources can supply issue templates, <code>.github/CODEOWNERS</code>, and files under <code>.github/aw/</code>. Packaged <code>.github/workflows/aw.json</code> settings can be merged into the consumer, with <strong>added-package settings taking precedence</strong> (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/cli/add_command.go#L36-L41">v0.88.7 add contract</a>). Review the resulting project configuration as well as the workflow (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md#add">CLI installation contract</a>).</p>
+  <p><code>gh aw add</code> is the non-interactive installer. It rejects packages requiring interactive <code>config</code> steps rather than silently leaving setup incomplete. <code>gh aw add-wizard</code> is the distinct guided path for those experimental setup actions; it is not just another spelling of <code>add</code> (<a href="https://github.com/github/gh-aw/commit/f8a0b360e107fef803bb3565890c79f65bf837e7">interactive-config change</a>).</p>
+
+  <h3 id="reviewed-consumer-updates">2. Update consumers deliberately</h3>
+  <p>An installed workflow records its origin in <code>source:</code>. A tag or SHA constrains the revision you installed; it is <strong>not a promise that an explicit <code>gh aw update</code> will leave that ref unchanged</strong>. The target's update behavior depends on the recorded ref:</p>
+  <table>
+    <caption>Ref advancement during an explicit update, not automatic fleet propagation (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/cli/update_command.go#L35-L46">v0.88.7 update contract</a>)</caption>
+    <thead>
+      <tr><th scope="col">Recorded source ref</th><th scope="col">What update seeks</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Tag</td><td>A newer release; <code>--major</code> permits major-version upgrades.</td></tr>
+      <tr><td>Branch</td><td>The branch's latest commit.</td></tr>
+      <tr><td>Commit SHA</td><td>The default branch's latest commit, rather than treating the SHA as a permanent freeze.</td></tr>
+    </tbody>
+  </table>
+  <p>By default, <code>update</code> uses a three-way merge to preserve local workflow edits while bringing in upstream changes. It also refreshes package resources, skills, and plugins; it can bump action major versions. Inspect conflicts and the complete source, resource, settings, and lock diff. <code>--no-release-bump</code> <strong>still permits core <code>actions/*</code> bumps</strong>: it does not freeze every action.</p>
+  <p><code>gh aw upgrade</code> is broader repository maintenance: it can apply codemods, update actions and local agent files, recompile workflows, and upgrade the extension. In contrast, <code>gh aw compile</code> applies codemods only when you request <code>--fix</code>. These are mutating operations, not observational checks (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md">v0.88.7 CLI reference</a>). No add, wizard, update, or upgrade operation was executed for this chapter.</p>
+
+  <h3 id="consumer-governance">3. Govern the consumer, not just the publisher</h3>
+  <figure class="code">
+    <figcaption>Repository <code>.github/workflows/aw.json</code> settings excerpt &mdash; not workflow frontmatter; this shape was exercised by the v0.88.7 repository-strict probe.</figcaption>
+    <pre><code class="language-json">{"strict": true}</code></pre>
+  </figure>
+  <p>This setting only accepts <code>true</code> and forces effective strict compilation even if a workflow declares <code>strict: false</code>. It does not repair already-deployed locks: regenerate and deploy them in each governed consumer (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/parser/schemas/repo_config_schema.json">repository schema</a>, <a href="https://github.com/github/gh-aw/commit/25fb43e7898db2c8bcd6a9cdbadffed38242c03e">strict-policy implementation</a>).</p>
+  <p>Keep that compile-time policy separate from overridable <code>GH_AW_DEFAULT_*</code> preferences and supported <code>GH_AW_POLICY_*</code> runtime capability gates. For example, a default budget can be a runtime Actions-variable fallback, while <code>GH_AW_DEFAULT_MAX_TURNS</code> is read from the compiler process environment. Setting an organization Actions variable does not inject it into every developer's compiler. Review variable visibility, resolution time, workflow overrides, and deployed locks; the scopes from <a class="xref" href="governance-and-finops.html">Chapter 13</a> still apply (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compiler-enterprise-environment-controls.md">enterprise controls</a>).</p>
+
+  <h3>4. Coordinate across repos (the dispatcher pattern)</h3>
+  <p>Distribution and coordination solve different problems. <strong>CentralRepoOps</strong> uses a control repository to dispatch work or aggregate issues; <strong>OrchestratorOps</strong> dispatches parallel workers for multi-repo operations (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/guides/using-at-scale.mdx">Using at Scale</a>). Cross-repo writes retain the safe-outputs boundary, with output-specific <code>target-repo</code> and <code>allowed-repos</code> configuration plus authorization for those repositories. GitHub Apps are preferred for token rotation and fine-grained scope (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/cross-repository.md">cross-repository reference</a>). The local recipe below is a fleet consumer, not a verified dispatcher or cross-repository credential setup.</p>
+
+  <h3>5. Roll out safely</h3>
+  <p>Don't flip a fleet to production writes on day one. Start with report-only or staged behavior, then authorize a small production pilot before widening. The <code>staged: true</code> safe-output preview from <a class="xref" href="safe-outputs.html">Chapter 6</a> is one evaluation tool, not a replacement for deployment review (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/guides/using-at-scale.mdx">Safe Rollout guidance</a>). <strong>Human review of promotion and human merge of change PRs are this book's rollout policy</strong>, not a claim that gh-aw prohibits opt-in automation.</p>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: metadata helps; it does not enforce governance</p>
+    <p><code>tracker-id:</code> supplies hidden markers on supported body-bearing outputs, such as triage comments. It is not a marker on every label operation or a complete activity ledger. Use search alongside the run evidence from Chapter 12. <code>private: true</code> can block workflow installation through <code>gh aw add</code>; repository access settings, not that field, control source visibility (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/frontmatter.md">frontmatter reference</a>).</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="when-to-scale-org-wide-a-readiness-checklist">
+          <h2 id="when-to-scale-org-wide-a-readiness-checklist"><a class="anchor-link" href="#when-to-scale-org-wide-a-readiness-checklist" aria-label="Link to When to scale org-wide (a readiness checklist) section">When to scale org-wide (a readiness checklist)</a></h2>
+          <div class="section-content" data-content-slot="when-to-scale-org-wide-a-readiness-checklist">
+<p>Scaling multiplies both value and mistakes. Before distributing a workflow across a fleet, it should have earned trust on one repo first.</p>
+  <table>
+    <thead>
+      <tr><th scope="col">Before you fan out, confirm&hellip;</th><th scope="col">Because&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>The workflow has useful, reviewed outcomes on one repo.</td><td>A successful compile does not measure triage quality or maintainer burden.</td></tr>
+      <tr><td>Shared dependencies have reviewed revisions and a consumer inventory.</td><td>You can fix centrally, then track which consumers actually accepted and deployed the fix.</td></tr>
+      <tr><td>Each consumer's strict policy, defaults, and runtime gates have been checked.</td><td>These controls resolve at different stages and do not form an automatically inherited fleet-wide guarantee.</td></tr>
+      <tr><td>Credentials, runner requirements, repository features, and labels are ready.</td><td>Compile-time compatibility is distinct from deployment readiness.</td></tr>
+      <tr><td>You can observe outcomes and costs over a defined window.</td><td>Logs, audit, and telemetry support review; one agent budget is not a cap on the entire fleet's bill.</td></tr>
+      <tr><td>Writes start staged or draft, with named reviewers and a rollback plan.</td><td>Safe rollout needs a decision gate, not just a distribution command.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't fan out a workflow you haven't operated.</strong> Prove it on one repo; earn the fleet.</li>
+    <li><strong>Don't confuse reuse with automatic propagation.</strong> A pinned import or a versioned vendored copy is useful, but a central edit does not change existing consumers. Maintain their update process.</li>
+    <li><strong>Don't go to production writes without a rollout.</strong> Start report-only or <code>staged</code>, gather evidence, then promote.</li>
+    <li><strong>Don't approve an update just because its merge succeeded.</strong> Review settings, resources, actions, secrets, and generated locks. Preserve security-review warnings rather than blanket-approving them.</li>
+  </ul>
+  <p><strong>Phased adoption:</strong> evaluate in one repository; review a limited production pilot; widen in small cohorts only after checking each consumer's revision, lock, and outcomes. Keep the prior reviewed sources and deployment artifacts for rollback, and remember that rolling back a workflow does not undo comments or labels it already applied.</p>
+  <p><strong>Compatibility is a separate check.</strong> The target's inspected compatibility list blocks <strong>v0.82.8&ndash;v0.85.3 inclusive</strong>; the book's previous v0.81.6 baseline is <strong>not</strong> in that range. Remediate affected deployed locks through a reviewed target upgrade, recompilation, and deployment, not by weakening strict mode or disabling compatibility checks (<a href="https://github.com/github/gh-aw/blob/v0.88.7/.github/aw/compat.json">v0.88.7 compatibility list</a>).</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-cloning-the-repo-assistant-across-a-fleet">
+          <h2 id="worked-example-cloning-the-repo-assistant-across-a-fleet"><a class="anchor-link" href="#worked-example-cloning-the-repo-assistant-across-a-fleet" aria-label="Link to Worked example: cloning the Repo Assistant across a fleet section">Worked example: cloning the Repo Assistant across a fleet</a></h2>
+          <div class="section-content" data-content-slot="worked-example-cloning-the-repo-assistant-across-a-fleet">
+<p>Here is the Repo Assistant as a <strong>fleet citizen</strong>: a thin consumer plus a shared policy. This is a <em>local fixture</em>, not an installed package. Its <code>source:</code> value is synthetic and unexercised; its import is a local vendored fragment. Neither proves installation from a real publisher or inheritance of organization policy.</p>
+
+  <figure class="code">
+    <figcaption><code>examples/ch14/fleet-triage.md</code> &mdash; complete Markdown workflow, requiring the adjacent shared fragment below; no remote installation is claimed.</figcaption>
+    <pre><code class="language-markdown">---
+on:
+  issues:
+    types: [opened, reopened]
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: read
+engine: copilot
+network:
+  allowed:
+    - defaults
+    - github
+source: "my-org/agentic-workflows/workflows/triage.md@v1.2.0"
+tracker-id: repo-assistant-triage
+imports:
+  - shared/triage-policy.md
+tools:
+  repo-memory: true
+---
+
+# Repo Assistant — fleet triage
+
+This example demonstrates governed policy reuse with repository-scoped memory.
+Use the imported triage policy's tools, labels, and safe outputs.
+
+Apply the shared policy to the triggering issue.
+
+The `source:` value is synthetic, unexercised origin metadata, not proof of an
+installation from a real publisher. The import is a local vendored fragment.
+
+The `tracker-id` helps locate body-bearing outputs such as triage comments; it
+does not mark label operations. Updating a real fleet requires reviewed consumer
+dependency changes, recompilation, and deployment, not just a central edit.</code></pre>
+  </figure>
+
+  <figure class="code">
+    <figcaption><code>examples/ch14/shared/triage-policy.md</code> &mdash; entire local shared fragment, not a standalone workflow; compile it through <code>fleet-triage.md</code>.</figcaption>
+    <pre><code class="language-markdown">---
+description: Shared triage policy — a local vendored fleet policy
+tools:
+  github:
+    toolsets: [issues]
+safe-outputs:
+  add-comment:
+    max: 1
+  add-labels:
+    allowed: [bug, enhancement, question, documentation, duplicate, needs-info]
+    max: 3
+---
+
+## Shared triage policy
+
+This fragment shares triage instructions and safe-output limits with its
+importing workflow. It does not distribute updates or share repository memory.
+
+- Categorize the issue and summarize it in one sentence.
+- Note any missing information the reporter should add.
+- Apply at most three labels from the allowed set; skip anything ambiguous.
+- Post exactly one triage comment. Be concise and kind.</code></pre>
+  </figure>
+  <p>The shared policy supplies the <a class="xref" href="safe-outputs.html">Chapter 6</a> write boundary: at most one comment and three allowed labels, while the main agent's repository permissions remain read-only. <code>repo-memory</code> retains repository-scoped state; importing this policy elsewhere does not share that state (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/repo-memory.md">repo-memory reference</a>).</p>
+  <p><strong>This policy permits real outputs once deployed; it is not staged.</strong> Use Chapter 6's staged evaluation before a pilot. That evaluates safe-output proposals, not the absence of all runtime effects: inference, Actions compute, and memory still require review. No custom budget or organization-wide policy is declared in these two files.</p>
+
+  <figure class="code">
+    <figcaption>Compile-only check &mdash; use a confirmed v0.88.7 CLI in an isolated Git checkout that preserves the relative import; this is not installation or fleet validation.</figcaption>
+    <pre><code class="language-text">gh aw version
+gh aw compile examples/ch14/fleet-triage.md --strict --no-check-update</code></pre>
+  </figure>
+  <!-- Final technical verification: fleet-triage.md and its local shared fragment
+       passed through the importer with v0.88.7, exit 0 and a nonempty strict target
+       lock. The complete workflow/shared HTML copies match their sources and the
+       embedded importer also passed. Evidence under content/research/updates/v0.88.7/:
+       verification.json and embedded-verification.json. Historical reports are preserved.
+       Package mappings remain schema/reference excerpts, not installation probes;
+       no remote installation, runtime result or editorial acceptance is claimed. -->
+  <aside class="callout callout--note" aria-label="Compilation and live-run limits">
+    <p class="callout-title">Compilation is not fleet validation</p>
+    <p>The current fleet workflow and its embedded copy both have strict-compilation <strong>PASS</strong> results, with the shared fragment compiled through the importer. Both checks exited with code <code>0</code> and emitted nonempty <code>.lock.yml</code> files whose metadata records compiler <code>v0.88.7</code> and <code>strict: true</code> (<code>verification.json</code> and <code>embedded-verification.json</code>, under <code>content/research/updates/v0.88.7/</code>). Compilation invokes no engine, but dependency resolution or validators can require network access.</p>
+    <p><strong>Live run: not performed.</strong> The unchanged Copilot authentication path needs a suitable <code>COPILOT_GITHUB_TOKEN</code> secret. A deployment also needs Issues enabled, the allowed labels already present, and reviewed runner, permission, and policy settings. The book repository has Issues disabled. No package installation, consumer update, multi-repo dispatch, or fleet propagation was tested, and no fleet metrics were collected here.</p>
+  </aside>
+
+  <figure class="code">
+    <figcaption>Illustrative lifecycle commands, not executed &mdash; replace the placeholder publisher and ref with a reviewed real source; do not run update against this fixture's synthetic origin.</figcaption>
+    <pre><code class="language-text"># In a real consumer: install a verified publisher's selected revision.
+gh aw add my-org/agentic-workflows/workflows/triage.md@v1.2.0
+
+# Later: prepare upstream changes for review, not an automatic rollout.
+gh aw update</code></pre>
+  </figure>
+  <p>After a real update, review the <a href="#reviewed-consumer-updates">ref advancement and complete diff</a>, obtain strict compile evidence for each affected consumer, then follow the phased adoption checklist. A clean three-way merge is not deployment approval.</p>
+  <figure class="code">
+    <figcaption>Illustrative GitHub issue/PR search for marked triage comments &mdash; replace the organization qualifier; no live results were collected.</figcaption>
+    <pre><code class="language-text">org:my-org "gh-aw-tracker-id: repo-assistant-triage" in:comments</code></pre>
+  </figure>
+  <p>Use <code>in:body</code> when searching markers in issue or PR bodies instead. Neither query accounts for every label operation; combine search with workflow run evidence (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/footers.md">footer and search reference</a>).</p>
+  <aside class="callout callout--note" aria-label="The whole book in one file">
+    <p class="callout-title">The whole book is a practice, not one magic field</p>
+    <p>The recipe brings together triggers, an engine, safe outputs, read-only scopes, network limits, tools, reuse, memory, and output tracking. The remaining work is operational: inspect the generated lock, check scoped budgets and policy, review consumer changes, and earn trust before widening. <code>source:</code> does not do that work for you.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-the-road-ahead">
+          <h2 id="recap-and-the-road-ahead"><a class="anchor-link" href="#recap-and-the-road-ahead" aria-label="Link to Recap &amp; the road ahead section">Recap &amp; the road ahead</a></h2>
+          <div class="section-content" data-content-slot="recap-and-the-road-ahead">
+<p>You've reached the top of the arc &mdash; from one workflow to a governed fleet:</p>
+  <ul>
+    <li>Beyond one repo, workflows <strong>coordinate and scale across dozens</strong> &mdash; org-wide rollouts, cross-repo quality, a single issue-tracking control plane.</li>
+    <li>Keep <strong>package <code>aw.yml</code>, repository <code>aw.json</code>, workflow <code>imports</code>, and APM <code>apm.yml</code></strong> distinct. Installing a bundle can change resources and project settings, not just one Markdown file.</li>
+    <li>Maintain intent centrally, but <strong>review updates and deploy each consumer deliberately</strong>. Pins constrain installed revisions; explicit updates can advance them. Recompile and inspect the resulting locks.</li>
+    <li><strong>Roll out safely</strong> (report-only or staged &rarr; small production pilot &rarr; wider cohorts). Combine body-marker searches with run evidence, and verify governance at its actual compiler/runtime scope.</li>
+    <li>A fleet is Parts I&ndash;II, <strong>governed and multiplied</strong>. Measure its accepted outcomes and costs rather than treating installation count as impact.</li>
+  </ul>
+  <p><strong>The road ahead.</strong> You set out to look at your own repository, spot three tasks a tireless teammate could own overnight, and ship a governed agentic workflow that does them &mdash; safely, cheaply, and reviewably. You now can. Start with one 10-minute win, earn trust, and let the fleet compound. That's Continuous AI: the outer loop, automated &mdash; with people firmly in the loop. Go build your Repo Assistant.</p>
+  <p>For your first rollout, return to <a class="xref" href="your-first-workflow.html">Chapter 2's one-repo win</a>, then use the <a class="xref" href="governance-and-finops.html">Chapter 13 governance checks</a> before you widen.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <a class="pager-link" rel="prev" href="governance-and-finops.html">← Chapter 13: Governance &amp; FinOps: Policy and Cost at Scale</a>
+          <span class="pager-link is-disabled">No next chapter →</span>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>By <strong>Maxim Salnikov</strong> · Microsoft · <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub ↗</a> · <a href="../gh-aw-book.pdf">Download the PDF</a> · <a href="../versions.html">Content edition v1.2</a> · <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "name": "GitHub Agentic Workflows: An Interactive Book",
+  "short_name": "gh-aw Book",
+  "description": "Learn GitHub Agentic Workflows (gh-aw): write your repository's outer loop in Markdown, compile it to hardened GitHub Actions, and run safe, reviewed Continuous AI.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0d1220",
+  "theme_color": "#0d1220",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": [
+    "education",
+    "developer",
+    "books",
+    "technology"
+  ],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

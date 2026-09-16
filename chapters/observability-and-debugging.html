@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Trust &amp; Operate: Observability and Debugging | GitHub Agentic Workflows: An Interactive Book</title>
+  <meta name="description" content="Inspect, debug, and audit runs with gh aw logs, gh aw audit, and OpenTelemetry so you can trust what the fleet does.">
+  <meta name="author" content="Maxim Salnikov">
+  <meta name="book-content-version" content="1.2">
+  <meta name="gh-aw-framework-version" content="v0.88.7">
+  <link rel="canonical" href="https://aw.isainative.dev/chapters/observability-and-debugging.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e9edf4">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1220">
+  <script>(function(){try{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GitHub Agentic Workflows: An Interactive Book">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Trust &amp; Operate: Observability and Debugging">
+  <meta property="og:description" content="Inspect, debug, and audit runs with gh aw logs, gh aw audit, and OpenTelemetry so you can trust what the fleet does.">
+  <meta property="og:url" content="https://aw.isainative.dev/chapters/observability-and-debugging.html">
+  <meta property="og:image" content="https://aw.isainative.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Trust &amp; Operate: Observability and Debugging">
+  <meta name="twitter:description" content="Inspect, debug, and audit runs with gh aw logs, gh aw audit, and OpenTelemetry so you can trust what the fleet does.">
+  <meta name="twitter:image" content="https://aw.isainative.dev/og-image.png">
+  <meta name="twitter:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+  <script>window.__APPINSIGHTS_CONNECTION_STRING__="InstrumentationKey=c9860cc2-58c1-4516-80c7-aba8338b8f74;IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/;ApplicationId=8c8c1e42-8fa6-42cc-bf96-362cac52d3d5";</script>
+  <script defer src="../assets/analytics.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/observability-and-debugging.html#article","headline":"Trust \u0026 Operate: Observability and Debugging","name":"Trust \u0026 Operate: Observability and Debugging","description":"Inspect, debug, and audit runs with gh aw logs, gh aw audit, and OpenTelemetry so you can trust what the fleet does.","url":"https://aw.isainative.dev/chapters/observability-and-debugging.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"version":"1.2","about":{"@type":"SoftwareApplication","name":"GitHub Agentic Workflows (gh-aw)","softwareVersion":"v0.88.7","url":"https://github.com/github/gh-aw/releases/tag/v0.88.7"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Organization (fleet at scale)","keywords":"gh aw logs, gh aw audit, OpenTelemetry (OTel), Actions run summary, human-in-the-loop review, bounded log downloads and cached audits, explicit incomplete-work outcomes"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/observability-and-debugging.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Organization (fleet at scale)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"Trust \u0026 Operate: Observability and Debugging","item":"https://aw.isainative.dev/chapters/observability-and-debugging.html"}]}]}</script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <div class="sidebar-top">
+          <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+          <div class="theme-toggle" role="group" aria-label="Reading theme">
+        <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">☀</span><span class="visually-hidden">Light theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">◑</span><span class="visually-hidden">Sepia theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="dark" aria-pressed="false" title="Dark"><span aria-hidden="true">☾</span><span class="visually-hidden">Dark theme</span></button>
+      </div>
+        </div>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a class="is-current" aria-current="page" href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 12 <span class="fm-sep">·</span> <a href="../gh-aw-book.pdf">Download PDF</a> <span class="fm-sep">·</span> <a href="../versions.html">Content edition v1.2</a> <span class="fm-sep">·</span> <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></nav>
+        <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">12</span><span class="fm-sep">·</span><span class="fm-k">part:</span> <span class="fm-v">The Organization (fleet at scale)</span></p>
+        <h1>Trust &amp; Operate: Observability and Debugging</h1>
+        <p class="lead">Inspect, debug, and audit runs with gh aw logs, gh aw audit, and OpenTelemetry so you can trust what the fleet does.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#concept-you-can-t-govern-what-you-can-t-see">Concept: you can&#x27;t govern what you can&#x27;t see</a></li>
+              <li><a href="#in-gh-aw-logs-audit-opentelemetry-run-summaries">In gh-aw: logs, audit, OpenTelemetry, run summaries</a></li>
+              <li><a href="#when-to-inspect-versus-trust-human-in-the-loop">When to inspect versus trust (human-in-the-loop)</a></li>
+              <li><a href="#worked-example-debugging-a-failed-run-from-its-logs">Worked example: debugging a failed run from its logs</a></li>
+              <li><a href="#recap-and-what-s-next">Recap &amp; what&#x27;s next</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>gh aw logs</li>
+            <li>gh aw audit</li>
+            <li>OpenTelemetry (OTel)</li>
+            <li>Actions run summary</li>
+            <li>human-in-the-loop review</li>
+            <li>bounded log downloads and cached audits</li>
+            <li>explicit incomplete-work outcomes</li>
+            </ul>
+          </aside>
+          <aside class="metadata-card" aria-labelledby="depends-heading">
+            <h2 id="depends-heading">Prerequisites</h2>
+            <ul>
+            <li><a href="reuse-and-memory.html">Chapter 11: Reuse &amp; Memory: Shared Components and Repo Knowledge</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p>By the end of this chapter you can <strong>inspect, debug, and audit</strong> what your workflows do &mdash; with <code>gh aw logs</code>, <code>gh aw audit</code>, run summaries, and OpenTelemetry &mdash; so you can trust a fleet you can't watch by hand.</p>
+  <p>This chapter's fixed target is <strong>gh aw v0.88.7</strong>. Building on the shared workflows in <a class="xref" href="reuse-and-memory.html">Chapter 11</a>, we trace a run that went wrong from an overview table down to the failing step. The revised source and matching embedded workflow passed strict v0.88.7 compilation; the debugging scenario is illustrative, not a captured live-run transcript.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="concept-you-can-t-govern-what-you-can-t-see">
+          <h2 id="concept-you-can-t-govern-what-you-can-t-see"><a class="anchor-link" href="#concept-you-can-t-govern-what-you-can-t-see" aria-label="Link to Concept: you can&#x27;t govern what you can&#x27;t see section">Concept: you can&#x27;t govern what you can&#x27;t see</a></h2>
+          <div class="section-content" data-content-slot="concept-you-can-t-govern-what-you-can-t-see">
+<p>Everything in Part III assumes a fleet running unattended &mdash; agents triaging, reviewing, and opening PRs across many repos while you sleep. That only works if you can answer, after the fact: <em>what did it do, why, what did it cost, and what did it touch?</em> <strong>Observability is the precondition for trust.</strong> You can't govern &mdash; can't budget, can't secure, can't improve &mdash; what you can't see.</p>
+  <p>The compile model from <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a> gives you a reviewable job plan; runtime records let you compare that plan with what happened. Prompts, recorded outputs, patches, and logs provide evidence for post-hoc analysis (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/artifacts.md">v0.88.7 artifact reference</a>). These are defined artifacts, available when produced and retained &mdash; not a complete snapshot of the runner's filesystem. Debugging means reading the record and recognizing its limits.</p>
+  <p><strong>Inspectable orchestration is not deterministic judgment.</strong> Both the <strong>main agent</strong> and the <strong>default threat detector</strong> perform separate, probabilistic AI inference (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/threat-detection.md">tagged threat-detection reference</a>). The compiled job ordering, permissions, and gates are inspectable, but neither AI judgment is deterministic or proof of safety. Inspect both the agent's reported outcome and the detector's verdict alongside the available artifacts. Detection evidence is also bounded: the retained verdict and summary do not include the deliberately omitted raw detector log.</p>
+  <aside class="callout callout--leader" aria-label="Leader takeaway">
+    <p class="callout-title">Leader lens: auditability is a compliance asset</p>
+    <p>A retained run record can show the prompt it saw, the actions it proposed, the network it touched, and the tokens it spent. That evidence turns &ldquo;we run autonomous agents&rdquo; from a worry into a governable practice. Decide which records you need and how long to retain them; a downloadable artifact or a local log cache is not a promise of permanent audit history.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-logs-audit-opentelemetry-run-summaries">
+          <h2 id="in-gh-aw-logs-audit-opentelemetry-run-summaries"><a class="anchor-link" href="#in-gh-aw-logs-audit-opentelemetry-run-summaries" aria-label="Link to In gh-aw: logs, audit, OpenTelemetry, run summaries section">In gh-aw: logs, audit, OpenTelemetry, run summaries</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-logs-audit-opentelemetry-run-summaries">
+<p>Three CLI commands and one export give you a practical starting point: find anomalies, investigate the evidence, and bring run telemetry into your existing operations tools. The CLI recipes below were checked against v0.88.7 help and tagged sources, not exercised on live runs.</p>
+
+  <h3><code>gh aw logs</code> &mdash; the overview and the artifacts</h3>
+  <p>It downloads and analyzes workflow logs and artifacts, then gives you an overview with duration, token usage, and cost information. In the inspected v0.88.7 help, the default download is still just the compact <code>usage</code> artifact, with a default limit of ten matching runs per workflow. Widen the evidence with <code>--artifacts</code> (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md">tagged CLI reference</a>; <code>gh aw logs --help</code>):</p>
+  <figure class="code">
+    <figcaption>Fetch runs and choose how much to download; replace owner/repo with your repository</figcaption>
+    <pre><code class="language-text">gh aw logs                            # overview: duration, tokens, cost
+gh aw logs repo-assistant             # just one workflow's runs
+gh aw logs owner/repo/repo-assistant   # a workflow in a remote repository
+gh aw logs --artifacts all            # all available artifact sets
+gh aw logs --artifacts agent,firewall # only what you need
+gh aw logs --help                     # current download and pruning controls</code></pre>
+  </figure>
+  <p><strong>Bound the sample before downloading.</strong> v0.88.7 accepts multiple workflow targets, including cross-repository paths, and combines their results. <code>--count</code> applies <em>per workflow</em>: two workflows with <code>--count 20</code> can return up to twenty matching runs each, not twenty in total. Date filters such as <code>--start-date</code> narrow the window but do not remove that count limit. Use <code>--exclude-staged</code> to omit runs that used staged safe outputs; it replaces the older <code>--no-staged</code> spelling.</p>
+  <figure class="code">
+    <figcaption>v0.88.7 recipes: compare named workflows, or inspect a bounded sample from the last week</figcaption>
+    <pre><code class="language-text">gh aw logs repo-assistant repo-assistant-observable --count 20
+gh aw logs repo-assistant --start-date -1w --count 20 --exclude-staged</code></pre>
+  </figure>
+  <p>Choose comparable evidence when workflows use different sandbox runtimes or record different measurements. These selectors filter existing run records; they do not change or instrument the workflow:</p>
+  <table>
+    <caption>Target CLI filters for a more focused investigation</caption>
+    <thead>
+      <tr><th scope="col">Investigate&hellip;</th><th scope="col">Command recipe</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>runs using the Docker agent runtime</td><td><code>gh aw logs repo-assistant --runtime docker --count 10</code></td></tr>
+      <tr><td>runs with recorded evaluation results</td><td><code>gh aw logs repo-assistant --evals --count 10</code></td></tr>
+      <tr><td>runs with recorded deterministic grader results</td><td><code>gh aw logs repo-assistant --graders --count 10</code></td></tr>
+    </tbody>
+  </table>
+  <p>The OTLP example in this chapter does not configure evaluations or graders. Those filters are useful for a fleet that already records such results; a metric or grader result is supporting evidence, not a substitute for checking the outcome or reviewing the work (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/audit.md">tagged audit reference</a>).</p>
+  <p><strong>Bound the download footprint too.</strong> v0.88.7 resolves remote workflow names automatically and improves cache-size diagnostics and budget-driven pruning during concurrent downloads (<a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">v0.88.7 release notes</a>). After choosing the runs and artifact sets, choose a storage policy or an API reserve. Preserve required incident evidence under your retention policy before enabling cleanup:</p>
+  <figure class="code">
+    <figcaption>Download-control recipes &mdash; the storage recipe can delete cached run evidence</figcaption>
+    <pre><code class="language-text">gh aw logs repo-assistant --count 20 --max-storage 10240 --prune-older-runs
+gh aw logs repo-assistant --count 20 --max-github-api-rate-limit -2000 --timeout 30</code></pre>
+  </figure>
+  <ul>
+    <li><code>--max-storage</code> is a log-cache budget in <strong>MB</strong>; zero means unlimited. The first recipe sets 10,240 MB. Pruning first removes nonessential data from completed runs, preserving summaries and metadata where possible.</li>
+    <li><code>--prune-older-runs</code> allows removal of the oldest completed runs if that selective cleanup still cannot meet the budget. Do not mistake selective preservation for guaranteed retention: this additional mode can remove the remaining run record.</li>
+    <li><code>--max-github-api-rate-limit -2000</code> reserves 2,000 requests from the GitHub core API allowance. A positive value instead sets a maximum <em>used</em> core-request count before waiting for reset. <code>--timeout 30</code> sets a thirty-minute download timeout. These are client download controls, <strong>not AI-credit or token budgets</strong>.</li>
+  </ul>
+  <p>Check <code>gh aw logs --help</code> for the full option definitions. Local cache cleanup does not extend GitHub's artifact retention, and a cached report cannot restore evidence that was never collected or is no longer available.</p>
+  <p>Depending on what the run produced and what you downloaded, the record can include <code>agent-stdio.log</code>, <code>safe_output.jsonl</code> (recorded agent output), <code>aw-{branch}.patch</code> (changes), <code>workflow-logs/</code>, and <code>summary.json</code>. Useful artifact sets include <code>activation, agent, detection, firewall, github-api, mcp, usage</code>.</p>
+  <p><strong>All artifacts does not mean all files.</strong> v0.88.7 restricts agent artifact packaging to known files to reduce accidental data exposure. Claude debug logs also moved outside the agent data directory to avoid interfering with output packaging (<a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">release notes</a>). Don't assume an arbitrary diagnostic file will be in the uploaded agent output, or interpret an absent file as proof that nothing happened.</p>
+  <p>Some raw diagnostics are deliberately omitted. The default external threat-detection path uploads <code>detection_result.json</code> and <code>step-summary.md</code>, not <code>detection.log</code>, because the raw log can contain sensitive content derived from the agent transcript (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/artifacts.md#detection">tagged detection artifact reference</a>). Redaction and packaging limits reduce exposure; they do not guarantee that every sensitive value is removed. Control access to downloaded records and review them before sharing.</p>
+
+  <h3><code>gh aw audit</code> &mdash; the focused report</h3>
+  <p>Where <code>logs</code> is broad, <code>audit</code> is deep. It downloads artifacts and logs, detects errors, analyzes MCP tool usage, and generates a focused report (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/audit.md">tagged audit reference</a>). Unlike the lightweight <code>logs</code> default, <code>audit</code> requests all available artifact sets for the selected run by default.</p>
+  <p>Use a full run URL so the repository context travels with the run ID. For a bare numeric ID, the inspected target help requires <code>--repo owner/repo</code>. Replace the sample ID, repository, and URL placeholders below with your own:</p>
+  <figure class="code">
+    <figcaption>Investigate one run, or diff two</figcaption>
+    <pre><code class="language-text">gh aw audit 1234567890 --repo owner/repo   # bare ID with explicit repository context
+gh aw audit &lt;run-url&gt;                     # detailed Markdown report for one run
+gh aw audit &lt;run-url&gt;/job/&lt;id&gt;            # a job URL — extracts the first failing step
+gh aw audit &lt;baseline-url&gt; &lt;comparison-url&gt; # compare two runs (first = baseline)</code></pre>
+  </figure>
+  <p>Given a job URL without a step anchor, it extracts the first failing step's output. Its Firewall Analysis section connects to <a class="xref" href="defense-in-depth.html">Chapter 7</a>: it reports domains and allow/deny decisions found in the available firewall evidence. Use that report to form a diagnosis, then confirm it against the relevant logs.</p>
+  <p>For repeat investigations, <code>gh aw logs --audit</code> generates or reuses each cached run's <code>audit.json</code> from downloaded data (<a href="https://github.com/github/gh-aw/releases/tag/v0.88.6">cached-audit change shipped before the target</a>). Choose enough artifact sets for the question you are asking:</p>
+  <figure class="code">
+    <figcaption>Create cached reports from selected evidence for up to five runs in a remote repository</figcaption>
+    <pre><code class="language-text">gh aw logs owner/repo/repo-assistant --count 5 --artifacts agent,firewall --audit</code></pre>
+  </figure>
+  <p>Report generation uses the downloaded evidence; it does <strong>not</strong> make the overall <code>logs</code> invocation offline or API-free. A cached report can still have missing data. Widen the artifact selection or investigate the original run when the report cannot answer your question.</p>
+
+  <h3>Run summaries and OpenTelemetry</h3>
+  <p>Read the Markdown <strong>step summaries</strong> in the Actions UI alongside the workflow status from <code>gh aw status</code>. In v0.88.7, an agent calling <code>report_incomplete</code> makes the workflow's conclusion step fail rather than silently succeed; optional incomplete-work issue reporting can still proceed (<a href="https://github.com/github/gh-aw/commit/17102565c7209c3dc26b04a396f4afd0e33fe477">incomplete-work failure change</a>). That is an outcome signal, not necessarily an engine crash. A <code>noop</code> (&ldquo;no work was needed&rdquo;) and incomplete work (&ldquo;the agent could not finish&rdquo;) are different outcomes.</p>
+  <p>For centralized, cross-run visibility, <code>observability.otlp</code> configures trace export to an OpenTelemetry Protocol (OTLP) compatible backend (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/frontmatter.md">tagged frontmatter reference</a>). With a working, reviewed runtime configuration, agent runs can appear in the same tracing tool as the rest of your systems.</p>
+  <p>That export is also a data-flow decision. v0.88.7 hardens OTLP handling against scheme-only authorization headers &mdash; for example, <code>Bearer</code> without a credential (<a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">release notes</a>). This guard does not validate your collector or approve sending telemetry to it. The example below supplies <code>Authorization</code> directly from <code>OTLP_TOKEN</code>; its value must match the collector's required header format.</p>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: start narrow, then widen</p>
+    <p>Downloading every artifact for every run is slow. Start with <code>gh aw logs</code> for the overview, spot the anomalous run (long duration, high tokens, a failure), then <code>gh aw audit &lt;run-url&gt;</code> just that one. The audit already requests all artifact sets for that run; use <code>gh aw logs</code> with <code>--artifacts all</code> when you need the raw evidence across more matching runs, not as the default fleet-wide download.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="when-to-inspect-versus-trust-human-in-the-loop">
+          <h2 id="when-to-inspect-versus-trust-human-in-the-loop"><a class="anchor-link" href="#when-to-inspect-versus-trust-human-in-the-loop" aria-label="Link to When to inspect versus trust (human-in-the-loop) section">When to inspect versus trust (human-in-the-loop)</a></h2>
+          <div class="section-content" data-content-slot="when-to-inspect-versus-trust-human-in-the-loop">
+<p>You can't read every run of a busy fleet &mdash; nor should you. The skill is knowing which runs earn a look. Let the cheap signals (the overview table, the safe-outputs boundary, the threat-detection gate) carry the routine cases, and spend attention where the signal says something's off.</p>
+  <table>
+    <thead>
+      <tr><th>Inspect closely when&hellip;</th><th>Trust the guardrails when&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>a run failed, timed out, or reported incomplete work</td><td>it succeeded and produced expected safe outputs</td></tr>
+      <tr><td>tokens/cost spiked vs. the norm</td><td>cost is in the usual band</td></tr>
+      <tr><td>the firewall logged unexpected domains</td><td>egress stayed within the allowlist</td></tr>
+      <tr><td>you're rolling out a new or changed workflow</td><td>a stable workflow is running unchanged</td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't skip observability because &ldquo;it's working.&rdquo;</strong> A silent fleet is not a healthy fleet &mdash; it's an unmonitored one. Glance at <code>gh aw logs</code> regularly even when nothing's on fire.</li>
+    <li><strong>Don't debug from the model's chat alone.</strong> Compare its narration with the patch, safe-output JSON, and firewall evidence. Read the record, not just the story.</li>
+    <li><strong>Don't read a filtered sample as fleet-wide proof.</strong> Count, date, runtime, and result filters change what you see. No matching runs &mdash; or no recorded evaluation result &mdash; does not mean there were no failures.</li>
+    <li><strong>Don't confuse missing evidence with a clean run.</strong> Check which artifacts were produced and selected, and whether redaction, retention, or local pruning limits what you can inspect. Keep required evidence before cleaning up a cache.</li>
+    <li><strong>Don't treat observability as a substitute for the guardrails.</strong> Seeing a bad action after the fact is no help if it already shipped. Logs and audit <em>complement</em> safe outputs and review gates; they don't replace them.</li>
+  </ul>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-debugging-a-failed-run-from-its-logs">
+          <h2 id="worked-example-debugging-a-failed-run-from-its-logs"><a class="anchor-link" href="#worked-example-debugging-a-failed-run-from-its-logs" aria-label="Link to Worked example: debugging a failed run from its logs section">Worked example: debugging a failed run from its logs</a></h2>
+          <div class="section-content" data-content-slot="worked-example-debugging-a-failed-run-from-its-logs">
+<p>Imagine the Repo Assistant's nightly run failed. Here's a three-step path from &ldquo;something's wrong&rdquo; to a supported diagnosis. The IDs, metrics, and failure below are illustrative; no workflow was run for this chapter update.</p>
+
+  <p><strong>1. Get the overview.</strong> Start broad to find the bad run and its ID:</p>
+  <figure class="code">
+    <figcaption>An illustrative overview surfaces the anomaly &mdash; not a measured CLI transcript</figcaption>
+    <pre><code class="language-text">gh aw logs repo-assistant --start-date -1w --count 20 --exclude-staged
+# RUN ID       WORKFLOW         STATUS   DURATION   TOKENS    COST
+# 1234567890   repo-assistant   failure  4m12s      182,400   …
+# 1234567889   repo-assistant   success  0m48s       12,100   …</code></pre>
+  </figure>
+  <p>In this scenario, the failed run also burned roughly <strong>15×</strong> the tokens of a healthy one &mdash; two signals pointing at the same run.</p>
+
+  <p><strong>2. Audit that run.</strong> Open its focused report, then use a job URL if you need the first failing step's output. Substitute your repository and real run ID:</p>
+  <figure class="code">
+    <figcaption>Audit a run URL with explicit repository context &mdash; placeholder URL, not an executed command</figcaption>
+    <pre><code class="language-text">gh aw audit https://github.com/OWNER/REPO/actions/runs/1234567890
+# Examine errors, MCP tool usage, safe outputs, and Firewall Analysis.
+# Read the reported outcome too: incomplete work now fails the workflow.</code></pre>
+  </figure>
+  <p>Say the report points to the agent looping on a tool call to a domain the firewall <strong>denied</strong>. Confirm the repeated calls and timeout in the raw evidence; in this scenario, those retries explain both the failure <em>and</em> the token blow-up.</p>
+
+  <p><strong>3. Confirm and fix.</strong> Inspect the raw files downloaded by the audit. If you also need that evidence across the workflow's recent runs, request their available artifact sets explicitly with the <code>logs</code> command below. A denial is not permission to widen the firewall: first establish whether the host is a legitimate dependency. If it is, review a narrow change to <code>network.allowed</code> (<a class="xref" href="defense-in-depth.html">Chapter 7</a>); otherwise fix the prompt or tool path and keep the denial. Recompile with strict mode:</p>
+  <figure class="code">
+    <figcaption>Inspect the evidence, review the cause, then recompile</figcaption>
+    <pre><code class="language-text">gh aw logs repo-assistant --start-date -1w --count 20 --exclude-staged --artifacts all
+# Same filters as the overview, with wider artifact selection.
+# Illustrative diagnosis: denied egress, retried to timeout.
+# Review whether the dependency is legitimate before changing network.allowed.
+gh aw compile --strict .github/workflows/repo-assistant.md</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="The example workflow for this chapter">
+    <p class="callout-title">Making runs observable up front</p>
+    <p>The chapter's standalone example, <code>examples/ch12/repo-assistant-observable.md</code>, is a small issue-triggered variant that isolates the <code>observability.otlp</code> wiring. Its YAML is unchanged; this revision qualifies the explanatory prompt text. Its telemetry description assumes a configured runtime; compilation itself sends no workflow traces to your collector.</p>
+  </aside>
+  <figure class="code">
+    <figcaption>examples/ch12/repo-assistant-observable.md &mdash; complete workflow; strict v0.88.7 compilation PASS; runtime NOT RUN</figcaption>
+    <pre><code class="language-markdown">---
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: read
+engine: copilot
+network:
+  allowed:
+    - defaults
+    - github
+safe-outputs:
+  add-comment:
+    max: 1
+observability:
+  otlp:
+    endpoint: ${{ secrets.OTLP_ENDPOINT }}
+    headers:
+      Authorization: ${{ secrets.OTLP_TOKEN }}
+---
+
+# Repo Assistant — observable triage
+
+You are the **Repo Assistant**. Triage the new issue with a single, concise
+comment summarizing it and any missing information.
+
+This example is about **operating** the workflow, not the triage itself. It
+exports distributed traces to an OpenTelemetry (OTLP) backend via the
+`observability:` block when the runtime is configured. Traces, token usage,
+timing, and the records from `gh aw logs` and `gh aw audit` provide
+complementary evidence about observable activity and reported outcomes,
+bounded by collection, redaction, and retention.</code></pre>
+  </figure>
+  <p><strong>Historical compilation evidence, not verification of this revision.</strong> The <time datetime="2026-09-15">15 September 2026</time> preflight recorded actual <code>gh aw version v0.88.7</code>. The then-current standalone source passed strict compilation with exit code 0 and a nonempty emitted lock. It also emitted <strong>one safe-update warning</strong>, including <code>SECURITY REVIEW REQUIRED</code> and the following secret references. The exact result is retained in <code>content/research/updates/v0.88.7/preflight-verification.json</code>.</p>
+  <figure class="code">
+    <figcaption>Selected lines from the historical preflight compiler warning &mdash; secret names, not secret values</figcaption>
+    <pre><code class="language-text">New restricted secret(s):
+  - OTLP_ENDPOINT
+  - OTLP_TOKEN</code></pre>
+  </figure>
+  <p>Those preflight fixtures had no approval manifest. That explains the warning; it does not waive the review. Before deployment, review why these credentials are needed, who controls the telemetry destination, what data will leave the workflow, and who can access or retain it. Keep credentials scoped to that intended use. <strong>Never add <code>--approve</code> merely to silence the warning, or weaken strict mode to avoid it.</strong></p>
+  <p><strong>Revised example: strict compilation PASS.</strong> The revised standalone source and matching embedded copy each passed with exit code 0 and a nonempty lock whose metadata confirms <code>compiler_version: v0.88.7</code> and <code>strict: true</code>. Each compilation emitted one safe-update warning naming <code>OTLP_ENDPOINT</code> and <code>OTLP_TOKEN</code>; no approval was granted. Fresh final source and embedded evidence is recorded in <code>content/research/updates/v0.88.7/verification.json</code> and <code>embedded-verification.json</code>; the earlier pilot-revision report remains historical. This is compile-time technical evidence, not editorial acceptance or deployment approval; runtime remains <strong>NOT RUN</strong>.</p>
+  <p><strong>Keep verification gates separate.</strong> The historical result above is from <code>compile --strict</code>. The separate <code>--validate</code> gate adds checks whose results depend on repository features, dependency resolution, and available tooling (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/workflow/compiler.go">target validation implementation</a>). A PASS against a reference repository does not certify your deployment repository. Docker-backed checks and optional scanners were unavailable in the assessment environment; no PASS for those checks is claimed here. Retain each gate's exit status and diagnostics rather than collapsing everything into one &ldquo;verified&rdquo; label.</p>
+  <p><strong>Runtime: NOT RUN.</strong> No engine or OTLP secret values were supplied in the historical preflight. A live deployment needs the Copilot credentials discussed in <a class="xref" href="engines.html">Chapter 5</a> and reviewed values for <code>OTLP_ENDPOINT</code> and <code>OTLP_TOKEN</code>. A compilation PASS does not validate endpoint reachability or authentication, and it does not approve secret exposure. Confirm trace delivery only in a separately authorized live test; combine those traces with Actions summaries and <code>logs</code>/<code>audit</code> rather than treating any one source as a complete record.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-what-s-next">
+          <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
+          <div class="section-content" data-content-slot="recap-and-what-s-next">
+<p>You can now see what your fleet does, and debug it when it misbehaves:</p>
+  <ul>
+    <li><strong>Observability is the precondition for trust</strong> &mdash; you can't govern what you can't see. Know which evidence is produced, packaged, and retained.</li>
+    <li><code>gh aw logs</code> gives the <strong>overview + artifacts</strong> (duration, tokens, cost; <code>--artifacts</code> to download more). <code>gh aw audit</code> gives a <strong>focused report</strong> on tool/firewall use and, with a job URL, extracts the first failing step's output.</li>
+    <li><strong>Bound the investigation.</strong> Counts apply per workflow, dates and other filters select a sample, and download budgets control the local cache and GitHub API usage &mdash; not model spend. Cached audit reports reuse evidence; they are not permanent, complete history.</li>
+    <li>Run <strong>step summaries</strong>, <code>gh aw status</code>, and <strong>OpenTelemetry</strong> (<code>observability.otlp</code>) round out the picture.</li>
+    <li>Inspect the runs that <em>signal</em> trouble (including incomplete outcomes, cost spikes, and denied egress). Investigate a denied dependency before widening access; never let observability replace the guardrails.</li>
+    <li><strong>Compile PASS is not deployment approval.</strong> The revised OTLP source and matching embedded copy passed strict v0.88.7 compilation with a restricted-secret review warning; runtime remains <strong>NOT RUN</strong>.</li>
+  </ul>
+  <p><strong>What's next.</strong> Seeing cost is the first step; <em>controlling</em> it is the next. In <a class="xref" href="governance-and-finops.html">Chapter 13: Governance &amp; FinOps</a>, we cap and meter agentic spend with <code>max-ai-credits</code> and set the org policy that keeps a fleet affordable and compliant.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <a class="pager-link" rel="prev" href="reuse-and-memory.html">← Chapter 11: Reuse &amp; Memory: Shared Components and Repo Knowledge</a>
+          <a class="pager-link" rel="next" href="governance-and-finops.html">Chapter 13: Governance &amp; FinOps: Policy and Cost at Scale →</a>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>By <strong>Maxim Salnikov</strong> · Microsoft · <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub ↗</a> · <a href="../gh-aw-book.pdf">Download the PDF</a> · <a href="../versions.html">Content edition v1.2</a> · <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

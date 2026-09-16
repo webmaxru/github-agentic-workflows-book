@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Anatomy &amp; the Compile Model | GitHub Agentic Workflows: An Interactive Book</title>
+  <meta name="description" content="Read any workflow&#x27;s frontmatter + Markdown, run the compile-and-iterate loop, and understand what the generated .lock.yml contains.">
+  <meta name="author" content="Maxim Salnikov">
+  <meta name="book-content-version" content="1.2">
+  <meta name="gh-aw-framework-version" content="v0.88.7">
+  <link rel="canonical" href="https://aw.isainative.dev/chapters/anatomy-and-compile-model.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e9edf4">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1220">
+  <script>(function(){try{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GitHub Agentic Workflows: An Interactive Book">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Anatomy &amp; the Compile Model">
+  <meta property="og:description" content="Read any workflow&#x27;s frontmatter + Markdown, run the compile-and-iterate loop, and understand what the generated .lock.yml contains.">
+  <meta property="og:url" content="https://aw.isainative.dev/chapters/anatomy-and-compile-model.html">
+  <meta property="og:image" content="https://aw.isainative.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Anatomy &amp; the Compile Model">
+  <meta name="twitter:description" content="Read any workflow&#x27;s frontmatter + Markdown, run the compile-and-iterate loop, and understand what the generated .lock.yml contains.">
+  <meta name="twitter:image" content="https://aw.isainative.dev/og-image.png">
+  <meta name="twitter:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+  <script>window.__APPINSIGHTS_CONNECTION_STRING__="InstrumentationKey=c9860cc2-58c1-4516-80c7-aba8338b8f74;IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/;ApplicationId=8c8c1e42-8fa6-42cc-bf96-362cac52d3d5";</script>
+  <script defer src="../assets/analytics.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/anatomy-and-compile-model.html#article","headline":"Anatomy \u0026 the Compile Model","name":"Anatomy \u0026 the Compile Model","description":"Read any workflow's frontmatter + Markdown, run the compile-and-iterate loop, and understand what the generated .lock.yml contains.","url":"https://aw.isainative.dev/chapters/anatomy-and-compile-model.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"version":"1.2","about":{"@type":"SoftwareApplication","name":"GitHub Agentic Workflows (gh-aw)","softwareVersion":"v0.88.7","url":"https://github.com/github/gh-aw/releases/tag/v0.88.7"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Individual (one workflow)","keywords":"workflow file format (frontmatter + Markdown), gh aw compile, .lock.yml artifact, gh aw status, the authoring loop, main-agent and detector inference boundaries, compile-time versus runtime dependency resolution"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/anatomy-and-compile-model.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Individual (one workflow)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"Anatomy \u0026 the Compile Model","item":"https://aw.isainative.dev/chapters/anatomy-and-compile-model.html"}]}]}</script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <div class="sidebar-top">
+          <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+          <div class="theme-toggle" role="group" aria-label="Reading theme">
+        <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">☀</span><span class="visually-hidden">Light theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">◑</span><span class="visually-hidden">Sepia theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="dark" aria-pressed="false" title="Dark"><span aria-hidden="true">☾</span><span class="visually-hidden">Dark theme</span></button>
+      </div>
+        </div>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a class="is-current" aria-current="page" href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 3 <span class="fm-sep">·</span> <a href="../gh-aw-book.pdf">Download PDF</a> <span class="fm-sep">·</span> <a href="../versions.html">Content edition v1.2</a> <span class="fm-sep">·</span> <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></nav>
+        <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">03</span><span class="fm-sep">·</span><span class="fm-k">part:</span> <span class="fm-v">The Individual (one workflow)</span></p>
+        <h1>Anatomy &amp; the Compile Model</h1>
+        <p class="lead">Read any workflow&#x27;s frontmatter + Markdown, run the compile-and-iterate loop, and understand what the generated .lock.yml contains.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#concept-natural-language-as-reviewable-source">Concept: natural language as reviewable source</a></li>
+              <li><a href="#in-gh-aw-frontmatter-markdown-to-gh-aw-compile-to-lock-yml">In gh-aw: frontmatter + Markdown to gh aw compile to .lock.yml</a></li>
+              <li><a href="#the-authoring-loop-compile-status-run-iterate">The authoring loop: compile, status, run, iterate</a></li>
+              <li><a href="#worked-example-reading-a-compiled-lock-yml-side-by-side">Worked example: reading a compiled .lock.yml side by side</a></li>
+              <li><a href="#recap-and-what-s-next">Recap &amp; what&#x27;s next</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>workflow file format (frontmatter + Markdown)</li>
+            <li>gh aw compile</li>
+            <li>.lock.yml artifact</li>
+            <li>gh aw status</li>
+            <li>the authoring loop</li>
+            <li>main-agent and detector inference boundaries</li>
+            <li>compile-time versus runtime dependency resolution</li>
+            </ul>
+          </aside>
+          <aside class="metadata-card" aria-labelledby="depends-heading">
+            <h2 id="depends-heading">Prerequisites</h2>
+            <ul>
+            <li><a href="your-first-workflow.html">Chapter 2: The 10-Minute Win: Your First Workflow</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p>By the end of this chapter you can open any agentic workflow and read it fluently &mdash; the YAML frontmatter and the Markdown body &mdash; run the <strong>compile-and-iterate loop</strong> with confidence, and understand what the generated <code>.lock.yml</code> actually contains and why it exists. In <a class="xref" href="your-first-workflow.html">Chapter 2</a> you shipped a workflow; here you open the hood.</p>
+  <p>This chapter's fixed target is <strong>gh aw v0.88.7</strong>. We reuse the unchanged Repo Assistant from Chapter 2 &mdash; <code>examples/ch02/repo-assistant-triage.md</code> &mdash; and read its source alongside target compiler output retained on <strong>2026-09-15</strong>. That is compile-time evidence, not a live-run transcript.</p>
+  <aside class="callout callout--note" aria-label="Prerequisites">
+    <p class="callout-title">Before you start</p>
+    <p>This chapter assumes you've installed a compiler and compiled a workflow once, as in <a class="xref" href="your-first-workflow.html">Chapter 2</a>. Check that the compiler you use reports <code>gh aw version v0.88.7</code>. The recipes below use <code>gh aw</code>; if you selected an isolated executable, invoke that executable instead of a differently versioned personal extension.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="concept-natural-language-as-reviewable-source">
+          <h2 id="concept-natural-language-as-reviewable-source"><a class="anchor-link" href="#concept-natural-language-as-reviewable-source" aria-label="Link to Concept: natural language as reviewable source section">Concept: natural language as reviewable source</a></h2>
+          <div class="section-content" data-content-slot="concept-natural-language-as-reviewable-source">
+<p>The most important idea in this chapter is also the most quietly radical: in gh-aw, the <strong>prose is the source code</strong>. A workflow is a Markdown file with two main parts &mdash; a YAML <strong>frontmatter</strong> block between <code>---</code> markers that carries configuration, and a <strong>Markdown body</strong> of natural-language instructions for the agent (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/workflow-structure.md">tagged Workflow Structure reference</a>). That file lives in <code>.github/workflows/</code>, under version control, and is reviewed in a pull request exactly like any other source file.</p>
+
+  <h3>Why &ldquo;reviewable&rdquo; is the whole point</h3>
+  <p>Traditional automation can bury its intent in implementation details. Making the <em>prose</em> an authored artifact exposes that intent: instead of enumerating every &ldquo;if issue has label X, do Y,&rdquo; you can ask the assistant to analyze an issue and provide helpful context. A reviewer can examine the task, examples, and limits without first decoding the generated Actions machinery. Review the configuration too: readable instructions do not replace permission boundaries.</p>
+  <p>Two distinctions keep this precise:</p>
+  <ul>
+    <li><strong>Frontmatter vs. body.</strong> Frontmatter is machine-facing configuration (triggers, permissions, engine, tools); the body expresses the intent the agent interprets. They are reviewed together but processed differently.</li>
+    <li><strong>Reviewable is not the same as deterministic.</strong> Making the <em>instruction</em> inspectable does not make the agent's <em>response</em> reproducible. Holding those two ideas apart is what the rest of the chapter is about.</li>
+  </ul>
+  <h3 id="orchestration-and-inference">Inspectable orchestration is not deterministic inference</h3>
+  <p>The <strong>determinism boundary</strong> is not &ldquo;one unpredictable job surrounded by deterministic jobs.&rdquo; Both the <strong>main agent</strong> and the <strong>default threat detector</strong> perform separate, probabilistic AI inference. The detector analyzes proposed output and patches; its judgment is an additional security layer, not an infallible safety verdict (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/threat-detection.md">v0.88.7 threat-detection reference</a>).</p>
+  <p>What you can inspect is the orchestration: job dependencies, permissions, conditions, and output-handling rules. Fixed control logic does not guarantee an identical execution trace &mdash; event data, service responses, failures, and both AI judgments still matter. Read the <a href="#reading-job-boundaries">generated jobs below</a> as an execution plan, not a promise of deterministic answers.</p>
+  <p>Reviewability also extends to dependencies. Shared configuration and prompt files are inputs you must review and version, not a promise that every consumer automatically receives a central edit. The <a href="#configuration-and-runtime-loading">authoring loop</a> distinguishes configuration composition from loading prompt text.</p>
+  <aside class="callout callout--tip" aria-label="Author intent, not implementation">
+    <p class="callout-title">The body is the program</p>
+    <p>Treat the Markdown body as logic, not a description field. Start simple and iterate with clear, specific instructions &mdash; the same discipline you'd bring to code, applied to prose.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-frontmatter-markdown-to-gh-aw-compile-to-lock-yml">
+          <h2 id="in-gh-aw-frontmatter-markdown-to-gh-aw-compile-to-lock-yml"><a class="anchor-link" href="#in-gh-aw-frontmatter-markdown-to-gh-aw-compile-to-lock-yml" aria-label="Link to In gh-aw: frontmatter + Markdown to gh aw compile to .lock.yml section">In gh-aw: frontmatter + Markdown to gh aw compile to .lock.yml</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-frontmatter-markdown-to-gh-aw-compile-to-lock-yml">
+<p>A prose file can't run directly on GitHub Actions, and hand-writing the hardened Actions YAML it would need is verbose and easy to get <em>insecurely</em> wrong. So gh-aw inserts a <strong>compile step</strong>. <code>gh aw compile</code> turns the source into a <code>.lock.yml</code>: it compiles configuration and arranges runtime prompt loading (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compilation-process.md">tagged Compilation Process reference</a>). This makes the execution plan reviewable alongside the intent.</p>
+
+  <figure class="code">
+    <figcaption>Recipe: compile the Repo Assistant installed in Chapter 2 with the selected v0.88.7 compiler; this does not dispatch a workflow</figcaption>
+    <pre><code class="language-text">gh aw compile .github/workflows/repo-assistant-triage.md --strict</code></pre>
+  </figure>
+
+  <h3>Why a compile step exists at all</h3>
+  <p>The compile step earns its place by buying four things at once:</p>
+  <ul>
+    <li><strong>Portability.</strong> The output is ordinary GitHub Actions YAML, with explicit engine and runtime dependencies rather than a hidden execution plan.</li>
+    <li><strong>Review &amp; validation.</strong> Parsing, import resolution, and security checks catch configuration errors before deployment. They do not test the quality of an agent's future answer.</li>
+    <li><strong>Reproducibility.</strong> You can track and compare build inputs and emitted artifacts, instead of treating each deployment as an undocumented setup.</li>
+    <li><strong>Pinning &amp; hardening.</strong> The compiler emits managed dependency pins and permission-separated jobs. Inspect the actual references, especially custom or imported actions; the <a href="#dependency-review">dependency excerpt below</a> shows why &ldquo;every ref becomes immutable&rdquo; is too strong.</li>
+  </ul>
+  <p><strong>Compilation invokes no AI engine, but it is not universally offline or side-effect-free.</strong> Resolving action refs, imports, or packages and performing additional validation can require network access and repository or dependency authentication. Besides the adjacent lock, compilation can create <code>.gitattributes</code> and <code>.github/aw/actions-lock.json</code>, even without <code>--fix</code>. Use a disposable checkout for verification when you need to protect a working tree (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/workflow/compiler.go">tagged compiler implementation</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md">tagged CLI reference</a>).</p>
+
+  <h3>What makes a build reproducible?</h3>
+  <p>Markdown bytes alone are not the whole input. Record the <strong>compiler version, flags and compiler environment</strong>, authored configuration and imported dependencies, resolved pins and caches, repository context, and relevant <strong>existing lock state</strong>. Existing locks can influence preserved deadlines and safe-update review; fuzzy schedules also depend on a repository-derived seed or an explicit <code>--schedule-seed</code>. That flag fixes schedule scattering, not repository-feature validation (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md">target compile options</a>). Review the regenerated diff instead of expecting a universal file size, job count, or compile duration.</p>
+
+  <h3>Two artifacts, one source of truth</h3>
+  <p>One authored intent has two primary artifacts: the <strong><code>.md</code> is the editable source of truth</strong>, and the <strong><code>.lock.yml</code> is the generated Actions workflow</strong>. Commit both (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/workflow-structure.md">tagged file-organization guidance</a>). You edit the Markdown; the lock runs. You never hand-edit the lock &mdash; it carries a blunt <code>DO NOT EDIT</code> banner, and a later compile can overwrite your changes. Reviewers can diff the human intent <em>and</em> the generated execution plan.</p>
+  <aside class="callout callout--warning" aria-label="Commit both files">
+    <p class="callout-title">Commit the lock &mdash; don't gitignore it</p>
+    <p>Two primary artifacts does not mean a two-file, self-contained deployment bundle. Keep required prompt/import files and reviewed pin-cache changes under version control too. Marking locks as <em>generated</em> in <code>.gitattributes</code> is not a reason to skip their review. The book's <code>examples/</code> directory is a verification fixture collection, not advice to omit locks from your deployed workflows.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="the-authoring-loop-compile-status-run-iterate">
+          <h2 id="the-authoring-loop-compile-status-run-iterate"><a class="anchor-link" href="#the-authoring-loop-compile-status-run-iterate" aria-label="Link to The authoring loop: compile, status, run, iterate section">The authoring loop: compile, status, run, iterate</a></h2>
+          <div class="section-content" data-content-slot="the-authoring-loop-compile-status-run-iterate">
+<p>Authoring a workflow is a feedback cycle, not a one-shot: <strong>write &rarr; compile &rarr; review &rarr; (check status) &rarr; run &rarr; iterate</strong>. You rarely get the instructions right the first time, so learn which edits change the execution plan and which only change the runtime instructions.</p>
+
+  <h3 id="configuration-and-runtime-loading">The fast path and the slow path</h3>
+  <p>For the Repo Assistant's default runtime loading, not every edit requires a new lock:</p>
+  <ul>
+    <li><strong>Fast path &mdash; edit ordinary body text.</strong> A wording change can take effect without recompilation when the next run loads that committed revision of the Markdown. An uncommitted local edit does not change a deployed run.</li>
+    <li><strong>Slow path &mdash; change configuration.</strong> Triggers, permissions, engine, tools, network settings, and other frontmatter changes require recompilation. This includes configuration contributed by imports.</li>
+  </ul>
+  <p><strong>Configuration composition, runtime loading, and explicit inlining are different operations.</strong> An <code>imports:</code> dependency can contribute configuration at compile time while prompt content is still loaded at runtime. Default imports therefore do not make every lock completely self-contained. Explicit <code>inlined-imports: true</code> embeds imported content at compilation; changing that content requires recompilation and deployment of the new lock (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/imports.md#self-contained-lock-files-inlined-imports-true">tagged inlining reference</a>). The running example does not enable inlining.</p>
+  <p>A pinned or vendored shared component does not advance when its central source changes. Deliberately update the consumer's dependency, review it, recompile, and deploy. <a class="xref" href="reuse-and-memory.html">Chapter 11</a> develops this reuse model; here, the important question is <em>which inputs will this lock read, and when?</em></p>
+  <p>Recompile before review, and whenever an edit changes compiled inputs rather than ordinary wording. Compiling body-only edits is also safe and may be required by repository policy (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/guides/working-with-workflows.mdx#editing-workflows">tagged editing guidance</a>). For interactive iteration, <code>gh aw compile --watch</code> can recompile on save; do not use an indefinite watch process as a verification gate.</p>
+
+  <h3>When to use which check</h3>
+  <table>
+    <caption>Compilation, extra validation, and mutation are separate choices in v0.88.7</caption>
+    <thead>
+      <tr><th scope="col">Choice</th><th scope="col">Use it for</th><th scope="col">Do not infer</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>compile &hellip; --strict</code></td><td>Source compilation with effective strict validation and an emitted lock. Strict mode already defaults on; the flag forces it over workflow opt-outs.</td><td>A successful live run, correct AI judgment, or scanner coverage.</td></tr>
+      <tr><td>Add <code>--validate</code></td><td>Additional Actions-schema, runtime-package, repository-feature, action, and container validation paths.</td><td>Environment-independent results. Network access and tool availability matter; some checks can be skipped.</td></tr>
+      <tr><td>Explicit linters/scanners, such as <code>--shellcheck</code></td><td>Extra analysis when deliberately requested and available. ShellCheck is opt-in in this target.</td><td>That <code>--strict</code> or <code>--validate</code> ran every scanner.</td></tr>
+      <tr><td><code>--no-emit</code></td><td>Diagnosis without generating the workflow lock.</td><td>An emitted-lock PASS or a promise of no other local/network effects.</td></tr>
+      <tr><td><code>--fix</code></td><td>Deliberately applying source codemods before compilation, followed by review.</td><td>A read-only check. This option edits authored sources and was not used for the retained example.</td></tr>
+    </tbody>
+  </table>
+  <p>These distinctions follow the <a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/cli/compile_config.go">tagged compile/scanner configuration</a>, <a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/workflow/compiler.go">validation implementation</a>, and inspected target CLI help. Preserve exit status, stdout, and stderr: an empty JSON warning array is not sufficient evidence that nothing needs review.</p>
+
+  <h3>Observe, then run</h3>
+  <p><code>gh aw list</code> summarizes workflow names, engines, and compilation status without checking deployed workflow state. Its default local mode reads local files; <code>--repo</code> requests remote data. <code>gh aw status</code> also checks GitHub workflow state and can query latest runs with <code>--ref</code>. Do not call both commands universally local or API-free (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md">tagged CLI reference</a>).</p>
+  <aside class="callout callout--warning" aria-label="Compilation is not live-run verification">
+    <p class="callout-title">A build is not a live test</p>
+    <p><code>gh aw run</code> requests a live dispatch of a deployed workflow with <code>workflow_dispatch</code>. It needs repository access and supported engine authentication; execution can spend Actions resources and AI credits for both the main agent and detection. The unchanged example uses the <code>COPILOT_GITHUB_TOKEN</code> authentication path. Missing credentials limit live-run testing, not the requirement to compile. <strong>No live commands were run for this chapter update.</strong></p>
+  </aside>
+  <p>Keep the checks in order: verify source compilation, inspect the emitted plan, validate the intended deployment context, then test runtime behavior when authorized. The next section reads that plan without pretending to have executed it.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-reading-a-compiled-lock-yml-side-by-side">
+          <h2 id="worked-example-reading-a-compiled-lock-yml-side-by-side"><a class="anchor-link" href="#worked-example-reading-a-compiled-lock-yml-side-by-side" aria-label="Link to Worked example: reading a compiled .lock.yml side by side section">Worked example: reading a compiled .lock.yml side by side</a></h2>
+          <div class="section-content" data-content-slot="worked-example-reading-a-compiled-lock-yml-side-by-side">
+<p>Let's read the Repo Assistant's source and generated lock. The unchanged <code>examples/ch02/repo-assistant-triage.md</code> passed v0.88.7 compilation with <code>--strict --validate --no-check-update --schedule-seed webmaxru/github-agentic-workflows-book --json</code> on <strong>2026-09-15</strong>, with exit zero and an emitted lock. This was an isolated Git checkout using <code>https://github.com/github/gh-aw.git</code> as its reference remote; no source was uploaded or workflow dispatched.</p>
+  <p><strong>Evidence limit:</strong> that reference context has Issues enabled; the book repository does not. This pass is not deployment certification. Docker image validation was skipped in the research environment, optional scanners were not run, and no engine authentication or runtime behavior was tested. Live use needs an appropriate issue context, Issues enabled, the allowed labels present, and engine credentials.</p>
+  <!-- Retained evidence, not a newly generated lock:
+       Session e9e760c4-bdb3-46e7-b867-b7f4d7e28a28/files/
+       compat-v0.88.7-neutral-results.json, ch02 result;
+       compat-v0.88.7-neutral/examples/ch02/repo-assistant-triage.lock.yml.
+       Generated excerpt lines: 1; 37-38; 300; 862-865; 1546-1555; 1722-1731.
+       Defaults corroboration: probes-v0.88.7/.github/workflows/defaults.lock.yml.
+       Pinning counterexample: integrations-v0.88.7/probe/.github/workflows/apm-bridge.lock.yml
+       with compile-results.json and final-compiled-invariants.json in that integration
+       evidence directory (2026-09-16).
+       Historical ch03 theory/features evidence remains dated 2026-07-02, v0.81.6. -->
+
+  <h3>The source: configuration around a task</h3>
+  <figure class="code">
+    <figcaption>Authored frontmatter excerpt from examples/ch02/repo-assistant-triage.md &mdash; delimiters and body omitted; the complete, unchanged recipe is the <a class="xref" href="your-first-workflow.html">Chapter 2 Repo Assistant</a></figcaption>
+    <pre><code class="language-yaml">on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: read
+engine: copilot
+network: defaults
+safe-outputs:
+  add-comment:
+    max: 1
+  add-labels:
+    allowed: [bug, enhancement, question, documentation]
+    max: 1</code></pre>
+  </figure>
+  <p>The body asks the assistant to categorize the issue, post one short triage comment, and apply at most one allowed label; vague issues get a request for more information instead of a label. The frontmatter supplies the machine-enforced configuration around that judgment. We now follow those settings into <strong>excerpts of the actual emitted lock</strong>, not a replacement workflow to copy.</p>
+
+  <h3>The header: provenance and a hash</h3>
+  <figure class="code">
+    <figcaption>Generated header excerpt: the complete metadata line from the retained v0.88.7 triage lock; remaining header omitted</figcaption>
+    <pre><code class="language-yaml"># gh-aw-metadata: {"schema_version":"v4","frontmatter_hash":"a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb","body_hash":"8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b","compiler_version":"v0.88.7","strict":true,"agent_id":"copilot","engine_versions":{"copilot":"1.0.80"}}</code></pre>
+  </figure>
+  <p>The capture confirms metadata schema <strong><code>v4</code></strong>, compiler <strong><code>v0.88.7</code></strong>, and effective <strong><code>strict: true</code></strong>. The source says only <code>engine: copilot</code>; the compiler-selected default CLI version recorded here is <strong><code>1.0.80</code></strong>, also confirmed by the retained defaults probe. A compiler default is not a measurement of an installed runtime or proof that runtime overrides were absent.</p>
+  <p>The <code>frontmatter_hash</code> and <code>body_hash</code> fingerprint source at compilation. They are useful provenance, not a complete description of every build input, nor a guarantee of identical answers. In particular, a recorded body hash does not make later runtime-loaded prompt text immutable. The next header line, <code>gh-aw-manifest</code>, records secret references and dependencies; the banner says <code>DO NOT EDIT</code>. These are review aids, not a security verdict or proof that every listed secret must be configured.</p>
+
+  <h3 id="dependency-review">Dependencies: inspect the refs that were emitted</h3>
+  <figure class="code">
+    <figcaption>Generated dependency-comment excerpt from the same triage lock &mdash; two adjacent entries, not the complete manifest</figcaption>
+    <pre><code class="language-yaml">#   - actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+#   - actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1</code></pre>
+  </figure>
+  <p>Here, each action ref is a full commit SHA with a readable version comment. That is stronger than a movable tag, but do not generalize these two entries to every imported action. A separate <strong>2026-09-16 compile-only probe</strong> of the <a href="https://github.com/microsoft/apm/blob/e041462f4a48086dbee3da145c07d71b8a3b84fd/.github/workflows/shared/apm.md">canonical APM v0.28.0 shared component</a> passed strict source compilation while retaining <code>microsoft/apm-action@v1.10.0</code>; its manifest recorded a resolution failure and its stderr retained review warnings. APM is an independently versioned integration, not part of this triage recipe.</p>
+  <p>Inspect custom and imported <code>uses:</code> refs, dependency manifests, and diagnostics. Where immutable refs are required, review and pin the authored or vendored dependency, then recompile &mdash; do not patch the generated lock or weaken strict mode. <a class="xref" href="reuse-and-memory.html">Chapter 11</a> continues that dependency-review discipline.</p>
+
+  <h3>The prompt: runtime loading is visible too</h3>
+  <figure class="code">
+    <figcaption>Generated environment-entry excerpt from activation's &ldquo;Create prompt with built-in context&rdquo; step; enclosing YAML omitted</figcaption>
+    <pre><code class="language-yaml">          GH_AW_PROMPT_CONTENT_0005: "{{#runtime-import repo-assistant-triage.md}}\n"</code></pre>
+  </figure>
+  <p>The compiled plan contains a runtime import of the authored Markdown, not just a frozen copy of its body. This is the concrete reason to keep the source available and to distinguish the <a href="#configuration-and-runtime-loading">body-edit fast path</a> from configuration changes and explicit inlining.</p>
+
+  <h3 id="reading-job-boundaries">The job graph: read boundaries, not a fixed job count</h3>
+  <p>The capture has top-level <code>permissions: {}</code> and explicit scopes on individual jobs. Read <code>needs</code> and <code>if</code>, not the order in which job names happen to appear in the YAML. This Repo Assistant includes pre-activation membership checks, activation/context preparation, the main agent, detection, safe-output processing, and conclusion/reporting. Other configurations can produce a different graph (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compilation-process.md#job-types">tagged job-construction reference</a>).</p>
+  <p>First locate the two separate inference sites. These are actual step prefixes from different jobs; their remaining commands and environment are deliberately omitted.</p>
+  <figure class="code">
+    <figcaption>Generated step-prefix excerpt from the agent job &mdash; the main agent executes the task here</figcaption>
+    <pre><code class="language-yaml">      - name: Execute GitHub Copilot CLI
+        id: agentic_execution
+        # Copilot CLI tool arguments (sorted):
+        timeout-minutes: ${{ fromJSON(vars.GH_AW_DEFAULT_TIMEOUT_MINUTES || '20') }}</code></pre>
+  </figure>
+  <figure class="code">
+    <figcaption>Generated excerpt from the detection job &mdash; binary installation and the following inference-step prefix; the inference command body is omitted</figcaption>
+    <pre><code class="language-yaml">      - name: Install threat-detect binary
+        if: always() &amp;&amp; steps.detection_guard.outputs.run_detection == 'true'
+        continue-on-error: true
+        run: |
+          bash "${RUNNER_TEMP}/gh-aw/actions/install_threat_detect_binary.sh" v0.5.1
+      - name: Execute threat detection with AWF
+        id: detection_agentic_execution
+        if: always() &amp;&amp; steps.detection_guard.outputs.run_detection == 'true'
+        continue-on-error: true
+        timeout-minutes: 10</code></pre>
+  </figure>
+  <p>v0.88.7 uses external <code>threat-detect</code> as the default detector implementation; this lock installs <code>v0.5.1</code> and its later command invokes it with the Copilot engine. It is AI analysis, separate from the main agent's inference, not a deterministic linter. Notice the guard and error-handling settings too: a dependency on a detection job is not by itself proof that analysis ran or that content is safe (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/threat-detection.md">tagged detection contract</a>).</p>
+  <p>Next locate the write boundary. In this capture the main agent has <code>contents: read</code> and <code>issues: read</code>; detection has <code>contents: read</code>. Requested comments and labels are processed in a separate job with write scopes:</p>
+  <figure class="code">
+    <figcaption>Generated safe_outputs job-prefix excerpt from the retained lock &mdash; actual dependencies, condition, and permissions; remaining job omitted</figcaption>
+    <pre><code class="language-yaml">  safe_outputs:
+    needs:
+      - activation
+      - agent
+      - detection
+    if: (!cancelled()) &amp;&amp; needs.agent.result != 'skipped' &amp;&amp; needs.detection.result == 'success'
+    runs-on: ubuntu-slim
+    permissions:
+      issues: write
+      pull-requests: write</code></pre>
+  </figure>
+  <p>The <code>if</code> expression checks job eligibility; it is not a natural-language assertion that every requested item is harmless. Follow the detector result and the output handler's checks as well. Programmed handlers mediate writes, but an authorized comment can still be wrong and an API operation can fail. The mechanism is <a class="xref" href="safe-outputs.html">Chapter 6</a>; the layered threat model is <a class="xref" href="defense-in-depth.html">Chapter 7</a>.</p>
+  <aside class="callout callout--note" aria-label="Reproducible artifact vs reproducible behavior">
+    <p class="callout-title">Two kinds of &ldquo;deterministic&rdquo;</p>
+    <p>A reproducible build requires controlled build inputs. An inspectable lock specifies orchestration and authority, not deterministic judgment. Both the main agent and default detector can produce different judgments; either can be wrong. Keep those facts separate from whether compilation succeeded.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-what-s-next">
+          <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
+          <div class="section-content" data-content-slot="recap-and-what-s-next">
+<p>You can now read a workflow and its compiled output with a clear model of each:</p>
+  <ul>
+    <li>A workflow is <strong>natural language as reviewable source</strong> &mdash; YAML frontmatter (config) plus a Markdown body (intent), committed and reviewed like code.</li>
+    <li><code>gh aw compile</code> is a real <strong>build step</strong> that invokes no engine, but can use the network and write supporting files. Reproducibility depends on more than Markdown bytes.</li>
+    <li>You commit <strong>two primary artifacts</strong> &mdash; edit the <code>.md</code>, never hand-edit the <code>.lock.yml</code> &mdash; and preserve their required dependencies.</li>
+    <li>The <strong>authoring loop</strong> separates compiled configuration, runtime-loaded wording, and explicit inlining. Shared dependency updates are deliberate consumer changes.</li>
+    <li><strong>Strict compilation, extra validation, scanners, and live testing are distinct evidence.</strong> Inspect emitted metadata, actual refs, and diagnostics rather than inferring more than a check proves.</li>
+    <li>The <strong>determinism boundary</strong> separates inspectable orchestration from judgment: both the <code>agent</code> and default <code>detection</code> paths perform AI inference. Neither a stable graph nor a detector verdict guarantees a correct, safe answer.</li>
+  </ul>
+  <p><strong>What's next.</strong> You've read the workflow's anatomy; next comes event selection and admission. In <a class="xref" href="triggers.html">Chapter 4: Triggers</a>, we open the <code>on:</code> block to choose which events can request a Repo Assistant run and which admission checks apply.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <a class="pager-link" rel="prev" href="your-first-workflow.html">← Chapter 2: The 10-Minute Win: Your First Workflow</a>
+          <a class="pager-link" rel="next" href="triggers.html">Chapter 4: Triggers: When Workflows Wake Up →</a>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>By <strong>Maxim Salnikov</strong> · Microsoft · <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub ↗</a> · <a href="../gh-aw-book.pdf">Download the PDF</a> · <a href="../versions.html">Content edition v1.2</a> · <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

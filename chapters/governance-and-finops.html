@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Governance &amp; FinOps: Policy and Cost at Scale | GitHub Agentic Workflows: An Interactive Book</title>
+  <meta name="description" content="Separate agent, detector, admission, and compute costs; apply scoped budgets and policy; and use forecasts without mistaking them for a complete bill cap.">
+  <meta name="author" content="Maxim Salnikov">
+  <meta name="book-content-version" content="1.2">
+  <meta name="gh-aw-framework-version" content="v0.88.7">
+  <link rel="canonical" href="https://aw.isainative.dev/chapters/governance-and-finops.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e9edf4">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1220">
+  <script>(function(){try{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GitHub Agentic Workflows: An Interactive Book">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Governance &amp; FinOps: Policy and Cost at Scale">
+  <meta property="og:description" content="Separate agent, detector, admission, and compute costs; apply scoped budgets and policy; and use forecasts without mistaking them for a complete bill cap.">
+  <meta property="og:url" content="https://aw.isainative.dev/chapters/governance-and-finops.html">
+  <meta property="og:image" content="https://aw.isainative.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Governance &amp; FinOps: Policy and Cost at Scale">
+  <meta name="twitter:description" content="Separate agent, detector, admission, and compute costs; apply scoped budgets and policy; and use forecasts without mistaking them for a complete bill cap.">
+  <meta name="twitter:image" content="https://aw.isainative.dev/og-image.png">
+  <meta name="twitter:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+  <script>window.__APPINSIGHTS_CONNECTION_STRING__="InstrumentationKey=c9860cc2-58c1-4516-80c7-aba8338b8f74;IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/;ApplicationId=8c8c1e42-8fa6-42cc-bf96-362cac52d3d5";</script>
+  <script defer src="../assets/analytics.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/governance-and-finops.html#article","headline":"Governance \u0026 FinOps: Policy and Cost at Scale","name":"Governance \u0026 FinOps: Policy and Cost at Scale","description":"Separate agent, detector, admission, and compute costs; apply scoped budgets and policy; and use forecasts without mistaking them for a complete bill cap.","url":"https://aw.isainative.dev/chapters/governance-and-finops.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"version":"1.2","about":{"@type":"SoftwareApplication","name":"GitHub Agentic Workflows (gh-aw)","softwareVersion":"v0.88.7","url":"https://github.com/github/gh-aw/releases/tag/v0.88.7"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Organization (fleet at scale)","keywords":"max-ai-credits, AI Credits billing, token efficiency, governance / policy, APM governance (apm-policy.yml), cost controls (FinOps), models.allowed / models.blocked, forecast uncertainty, repository strict policy and default-resolution timing"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/governance-and-finops.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Organization (fleet at scale)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"Governance \u0026 FinOps: Policy and Cost at Scale","item":"https://aw.isainative.dev/chapters/governance-and-finops.html"}]}]}</script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <div class="sidebar-top">
+          <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+          <div class="theme-toggle" role="group" aria-label="Reading theme">
+        <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">☀</span><span class="visually-hidden">Light theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">◑</span><span class="visually-hidden">Sepia theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="dark" aria-pressed="false" title="Dark"><span aria-hidden="true">☾</span><span class="visually-hidden">Dark theme</span></button>
+      </div>
+        </div>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a class="is-current" aria-current="page" href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 13 <span class="fm-sep">·</span> <a href="../gh-aw-book.pdf">Download PDF</a> <span class="fm-sep">·</span> <a href="../versions.html">Content edition v1.2</a> <span class="fm-sep">·</span> <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></nav>
+        <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">13</span><span class="fm-sep">·</span><span class="fm-k">part:</span> <span class="fm-v">The Organization (fleet at scale)</span></p>
+        <h1>Governance &amp; FinOps: Policy and Cost at Scale</h1>
+        <p class="lead">Separate agent, detector, admission, and compute costs; apply scoped budgets and policy; and use forecasts without mistaking them for a complete bill cap.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#concept-agentic-work-has-a-budget-and-a-policy-surface">Concept: agentic work has a budget and a policy surface</a></li>
+              <li><a href="#in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy">In gh-aw: max-ai-credits, AI Credits, token efficiency, policy</a></li>
+              <li><a href="#when-to-cap-meter-and-gate-cost-and-risk-trade-offs">When to cap, meter, and gate (cost and risk trade-offs)</a></li>
+              <li><a href="#worked-example-a-budgeted-policy-compliant-repo-assistant">Worked example: a budgeted, policy-compliant Repo Assistant</a></li>
+              <li><a href="#recap-and-what-s-next">Recap &amp; what&#x27;s next</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>max-ai-credits</li>
+            <li>AI Credits billing</li>
+            <li>token efficiency</li>
+            <li>governance / policy</li>
+            <li>APM governance (apm-policy.yml)</li>
+            <li>cost controls (FinOps)</li>
+            <li>models.allowed / models.blocked</li>
+            <li>forecast uncertainty</li>
+            <li>repository strict policy and default-resolution timing</li>
+            </ul>
+          </aside>
+          <aside class="metadata-card" aria-labelledby="depends-heading">
+            <h2 id="depends-heading">Prerequisites</h2>
+            <ul>
+            <li><a href="observability-and-debugging.html">Chapter 12: Trust &amp; Operate: Observability and Debugging</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p>By the end of this chapter you can <strong>cap, meter, and gate</strong> agentic work by choosing scoped budgets, model and capability policies, and dependency controls for a growing fleet.</p>
+  <p>This chapter targets <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7"><strong>gh aw v0.88.7</strong></a>, inspected on <time datetime="2026-09-15">2026-09-15</time>; the separate APM integration targets <a href="https://github.com/microsoft/apm/releases/tag/v0.28.0"><strong>APM 0.28.0</strong></a>, inspected on <time datetime="2026-09-16">2026-09-16</time>. Build on the evidence loop in <a class="xref" href="observability-and-debugging.html">Chapter 12</a> and governed reuse in <a class="xref" href="reuse-and-memory.html">Chapter 11</a>. Compilation evidence here is not a live billing or policy-enforcement test.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="concept-agentic-work-has-a-budget-and-a-policy-surface">
+          <h2 id="concept-agentic-work-has-a-budget-and-a-policy-surface"><a class="anchor-link" href="#concept-agentic-work-has-a-budget-and-a-policy-surface" aria-label="Link to Concept: agentic work has a budget and a policy surface section">Concept: agentic work has a budget and a policy surface</a></h2>
+          <div class="section-content" data-content-slot="concept-agentic-work-has-a-budget-and-a-policy-surface">
+<p>Even ordinary CI has variable compute costs. Agentic work adds another variable: how much model inference each run uses to read, reason, and retry. A looping agent or an over-eager schedule can spend resources without producing useful work. FinOps therefore starts with both a budget and an outcome to measure, not just a cheaper model.</p>
+  <p>At one repo, this is a cost knob. Across an org, it becomes a <strong>policy surface</strong>: which workflows may run, which capabilities and dependencies they may use, what they may spend, and which model they select. Central governance makes those choices reviewable, but a central setting only governs the execution paths that actually consume it.</p>
+  <p id="ch13-control-scopes">Keep three distinctions in mind. <strong>Admission</strong> decides whether to start work; <a href="#ch13-budget-controls">budget enforcement</a> limits a defined resource path after it starts. <strong>Defaults</strong> fill gaps; <a href="#ch13-defaults-and-gates">policy gates</a> restrict supported behavior. <strong>Forecasts</strong> estimate future usage; neither a forecast nor a main-agent cap is a ceiling on the entire bill. Main inference, threat-detection inference, Actions compute, and execution time need separate accounting (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/cost-management.md">Cost Management</a>).</p>
+  <aside class="callout callout--leader" aria-label="Leader takeaway">
+    <p class="callout-title">Leader lens: predictability comes from scoped controls and evidence</p>
+    <p>Ask &ldquo;what will it cost?&rdquo; and &ldquo;what is it allowed to do?&rdquo;, then require an owner, an enforcement point, and evidence for each answer. Track useful, accepted outcomes alongside credits and compute. A low-cost workflow that repeatedly fails its task is not necessarily good value; an org default is not an unbreakable org spending limit.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy">
+          <h2 id="in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy"><a class="anchor-link" href="#in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy" aria-label="Link to In gh-aw: max-ai-credits, AI Credits, token efficiency, policy section">In gh-aw: max-ai-credits, AI Credits, token efficiency, policy</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-max-ai-credits-ai-credits-token-efficiency-policy">
+<h3 id="ch13-budget-controls">Per-workflow budgets: name what each limit covers</h3>
+  <p><strong>AI Credits (AIC)</strong> provide a common inference-cost metric, calculated from model pricing data. They are best-effort estimates, not a substitute for the provider's billing dashboard; Actions compute is billed separately (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/cost-management.md#ai-credits-aic">AIC reference</a>).</p>
+  <aside class="callout callout--note" aria-label="Budget default errata">
+    <p class="callout-title">ERRATA: these credit defaults were already present</p>
+    <p>Both inspected versions emit the same main-agent, daily, and detector credit fallbacks below. In particular, &ldquo;the daily guardrail is disabled when omitted&rdquo; is a baseline documentation error, <strong>not</strong> a newly added default in v0.88.7. The paired compiler probes agree with the <a href="https://github.com/github/gh-aw/blob/v0.81.6/docs/src/content/docs/reference/compiler-enterprise-environment-controls.md#precedence">v0.81.6</a> and <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compiler-enterprise-environment-controls.md#precedence">v0.88.7 enterprise-control references</a>, despite conflicting prose elsewhere.</p>
+  </aside>
+  <table>
+    <caption>Omitted-setting behavior in paired minimal compiler probes, inspected 2026-09-15; these are fallbacks, not measured usage</caption>
+    <thead>
+      <tr><th scope="col">Control</th><th scope="col">v0.81.6</th><th scope="col">v0.88.7</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">Main-agent inference budget</th><td>1000 AIC</td><td>1000 AIC</td></tr>
+      <tr><th scope="row">Daily workflow admission threshold</th><td>5000 AIC</td><td>5000 AIC</td></tr>
+      <tr><th scope="row">Independent detector inference budget</th><td>400 AIC</td><td>400 AIC</td></tr>
+      <tr><th scope="row">Agentic step timeout</th><td>20 minutes</td><td>20 minutes, with runtime-variable fallback</td></tr>
+      <tr><th scope="row">Generated agent job timeout</th><td>No explicit value emitted in the probe</td><td>60 minutes</td></tr>
+      <tr><th scope="row">Generated detection job timeout</th><td>No explicit value emitted in the probe</td><td>10 minutes</td></tr>
+    </tbody>
+  </table>
+  <p><code>max-ai-credits</code> bounds the main agent's AWF-proxied inference, with steering messages at 80%, 90%, 95%, and 99% of its budget; integer values and <code>K</code>/<code>M</code> suffixes are supported (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/frontmatter.md#ai-credits-guardrail-max-ai-credits">Frontmatter</a>, inspected 2026-09-15). Detection has its own <code>safe-outputs.threat-detection.max-ai-credits</code> setting and fallback: lowering the main budget does not lower that separate allowance (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/threat-detection.md#detection-budget">Detection Budget</a>).</p>
+  <figure class="code">
+    <figcaption>Frontmatter excerpt from <code>examples/ch13/repo-assistant-budgeted.md</code>; the <a href="#ch13-budgeted-workflow">complete workflow</a> is below</figcaption>
+    <pre><code class="language-yaml">max-ai-credits: 200
+max-daily-ai-credits: 2000
+timeout-minutes: 10</code></pre>
+  </figure>
+  <p>The daily setting implements <a href="#ch13-control-scopes">admission, not reservation</a>. Before admitting an applicable run, it looks back over the same workflow's previous 24 hours. If recorded usage already meets or exceeds the threshold, activation warns, attempts an issue report, and skips the agent. Two activations can read the same history and both pass; the check does not atomically reserve their future spend. Its history and artifact lookups also consume GitHub API requests (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/cost-management.md#cap-daily-ai-credits-per-workflow">daily guardrail</a>).</p>
+  <p>The documented bypass paths matter: the check is skipped for <code>workflow_call</code>, <code>repository_dispatch</code>, and <code>workflow_dispatch</code> carrying internal <code>aw_context</code> metadata. Do not multiply a daily threshold by a calendar period and call the result a guaranteed bill ceiling. Trigger filtering and Actions concurrency need their own design; see <a class="xref" href="triggers.html">Chapter 4</a>.</p>
+  <p><code>timeout-minutes</code> limits the <em>agentic execution step</em>. It is not the generated agent job's timeout or the detection job's timeout: those cover every step of their respective jobs. The target's separate controls are <code>jobs.agent.timeout-minutes</code> and <code>jobs.detection.timeout-minutes</code> (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compiler-enterprise-environment-controls.md#precedence">timeout defaults and precedence</a>). Nor is <code>on.stop-after</code> a runtime timer: it supplies an admission deadline, with stop-time preservation and explicit refresh covered in Chapter 4.</p>
+  <p><strong>Token efficiency</strong> remains useful: narrow the task, context, and tool results before increasing the budget. Read-only permissions primarily constrain authority; they do not by themselves make inference cheaper. Security and FinOps reinforce one another, but solve different problems.</p>
+
+  <h3 id="ch13-defaults-and-gates">Org defaults, runtime gates, and repository strictness</h3>
+  <p>To implement the <a href="#ch13-control-scopes">default-versus-policy distinction</a>, first ask <em>when</em> a setting is read. <code>gh aw env</code> manages <code>GH_AW_DEFAULT_*</code> Actions variables through a separate YAML file with <code>default_</code>-prefixed keys. It does not inject every variable into every local compiler or rewrite every deployed lock (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/governance.md">Configuration Governance</a>).</p>
+  <table>
+    <caption>Three different resolution paths at v0.88.7</caption>
+    <thead>
+      <tr><th scope="col">Surface</th><th scope="col">Enforcement or resolution point</th><th scope="col">What a central edit can change</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">Compiler-process defaults</th><td><code>GH_AW_DEFAULT_MAX_TURNS</code>, some token guardrails, and <code>GH_AW_DEFAULT_DETECTION_MODEL</code> are read from the compiler's environment.</td><td>Supply them to the compile process, then regenerate and deploy locks. An Actions variable alone does not populate a developer's shell.</td></tr>
+      <tr><th scope="row">Emitted runtime defaults</th><td>Budget, model-fallback, and timeout paths can contain runtime expressions &mdash; for example, <code>${{ vars.GH_AW_DEFAULT_MAX_AI_CREDITS || '1000' }}</code> when the main budget is omitted from both frontmatter and imports.</td><td>Later runs resolve visible variables where that expression was emitted. Explicit budget values in frontmatter or imports take precedence over budget defaults.</td></tr>
+      <tr><th scope="row">Runtime capability gates</th><td>Supported <code>GH_AW_POLICY_*</code> variables are checked by runtime components.</td><td>For example, <code>GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=false</code> prevents the safe-outputs server from starting when PR creation is configured. It is not a numeric default.</td></tr>
+    </tbody>
+  </table>
+  <p>For runtime defaults, applicable repository variables take precedence over organization variables, then enterprise variables, then the built-in fallback. Variable visibility and local overrides still matter. A supported runtime gate can affect later runs without recompilation <em>when the deployed workflow includes that gate</em>; it does not govern arbitrary manually written Actions steps. These paths are documented separately in <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compiler-enterprise-environment-controls.md">Enterprise Environment Controls</a> and <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/governance.md#runtime-policy-variables">Runtime Policy Variables</a>.</p>
+
+  <p><strong>New repository compile policy:</strong> put the following setting in <code>.github/workflows/aw.json</code>. Unlike an overridable default, it forces <em>effective strict compilation</em> for workflows processed by that compiler. The setting accepts <code>true</code>, not <code>false</code> (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/parser/schemas/repo_config_schema.json">repository schema</a>; <a href="https://github.com/github/gh-aw/commit/25fb43e7898db2c8bcd6a9cdbadffed38242c03e">strict-policy change</a>).</p>
+  <figure class="code">
+    <figcaption>Repository JSON configuration excerpt, <strong>not workflow frontmatter</strong>; fixture: <code>examples/ch13/strict-policy/aw.json</code>, paired with the <a href="#ch13-strict-probe">strict-policy probe</a></figcaption>
+    <pre><code class="language-json">{
+  "strict": true
+}</code></pre>
+  </figure>
+  <p>A harmless workflow containing <code>strict: false</code> can still compile successfully: the emitted metadata says <code>"strict": true</code>. A source opt-out does not defeat this policy; the write-permission variant of the shared probe failed strict validation. Regenerate, review, and deploy locks to apply the policy. It does not repair old locks or automatically protect a manual workflow that bypasses the compiler. Keep the surrounding review and required-check controls from <a class="xref" href="defense-in-depth.html">Chapter 7</a>.</p>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: roll out settings at the right phase</p>
+    <p>Start with enterprise defaults, add org and repo exceptions deliberately, and inventory explicit frontmatter/import values. Export existing defaults before editing them: <code>gh aw env update</code> treats omitted or <code>null</code> keys as deletions, so a tiny excerpt is not a safe replacement for a full exported file. Preview with <code>--dry-run</code>, wire compiler-read values into CI's compile environment, and inspect generated locks before deployment (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/governance.md#apply-defaults-safely">safe defaults rollout</a>).</p>
+  </aside>
+
+  <h3 id="ch13-model-policy">Model policy and uncertain forecasts</h3>
+  <p>Model choice implements a preference; model permission policy implements a gate. At this target, <code>engine.model</code> takes precedence over top-level <code>model</code>; it has not been removed. Copilot's omitted-model fallback changed from <code>claude-sonnet-4.6</code> to <code>auto</code>. That selector can vary the concrete model used, so an unchanged task is not necessarily a like-for-like cost comparison (<a href="https://github.com/github/gh-aw/commit/6058f2272599aed5fe00cbd9d572ca89298cf3ea">fallback change</a>; <a href="https://github.com/github/gh-aw/commit/b588b670994c62e6ac5c2b642e15098bcfedc4f7">override precedence</a>; <a class="xref" href="engines.html">Chapter 5</a>).</p>
+  <p>Use <code>models.allowed</code> and <code>models.blocked</code> to express model access policy &mdash; the final key is <strong><code>blocked</code>, not <code>disallowed</code></strong>. The <a href="#ch13-models-probe">complete probe below</a> permits the <code>claude-*</code> family while excluding <code>claude-opus-*</code>. This is not a credit allocation or proof that the provider will serve a permitted model (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/parser/schemas/main_workflow_schema.json">workflow schema</a>). For dynamic selectors such as <code>auto</code>, the firewall accounts against the resolved concrete model rather than assigning a fictitious fixed price to &ldquo;auto&rdquo; (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/cost-management.md#ai-credits-with-dynamic-model-selectors">dynamic-model accounting</a>).</p>
+  <figure class="code">
+    <figcaption>CLI examples checked against v0.88.7 help on 2026-09-15 &mdash; sample window and count are choices, not measured results</figcaption>
+    <pre><code class="language-text">gh aw models --json --refresh-observed=false
+gh aw forecast repo-assistant-budgeted --period week --days 7 --sample 50 --json</code></pre>
+  </figure>
+  <p><code>models</code> reports catalog data, aliases, and local observations; the flag above avoids its default observed-model log refresh. <code>forecast</code> uses historical completed runs to project usage and requires repository access and usable history. Its experimental label was removed in <a href="https://github.com/github/gh-aw/releases/tag/v0.84.0">v0.84.0</a>, but promotion is not an accuracy guarantee (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md">target CLI reference</a>).</p>
+  <p>No forecast or billing rate was measured for this chapter. Record the observation date, workflow/model configuration, sample coverage, and pricing source with any forecast you produce. Small samples, changed triggers, or <code>auto</code> routing can invalidate an extrapolation. Reconcile inference estimates with provider charges and Actions compute instead of presenting a catalog estimate as an invoice.</p>
+
+  <h3 id="ch13-apm-policy">Governing the agent supply chain (APM)</h3>
+  <p>Budgets and capability gates do not decide which instructions an agent should trust. Skills and prompts are an input supply chain: approved provenance and repeatable installation reduce risk, but do not prove that content is safe. <strong>APM is independently versioned</strong>, not another name for native gh-aw skills, plugins, or imports. Use the separately pinned bridge in <a class="xref" href="reuse-and-memory.html">Chapter 11</a>; <code>gh aw compile</code> does not install its package graph or test APM policy.</p>
+  <p>The following corrections are <strong>ERRATA to the earlier governance promises</strong>, not new gh-aw security guarantees. For APM 0.28.0, inspected 2026-09-16:</p>
+  <ul>
+    <li><strong>Policy is preview and discovery is bounded.</strong> Configured <code>extends</code> chains merge tighten-only; do not assume automatic inheritance at every enterprise/org/repo level. A repo-local policy can explicitly use <code>extends: org</code>. Discovery derives the owner from the remote and tries <code>.github-private</code> before <code>.github</code> and other candidates. Fetch failures can warn and proceed rather than block; review cache and no-cache failure behavior before relying on enforcement (<a href="https://github.com/microsoft/apm/blob/v0.28.0/docs/src/content/docs/enterprise/policy-reference.md">Policy Reference</a>; <a href="https://github.com/microsoft/apm/blob/v0.28.0/src/apm_cli/policy/discovery.py">discovery implementation</a>).</li>
+    <li><strong>Bounded constraints and locks are different.</strong> <code>dependencies.require_pinned_constraint: true</code> accepts bounded version constraints, including suitable ranges and version tags, not just exact SHAs. <code>apm.lock.yaml</code> separately records resolved commits and deployment integrity data. Confirm that your chosen install path consumes that lock; <code>apm install --frozen</code> rejects missing or out-of-sync locks, while <code>apm audit</code> checks installed integrity. A committed lock is not a security approval or proof that the bridge's isolated inline-package install replays it (<a href="https://github.com/microsoft/apm/blob/v0.28.0/docs/src/content/docs/enterprise/policy-reference.md#require_pinned_constraint">constraint contract</a>; <a href="https://github.com/microsoft/apm/blob/v0.28.0/docs/src/content/docs/reference/lockfile-spec.md">lock specification</a>).</li>
+    <li><strong>Context preparation is not an agent sandbox.</strong> <code>isolated: true</code> is an <code>apm-action</code> input: it ignores the host <code>apm.yml</code> and clears known primitive directories under <code>.github</code> before preparing inline dependencies. The shared bridge uses it for packing. It is not a per-skill gh-aw import option, nor proof that repository instructions cannot influence the model (<a href="https://github.com/microsoft/apm-action/blob/v1.10.0/action.yml">apm-action v1.10.0 contract</a>).</li>
+    <li><strong>Scanning has a defined threat scope.</strong> APM detects specified hidden Unicode, including bidi overrides and zero-width characters. Critical findings block deployment; some findings are only warnings. It explicitly does <em>not</em> detect homoglyph substitution or ordinary visible prompt injection. Keep content review and the <a class="xref" href="defense-in-depth.html">Chapter 7</a> runtime defenses (<a href="https://github.com/microsoft/apm/blob/v0.28.0/docs/src/content/docs/enterprise/security.md#content-scanning">APM security model</a>).</li>
+  </ul>
+  <figure class="code">
+    <figcaption>APM <code>apm-policy.yml</code> excerpt, <strong>not gh-aw frontmatter or <code>aw.json</code></strong>; illustrative package path, source <code>examples/ch13/apm-policy.excerpt.yml</code></figcaption>
+    <pre><code class="language-yaml">name: "Org agent governance"
+enforcement: block
+dependencies:
+  allow:
+    - "org/approved-security-skills/*"
+  require_pinned_constraint: true</code></pre>
+  </figure>
+  <p>A nonempty allowlist already rejects unmatched sources. <strong>Do not add <code>deny: ["*"]</code> to mean &ldquo;everything else&rdquo;</strong>: <code>*</code> matches one path segment. Replacing it with <code>**</code> would deny approved paths too, because matching denies take precedence. The fields above were checked against the versioned policy reference, and pure-source matcher diagnostics confirmed the unmatched-source rejection and the two wildcard cases (<a href="https://github.com/microsoft/apm/blob/v0.28.0/src/apm_cli/policy/matcher.py">APM matcher</a>). This is not a full policy installation test.</p>
+  <p><code>PROXY_REGISTRY_ONLY=1</code> restricts direct VCS fallback and lock replay; it does <strong>not</strong> make the whole workflow air-gapped. Policy-file fetching still uses GitHub APIs, and other workflow components have their own network paths (<a href="https://github.com/microsoft/apm/blob/v0.28.0/docs/src/content/docs/enterprise/registry-proxy.md#coverage">proxy coverage</a>). No APM install or runtime policy-enforcement test was performed for this chapter.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="when-to-cap-meter-and-gate-cost-and-risk-trade-offs">
+          <h2 id="when-to-cap-meter-and-gate-cost-and-risk-trade-offs"><a class="anchor-link" href="#when-to-cap-meter-and-gate-cost-and-risk-trade-offs" aria-label="Link to When to cap, meter, and gate (cost and risk trade-offs) section">When to cap, meter, and gate (cost and risk trade-offs)</a></h2>
+          <div class="section-content" data-content-slot="when-to-cap-meter-and-gate-cost-and-risk-trade-offs">
+<p>Budgets trade off <em>resource bounds</em> against <em>task completion</em>: too tight and useful runs get cut off; too loose and a bad run consumes more. Tune from observed work, without turning a historical estimate into a guarantee.</p>
+  <table>
+    <caption>Choose the control that matches the problem</caption>
+    <thead>
+      <tr><th scope="col">For&hellip;</th><th scope="col">Use&hellip;</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>a frequent triage job</td><td>a narrow task, low main-agent budget, daily admission threshold, and deliberate trigger/concurrency settings</td></tr>
+      <tr><td>an occasional deep task</td><td>a reviewed larger allocation, separate detector/time limits, and evidence of useful completion</td></tr>
+      <tr><td>an org baseline</td><td>defaults at the right resolution phase, with visible exceptions and rollout checks</td></tr>
+      <tr><td>a capability or model you want to restrict</td><td>a supported runtime capability gate or <code>models.allowed</code>/<code>models.blocked</code>, not merely a preferred default</td></tr>
+      <tr><td>no effective workflow strictness opt-out</td><td>repository <code>aw.json</code> strict policy plus a protected compile/review/deploy path</td></tr>
+      <tr><td>approved skills and prompts</td><td>version-scoped APM policy, reviewed constraints and <code>apm.lock.yaml</code>, and evidence that the install consumed them</td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't disable budgets to &ldquo;unblock&rdquo; a workflow.</strong> <code>max-ai-credits: -1</code> disables enforcement and steering. Diagnose looping, excessive context, or an under-sized allocation first; do not weaken strict mode to make a recipe compile.</li>
+    <li><strong>Don't confuse noise control with a shared wallet.</strong> Cooldown and daily history checks do not reserve spend. Cooldown's history lookup can fail open; parallel and internally dispatched runs need separate review (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/triggers.md">Triggers</a>).</li>
+    <li><strong>Don't set defaults so tight that every repo overrides them.</strong> Inspect the exceptions and effective values. Conversely, do not describe an overridable default or a most-specific-wins runtime variable as an immutable organization policy.</li>
+    <li><strong>Don't rely on budgets or package scans for complete security.</strong> Keep <a class="xref" href="safe-outputs.html">safe outputs</a>, the firewall, permission boundaries, and human review. Approved content can still contain a bad instruction.</li>
+    <li><strong>Don't equate compilation with billing authorization.</strong> Centralized Copilot CLI billing requires an explicit <code>permissions.copilot-requests: write</code>, organization policy allowing it, and the updated deployed lock. The compiler does not add that permission automatically. The unchanged permission configuration in this chapter's samples uses the <code>COPILOT_GITHUB_TOKEN</code> PAT path for a live run, not an interactive CLI OAuth token (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/billing.md">Billing</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/auth.mdx">Authentication</a>).</li>
+  </ul>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-a-budgeted-policy-compliant-repo-assistant">
+          <h2 id="worked-example-a-budgeted-policy-compliant-repo-assistant"><a class="anchor-link" href="#worked-example-a-budgeted-policy-compliant-repo-assistant" aria-label="Link to Worked example: a budgeted, policy-compliant Repo Assistant section">Worked example: a budgeted, policy-compliant Repo Assistant</a></h2>
+          <div class="section-content" data-content-slot="worked-example-a-budgeted-policy-compliant-repo-assistant">
+<h3 id="ch13-budgeted-workflow">Keep the Repo Assistant's explicit allocation</h3>
+  <p>The running example keeps its original 200/2000 settings. Those are illustrative task allocations, not prices or measured forecasts. Its credit, step-time, and calendar controls address different scopes; it does not claim to satisfy an unseen organization's policy.</p>
+
+  <figure class="code">
+    <figcaption><code>examples/ch13/repo-assistant-budgeted.md</code> &mdash; complete workflow, frontmatter and prompt kept in sync with the source; live run requires Copilot credentials</figcaption>
+    <pre><code class="language-markdown">---
+on:
+  issues:
+    types: [opened]
+  schedule: daily
+  workflow_dispatch:
+  stop-after: "+30d"
+permissions:
+  contents: read
+  issues: read
+engine: copilot
+network:
+  allowed:
+    - defaults
+    - github
+max-ai-credits: 200
+max-daily-ai-credits: 2000
+timeout-minutes: 10
+safe-outputs:
+  add-comment:
+    max: 1
+  add-labels:
+    allowed: [bug, enhancement, question, documentation]
+    max: 1
+---
+
+# Repo Assistant — budgeted triage
+
+You are the **Repo Assistant**. Triage the new issue with one concise comment and
+at most one label. Keep it efficient: read only what you need, and don't spend
+effort re-deriving context you already have.
+
+On a scheduled or manual run without an issue target, report no work rather than
+inventing a target.
+
+This example demonstrates **scoped budgets and policy**. The main agent has a
+`max-ai-credits: 200` budget; the rolling historical admission threshold is
+`max-daily-ai-credits: 2000`. Neither is a total bill cap or an atomic reservation.
+`timeout-minutes: 10` bounds the agentic step, not every job, and
+`stop-after: "+30d"` supplies an admission deadline.
+
+Threat detection and Actions compute are separate. Explicit frontmatter budgets
+are not replaced by organization defaults. Compile-time policy and supported
+runtime capability gates have different enforcement points.</code></pre>
+  </figure>
+
+  <p>The main agent gets 200 AIC, while the unchanged independent detector fallback remains 400 AIC. The 2000 AIC threshold is a rolling historical admission check, and the 10-minute timeout covers only the agentic step; the target's generated job timeouts remain separate. <code>stop-after</code> bounds admission after its deadline, not the total duration of every already-started run.</p>
+  <p><strong>Live-run prerequisites:</strong> supply the Copilot PAT secret, enable Issues, and ensure the allowlisted labels exist. This recipe does not opt into label creation. The book repository had Issues disabled during inspection; compilation in a reference context is not evidence that issue outputs will deploy there (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs.md">safe-output contract</a>). The prompt asks scheduled or manual runs without an issue target to report no work rather than inventing one.</p>
+  <figure class="code">
+    <figcaption>Compile in an isolated copy of the examples tree; these commands assume <code>gh aw</code> resolves to v0.88.7, not an older personal extension</figcaption>
+    <pre><code class="language-text">gh aw version
+gh aw compile examples/ch13/repo-assistant-budgeted.md --strict --no-check-update</code></pre>
+  </figure>
+  <p>If you use the isolated compiler from <a class="xref" href="your-first-workflow.html">Chapter 2</a>, invoke that executable instead. Compilation emits a lock without invoking the engine; it does not test credentials or demonstrate a successful triage run.</p>
+
+  <h3 id="ch13-models-probe">Check a model policy independently of the triage task</h3>
+  <figure class="code">
+    <figcaption><code>examples/ch13/models-policy.md</code> &mdash; complete compile-only diagnostic adopted from the successful v0.88.7 strict probe, not a budgeted-triage variant</figcaption>
+    <pre><code class="language-markdown">---
+on:
+  workflow_dispatch:
+model: auto
+models:
+  allowed: ["claude-*"]
+  blocked: ["claude-opus-*"]
+safe-outputs:
+  noop:
+---
+
+Report no work. This compile-only probe demonstrates model access policy, not a price cap.</code></pre>
+  </figure>
+  <p>This uses the default Copilot engine and leaves budgets at their fallback paths. Compile success establishes the accepted configuration shape, not availability of the model family, successful <code>auto</code> routing, or a price. Keep the <a href="#ch13-budget-controls">budget controls</a> when applying model policy to a real task.</p>
+
+  <h3 id="ch13-strict-probe">Check effective repository strictness, not rejection of a word</h3>
+  <figure class="code">
+    <figcaption><code>examples/ch13/strict-policy/opt-out.md</code> &mdash; complete compile-only diagnostic; use with the separate <code>aw.json</code> fixture above, not as a recommended opt-out</figcaption>
+    <pre><code class="language-markdown">---
+on:
+  workflow_dispatch:
+strict: false
+safe-outputs:
+  noop:
+---
+
+Report no work. This compile-only probe tests repository-level strict-mode enforcement.</code></pre>
+  </figure>
+  <p>In a scratch Git repository, place both fixtures under <code>.github/workflows/</code>, then run <code>gh aw compile opt-out --no-check-update</code> with the target compiler. The shared probe compiled without a CLI <code>--strict</code> override and emitted effective <code>"strict": true</code> metadata under v0.88.7. Checking only for a successful compile would miss the point: inspect both the compiler version and effective strictness. The final book verification gate uses CLI <code>--strict</code> for ordinary workflows, but stages adjacent <code>aw.json</code> and omits that flag for <code>strict-policy/</code> fixtures. The final run also recorded a separate no-policy control; positive fixtures still require exact-version, effective-strict metadata and nonempty locks.</p>
+  <p><strong>Diagnostic boundary:</strong> neither probe was run live. Declaring only <code>safe-outputs.noop</code> still emitted an automatic <code>create_issue</code> fallback in these probes; they are not recipes for disabling all writes. Provider credentials and repository features remain live-run prerequisites. The final authored source and embedded copies passed v0.88.7 compilation with exit code 0 and nonempty strict target locks; <code>content/research/updates/v0.88.7/verification.json</code> and <code>embedded-verification.json</code> record these technical results. Editorial review remains required before publication.</p>
+
+  <h3>Roll out the central settings deliberately</h3>
+  <p>After reviewing effective values and variable visibility, an administrator can use this sequence. It illustrates the <a href="#ch13-defaults-and-gates">defaults and runtime-gate paths</a>; no organization settings were changed for this chapter.</p>
+  <figure class="code">
+    <figcaption>Administrative CLI sequence &mdash; not executed; replace the organization placeholder and review deletions before applying</figcaption>
+    <pre><code class="language-text">gh aw env get org-defaults.yml --scope org --org MY_ORG
+# Edit the exported file; omitted/null keys are deletions.
+gh aw env update org-defaults.yml --scope org --org MY_ORG --dry-run
+# Apply only after review:
+gh aw env update org-defaults.yml --scope org --org MY_ORG
+gh variable set GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST --org MY_ORG --body "false"</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="Precedence in action">
+    <p class="callout-title">Defaults fill gaps; policy has an enforcement point</p>
+    <p>The Repo Assistant's explicit 200/2000 values are not replaced by an org default. An omitted budget can follow the generated runtime-variable path instead. The PR gate does not change this recipe's comment and label task: it has no PR-creation output. Repository strictness and compiler-read defaults require reviewed, regenerated locks to be deployed; package-policy compliance separately requires the chosen APM install path to load and enforce its policy.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-what-s-next">
+          <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
+          <div class="section-content" data-content-slot="recap-and-what-s-next">
+<p>You can now govern a fleet without mistaking one guardrail for the whole system:</p>
+  <ul>
+    <li>Budget <strong>main inference, detection, compute, and time separately</strong>. A daily historical threshold is not an atomic reservation or a complete bill cap.</li>
+    <li>Distinguish <strong>compiler-process defaults, emitted runtime variables, and capability gates</strong>. A central edit only affects consumers of that setting.</li>
+    <li>Repository <code>aw.json</code> can enforce effective strict compilation, but locks must be regenerated and deployed through a governed path.</li>
+    <li><code>models.allowed</code>/<code>models.blocked</code> restrict model access; <code>auto</code> can vary model choice. Forecasts remain estimates even after promotion out of experimental status.</li>
+    <li>APM policy, bounded constraints, consumed locks, and content scans support <strong>reviewed dependency distribution</strong>, not guaranteed instruction safety or a whole-workflow air gap.</li>
+    <li>Tune from the <a class="xref" href="observability-and-debugging.html">Chapter 12 evidence loop</a>, comparing accepted outcomes as well as resource use.</li>
+  </ul>
+  <p><strong>What's next.</strong> <a class="xref" href="fleets-and-adoption.html">Chapter 14: Fleets &amp; Adoption</a> takes the Repo Assistant from one repo to a multi-repo fleet, with deliberate consumer updates and a staged adoption playbook.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <a class="pager-link" rel="prev" href="observability-and-debugging.html">← Chapter 12: Trust &amp; Operate: Observability and Debugging</a>
+          <a class="pager-link" rel="next" href="fleets-and-adoption.html">Chapter 14: Fleets &amp; Adoption: From One Repo to the Org →</a>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>By <strong>Maxim Salnikov</strong> · Microsoft · <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub ↗</a> · <a href="../gh-aw-book.pdf">Download the PDF</a> · <a href="../versions.html">Content edition v1.2</a> · <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

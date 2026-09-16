@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tools &amp; MCP: Real Capabilities, Governed | GitHub Agentic Workflows: An Interactive Book</title>
+  <meta name="description" content="Give the Repo Assistant real capabilities with the tools: block and MCP servers while keeping every capability governed.">
+  <meta name="author" content="Maxim Salnikov">
+  <meta name="book-content-version" content="1.2">
+  <meta name="gh-aw-framework-version" content="v0.88.7">
+  <link rel="canonical" href="https://aw.isainative.dev/chapters/tools-and-mcp.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e9edf4">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1220">
+  <script>(function(){try{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GitHub Agentic Workflows: An Interactive Book">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Tools &amp; MCP: Real Capabilities, Governed">
+  <meta property="og:description" content="Give the Repo Assistant real capabilities with the tools: block and MCP servers while keeping every capability governed.">
+  <meta property="og:url" content="https://aw.isainative.dev/chapters/tools-and-mcp.html">
+  <meta property="og:image" content="https://aw.isainative.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tools &amp; MCP: Real Capabilities, Governed">
+  <meta name="twitter:description" content="Give the Repo Assistant real capabilities with the tools: block and MCP servers while keeping every capability governed.">
+  <meta name="twitter:image" content="https://aw.isainative.dev/og-image.png">
+  <meta name="twitter:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+  <script>window.__APPINSIGHTS_CONNECTION_STRING__="InstrumentationKey=c9860cc2-58c1-4516-80c7-aba8338b8f74;IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/;ApplicationId=8c8c1e42-8fa6-42cc-bf96-362cac52d3d5";</script>
+  <script defer src="../assets/analytics.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/tools-and-mcp.html#article","headline":"Tools \u0026 MCP: Real Capabilities, Governed","name":"Tools \u0026 MCP: Real Capabilities, Governed","description":"Give the Repo Assistant real capabilities with the tools: block and MCP servers while keeping every capability governed.","url":"https://aw.isainative.dev/chapters/tools-and-mcp.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"version":"1.2","about":{"@type":"SoftwareApplication","name":"GitHub Agentic Workflows (gh-aw)","softwareVersion":"v0.88.7","url":"https://github.com/github/gh-aw/releases/tag/v0.88.7"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Team (safe, reviewed, patterned)","keywords":"tools:, MCP servers, MCP gateway (gh-aw-mcpg), built-in tools, tool permissions, engine-specific Bash enforcement, Playwright CLI, process, container, and remote MCP boundaries"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/tools-and-mcp.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Team (safe, reviewed, patterned)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"Tools \u0026 MCP: Real Capabilities, Governed","item":"https://aw.isainative.dev/chapters/tools-and-mcp.html"}]}]}</script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <div class="sidebar-top">
+          <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+          <div class="theme-toggle" role="group" aria-label="Reading theme">
+        <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">☀</span><span class="visually-hidden">Light theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">◑</span><span class="visually-hidden">Sepia theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="dark" aria-pressed="false" title="Dark"><span aria-hidden="true">☾</span><span class="visually-hidden">Dark theme</span></button>
+      </div>
+        </div>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a class="is-current" aria-current="page" href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 8 <span class="fm-sep">·</span> <a href="../gh-aw-book.pdf">Download PDF</a> <span class="fm-sep">·</span> <a href="../versions.html">Content edition v1.2</a> <span class="fm-sep">·</span> <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></nav>
+        <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">08</span><span class="fm-sep">·</span><span class="fm-k">part:</span> <span class="fm-v">The Team (safe, reviewed, patterned)</span></p>
+        <h1>Tools &amp; MCP: Real Capabilities, Governed</h1>
+        <p class="lead">Give the Repo Assistant real capabilities with the tools: block and MCP servers while keeping every capability governed.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#concept-agents-need-tools-safely">Concept: agents need tools, safely</a></li>
+              <li><a href="#in-gh-aw-the-tools-block-mcp-servers-the-mcp-gateway">In gh-aw: the tools: block, MCP servers, the MCP gateway</a></li>
+              <li><a href="#when-to-add-a-tool-or-mcp-server-and-when-it-s-a-risk">When to add a tool or MCP server (and when it&#x27;s a risk)</a></li>
+              <li><a href="#worked-example-repo-assistant-queries-an-mcp-server">Worked example: Repo Assistant queries an MCP server</a></li>
+              <li><a href="#recap-and-what-s-next">Recap &amp; what&#x27;s next</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>tools:</li>
+            <li>MCP servers</li>
+            <li>MCP gateway (gh-aw-mcpg)</li>
+            <li>built-in tools</li>
+            <li>tool permissions</li>
+            <li>engine-specific Bash enforcement</li>
+            <li>Playwright CLI</li>
+            <li>process, container, and remote MCP boundaries</li>
+            </ul>
+          </aside>
+          <aside class="metadata-card" aria-labelledby="depends-heading">
+            <h2 id="depends-heading">Prerequisites</h2>
+            <ul>
+            <li><a href="defense-in-depth.html">Chapter 7: Defense in Depth: Permissions, Firewall &amp; Strict Mode</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p>By the end of this chapter you can give the Repo Assistant <strong>real capabilities</strong> &mdash; querying GitHub, fetching web pages, running shell commands, calling third-party services &mdash; through the <code>tools:</code> block and MCP servers, while keeping every capability <strong>governed</strong> by the security model from <a class="xref" href="defense-in-depth.html">Chapter 7</a>.</p>
+  <p>This chapter targets <strong><a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">gh aw v0.88.7</a></strong>. We keep the Repo Assistant's GitHub/web-fetch workflow and add tools only where the task needs them. Compilation evidence below is not a claim of live triage, MCP connectivity, or browser success.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="concept-agents-need-tools-safely">
+          <h2 id="concept-agents-need-tools-safely"><a class="anchor-link" href="#concept-agents-need-tools-safely" aria-label="Link to Concept: agents need tools, safely section">Concept: agents need tools, safely</a></h2>
+          <div class="section-content" data-content-slot="concept-agents-need-tools-safely">
+<p>A language model on its own can only reason about the text in front of it. To be <em>useful</em> on your repo it needs to <strong>act on the world</strong>: look up related issues, read a linked spec, run a linter, query a service. Those actions are <strong>tools</strong> &mdash; the bridge between the model's judgment and real systems.</p>
+  <p>The <strong>Model Context Protocol (MCP)</strong> is an open protocol that lets an agent discover and call capabilities offered by a &ldquo;server&rdquo; &mdash; for example, a GitHub server or a database server. It gives different systems a common interface; it does not make every tool an MCP tool or every server equally trustworthy (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/guides/mcps.md">Using MCPs, v0.88.7</a>).</p>
+
+  <h3 id="capability-versus-exposure">The tension: capability vs. exposure</h3>
+  <p>Every tool you add is also new <em>attack surface</em>. A tool that reads private data feeds the second leg of the lethal trifecta; a tool that reaches the network feeds the third. A naive &ldquo;give the agent everything&rdquo; approach maximizes usefulness and risk together. So the discipline is the same as with permissions: <strong>grant the fewest tools the task needs, each scoped as tightly as possible</strong> &mdash; then check which controls actually enforce that scope.</p>
+  <p>As in <a class="xref" href="engines.html">Chapter 5</a>, portable intent does not mean interchangeable security contracts. A shell restriction must be supported by the selected engine. Likewise, MCP describes an interaction protocol, not one universal execution boundary. These distinctions become the <a href="#bash-engine-contract">Bash engine contract</a> and <a href="#mcp-transport-boundaries">MCP transport review</a> below.</p>
+  <aside class="callout callout--leader" aria-label="Leader takeaway">
+    <p class="callout-title">Leader lens: capabilities are governable, not all-or-nothing</p>
+    <p>The worry with agents is &ldquo;what can it touch?&rdquo; Review the callable tools, credentials, dependencies, execution location, and data destinations together. The gateway makes tool exposure governable, but a hosted service is not a container you control. Adding a capability is a decision you can see in a diff, not an automatic safety guarantee.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-the-tools-block-mcp-servers-the-mcp-gateway">
+          <h2 id="in-gh-aw-the-tools-block-mcp-servers-the-mcp-gateway"><a class="anchor-link" href="#in-gh-aw-the-tools-block-mcp-servers-the-mcp-gateway" aria-label="Link to In gh-aw: the tools: block, MCP servers, the MCP gateway section">In gh-aw: the tools: block, MCP servers, the MCP gateway</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-the-tools-block-mcp-servers-the-mcp-gateway">
+<p>The <code>tools:</code> block turns <a href="#capability-versus-exposure">least-capability intent</a> into concrete tool configuration. Availability and enforcement depend on the engine; review its supported features rather than assuming identical behavior from identical YAML (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/tools.md">Tools</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md#engine-feature-comparison">engine feature comparison</a>).</p>
+
+  <h3>Built-in tools</h3>
+  <p>A handful ship with gh-aw. The most common:</p>
+  <table>
+    <thead>
+      <tr><th>Tool</th><th>Grants</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>github:</code></td><td>GitHub MCP reads selected through <strong>toolsets</strong> (<code>issues</code>, <code>repos</code>&hellip;); keep agent permissions read-only</td></tr>
+      <tr><td><code>bash:</code></td><td>shell commands; per-command allowlisting is supported by Copilot, Claude, and Gemini, not Codex</td></tr>
+      <tr><td><code>edit:</code></td><td>editing files in the workspace</td></tr>
+      <tr><td><code>web-fetch:</code> / <code>web-search:</code></td><td>fetch a page / search the web; search availability is engine-dependent</td></tr>
+      <tr><td><code>playwright:</code></td><td>browser automation through <code>@playwright/cli</code> and Bash, not built-in Playwright MCP</td></tr>
+    </tbody>
+  </table>
+  <h3 id="bash-engine-contract">Bash: an allowlist needs an enforcing engine</h3>
+  <p>A small default command set is a starting point, not a promise that shell access is harmless. Prefer an explicit list for the task. The Copilot-backed <a class="xref" href="continuous-review-and-testing.html">test-improver workflow in Chapter 10</a> demonstrates a complete workflow with a Bash command allowlist and, separately, the <code>edit</code> tool.</p>
+  <p>In v0.88.7, a <strong>strict Codex workflow with a restricted Bash allowlist fails compilation</strong>. Even a list containing only <code>echo</code> is rejected: Codex cannot enforce per-command allowlisting and would silently ignore that restriction at runtime. This is an error, not merely a warning (<a href="https://github.com/github/gh-aw/releases/tag/v0.86.1">capability diagnostics change</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md#engine-feature-comparison">target engine contracts</a>).</p>
+  <p>If the restriction matters, <strong>keep it and use a supporting engine</strong> &mdash; Copilot, Claude, or Gemini. Do not remove the list, grant unrestricted shell, or disable strict mode just to silence the error. An engine change also requires the authentication, billing, tool, and network review from <a class="xref" href="engines.html">Chapter 5</a>; it is not an equivalent security configuration by substitution.</p>
+
+  <h3 id="playwright-cli">Playwright: browser capability through a CLI</h3>
+  <p>Browser work adds another way to read untrusted content and reach network destinations. The built-in <code>tools.playwright</code> configuration now arranges installation of <code>@playwright/cli</code>, its skills, and the requested browsers <strong>before the agent runs</strong>. Chromium is the default browser; the agent uses <code>playwright-cli</code> commands through Bash (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/playwright.md">Playwright, v0.88.7</a>).</p>
+  <figure class="code">
+    <figcaption>Frontmatter excerpt from examples/ch08/playwright-cli.md &mdash; a complete compile-only provisioning fixture, not a browser test</figcaption>
+    <pre><code class="language-yaml">tools:
+  playwright:
+network:
+  allowed: [defaults, playwright]</code></pre>
+  </figure>
+  <p>Omit <code>mode</code>. Legacy <code>mode: cli</code> remains accepted, but <code>mode: mcp</code> is a compile error, even though the schema retains that value to provide a migration diagnostic. For an actual browser task, update the prompt and tool names too: use commands such as <code>playwright-cli snapshot</code> through Bash, not MCP tool names such as <code>browser_snapshot</code>. A custom Playwright MCP server would be a separately pinned, reviewed integration, not an automatic migration.</p>
+  <p>The <code>version</code> field pins <strong><code>@playwright/cli</code></strong>, not a browser or MCP package. The focused target reference uses <strong>0.1.18</strong>; do not transplant the stale <code>1.56.1</code> example from the general tools page as a CLI pin. This fixture leaves the compiler default in place.</p>
+  <p>The <code>playwright</code> network bundle supports browser provisioning; a real external page also needs its permitted destination in <code>network.allowed</code>. The fixture asks for no work and was compiled, not run. Package downloads and navigation were not tested. Do not ask the agent to install missing packages during its run.</p>
+
+  <h3>Custom MCP servers</h3>
+  <p>For a capability beyond the built-ins, <code>mcp-servers:</code> declares the service and <code>allowed</code> narrows the callable tool names. This applies the same least-capability principle; it does not vet the implementation behind those names (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/guides/mcps.md#mcp-tool-filtering">MCP tool filtering</a>).</p>
+  <figure class="code">
+    <figcaption>ILLUSTRATIVE frontmatter excerpt from examples/ch08/mcp-shape.md &mdash; HTTPS MCP syntax only, NOT a working Slack integration</figcaption>
+    <pre><code class="language-yaml">network:
+  allowed: [defaults, mcp.example.invalid]
+mcp-servers:
+  example:
+    url: https://mcp.example.invalid/mcp
+    allowed: [lookup_reference]</code></pre>
+  </figure>
+  <p><strong>Do not run this fixture.</strong> <code>mcp.example.invalid</code> is a reserved placeholder endpoint, <code>lookup_reference</code> is a placeholder tool name, and provider authentication is deliberately unspecified. The complete fixture strictly compiled on v0.88.7; that validates configuration shape, not the endpoint, tool catalog, or authentication. A real service needs all three verified before adaptation (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/parser/schemas/main_workflow_schema.json">target frontmatter schema</a>).</p>
+  <p>Slack remains an optional use case, not a ready-to-run recipe here. <a href="https://docs.slack.dev/ai/slack-mcp-server/">Slack's official hosted MCP documentation</a> (inspected 2026-09-16) describes <strong>Streamable HTTP and confidential OAuth with user authorization</strong>. That does not establish compatibility with an npm/bot-token recipe or unattended Actions authentication. The earlier installation and tool-name guesses have no verified contract in this chapter; a registry TLS failure would not prove that a package does not exist.</p>
+
+  <h3 id="mcp-transport-boundaries">The MCP gateway and transport boundaries</h3>
+  <p>The gateway mediates MCP access and enforces the <code>allowed</code> tool filter. <strong>Tool filtering is not the same as process isolation.</strong> Review the chosen transport and generated runtime configuration instead of assuming a local, separate container for every server (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/guides/mcps.md#custom-mcp-server-types">custom server types</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/mcp-gateway.md">MCP gateway specification</a>).</p>
+  <table>
+    <thead>
+      <tr><th>Declaration</th><th>Execution and trust boundary</th><th>Review</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Process / stdio: <code>command</code> + <code>args</code></td><td>Local executable code communicates over standard input/output. Stdio names the transport, not a sandbox guarantee; inspect how the compiler wraps and launches it.</td><td>Executable and dependency pins, effective process/container boundary, filesystem access, and environment variables.</td></tr>
+      <tr><td>Container: <code>container</code></td><td>A packaged local server has a container boundary, whose strength depends on its runtime configuration.</td><td>Image pin, mounts, privileges, credentials, and network access. A container is not permission to grant broad access.</td></tr>
+      <tr><td>Remote HTTP: <code>url</code></td><td>The provider runs the server elsewhere. A gateway connection does not put that service inside your local sandbox.</td><td>Endpoint ownership, authentication, allowed tools, data sent to the service, and the provider's handling of that data.</td></tr>
+    </tbody>
+  </table>
+  <p>Local process/container integrations can receive environment variables through <code>env</code>; HTTP integrations need a provider-appropriate authentication contract. Keep credentials narrowly scoped. The workflow firewall constrains the paths it mediates, not a remote provider's internal network or subsequent use of received data.</p>
+  <p>Availability is also part of the contract. Servers are startup-critical by default. Optional-server startup failures can warn and let the workflow continue without that server, but at least one server must still connect. Make only genuinely dispensable enrichment optional, and have the assistant disclose missing evidence rather than call a required check complete (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/tools.md#required-field">startup criticality</a>).</p>
+  <p>The target's MCP inspection tooling also discovers server-provided prompts; pagination and credential-redaction handling improved during this interval (<a href="https://github.com/github/gh-aw/tree/v0.88.7/pkg/cli">v0.88.7 inspection implementation</a>). Treat discovered prompts and tool descriptions as external input, not higher-priority policy. Redaction reduces exposure; it does not certify logs as secret-free. Inspection of a named workflow can start processes or contact services: <strong>only CLI help and source were inspected here, not a live <code>gh aw mcp inspect</code> session or server connection</strong> (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/cli/mcp_inspect.go">inspection command behavior</a>).</p>
+  <aside class="callout callout--builder" aria-label="Builder detail">
+    <p class="callout-title">Builder detail: capability changes need review</p>
+    <p>A new MCP credential can introduce a restricted-secret review warning, just as engine credentials do in <a class="xref" href="engines.html">Chapter 5</a>. Preserve compiler stderr and review the generated manifest, dependency origin, secret scope, and data destinations. A successful compile is not approval of the warning. These examples introduce no third-party service credential and grant no secret approval.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="when-to-add-a-tool-or-mcp-server-and-when-it-s-a-risk">
+          <h2 id="when-to-add-a-tool-or-mcp-server-and-when-it-s-a-risk"><a class="anchor-link" href="#when-to-add-a-tool-or-mcp-server-and-when-it-s-a-risk" aria-label="Link to When to add a tool or MCP server (and when it&#x27;s a risk) section">When to add a tool or MCP server (and when it&#x27;s a risk)</a></h2>
+          <div class="section-content" data-content-slot="when-to-add-a-tool-or-mcp-server-and-when-it-s-a-risk">
+<p>Add a tool when the task genuinely can't be done without it &mdash; and stop there. The question to ask of every tool is: <em>&ldquo;if the agent were hijacked, what could it do with this?&rdquo;</em></p>
+  <table>
+    <thead>
+      <tr><th>Need</th><th>Reach for</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>look up related issues / PRs / code</td><td><code>github:</code> with the narrowest <code>toolsets</code></td></tr>
+      <tr><td>read a linked doc or spec</td><td><code>web-fetch:</code> + the domain in <code>network.allowed</code></td></tr>
+      <tr><td>run a build or a linter</td><td><code>bash:</code> with an explicit command allowlist and an engine that supports it</td></tr>
+      <tr><td>inspect a rendered page or test a browser interaction</td><td><code>playwright:</code> with CLI-based instructions and the required network destinations</td></tr>
+      <tr><td>read context from a third-party service</td><td>a vetted <code>mcp-servers:</code> entry with a narrow <code>allowed</code> list, reviewed authentication, and an understood transport boundary</td></tr>
+    </tbody>
+  </table>
+
+  <h3>When <em>not</em> to</h3>
+  <ul>
+    <li><strong>Don't grant <code>bash: [":*"]</code> casually.</strong> Unrestricted shell is close to unrestricted power. Allowlist exactly the commands the task runs.</li>
+    <li><strong>Don't add an MCP server you haven't vetted.</strong> It is either code you execute or a service entrusted with your data. Pin local dependencies/images, review hosted providers, scope <code>allowed</code> tools and credentials, and limit the network paths you control.</li>
+    <li><strong>Don't widen the network just to make a tool work.</strong> Broader egress increases the remaining exfiltration exposure discussed in <a class="xref" href="defense-in-depth.html">Chapter 7</a>. Review destinations and the data sent to them; add only the specific domains the task requires.</li>
+    <li><strong>Don't confuse tool filtering with write mediation.</strong> Keep custom MCP tools read-only in these patterns. A third-party write tool with its own credential does not automatically inherit the repository's <code>safe-outputs:</code> boundary. Do not expose an unreviewed write tool just to demonstrate an integration; GitHub changes still belong in the governed output path from <a class="xref" href="safe-outputs.html">Chapter 6</a>.</li>
+  </ul>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-repo-assistant-queries-an-mcp-server">
+          <h2 id="worked-example-repo-assistant-queries-an-mcp-server"><a class="anchor-link" href="#worked-example-repo-assistant-queries-an-mcp-server" aria-label="Link to Worked example: Repo Assistant queries an MCP server section">Worked example: Repo Assistant queries an MCP server</a></h2>
+          <div class="section-content" data-content-slot="worked-example-repo-assistant-queries-an-mcp-server">
+<p>Let's give the Repo Assistant its first real capabilities. The workflow asks it to query the <strong>GitHub MCP server</strong> to find duplicate issues and use <code>web-fetch</code> to read a linked spec &mdash; a much richer triage than reading the issue text alone.</p>
+
+  <figure class="code">
+    <figcaption>Frontmatter excerpt from examples/ch08/repo-assistant-tools.md &mdash; unchanged GitHub/web-fetch configuration with at most one triage-comment safe output</figcaption>
+    <pre><code class="language-yaml">permissions:
+  contents: read
+  issues: read
+engine: copilot
+network:
+  allowed:
+    - defaults
+    - github
+tools:
+  github:
+    toolsets: [issues, repos]
+  web-fetch:
+safe-outputs:
+  add-comment:
+    max: 1</code></pre>
+  </figure>
+
+  <p>The <code>github</code> tool <em>is</em> an MCP integration, scoped here to the <code>issues</code> and <code>repos</code> toolsets. Toolsets select API families; the read-only GitHub integration and agent permissions provide the authority boundary (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/github-tools.md">GitHub tools, v0.88.7</a>). Custom services do not automatically inherit it.</p>
+  <p><code>web-fetch</code> uses the governed network path from <a class="xref" href="defense-in-depth.html">Chapter 7</a>. The source permits <code>defaults</code> and <code>github</code>, not arbitrary documentation hosts. If a linked spec is outside that policy, the assistant should disclose the missing context rather than improvise a bypass or broaden egress. Even an allowed page remains untrusted input.</p>
+
+  <p>Notice what stayed constant: the declared GitHub <code>permissions:</code> are still read-only, and the intended triage write remains at most one <code>add-comment</code> safe output. We added <em>reach</em>, not a direct API write credential. The boundary does not guarantee that the comment is correct or harmless.</p>
+
+  <figure class="code">
+    <figcaption>Compile in an isolated copy using the fixed v0.88.7 CLI &mdash; commands, not a live-run transcript</figcaption>
+    <pre><code class="language-text">gh aw version
+# Confirm v0.88.7 before compiling.
+gh aw compile examples/ch08/repo-assistant-tools.md --strict</code></pre>
+  </figure>
+  <p>The versioned preflight report, <code>content/research/updates/v0.88.7/preflight-verification.json</code>, records a strict compile PASS and an emitted lock for the earlier triage source body. The consolidated post-review refresh also compiled the revised source successfully: v0.88.7, exit code 0 and a nonempty lock with exact-version/strict metadata, recorded in <code>content/research/updates/v0.88.7/verification.json</code>. Its YAML, task instructions, and limits remain unchanged. The two additional sources reproduce positive research fixtures: <code>mcp-shape.md</code> passed strict compilation with effective strict metadata, and <code>playwright-cli.md</code> passed strict compilation plus validation. These are <strong>compile-only</strong> checks, not proof of provider authentication, tool availability, browser provisioning, or navigation.</p>
+  <aside class="callout callout--note" aria-label="Scaling to third-party servers">
+    <p class="callout-title">Live-run limits: from built-in to third-party</p>
+    <p>The triage recipe still needs the Copilot authentication setup from <a class="xref" href="engines.html">Chapter 5</a>, an Issues-enabled repository, and a triggering issue. Its manual-dispatch trigger does not itself supply an issue. The book repository has Issues disabled; no live triage or integration run was performed. Missing credentials limit a <em>live run</em>, never the requirement to compile.</p>
+    <p>To go further &mdash; say, retrieve Slack context or query a database &mdash; first verify the provider, read-only tool catalog, noninteractive authentication, and data boundary. The illustrative HTTPS fixture is not a deployment recipe. No live MCP inspection, server connection, or browser test was performed for this chapter.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-what-s-next">
+          <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
+          <div class="section-content" data-content-slot="recap-and-what-s-next">
+<p>You can now add capabilities deliberately, while recognizing the exposure each one introduces:</p>
+  <ul>
+    <li>Agents need <strong>tools</strong> to act; <strong>MCP</strong> is the open protocol that exposes capabilities uniformly &mdash; but every tool is also attack surface.</li>
+    <li>The <code>tools:</code> block grants <strong>built-in tools</strong> (<code>github</code>, <code>bash</code>, <code>edit</code>, <code>web-fetch</code>, <code>playwright</code>&hellip;); <code>mcp-servers:</code> adds <strong>custom servers</strong> with an <code>allowed</code> tool list.</li>
+    <li><strong>Engine contracts matter:</strong> strict Codex workflows cannot use restricted Bash allowlists. Keep the restriction and select a reviewed supporting engine, not a broader grant.</li>
+    <li>The <strong>MCP gateway</strong> filters tool exposure, but process, container, and remote HTTP integrations have different trust boundaries. It does not turn a hosted service into a local sandbox.</li>
+    <li>Built-in <strong>Playwright uses <code>playwright-cli</code> through Bash</strong>. Migrate prompts as well as configuration; a compile PASS is not a successful browser test.</li>
+    <li>Grant the <strong>fewest tools, scoped tightest</strong>; review credentials and dependencies, preserve strict mode, and keep third-party write tools out of the read-only patterns. Compilation does not approve secrets or certify runtime integrations.</li>
+  </ul>
+  <p><strong>What's next.</strong> That completes the <em>machinery</em> &mdash; triggers, engines, safe outputs, security, tools. In <strong>Part II's payoff</strong>, we assemble it into production-shaped patterns. <a class="xref" href="continuous-triage-and-docs.html">Chapter 9: Continuous Triage &amp; Docs</a> ships two mini-products the Repo Assistant runs on its own.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <a class="pager-link" rel="prev" href="defense-in-depth.html">← Chapter 7: Defense in Depth: Permissions, Firewall &amp; Strict Mode</a>
+          <a class="pager-link" rel="next" href="continuous-triage-and-docs.html">Chapter 9: Continuous Triage &amp; Docs: Reading the Room →</a>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>By <strong>Maxim Salnikov</strong> · Microsoft · <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub ↗</a> · <a href="../gh-aw-book.pdf">Download the PDF</a> · <a href="../versions.html">Content edition v1.2</a> · <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

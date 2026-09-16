@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The 10-Minute Win: Your First Workflow | GitHub Agentic Workflows: An Interactive Book</title>
+  <meta name="description" content="Install the gh aw CLI and ship a first working Repo Assistant that triages a new issue end to end.">
+  <meta name="author" content="Maxim Salnikov">
+  <meta name="book-content-version" content="1.2">
+  <meta name="gh-aw-framework-version" content="v0.88.7">
+  <link rel="canonical" href="https://aw.isainative.dev/chapters/your-first-workflow.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e9edf4">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1220">
+  <script>(function(){try{var t=localStorage.getItem('aw-theme');if(t&&t!=='system'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GitHub Agentic Workflows: An Interactive Book">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="The 10-Minute Win: Your First Workflow">
+  <meta property="og:description" content="Install the gh aw CLI and ship a first working Repo Assistant that triages a new issue end to end.">
+  <meta property="og:url" content="https://aw.isainative.dev/chapters/your-first-workflow.html">
+  <meta property="og:image" content="https://aw.isainative.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The 10-Minute Win: Your First Workflow">
+  <meta name="twitter:description" content="Install the gh aw CLI and ship a first working Repo Assistant that triages a new issue end to end.">
+  <meta name="twitter:image" content="https://aw.isainative.dev/og-image.png">
+  <meta name="twitter:image:alt" content="GitHub Agentic Workflows — An Interactive Book by Maxim Salnikov">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="../assets/app.js"></script>
+  <script>window.__APPINSIGHTS_CONNECTION_STRING__="InstrumentationKey=c9860cc2-58c1-4516-80c7-aba8338b8f74;IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/;ApplicationId=8c8c1e42-8fa6-42cc-bf96-362cac52d3d5";</script>
+  <script defer src="../assets/analytics.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","@id":"https://aw.isainative.dev/chapters/your-first-workflow.html#article","headline":"The 10-Minute Win: Your First Workflow","name":"The 10-Minute Win: Your First Workflow","description":"Install the gh aw CLI and ship a first working Repo Assistant that triages a new issue end to end.","url":"https://aw.isainative.dev/chapters/your-first-workflow.html","inLanguage":"en","author":{"@id":"https://aw.isainative.dev/#author"},"publisher":{"@id":"https://aw.isainative.dev/#author"},"isPartOf":{"@id":"https://aw.isainative.dev/#book"},"version":"1.2","about":{"@type":"SoftwareApplication","name":"GitHub Agentic Workflows (gh-aw)","softwareVersion":"v0.88.7","url":"https://github.com/github/gh-aw/releases/tag/v0.88.7"},"image":"https://aw.isainative.dev/og-image.png","articleSection":"The Individual (one workflow)","keywords":"gh aw init, gh aw new, gh aw compile, gh aw run, Copilot engine (default), safe-outputs (previewed)"},{"@type":"Person","@id":"https://aw.isainative.dev/#author","name":"Maxim Salnikov","url":"https://www.linkedin.com/in/webmax/","sameAs":["https://www.linkedin.com/in/webmax/","https://github.com/webmaxru"],"worksFor":{"@type":"Organization","name":"Microsoft"}},{"@type":"BreadcrumbList","@id":"https://aw.isainative.dev/chapters/your-first-workflow.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aw.isainative.dev/"},{"@type":"ListItem","position":2,"name":"The Individual (one workflow)","item":"https://aw.isainative.dev/#contents"},{"@type":"ListItem","position":3,"name":"The 10-Minute Win: Your First Workflow","item":"https://aw.isainative.dev/chapters/your-first-workflow.html"}]}]}</script>
+</head>
+<body class="chapter-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button class="sidebar-toggle" type="button" aria-controls="chapter-sidebar" aria-expanded="false">☰ Chapters</button>
+
+  <div class="page-shell">
+    <aside id="chapter-sidebar" class="sidebar" aria-label="Book chapters">
+      <div class="sidebar-inner">
+        <div class="sidebar-top">
+          <a class="site-title" href="../index.html">GitHub Agentic Workflows: An Interactive Book</a>
+          <div class="theme-toggle" role="group" aria-label="Reading theme">
+        <button type="button" class="theme-opt" data-theme-value="light" aria-pressed="false" title="Light"><span aria-hidden="true">☀</span><span class="visually-hidden">Light theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="sepia" aria-pressed="false" title="Sepia"><span aria-hidden="true">◑</span><span class="visually-hidden">Sepia theme</span></button>
+        <button type="button" class="theme-opt" data-theme-value="dark" aria-pressed="false" title="Dark"><span aria-hidden="true">☾</span><span class="visually-hidden">Dark theme</span></button>
+      </div>
+        </div>
+        <nav class="chapter-nav" aria-label="Chapter navigation">
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-1">Part I · The Individual (one workflow)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-1">
+            <li><a href="what-are-agentic-workflows.html"><span class="chapter-number">01</span><span>What Are Agentic Workflows?</span></a></li>
+            <li><a class="is-current" aria-current="page" href="your-first-workflow.html"><span class="chapter-number">02</span><span>The 10-Minute Win: Your First Workflow</span></a></li>
+            <li><a href="anatomy-and-compile-model.html"><span class="chapter-number">03</span><span>Anatomy &amp; the Compile Model</span></a></li>
+            <li><a href="triggers.html"><span class="chapter-number">04</span><span>Triggers: When Workflows Wake Up</span></a></li>
+            <li><a href="engines.html"><span class="chapter-number">05</span><span>Engines: Choosing the Agent&#x27;s Brain</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-2">Part II · The Team (safe, reviewed, patterned)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-2">
+            <li><a href="safe-outputs.html"><span class="chapter-number">06</span><span>Safe Outputs: Acting Without Overreach</span></a></li>
+            <li><a href="defense-in-depth.html"><span class="chapter-number">07</span><span>Defense in Depth: Permissions, Firewall &amp; Strict Mode</span></a></li>
+            <li><a href="tools-and-mcp.html"><span class="chapter-number">08</span><span>Tools &amp; MCP: Real Capabilities, Governed</span></a></li>
+            <li><a href="continuous-triage-and-docs.html"><span class="chapter-number">09</span><span>Continuous Triage &amp; Docs: Reading the Room</span></a></li>
+            <li><a href="continuous-review-and-testing.html"><span class="chapter-number">10</span><span>Continuous Review, Testing &amp; CI-Doctor</span></a></li>
+          </ol>
+        </div>
+        <div class="nav-part">
+          <p class="nav-part-title" id="navpart-3">Part III · The Organization (fleet at scale)</p>
+          <ol class="nav-chapters" aria-labelledby="navpart-3">
+            <li><a href="reuse-and-memory.html"><span class="chapter-number">11</span><span>Reuse &amp; Memory: Shared Components and Repo Knowledge</span></a></li>
+            <li><a href="observability-and-debugging.html"><span class="chapter-number">12</span><span>Trust &amp; Operate: Observability and Debugging</span></a></li>
+            <li><a href="governance-and-finops.html"><span class="chapter-number">13</span><span>Governance &amp; FinOps: Policy and Cost at Scale</span></a></li>
+            <li><a href="fleets-and-adoption.html"><span class="chapter-number">14</span><span>Fleets &amp; Adoption: From One Repo to the Org</span></a></li>
+          </ol>
+        </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="chapter-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> / Chapter 2 <span class="fm-sep">·</span> <a href="../gh-aw-book.pdf">Download PDF</a> <span class="fm-sep">·</span> <a href="../versions.html">Content edition v1.2</a> <span class="fm-sep">·</span> <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></nav>
+        <p class="fm"><span class="fm-k">chapter:</span> <span class="fm-v">02</span><span class="fm-sep">·</span><span class="fm-k">part:</span> <span class="fm-v">The Individual (one workflow)</span></p>
+        <h1>The 10-Minute Win: Your First Workflow</h1>
+        <p class="lead">Install the gh aw CLI and ship a first working Repo Assistant that triages a new issue end to end.</p>
+      </header>
+
+      <main id="main-content" class="chapter-main" tabindex="-1">
+        <div class="chapter-meta">
+          <nav class="metadata-card" aria-labelledby="section-nav-heading">
+            <h2 id="section-nav-heading">On this page</h2>
+            <ol>
+              <li><a href="#objective">Objective</a></li>
+              <li><a href="#the-problem-the-overnight-teammate-you-don-t-have">The problem: the overnight teammate you don&#x27;t have</a></li>
+              <li><a href="#in-gh-aw-init-new-compile-run">In gh-aw: init, new, compile, run</a></li>
+              <li><a href="#when-to-ship-a-first-workflow-and-when-to-wait">When to ship a first workflow (and when to wait)</a></li>
+              <li><a href="#worked-example-repo-assistant-triages-a-new-issue">Worked example: Repo Assistant triages a new issue</a></li>
+              <li><a href="#recap-and-what-s-next">Recap &amp; what&#x27;s next</a></li>
+            </ol>
+          </nav>
+          <aside class="metadata-card" aria-labelledby="features-heading">
+            <h2 id="features-heading">gh-aw features</h2>
+            <ul class="tag-list">
+            <li>gh aw init</li>
+            <li>gh aw new</li>
+            <li>gh aw compile</li>
+            <li>gh aw run</li>
+            <li>Copilot engine (default)</li>
+            <li>safe-outputs (previewed)</li>
+            </ul>
+          </aside>
+          <aside class="metadata-card" aria-labelledby="depends-heading">
+            <h2 id="depends-heading">Prerequisites</h2>
+            <ul>
+            <li><a href="what-are-agentic-workflows.html">Chapter 1: What Are Agentic Workflows?</a></li>
+            </ul>
+          </aside>
+        </div>
+
+        <section class="chapter-section" data-section="objective">
+          <h2 id="objective"><a class="anchor-link" href="#objective" aria-label="Link to Objective section">Objective</a></h2>
+          <div class="section-content" data-content-slot="objective">
+<p>By the end of this chapter you can install the <code>gh aw</code> CLI and ship a working <strong>Repo Assistant</strong>: an agentic workflow that reads a newly opened issue, decides what kind of issue it is, and requests a triage comment and at most one allowed label &mdash; through a reviewable, permission-scoped boundary.</p>
+  <p>The ten-minute win is a small authoring loop: write your intent as a short Markdown file, compile it into an ordinary GitHub Actions workflow, then try it on a test issue. Have the prerequisites ready first; allow extra time for account setup and the live Actions run. This chapter targets the fixed <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7"><strong>gh aw v0.88.7</strong></a> release (Public Preview).</p>
+  <aside class="callout callout--note" aria-label="Prerequisites">
+    <p class="callout-title">Before you start</p>
+    <p>This chapter builds on <a class="xref" href="what-are-agentic-workflows.html">Chapter 1</a>, which introduces the outer loop and Continuous AI. You need the <a href="https://cli.github.com/">GitHub CLI</a> (<code>gh</code>), authenticated for a practice repository you can push to, with <strong>Issues and Actions enabled</strong>. Use your own practice repository: the book repository has Issues disabled, and this exercise does not change that setting. Copilot authentication is needed for the live step, not for compilation.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="the-problem-the-overnight-teammate-you-don-t-have">
+          <h2 id="the-problem-the-overnight-teammate-you-don-t-have"><a class="anchor-link" href="#the-problem-the-overnight-teammate-you-don-t-have" aria-label="Link to The problem: the overnight teammate you don&#x27;t have section">The problem: the overnight teammate you don&#x27;t have</a></h2>
+          <div class="section-content" data-content-slot="the-problem-the-overnight-teammate-you-don-t-have">
+<p>Open your repository's issue tracker. Somewhere in there is a new issue with no label, a vague title, and no reproduction steps &mdash; and it has been sitting for a week. Reading it, deciding whether it's a bug, a feature request, or a question, asking for the missing detail, and routing it to the right place is real work. It's just rarely the work that reaches the top of anyone's day.</p>
+
+  <h3>Triage is judgment work, not a pipeline</h3>
+  <p>Traditional CI/CD is built to &ldquo;do exactly what you tell them, every time, in the same way&rdquo; (<a href="https://github.github.com/gh-aw/introduction/how-they-work/">How They Work</a>). That determinism is exactly what you want for a build or a release. Triaging an issue is the opposite kind of task: there is no lookup table that maps every possible issue to the right response. You have to infer intent from unstructured prose and pick a context-dependent action. That is <em>judgment work</em> &mdash; the kind of task &ldquo;where exact reproducibility doesn't matter, such as triaging issues, drafting documentation, researching dependencies, or proposing code improvements for human review&rdquo; (<a href="https://github.github.com/gh-aw/reference/faq/">FAQ</a>).</p>
+  <p>That is why carefully scoped triage can be a strong first agentic win. It is high-volume judgment work with reviewable outputs. Comments and labels are manageable first operations <em>when both the information involved and their downstream effects are low-risk</em>; editing or deleting them does not undo information disclosure or consequences already set in motion. GitHub Next even names the pattern: <strong>Continuous Triage</strong> &mdash; &ldquo;label, summarize, and respond to issues using natural language&rdquo; (<a href="https://githubnext.com/projects/continuous-ai/">Continuous AI</a>). And it is <strong>additive</strong>: agentic workflows sit alongside your deterministic pipelines, which do not change at all (<a href="https://github.github.com/gh-aw/reference/faq/">FAQ</a>).</p>
+
+  <h3>Meet the overnight teammate</h3>
+  <p>Picture a tireless teammate who owns exactly one small, recurring job. It wakes on an event, does that job, proposes the result for your review, and goes back to sleep. That is the mental model for an agentic workflow &mdash; and it is the book's running example, the <strong>Repo Assistant</strong>. It is modeled on GitHub Next's real &ldquo;Repo Assist,&rdquo; a repository assistant that labels issues, answers questions, and proposes fixes &ldquo;all while the maintainer stays in control through pull request review&rdquo; (<a href="https://githubnext.com/projects/continuous-ai/">Continuous AI</a>).</p>
+  <p>One workflow equals one teammate equals one job. That is deliberate: it is not a general chatbot you prompt ad hoc, and it is not an unsupervised autonomous agent. It is a <em>standing</em>, event-driven task-owner that proposes rather than acts with free rein.</p>
+
+  <aside class="case-study" aria-label="Case study">
+    <p class="case-study-title">Repo Assist, measured</p>
+    <p>An impact study of Repo Assist across <strong>15 open-source repositories</strong> reported a net reduction of <strong>651 open issues</strong> and a <strong>median 9&times; increase</strong> in issue-closure and PR-merge velocity &mdash; turning largely dormant projects into actively maintained ones. Its central finding: throughput was gated less by the model than by <strong>how often human maintainers chose to act on the agent's proposals</strong> (<a href="https://github.com/githubnext/repo-assist-impact/blob/main/report.md">Repo Assist impact report</a>).</p>
+  </aside>
+
+  <aside class="callout callout--builder" aria-label="Builder track">
+    <p class="callout-title">Builder track</p>
+    <p>You already automate the deterministic half of your repo with Actions. This is the other half: the judgment tasks you keep meaning to get to. Start with the one that is most repetitive and least risky &mdash; triage &mdash; and you will have something real running today.</p>
+  </aside>
+
+  <aside class="callout callout--leader" aria-label="Leader track">
+    <p class="callout-title">Leader track</p>
+    <p>The payoff is not &ldquo;AI writes our code.&rdquo; It is throughput on the unglamorous collaboration work that quietly decays: unlabeled issues, stale reports, doc drift. Because every action is a reviewable proposal, you get that throughput without handing over control &mdash; and the measured lever is your team's review habit, not the model.</p>
+  </aside>
+
+  <h3>Where this sits in the outer loop</h3>
+  <p>As <a class="xref" href="what-are-agentic-workflows.html">Chapter 1</a> established, the <em>inner loop</em> is the fast, interactive coding you do in your editor; the <em>outer loop</em> is your repository's ongoing collaborative life &mdash; issues, PRs, reviews, releases &mdash; that keeps moving after you close the laptop. Continuous AI applies AI to that outer loop the way CI/CD automated integration and deployment, and gh-aw is how you do it. Your first workflow is simply the smallest slice of that loop: one new issue, triaged.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="in-gh-aw-init-new-compile-run">
+          <h2 id="in-gh-aw-init-new-compile-run"><a class="anchor-link" href="#in-gh-aw-init-new-compile-run" aria-label="Link to In gh-aw: init, new, compile, run section">In gh-aw: init, new, compile, run</a></h2>
+          <div class="section-content" data-content-slot="in-gh-aw-init-new-compile-run">
+<p>The <code>gh aw</code> CLI turns that overnight-teammate idea into four small steps: <strong>init</strong> the repo once, <strong>new</strong> to scaffold a workflow, <strong>compile</strong> your Markdown into a real Actions workflow, and <strong>run</strong> it. You author <em>intent</em> in Markdown; the compiler produces the reviewable YAML that actually executes.</p>
+
+  <h3>Install and verify</h3>
+  <p><code>gh aw</code> is a GitHub CLI extension. Choose the compiler version before starting the authoring loop so you can reproduce the chapter's checks. If you already have the extension, check <code>gh aw version</code> first and reuse it only if it reports exactly <code>v0.88.7</code>. A mismatched installation must not silently become this exercise's compiler.</p>
+  <figure class="code">
+    <figcaption>Pinned extension route &mdash; install in a fresh, dedicated CLI environment with no existing gh-aw extension</figcaption>
+    <pre><code class="language-text">gh extension install github/gh-aw --pin v0.88.7
+gh aw version</code></pre>
+  </figure>
+  <p>The actual version command must print <code>gh aw version v0.88.7</code>. Stop on an installation error or a version mismatch; an unpinned install is not a way to select this chapter's target. If your personal extension is another version, keep it intact and use a dedicated environment or the isolated option below.</p>
+  <aside class="callout callout--note" aria-label="Isolated Windows installation">
+    <p class="callout-title">Windows: keep your personal extension unchanged</p>
+    <p>The book's <code>scripts/install-gh-aw.ps1</code> downloads and checksum-verifies an exact release in isolation. Run it from the book checkout with an explicit version:</p>
+    <figure class="code">
+      <figcaption>Isolated Windows route &mdash; capture the executable path, then check that executable</figcaption>
+      <pre><code class="language-powershell">$aw = .\scripts\install-gh-aw.ps1 -Version v0.88.7
+&amp; $aw version</code></pre>
+    </figure>
+    <p>The script returns an executable path; it does <strong>not</strong> replace your personal <code>gh aw</code>. Keep this PowerShell session and switch to your practice checkout before repository setup.</p>
+  </aside>
+  <p><strong>Use one invocation throughout.</strong> The command blocks below use the verified extension route, <code>gh aw</code>. If you selected isolation, replace that prefix in <em>every</em> command with <code>&amp; $aw</code> &mdash; for example, <code>&amp; $aw compile --strict .github/workflows/repo-assistant-triage.md</code>. Do not switch back to <code>gh aw</code>, which still invokes your personal extension.</p>
+
+  <h3>1 &middot; <code>gh aw init</code> &mdash; set up the repo once</h3>
+  <p>Run this once in your practice repository's checkout. It is non-interactive and does not ask for an engine or configure any secrets. It prepares the repo so you can author, compile, and run &mdash; for example, marking generated <code>*.lock.yml</code> files in <code>.gitattributes</code> and adding helper skills and editor settings (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md#init">v0.88.7 CLI Commands</a>).</p>
+  <figure class="code">
+    <figcaption>One-time repository setup</figcaption>
+    <pre><code class="language-text">gh aw init</code></pre>
+  </figure>
+
+  <h3>2 &middot; <code>gh aw new</code> &mdash; scaffold a workflow</h3>
+  <p><code>gh aw new &lt;workflow-id&gt;</code> creates a single Markdown workflow at <code>.github/workflows/&lt;workflow-id&gt;.md</code>, pre-populated with a commented starter template (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md#new">CLI Commands</a>).</p>
+  <figure class="code">
+    <figcaption>Create a new workflow file</figcaption>
+    <pre><code class="language-text">gh aw new repo-assistant-triage
+# creates .github/workflows/repo-assistant-triage.md</code></pre>
+  </figure>
+  <aside class="callout callout--tip" aria-label="Tip">
+    <p class="callout-title">Tip</p>
+    <p>The generated template is intentionally verbose &mdash; great as a reference, noisy as a first example. For a clean ten-minute win, replace it with the worked example below: a hand-written <em>minimal</em> file. When an official workflow already does the job, pull one in with <code>gh aw add</code> instead (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md#add">CLI Commands</a>).</p>
+  </aside>
+
+  <h3>3 &middot; <code>gh aw compile</code> &mdash; Markdown becomes a workflow</h3>
+  <p>Compilation is the heart of the loop. <code>gh aw compile</code> turns each <code>&lt;file&gt;.md</code> into the GitHub Actions lock file that actually runs, <code>&lt;file&gt;.lock.yml</code>. With no argument it compiles every workflow in <code>.github/workflows/</code>. You never hand-edit the lock file &mdash; you change the Markdown and recompile.</p>
+  <figure class="code">
+    <figcaption>Strictly compile the saved workflow &mdash; no engine secret required</figcaption>
+    <pre><code class="language-text">gh aw compile --strict .github/workflows/repo-assistant-triage.md</code></pre>
+  </figure>
+  <p><strong>Compilation invokes no model or coding engine and needs no engine secret.</strong> That makes it a useful check before spending inference credits, but not an offline guarantee. Dependency and ref resolution can access the network or GitHub, using GitHub authentication where needed. The compiler writes the adjacent lock and can also create pin caches such as <code>.github/aw/actions-lock.json</code> and update <code>.gitattributes</code>. Review those generated changes too (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compilation-process.md">Compilation Process</a>).</p>
+  <p><strong>Strict mode is on by default.</strong> Passing <code>--strict</code> makes the security gate explicit, even if a workflow tries to opt out. It enforces action pinning and network constraints and refuses repository-write permissions for the agent; route those writes through <code>safe-outputs:</code> instead. These are checks on the declared execution boundary, not proof that the agent's judgment will be correct (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/workflow/compiler.go">target compiler</a>).</p>
+  <p>Omit <code>engine:</code> and you get Copilot; omit <code>permissions:</code> and the agent's repository access is read-only; omit <code>network:</code> and you get the curated default egress policy. Our example spells out all three and explicitly bounds its safe outputs, because the <a class="xref" href="what-are-agentic-workflows.html">safe-by-default posture from Chapter 1</a> should be visible in the source you review.</p>
+  <aside class="callout callout--note" aria-label="Different verification gates">
+    <p class="callout-title">Strict compilation is one gate, not every gate</p>
+    <p>Optional <code>compile --validate</code> adds environment-dependent checks of Actions schema, packages, repository features, actions, and containers. Optional scanners are separate opt-ins. These checks can need network access or installed tools; an unavailable Docker daemon can leave image validation skipped. Neither a skipped check nor a strict compile PASS proves scanner coverage or live execution (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/cli/compile_config.go">validation and scanner configuration</a>).</p>
+  </aside>
+  <p>The result is <em>inspectable orchestration</em>, not deterministic inference. At run time, both the main agent and the default threat detector perform AI reasoning. <a class="xref" href="anatomy-and-compile-model.html">Chapter 3</a> opens the generated graph; <a class="xref" href="defense-in-depth.html">Chapter 7</a> explains the detection boundary (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/threat-detection.md">Threat Detection</a>).</p>
+
+  <h3>4 &middot; <code>gh aw run</code> &mdash; trigger it on GitHub</h3>
+  <p><code>gh aw run</code> dispatches a compiled workflow on GitHub Actions using its <code>workflow_dispatch</code> trigger &mdash; so a workflow must declare one to be runnable this way (ours does). This is a <strong>live run</strong>, not a compilation check: it needs the deployed lock, permission to dispatch Actions, and working engine authentication. The unchanged sample uses the PAT path described below; no live run was performed for this chapter's target evidence (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/setup/cli.md#run">CLI Commands</a>).</p>
+  <figure class="code needs-secret">
+    <figcaption>Manually dispatch the deployed workflow &mdash; live run, needs the sample's Copilot PAT</figcaption>
+    <pre><code class="language-text">gh aw run repo-assistant-triage</code></pre>
+  </figure>
+  <p>For a non-executing dispatch check, use <code>gh aw run repo-assistant-triage --dry-run</code>. It does not trigger a workflow or call the engine, but can still query GitHub; it is not a test of provider access or issue-triage behavior.</p>
+  <aside class="callout callout--warning" aria-label="Security and cost">
+    <p class="callout-title">Security &amp; cost</p>
+    <p>Compilation makes no inference request. <em>Running</em> consumes Actions compute and AI inference, billed separately. Repository authority, engine authentication, and billing entitlement are different concerns:</p>
+    <ul>
+      <li><strong>This unchanged sample uses a PAT.</strong> Add a fine-grained PAT as the <code>COPILOT_GITHUB_TOKEN</code> Actions repository secret. Its owner needs an eligible Copilot entitlement; the token alone does not grant inference access. The read-only <code>contents</code> and <code>issues</code> permissions govern repository operations, not that entitlement.</li>
+      <li><strong>Organization billing is an explicit alternative, not automatic setup.</strong> It requires <code>copilot-requests: write</code> inside <code>permissions:</code>, an organization Copilot subscription with the policy <em>Allow use of Copilot CLI billed to the organization</em> enabled, and a recompiled, deployed lock. This is an inference/billing permission, not repository-write authority. The compiler does <strong>not</strong> add it to this source. When declared, the Actions token is used for inference and the PAT is ignored; a compile PASS does not prove the org policy permits it.</li>
+    </ul>
+    <p>Never put a credential value in the workflow. Do not reuse an interactive <code>gh</code> OAuth session token: activation rejects <code>gho_</code> tokens in <code>COPILOT_GITHUB_TOKEN</code> or <code>GH_AW_GITHUB_TOKEN</code>. See the tagged <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/auth.mdx">Authentication</a> and <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/billing.md">Billing</a> references; <a class="xref" href="engines.html">Chapter 5</a> covers engine-specific choices.</p>
+  </aside>
+
+  <h3>The engine: Copilot by default</h3>
+  <p>The <code>engine:</code> key selects which coding agent does the judgment work: reading the issue and deciding what to request. The target's built-ins are Copilot, Claude, Codex, Gemini, and Pi, and <strong>Copilot is the default</strong> (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md">Engines</a>). Copilot is a natural starting point for an eligible Copilot user, but you still need to configure runtime authentication. You can omit <code>engine:</code>; this example keeps the selection visible.</p>
+  <figure class="code">
+    <figcaption>Frontmatter excerpt from examples/ch02/repo-assistant-triage.md &mdash; not a standalone workflow</figcaption>
+    <pre><code class="language-yaml">engine: copilot</code></pre>
+  </figure>
+  <p>The task's intent is portable, but changing engines also means reviewing authentication, tool enforcement, model availability, and network paths &mdash; not merely changing a key and a secret. You will go deeper in <a class="xref" href="engines.html">Engines (Chapter 5)</a>.</p>
+
+  <h3>First look: <code>safe-outputs</code></h3>
+  <p>Here is the piece that makes an overnight teammate safe to trust. The agent step runs <strong>read-only</strong>. Anything it wants to change &mdash; post a comment, add a label &mdash; it <em>requests</em> as structured output, and a separate, permission-scoped job validates and applies it. The agent proposes; a mediated boundary disposes.</p>
+  <figure class="code">
+    <figcaption>Frontmatter excerpt from examples/ch02/repo-assistant-triage.md &mdash; at most one comment and one allow-listed label, not a standalone workflow</figcaption>
+    <pre><code class="language-yaml">safe-outputs:
+  add-comment:
+    max: 1
+  add-labels:
+    allowed: [bug, enhancement, question, documentation]
+    max: 1</code></pre>
+  </figure>
+  <p>This bounds the authorized triage operations to a comment and a label from a fixed list, rather than code or settings changes. It does not guarantee a correct or harmless comment, or require a human to approve it before posting: reviewable is not the same as pre-approved by a maintainer. This is a first look only; the full mechanism (sanitization, per-operation caps, targets, staged mode) is the subject of <a class="xref" href="safe-outputs.html">Safe Outputs (Chapter 6)</a>, and the threat model behind it is <a class="xref" href="defense-in-depth.html">Defense in Depth (Chapter 7)</a>.</p>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="when-to-ship-a-first-workflow-and-when-to-wait">
+          <h2 id="when-to-ship-a-first-workflow-and-when-to-wait"><a class="anchor-link" href="#when-to-ship-a-first-workflow-and-when-to-wait" aria-label="Link to When to ship a first workflow (and when to wait) section">When to ship a first workflow (and when to wait)</a></h2>
+          <div class="section-content" data-content-slot="when-to-ship-a-first-workflow-and-when-to-wait">
+<p>A good first workflow shares three traits: the task is <strong>judgment work</strong> (there is no exact rule to follow), it is <strong>high-volume and recurring</strong> (so throughput matters), and every action is <strong>reviewable and low-risk in context</strong> (consider both the information it may disclose and the downstream effects it may trigger). Choose a practice repository where triage meets all three, and comments and labels make manageable first operations. Doc nits and stale-issue nudges are close seconds under the same conditions.</p>
+
+  <h3>When to wait</h3>
+  <p>Agentic workflows are additive, not universal. Reach for something else when:</p>
+  <ul class="when-not">
+    <li><strong>The task must be exactly reproducible.</strong> Builds, tests, and releases must do the same thing every time &mdash; keep those as deterministic CI/CD. Agentic workflows augment those pipelines; they do not replace them.</li>
+    <li><strong>The action is high-stakes or hard to reverse without review</strong> &mdash; publishing a release, deleting data, force-pushing. If a mistake cannot be shrugged off, it is not a first workflow.</li>
+    <li><strong>You would have to grant broad repository-write permissions to the agent</strong> to make it work. In strict mode that fails to compile &mdash; and it is usually a sign the scope is wrong, not that the guardrail is. Do not confuse those permissions with the separate <code>copilot-requests</code> billing scope.</li>
+    <li><strong>One workflow is trying to do everything.</strong> Prefer one teammate, one job. Start with one or two workflows and expand as patterns emerge (<a href="https://github.github.com/gh-aw/reference/faq/">FAQ</a>).</li>
+    <li><strong>The outcome must be correct 100% of the time with no human in the loop.</strong> The value here is throughput on reviewable proposals, not unsupervised perfection.</li>
+  </ul>
+
+  <aside class="callout callout--leader" aria-label="Leader track">
+    <p class="callout-title">Leader track</p>
+    <p>&ldquo;Start narrow&rdquo; is a governance strategy, not just a tip. One reviewable workflow per team builds trust and a review habit before you scale &mdash; and this pilot caps authorized triage changes at a comment and a label while you learn.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="worked-example-repo-assistant-triages-a-new-issue">
+          <h2 id="worked-example-repo-assistant-triages-a-new-issue"><a class="anchor-link" href="#worked-example-repo-assistant-triages-a-new-issue" aria-label="Link to Worked example: Repo Assistant triages a new issue section">Worked example: Repo Assistant triages a new issue</a></h2>
+          <div class="section-content" data-content-slot="worked-example-repo-assistant-triages-a-new-issue">
+<p>Here is the whole thing: the unchanged Repo Assistant source that passed the <strong>gh aw v0.88.7 strict-compilation preflight</strong>. It is a single Markdown file &mdash; YAML frontmatter on top, a natural-language brief below. Save this complete file as <code>.github/workflows/repo-assistant-triage.md</code> in your practice checkout, replacing the starter template. The <code>examples/</code> path is the book's source location, not where Actions discovers deployed workflows.</p>
+
+  <figure class="code">
+    <figcaption>examples/ch02/repo-assistant-triage.md &mdash; complete, unchanged workflow (frontmatter + body); live execution needs Copilot PAT authentication</figcaption>
+    <pre><code class="language-markdown">---
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: read
+engine: copilot
+network: defaults
+safe-outputs:
+  add-comment:
+    max: 1
+  add-labels:
+    allowed: [bug, enhancement, question, documentation]
+    max: 1
+---
+
+# Repo Assistant — triage a new issue
+
+You are the **Repo Assistant**. A new issue was just opened in this repository.
+
+Read the triggering issue's title and body, then triage it:
+
+1. Decide what kind of issue it is (a bug report, a feature request, a question,
+   or a documentation gap) and how a maintainer should treat it.
+2. Post **one** short, friendly triage comment that (a) restates the request in a
+   sentence, (b) names the category you chose and why, and (c) lists any missing
+   information the reporter should add.
+3. Apply **at most one** label from the allowed set that best matches the issue.
+
+If the issue is empty or too vague to categorize, post a comment asking for the
+missing details and do not apply a label.
+
+This workflow demonstrates **safe-outputs**: the agent runs read-only and never
+writes to GitHub directly — it *requests* a comment and a label, which gh-aw
+applies from separate, permission-scoped jobs.</code></pre>
+  </figure>
+
+  <h3>Reading the frontmatter</h3>
+  <p>Five keys, each doing one job. These fields compile under v0.88.7 strict mode; the example needs no experimental opt-ins.</p>
+  <table>
+    <thead>
+      <tr><th scope="col">Key</th><th scope="col">Value</th><th scope="col">What it does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>on</code></td><td><code>issues: { types: [opened] }</code> + <code>workflow_dispatch</code></td><td>The issue event supplies the title, body, and issue target. Manual dispatch permits a smoke test but is not an issue-opened event. <a class="xref" href="triggers.html">Chapter 4</a> covers triggers in depth.</td></tr>
+      <tr><td><code>permissions</code></td><td><code>contents: read</code>, <code>issues: read</code></td><td>Read-only repository authority. The agent can read the repo and issue, but holds no direct repository-write permission.</td></tr>
+      <tr><td><code>engine</code></td><td><code>copilot</code></td><td>The coding agent that does the judgment &mdash; GitHub Copilot, the default engine, made explicit.</td></tr>
+      <tr><td><code>network</code></td><td><code>defaults</code></td><td>Explicit here for teaching clarity; omission selects the same curated default agent-egress policy. This runtime policy is not a claim that compilation is offline.</td></tr>
+      <tr><td><code>safe-outputs</code></td><td><code>add-comment: {max: 1}</code>, <code>add-labels: {allowed: […], max: 1}</code></td><td>At most one triage comment and one allow-listed label, applied outside the agent by permission-scoped jobs. The allowlist does not create missing labels.</td></tr>
+    </tbody>
+  </table>
+  <p>The body underneath is just the brief you would give a new teammate: who they are, what to read, and the three steps to take &mdash; with an explicit fallback for an empty issue. That prose is the editable source of truth; the agent reads it at run time.</p>
+
+  <h3>Compile it</h3>
+  <p>Compile the deployment copy in your practice checkout with the version you verified above. No engine secret is needed; keep <code>--strict</code> and inspect both diagnostics and the generated lock.</p>
+  <figure class="code">
+    <figcaption>Compile the complete workflow saved under .github/workflows</figcaption>
+    <pre><code class="language-text">gh aw compile --strict .github/workflows/repo-assistant-triage.md</code></pre>
+  </figure>
+  <!-- Captured target evidence, not a new author-run transcript:
+       content/research/updates/v0.88.7/preflight-verification.json, ch02 result:
+       isolated executable, compile --strict, source staged in .github/workflows.
+       Summary below is an exact stderr excerpt; informational billing tip is
+       explained in prose, not counted as a warning.
+       Lock metadata independently inspected in the explorer's
+       compat-v0.88.7-neutral/examples/ch02/repo-assistant-triage.lock.yml;
+       see framework-delta.md F01. Final post-author verification/review follow. -->
+  <figure class="code">
+    <figcaption>Captured v0.88.7 strict-compilation preflight &mdash; summary excerpt (Windows; exit code 0)</figcaption>
+    <pre><code class="language-text">✓ .github\workflows\repo-assistant-triage.md (119.6 KB)
+✓ Compiled 1 workflow: 1 succeeded, 0 warnings</code></pre>
+  </figure>
+  <p>The preflight compiled an isolated copy, emitted a nonempty lock, and reported no warnings. It also printed an <em>informational</em> org-billing tip: declaring <code>permissions.copilot-requests: write</code> would select a different authentication path, subject to org policy. The tip did not change the source or validate billing. The displayed path and size belong to that captured fixture, not a universal output-size promise.</p>
+  <p>Target lock inspection records <code>"schema_version":"v4"</code>, <code>"compiler_version":"v0.88.7"</code>, <code>"strict":true</code>, <code>"agent_id":"copilot"</code>, and <code>"engine_versions":{"copilot":"1.0.80"}</code>. The source has not changed, but compiler defaults, dependency pins, and generated job contents have. Read the emitted permissions and mediated-write jobs rather than reusing an old lock. In your practice repository, commit both the <code>.md</code> you author and the regenerated <code>.lock.yml</code> that runs, reviewing generated setup and pin-cache changes alongside them (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compilation-process.md">Compilation Process</a>).</p>
+  <p><strong>Evidence boundary:</strong> this is compilation evidence, not a successful deployment. No engine request, billing transaction, live issue output, or run latency was measured. Optional scanners and Docker image validation were not covered.</p>
+
+  <h3>Run it</h3>
+  <p>The end-to-end test is to deploy the workflow and <strong>open a test issue</strong>. Before this live step:</p>
+  <ol>
+    <li>Configure the sample's PAT path. Create a fine-grained PAT owned by your user account with <strong>Account permissions &rarr; Copilot Requests: Read</strong> and an eligible Copilot entitlement. In the practice repository, use <strong>Settings &rarr; Secrets and variables &rarr; Actions</strong> to add it as <code>COPILOT_GITHUB_TOKEN</code>. Keep its value out of the Markdown and commit history (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/auth.mdx#copilot_github_token">Authentication</a>).</li>
+    <li>Confirm Issues and Actions are enabled, and that the labels <code>bug</code>, <code>enhancement</code>, <code>question</code>, and <code>documentation</code> already exist. This source only permits choosing from them; it does not enable label creation (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs.md">Safe Outputs</a>).</li>
+    <li>Review and push the Markdown and its freshly compiled lock under <code>.github/workflows/</code>, landing them on the practice repository's default branch through your normal review process.</li>
+  </ol>
+  <p>Open a small test issue with an account permitted to trigger the workflow, then inspect its Actions run and any resulting comment and label. That event supplies the issue this brief expects. To smoke-test dispatch on demand instead, use the CLI from the same practice checkout:</p>
+  <figure class="code needs-secret">
+    <figcaption>Instructional live command &mdash; requires the deployed lock and Copilot PAT; not executed for this chapter</figcaption>
+    <pre><code class="language-text">gh aw run repo-assistant-triage</code></pre>
+  </figure>
+  <p>For a test issue about a CSV-export bug, the intended result might look like this: a short restatement, the chosen category, missing details, and an allowed label. This is instructional, not a captured issue comment or evidence that a label was applied:</p>
+  <figure class="code">
+    <figcaption>Illustrative triage outcome &mdash; no live run was performed; wording and categorization can vary</figcaption>
+    <pre><code class="language-text">Thanks for the report! This reads as a **bug**: the exporter drops the last
+row of large CSV files. To dig in, I'd need two more details:
+
+  - the exporter version you're using
+  - a minimal CSV that reproduces it
+
+I've applied the **bug** label so a maintainer can pick it up.</code></pre>
+  </figure>
+  <aside class="callout callout--note" aria-label="Note">
+    <p class="callout-title">A dispatch smoke test is not an issue-trigger test</p>
+    <p><code>workflow_dispatch</code> permits manual dispatch, but it does not supply a newly opened issue's title, body, or number. This source has no authored issue-selection input, so a successful dispatch alone would not prove triage behavior. Use the issue-opened event for the end-to-end test. Copilot authentication is still a runtime requirement; compilation never calls the engine.</p>
+  </aside>
+          </div>
+        </section>
+        <section class="chapter-section" data-section="recap-and-what-s-next">
+          <h2 id="recap-and-what-s-next"><a class="anchor-link" href="#recap-and-what-s-next" aria-label="Link to Recap &amp; what&#x27;s next section">Recap &amp; what&#x27;s next</a></h2>
+          <div class="section-content" data-content-slot="recap-and-what-s-next">
+<p>You have the path from intent to a compiled Repo Assistant; deploying and observing an issue-triggered run completes the win. To recap:</p>
+  <ul>
+    <li><strong>Triage is judgment work</strong> &mdash; a strong first agentic win when the selected information and downstream effects are low-risk and the outputs remain reviewable.</li>
+    <li><strong>The authoring loop is <code>init &rarr; new &rarr; compile &rarr; run</code>.</strong> Select and verify the fixed compiler first, and keep using that executable throughout.</li>
+    <li><strong>Two artifacts, one source of truth.</strong> The <code>.md</code> is what you edit; the <code>.lock.yml</code> is what runs. Commit both.</li>
+    <li><strong>Strict compilation is not inference.</strong> It needs no engine secret, but can access the network and write generated artifacts. Optional validation, scanners, and live execution are separate checks.</li>
+    <li><strong>Copilot is the default engine.</strong> This unchanged recipe needs <code>COPILOT_GITHUB_TOKEN</code> and an eligible entitlement for a live run. Org billing requires explicit workflow permission, enabled org policy, and a deployed recompiled lock &mdash; not just a compiler PASS.</li>
+    <li><strong>Safe by default.</strong> The agent is read-only; every write goes through <code>safe-outputs</code> &mdash; for a first workflow, one comment and one allow-listed label.</li>
+  </ul>
+
+  <aside class="callout callout--builder" aria-label="Builder track">
+    <p class="callout-title">Builder takeaway</p>
+    <p>Use your practice repo, replace the starter with the complete example, confirm the allowed labels exist, and compile strictly. Review and deploy both files, configure the PAT, then open a test issue. Keep the job small and iterate on the brief; recompile and review configuration changes before deploying them.</p>
+  </aside>
+
+  <aside class="callout callout--leader" aria-label="Leader track">
+    <p class="callout-title">Leader takeaway</p>
+    <p>One narrow, reviewable workflow is the right pilot: triage throughput you can measure after a live trial, authorized changes capped at a comment and a label, and outputs maintainers can inspect and correct. The sample does not wait for human approval before posting. Prove the review habit here before you scale to a fleet.</p>
+  </aside>
+
+  <p><strong>What's next.</strong> You have seen the loop from the outside. <a class="xref" href="anatomy-and-compile-model.html">Anatomy &amp; the Compile Model (Chapter 3)</a> opens the hood: what the frontmatter really means, and what <code>gh aw compile</code> generates inside that <code>.lock.yml</code>. If you skipped the framing, revisit <a class="xref" href="what-are-agentic-workflows.html">Chapter 1</a> for the outer loop and Continuous AI.</p>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="Chapter pagination">
+          <a class="pager-link" rel="prev" href="what-are-agentic-workflows.html">← Chapter 1: What Are Agentic Workflows?</a>
+          <a class="pager-link" rel="next" href="anatomy-and-compile-model.html">Chapter 3: Anatomy &amp; the Compile Model →</a>
+        </nav>
+      </main>
+
+      <footer class="site-footer chapter-footer">
+        <p>By <strong>Maxim Salnikov</strong> · Microsoft · <a href="https://www.linkedin.com/in/webmax/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/webmaxru/github-agentic-workflows-book" target="_blank" rel="noopener">Book repository on GitHub ↗</a> · <a href="../gh-aw-book.pdf">Download the PDF</a> · <a href="../versions.html">Content edition v1.2</a> · <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">Verified with gh-aw v0.88.7</a></p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
