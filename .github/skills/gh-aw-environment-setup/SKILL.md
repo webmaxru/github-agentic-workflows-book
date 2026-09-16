@@ -76,6 +76,11 @@ Run the complete corpus for a framework update, not only modified examples. Requ
 overall report PASS and exit zero; setup/cleanup failures retain diagnostics but fail the run.
 The report records the sanitized repository context used by the fixture.
 
+`strict-policy/` fixtures retain their adjacent `aw.json` at the staged workflow root
+and compile without a CLI strict override; the emitted metadata must still be strict.
+Their JSON/YAML/TXT dependencies are part of the source fingerprint. Missing policy
+context is a failure, not permission to force strict mode and claim the policy worked.
+
 The canonical gate is **strict source compilation**, not optional `--validate`, image/
 scanner checks, or live execution. Repository features (for example, Issues support),
 Docker availability, and runtime credentials are separate prerequisites. A skipped optional

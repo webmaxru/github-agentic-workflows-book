@@ -1,0 +1,614 @@
+{
+  "schema_version": 1,
+  "scope": "Complete embedded workflows in the frozen 14-chapter manuscript, with shared fragments and adjacent repository policy; not new standalone source examples.",
+  "target": "v0.88.7",
+  "status": "PASS",
+  "chapter_count": 14,
+  "pre_code_block_count": 92,
+  "complete_workflow_count": 16,
+  "complete_workflows": [
+    {
+      "chapter": "content/chapters/continuous-review-and-testing.html",
+      "block": 2,
+      "line_range": [
+        108,
+        144
+      ],
+      "source": "examples/ch10/continuous-review.md",
+      "fixture_path": "examples/embedded-ch10/continuous-review.md",
+      "comparison": "MATCH",
+      "input_sha256": "7f0dba909bad0826521bfbe7831140283783089c924882847b19db33416afb0d",
+      "source_raw_sha256": "365f78f4fda15467bba087cc92746a53f16ca965ea01c16a159c9cd41d462cc9",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "ceafec436596445cb41bd989ed996ae1b4b8f3adaef39b6c244986a93f1d56ca",
+        "body_hash": "a011ca16bafe1007a998b84b49fff3c13c600a4ee07c5b1902056093599414bb",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/continuous-review-and-testing.html",
+      "block": 3,
+      "line_range": [
+        149,
+        185
+      ],
+      "source": "examples/ch10/daily-test-improver.md",
+      "fixture_path": "examples/embedded-ch10/daily-test-improver.md",
+      "comparison": "MATCH",
+      "input_sha256": "aabf914af011444327cf4193a68f21a043217a59d03c10562bbab23bb076162d",
+      "source_raw_sha256": "4d8f5dc05d2c3e224b21758b3cf90b7c7d78e3000977bb1d81dbf73d46f49348",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "9f9c0f4bf32ac17efa60f96818806559e17247a990a10afbcbc6b5d38cd7dc82",
+        "body_hash": "aa7f3dc0dcd4ea4091ccf8efa70f54140ad17d7dcb22fdadf8ccd89b1c666753",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/continuous-triage-and-docs.html",
+      "block": 3,
+      "line_range": [
+        131,
+        170
+      ],
+      "source": "examples/ch09/continuous-triage.md",
+      "fixture_path": "examples/embedded-ch09/continuous-triage.md",
+      "comparison": "MATCH",
+      "input_sha256": "3c8aa888912ec886278dc904242741c583f9e47e3c535afd04d9cef58bb1cb5f",
+      "source_raw_sha256": "bda49e0b752d71eaf5d7ebb711812fb16f06e425bf83c01f425d5b38f322e9f7",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "79257831ec311bf101a9a0bc0f5f341442302ea537026c801323cf0957a2c74b",
+        "body_hash": "d6590fb13410036d10aa8a06fb6ce4da8bcca3a3af2f7837943e9227ab7bcf5b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/continuous-triage-and-docs.html",
+      "block": 4,
+      "line_range": [
+        175,
+        216
+      ],
+      "source": "examples/ch09/continuous-docs.md",
+      "fixture_path": "examples/embedded-ch09/continuous-docs.md",
+      "comparison": "MATCH",
+      "input_sha256": "658325e68c3d71debda4cdd923388fc22dbe92e8133cbe2fc011fac6e19853ab",
+      "source_raw_sha256": "2f3be7fa9c3228cc8a080479000bbf11add3db90f8da2f10c0392b51d7761f0d",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "f6e923da02b1d3557e8717bf0725fafd48954576dddc8f7efcd67a90cdd636fc",
+        "body_hash": "243fc806a6542f3eccc5778574463fbe863aa3d6ed5a023e0c43f47ec1788928",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/defense-in-depth.html",
+      "block": 4,
+      "line_range": [
+        140,
+        184
+      ],
+      "source": "examples/ch07/repo-assistant-hardened.md",
+      "fixture_path": "examples/embedded-ch07/repo-assistant-hardened.md",
+      "comparison": "MATCH",
+      "input_sha256": "7eb28dbfaed019d542f2e715d2ed287f391386e3a893fc6879cf00566b7df91a",
+      "source_raw_sha256": "3c85e9bc89b516751355a578212bd2e76eadce6b55020e9d8be3880b21395b3d",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "9e2e01b0e0f2712652e88615217732a5c47da6c7c9f6d7302341c605da7e8a4e",
+        "body_hash": "6f8f001e58f916b2fdf0dce23b5cc540761727e05af1f7c310595d0dc7563a3d",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "block": 3,
+      "line_range": [
+        128,
+        161
+      ],
+      "source": "examples/ch14/fleet-triage.md",
+      "fixture_path": "examples/embedded-ch14/fleet-triage.md",
+      "comparison": "MATCH",
+      "input_sha256": "a6ea53d4ef94cd0cf7e0307dbc250daf355c828d441ac65ba97337a8c924523f",
+      "source_raw_sha256": "fbd116e521f6c013aa53302e77aa9eba083d6f26c3fcf65621c0b5778f29ff50",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "166b524ca88bbaa762e98c4b468c1655e464e4e91cf137d062e41137488f8b6b",
+        "body_hash": "6a6087b4bd7f3ce5a99881469e62303a95751e92d6cc43cbe8b3732d680dabf7",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "block": 5,
+      "line_range": [
+        148,
+        191
+      ],
+      "source": "examples/ch13/repo-assistant-budgeted.md",
+      "fixture_path": "examples/embedded-ch13/repo-assistant-budgeted.md",
+      "comparison": "MATCH",
+      "input_sha256": "19674dff12e38a8aceb295e7a13c389e4530d717c0bcc0ea5ddbb56bdf4d0433",
+      "source_raw_sha256": "6aefb71f774134503741e9b17cd01cc0344aee2111580ce8414d117b9277c3a5",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "dcdf7001b31ec6295171885166bbd0a883ec22abbc4daac9947b406b9ff70ca2",
+        "body_hash": "5b7b0fb32772ae51fc76adf8ea5b2fb922667e78adb29d2b6f99d37e418dd127",
+        "stop_time": "2026-10-16 02:30:09",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "block": 7,
+      "line_range": [
+        206,
+        217
+      ],
+      "source": "examples/ch13/models-policy.md",
+      "fixture_path": "examples/embedded-ch13/models-policy.md",
+      "comparison": "MATCH",
+      "input_sha256": "215e81ab5c2f1d8e4860a2102bd4ccbd1eb4e0770051a9b28675e711470fb1d7",
+      "source_raw_sha256": "e06a0f183d64e87fb49cf3ce4d8cb7bd12daecd44fe645a05c67ad570b683a57",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "f204fdb33a945d682c412d83f4d2d921a5ccaf423f1920730e511e754c10b9a0",
+        "body_hash": "c766cbdd2c7188a1c65a441609170530a18361999d22421fc81203a6da9270b4",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "agent_model": "auto",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "block": 8,
+      "line_range": [
+        224,
+        232
+      ],
+      "source": "examples/ch13/strict-policy/opt-out.md",
+      "fixture_path": "examples/embedded-ch13/strict-policy/opt-out.md",
+      "comparison": "MATCH",
+      "input_sha256": "1747d05bfecfb5e8e019b0615bde80798ffb1e0a6f4b3b0827e82016ac24e74f",
+      "source_raw_sha256": "3ba53a4d97306d95a216cb25e57ee7d0f6cd47922aff8b52a9d77dc279613f44",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "ab3825da3c669841461bdd23976d610257aa569161d98be1acaf5857264e9a2f",
+        "body_hash": "529efc06f01d588ce8af12b43c10fc62a5a80aa0b77c116f5f0366685b60fa42",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "repository-policy",
+      "repository_policy": {
+        "path": "examples/embedded-ch13/strict-policy/aw.json",
+        "staged_path": ".github/workflows/aw.json",
+        "sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+        "strict": true
+      },
+      "expected_compilation_mode": "repository-policy",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/observability-and-debugging.html",
+      "block": 9,
+      "line_range": [
+        159,
+        192
+      ],
+      "source": "examples/ch12/repo-assistant-observable.md",
+      "fixture_path": "examples/embedded-ch12/repo-assistant-observable.md",
+      "comparison": "MATCH",
+      "input_sha256": "aa2ef29036be7b01e408cb72fd7349c14a6596fbde4a94630787528c824cc3a4",
+      "source_raw_sha256": "70d7c20b2a47ce1797319ba6f659796ff59a047bac1dc4613bf8679d7eda8605",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "0f942b2daa673f2866c66f9c371d7593db2c11a9b73186924091f46035ed12c9",
+        "body_hash": "4447a9caa0eda4967f97321fd2191447666430b5997abb8b2f64f2eb7f457a67",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "block": 6,
+      "line_range": [
+        197,
+        229
+      ],
+      "source": "examples/ch11/repo-assistant-shared.md",
+      "fixture_path": "examples/embedded-ch11/repo-assistant-shared.md",
+      "comparison": "MATCH",
+      "input_sha256": "e2eda1f9903f79da0d06d98c22f8e45a794b9bad22d5741abe1814a3ae54481f",
+      "source_raw_sha256": "74fdf84b2d99f0899bcb1be72da6b7e13abb8e76fdea76e64277881cb25c533f",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "2566c0c9621fd31f5cec44211ab49d3ba41cb9c3a8071d8c1092d6972280fc8f",
+        "body_hash": "273ee709f61d28ca38c7c966320ec8fea7e64396ade8dd608eee928062a48435",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/safe-outputs.html",
+      "block": 3,
+      "line_range": [
+        113,
+        151
+      ],
+      "source": "examples/ch06/repo-assistant-open-pr.md",
+      "fixture_path": "examples/embedded-ch06/repo-assistant-open-pr.md",
+      "comparison": "MATCH",
+      "input_sha256": "466d8175649b090133a71e150a252ea551f4e0488f131edc5d2cf9fbad61807a",
+      "source_raw_sha256": "08205f6984dda0f27449dd6be2cc1ccc092be948e2f2dcf95922208050582b84",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "912749c04eb03fb0555280318011bed716baeee3d17248a9c1ea05b40cda923e",
+        "body_hash": "73ae0fc081ee19f652c9b04fd93f40fcb36b21ce299595916c487ed3077af0b5",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "block": 5,
+      "line_range": [
+        149,
+        195
+      ],
+      "source": "examples/ch04/repo-assistant-triggers.md",
+      "fixture_path": "examples/embedded-ch04/repo-assistant-triggers.md",
+      "comparison": "MATCH",
+      "input_sha256": "a7378bcaab5d55b20444ec142fdb72d9439566d1c15484060747ab7b7fdc7c27",
+      "source_raw_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+        "body_hash": "ddc9ffe739ae561569f62021eb708109bbfe9c50d4db70c4b84cc88f31299bb9",
+        "stop_time": "2026-10-16 02:29:33",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/triggers.html",
+      "block": 6,
+      "line_range": [
+        204,
+        239
+      ],
+      "source": "examples/ch04/repo-assistant-cooldown.md",
+      "fixture_path": "examples/embedded-ch04/repo-assistant-cooldown.md",
+      "comparison": "MATCH",
+      "input_sha256": "fdf6ae282e9a89c0fb0d6f860263eb6cad44392d09490d61d8a61dec5e7c914e",
+      "source_raw_sha256": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "801e377666f95c0f1bb7fd3165ebbfe24620ccb0d31c7af8fed351f9dc628802",
+        "body_hash": "403133ab36ce0a024c3f392473fd6179da80fd23357e472e72d4ebf85ba00fe1",
+        "stop_time": "2026-10-16 02:29:29",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/what-are-agentic-workflows.html",
+      "block": 1,
+      "line_range": [
+        86,
+        122
+      ],
+      "source": "examples/ch02/repo-assistant-triage.md",
+      "fixture_path": "examples/embedded-ch02/repo-assistant-triage.md",
+      "comparison": "MATCH",
+      "input_sha256": "db15365912439c756d22125e38c8bf77825ca66e365c06161fc3bea2d0f6fda6",
+      "source_raw_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    },
+    {
+      "chapter": "content/chapters/your-first-workflow.html",
+      "block": 9,
+      "line_range": [
+        165,
+        201
+      ],
+      "source": "examples/ch02/repo-assistant-triage.md",
+      "fixture_path": "examples/embedded-your-first-workflow/repo-assistant-triage.md",
+      "comparison": "MATCH",
+      "input_sha256": "db15365912439c756d22125e38c8bf77825ca66e365c06161fc3bea2d0f6fda6",
+      "source_raw_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "diff": "",
+      "compile_status": "PASS",
+      "compiler_exit_code": 0,
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compilation_mode": "cli-strict",
+      "repository_policy": null,
+      "expected_compilation_mode": "cli-strict",
+      "runtime": "NOT RUN",
+      "source_metadata_hashes_match": true
+    }
+  ],
+  "shared_fragments": [
+    {
+      "chapter": "content/chapters/fleets-and-adoption.html",
+      "block": 4,
+      "line_range": [
+        166,
+        187
+      ],
+      "source": "examples/ch14/shared/triage-policy.md",
+      "fixture_path": "examples/embedded-ch14/shared/triage-policy.md",
+      "comparison": "MATCH",
+      "input_sha256": "a9a4f4185bd698d381de9feac3cda62b20b4183d6685e645e1471dfd845ba19f",
+      "diff": ""
+    },
+    {
+      "chapter": "content/chapters/reuse-and-memory.html",
+      "block": 5,
+      "line_range": [
+        172,
+        192
+      ],
+      "source": "examples/ch11/shared/triage-policy.md",
+      "fixture_path": "examples/embedded-ch11/shared/triage-policy.md",
+      "comparison": "MATCH",
+      "input_sha256": "e9ba3a8c10aa6f2bc7ad1b9718506986b00ce4d840e5b35d6392e2b5de42c7a4",
+      "diff": ""
+    }
+  ],
+  "policy_dependencies": [
+    {
+      "chapter": "content/chapters/governance-and-finops.html",
+      "block": 2,
+      "source": "examples/ch13/strict-policy/aw.json",
+      "fixture_path": "examples/embedded-ch13/strict-policy/aw.json",
+      "comparison": "MATCH",
+      "input_sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+      "expected_mode": "repository-policy",
+      "cli_strict_flag": false
+    }
+  ],
+  "comparison_normalization": "HTML decode, LF line endings, outer whitespace only, one final newline. Original source basenames/import paths preserved; duplicate borrowed ch02 copies isolated in separate contexts.",
+  "verifier_command": [
+    "C:\\Users\\masalnik\\scoop\\apps\\python312\\current\\python.exe",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\scripts\\verify_examples.py",
+    "--root",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\w-_2w7tx26\\embedded",
+    "--compiler",
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+    "--version",
+    "v0.88.7",
+    "--report",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\content\\research\\updates\\v0.88.7\\embedded-verification.json"
+  ],
+  "started_at_utc": "2026-09-16T02:29:23.914538+00:00",
+  "finished_at_utc": "2026-09-16T02:30:24.084821+00:00",
+  "cli_exit_code": 0,
+  "compile_gate": "PASS",
+  "source_consistency": "PASS",
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "book-default"
+  },
+  "environment_errors": [],
+  "cleanup_pending": null,
+  "runtime": "NOT RUN",
+  "source_edits": false
+}

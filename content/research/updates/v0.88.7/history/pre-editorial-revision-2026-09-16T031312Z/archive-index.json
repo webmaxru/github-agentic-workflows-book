@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "scope": "Byte-for-byte pre-editorial-revision global evidence; records are not relabeled to cover later source changes.",
+  "archived_at_utc": "2026-09-16T04:02:12.108223+00:00",
+  "files": {
+    "verification.json": "7c56125793d0fd3a3054c4bf0e4fd51e46100ec98572b041b862df1068bf9ee6",
+    "verification-notes.md": "6f248658db18b84d982f795b9692c1de08baf37f7cd50eb9a278cbe29be17dae",
+    "embedded-verification.json": "15c99f4fff9a50bb71cbde7b22d38457935040da3f662a1b4a285fad6bf51970",
+    "embedded-inventory.json": "28236361c82548132e12456b4a6b51c022ef795c05150ce041f2bd034a49b70d",
+    "verification-audit.json": "28c6417dcf126a8c7dae5278ef2c9feab710f510e24adac48d7f001dbc8f702c",
+    "verification-inputs.json": "b0d3e601efd8b9462a3baef47e714921b2ed42151c524428b56f1f82f6cd4553",
+    "final-verification-receipt.json": "236979c167cd431341256c48b23170df5d6568724dc04b9b32ded2d97fca938d",
+    "verified-inputs-archive.json": "44d2e3a21694e77785dffe378258433e5bfb979f8c74102a69dfde18445c974d",
+    "reused-evidence.json": "98d7fb01404d5dd2aeab077fc8dd31753a0b518bffe19b580bb5edd88ad6e64f"
+  }
+}

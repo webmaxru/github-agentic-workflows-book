@@ -5,23 +5,27 @@
 
 <section data-slot="objective" data-title="Objective">
   <p>By the end of this chapter you can close the repository's <strong>quality loop</strong> with four more patterns &mdash; <strong>Review</strong>, <strong>Testing</strong>, <strong>CI-Doctor</strong>, and <strong>Refactoring</strong> &mdash; while keeping humans firmly on the merge decision. This is the second half of the Continuous-X library and the close of Part II.</p>
-  <p>Everything targets <strong>gh aw v0.81.6</strong>. The Repo Assistant graduates from tending the issue tracker to helping tend the <em>code</em>.</p>
+  <p>This chapter targets <a href="https://github.com/github/gh-aw/releases/tag/v0.88.7"><strong>gh aw v0.88.7</strong></a> (Public Preview), inspected for this update on 2026-09-15. The Repo Assistant graduates from tending the issue tracker to helping tend the <em>code</em>.</p>
 </section>
 
 <section data-slot="concept-closing-the-quality-loop" data-title="Concept: closing the quality loop">
   <p>A repository's quality has a <strong>loop</strong>: code is proposed (a PR), reviewed, tested, merged, and &mdash; when something slips &mdash; fixed. Traditional CI automates the <em>deterministic</em> checks in that loop: does it compile, do the tests pass, does the linter approve. But the <em>judgement</em> steps &mdash; is this a good change? is this test worth adding? why did CI actually break? &mdash; still wait on a human.</p>
   <p>Continuous-X patterns fill exactly those judgement gaps. Where <a class="xref" href="continuous-triage-and-docs.html">Chapter 9</a> kept the <em>inbox</em> honest, these keep the <em>codebase</em> honest &mdash; each one a mini-product owning one link in the quality loop.</p>
 
-  <h3>The one rule that makes it safe: humans keep the merge</h3>
-  <p>The defining constraint of quality automation is that <strong>the agent proposes; a human disposes</strong>. A review agent <em>comments</em>, it doesn't approve. A test-improver <em>opens a draft PR</em>, it doesn't push to main. This isn't timidity &mdash; it's what lets you run these patterns at all. The agent accelerates the work up to the decision point and stops, leaving the irreversible call to a person. That's the human-in-the-loop principle, and it's why the safe-outputs boundary from <a class="xref" href="safe-outputs.html">Chapter 6</a> matters most here.</p>
+  <h3 id="human-merge-policy">Our policy: humans keep the merge</h3>
+  <p>For this pattern library, <strong>the agent proposes; a human decides</strong>. The review agent <em>comments</em> rather than approving; the test-improver proposes a <em>draft PR</em>. This is a deliberate human-in-the-loop policy, not a product prohibition: gh-aw also offers opt-in merge capabilities, including an experimental merge safe output (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs-pull-requests.md">v0.88.7 PR outputs</a>). We do not enable those capabilities in these recipes.</p>
+  <p>The <a class="xref" href="safe-outputs.html">Chapter 6</a> boundary constrains which requested effects can be applied. It does not make an allowed comment accurate or an allowed code change correct. Use <a href="#review-policy">COMMENT-only reviews</a> and <a href="#propose-a-diff">draft PRs</a> alongside repository review rules and human judgment, rather than treating either setting as a complete safety guarantee.</p>
+
+  <h3 id="admission-and-enforcement">Choose the work, then constrain the effects</h3>
+  <p><strong>Admission</strong> decides which events merit agent work; <strong>enforcement</strong> bounds what the resulting proposal can change. Filtering redundant PR events can reduce repeated reviews, but it is not a concurrency lock or a spending cap. Likewise, asking for &ldquo;tests only&rdquo; describes intent; enforcing changed-file scope requires a separate control. These distinctions connect the clock from <a class="xref" href="triggers.html">Chapter 4</a> to the mediated writes from Chapter 6.</p>
   <aside class="callout callout--leader" aria-label="Real adopters">
-    <p class="callout-title">Measured: quality agents at scale</p>
-    <p>A single PR-review agent originating in <code>clash-verge-rev</code> has been cloned across <strong>215+ repositories</strong>; <code>backend.ai-webui</code> runs both a daily test-improver and an e2e-healer; <code>camunda</code> runs CI cost analysis. Quality is the category where Continuous-X adoption has spread fastest &mdash; because the human-keeps-the-merge rule makes it low-risk to try.</p>
+    <p class="callout-title">Historical adopters: quality agents at scale</p>
+    <p>The book's <a href="https://github.com/webmaxru/github-agentic-workflows-book/blob/content-v1.1/content/research/ch10-features.md">July 2026 research</a> records a PR-review agent originating in <code>clash-verge-rev</code> cloned across <strong>215+ repositories</strong>, a daily test-improver and e2e-healer in <code>backend.ai-webui</code>, and CI cost analysis in <code>camunda</code>. These are historical adoption examples, not measurements of v0.88.7 review quality, test improvements, or savings.</p>
   </aside>
 </section>
 
 <section data-slot="in-gh-aw-the-review-testing-ci-doctor-and-refactoring-recipes" data-title="In gh-aw: the Review, Testing, CI-Doctor, and Refactoring recipes">
-  <p>Four patterns, each triggered by a different moment in the quality loop &mdash; and each writing through a safe output that stops short of merging.</p>
+  <p>Four patterns, each triggered by a different moment in the quality loop &mdash; and, under <a href="#human-merge-policy">our policy</a>, each writing through a safe output without delegating the merge.</p>
   <table>
     <thead>
       <tr><th>Pattern</th><th>Trigger</th><th>Writes via</th></tr>
@@ -34,26 +38,42 @@
     </tbody>
   </table>
 
-  <h3>Review: comment, never approve</h3>
-  <p>The Review pattern reads a PR diff and leaves inline feedback. The critical setting is <code>allowed-events: [COMMENT]</code>, which &ldquo;prevents the agent from submitting APPROVE reviews regardless of what the agent attempts to output&rdquo; &mdash; the docs explicitly recommend it as &ldquo;the default for automated review workflows&hellip; without creating a persistent merge-blocking state&rdquo; (<a href="https://github.github.com/gh-aw/reference/safe-outputs/">Safe Outputs</a>). Infrastructure enforces the human-keeps-the-merge rule.</p>
+  <h3 id="review-policy">Review: comment, rather than approve</h3>
+  <p>The Review pattern reads a PR diff and leaves inline feedback. Keep <code>allowed-events: [COMMENT]</code> explicit under <code>safe-outputs.submit-pull-request-review</code>: the handler rejects <code>APPROVE</code> and <code>REQUEST_CHANGES</code> decisions for this output. Omitting the allowlist permits all three decisions; COMMENT-only is a recommended configuration, not the implicit default (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs-pull-requests.md#submit-pr-review-submit-pull-request-review">v0.88.7 review outputs</a>). This enforces a narrow review contract, not a promise that other required checks can never block a merge.</p>
 
-  <h3>CI-Doctor: react to the failure</h3>
-  <p>CI-Doctor is the elegant use of the <code>workflow_run</code> trigger from <a class="xref" href="triggers.html">Chapter 4</a> with <strong>conclusion filtering</strong>: fire only when a named CI workflow finishes with <code>failure</code>, read the logs, and post a diagnosis. Because <code>workflow_run</code> is hardened against cross-repo abuse, this stays safe even on public repos.</p>
+  <h3 id="stack-admission">Review admission: top of the stack by default</h3>
+  <p>A stack is a chain of PRs in which each successive PR targets the previous one's branch. In v0.88.7, <code>on.pull_request.max-stack</code> defaults to <strong>1</strong>: only the top-most PR is admitted by this filter; lower layers are skipped. The same default applies to <code>pull_request_review</code>. Ordinary, non-stacked PRs are unaffected by this setting. The unchanged review recipe below therefore has different admission behavior for stacks without gaining a new frontmatter line (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/triggers.md#stacked-pr-filtering-max-stack">tagged trigger reference</a>).</p>
+  <p>Leave the default when you want to avoid repeated reviews of related diffs. If every stack layer needs its own review, explicitly set <code>max-stack: -1</code> under <code>on.pull_request</code> to disable stack filtering. That chooses broader review coverage at the possible cost of more agent runs, AI-credit spend, and comment noise; it is not a measured savings comparison. As with the <a href="#admission-and-enforcement">admission principle</a>, keep concurrency and budgets separate. Existing role and fork guards still apply; disabling the stack filter does not bypass them.</p>
+
+  <h3 id="ci-failure-admission">CI-Doctor: react to the failure</h3>
+  <p>CI-Doctor applies the same admission idea to the <code>workflow_run</code> trigger from <a class="xref" href="triggers.html">Chapter 4</a>. A named CI workflow completes; gh-aw's <strong>conclusion filter</strong> admits agent work only for <code>failure</code>. The compiler turns <code>conclusion</code> into a guarded <code>if:</code> condition &mdash; it is not a native Actions event filter, nor does it mean no Actions jobs can start for other conclusions (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/triggers.md#conclusion-filtering-conclusion">v0.88.7 conclusion filtering</a>).</p>
   <figure class="code">
-    <figcaption>The CI-Doctor trigger &mdash; wake only on a real CI failure</figcaption>
+    <figcaption>Trigger excerpt from <code>examples/ch10/workflow-run-conclusion.md</code> &mdash; a compile-only fixture for CI-failure admission, not a complete CI-Doctor recipe</figcaption>
     <pre><code class="language-yaml">on:
   workflow_run:
-    workflows: ["CI"]
+    workflows: [CI]
     types: [completed]
-    conclusion: [failure]     # only when CI actually broke
-    branches: [main]</code></pre>
+    branches: [main]
+    conclusion: [failure]</code></pre>
   </figure>
+  <p>The compiler also adds repository-ID and fork checks for <code>workflow_run</code>; the explicit branch filter further narrows admission. These controls do not make CI logs trusted instructions. A complete doctor would still need reviewed log-reading tools and a bounded diagnosis output such as <code>add-comment</code> or <code>create-issue</code>.</p>
+  <aside class="callout callout--note" aria-label="CI-Doctor verification provenance">
+    <p class="callout-title">Version-specific evidence, not a retroactive pass</p>
+    <p>The previous edition displayed <code>conclusion: [failure]</code>, but its two recorded recipe passes did not verify that trigger. The retained paired <code>workflow-run-conclusion.md</code> probe fails on <strong>v0.81.6</strong> with <code>Unknown property: conclusion</code> and passes strict compilation on <strong>v0.88.7</strong>, emitting a lock. The target pass does not turn the earlier claim into a baseline pass.</p>
+    <p>The source now under <code>examples/ch10/</code> is that unchanged diagnostic fixture. It requests <code>noop</code>, not a diagnosis, and its generated configuration still includes automatic issue reporting. It is <strong>not a no-write workflow</strong>: <code>noop</code> alone does not disable output fallbacks. Do not deploy it as a CI-Doctor recipe (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs.md">tagged safe-output reference</a>).</p>
+  </aside>
+  <!-- Provenance: content/research/updates/v0.88.7/framework-delta.md, F02/F05
+       and "Paired minimal probes"; session files/probes-v0.81.6-results.json and
+       probes-v0.88.7-results.json. examples/ch10/workflow-run-conclusion.md
+       retains the target probe source without behavior changes. -->
 
-  <h3>Testing &amp; Refactoring: propose a diff</h3>
-  <p>Both run on a schedule, do focused work, and open a <strong>draft</strong> <code>create-pull-request</code>. Testing adds coverage without touching production code; Refactoring makes a small, behavior-preserving cleanup. Draft PRs keep the human on the merge, exactly as in the Docs pattern.</p>
+  <h3 id="propose-a-diff">Testing &amp; Refactoring: propose a diff</h3>
+  <p>Both patterns ask for focused work and propose it through <code>create-pull-request</code> with <code>draft: true</code>. Testing asks for new tests against current behavior; Refactoring asks for a small, behavior-preserving cleanup. The draft setting is an enforced creation policy that the agent cannot override, but it neither proves the diff correct nor governs every later merge action (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs-pull-requests.md#pull-request-creation-create-pull-request">tagged PR-creation reference</a>).</p>
+  <p><strong>A tests-only or docs-only prompt is not mechanical file-scope enforcement.</strong> The retained test-improver has no <code>safe-outputs.create-pull-request.allowed-files</code> allowlist, so its prompt does not prevent production files from appearing in a proposal. For enforced changed-file scope, configure that exclusive allowlist for your repository's test paths and retain an appropriate <code>protected-files</code> policy. Those are separate apply-time controls, not restrictions on every local edit or proof of behavior preservation. Default protected-file handling is not a test-directory allowlist (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs-pull-requests.md#restricting-changes-to-specific-files-with-allowed-files">allowed files</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs-pull-requests.md#protected-files">protected-file policies</a>).</p>
   <aside class="callout callout--builder" aria-label="Builder detail">
-    <p class="callout-title">Builder detail: give the tester a scoped shell</p>
-    <p>A test-improver has to <em>run</em> the suite, so it needs <code>bash</code> &mdash; but scope it. Prefer an explicit allowlist like <code>bash: ["npm ci", "npm test", "npx jest"]</code> over the unrestricted <code>bash: [":*"]</code>, and add only the ecosystem the build needs to <code>network.allowed</code> (e.g. <code>node</code>). Capability where required, tight everywhere else.</p>
+    <p class="callout-title">Builder detail: keep a shell restriction the engine can enforce</p>
+    <p>The test-improver uses <strong>Copilot</strong>, which supports its existing Bash command allowlist. In v0.88.7, swapping to <code>engine: codex</code> while retaining restricted Bash commands is a <strong>strict compile error</strong>: that engine cannot enforce the restriction. Keep a supporting engine; do not widen shell access or disable strict mode just to pass. This is the portable-intent versus engine-contract distinction from <a class="xref" href="engines.html">Chapter 5</a> (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/engines.md">target engine matrix</a>).</p>
+    <p>Keep the declared test commands and <code>network.allowed</code> limited to what the suite needs. An allowlisted test runner still executes repository-controlled code, and PR creation also enables git authoring commands. A command allowlist is not a tests-only file boundary (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/tools.md">tagged tools reference</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs-pull-requests.md#other-notes">PR tool additions</a>).</p>
   </aside>
 </section>
 
@@ -61,7 +81,7 @@
   <p>Quality patterns pay off when they act as a <strong>tireless first pass</strong> &mdash; catching the obvious before a human spends attention, never replacing the human's final say. The line to hold: <em>automate the noticing and the drafting; reserve the deciding.</em></p>
   <table>
     <thead>
-      <tr><th>Agent may&hellip;</th><th>Human keeps&hellip;</th></tr>
+      <tr><th>For these patterns, the agent may&hellip;</th><th>Humans keep by policy&hellip;</th></tr>
     </thead>
     <tbody>
       <tr><td>comment on a PR, flag risks</td><td>approve / request changes / merge</td></tr>
@@ -72,60 +92,126 @@
 
   <h3>When <em>not</em> to</h3>
   <ul>
-    <li><strong>Don't let a review agent block merges.</strong> Auto <code>REQUEST_CHANGES</code> creates a persistent merge-blocking state from a fallible model. Keep <code>allowed-events: [COMMENT]</code> unless a human explicitly wants gating.</li>
-    <li><strong>Don't let the test-improver edit production code.</strong> Instruct it to add tests only; a PR that &ldquo;fixes&rdquo; code to make a test pass is the opposite of what you want.</li>
-    <li><strong>Don't auto-merge agent PRs.</strong> The draft PR is the human's decision point &mdash; automating the merge throws away the one safeguard that makes this safe.</li>
-    <li><strong>Don't run a refactoring agent on a repo without good tests.</strong> &ldquo;Behavior-preserving&rdquo; is only verifiable if the tests can prove it. Ship Testing before Refactoring.</li>
+    <li><strong>Don't accidentally make model judgment a merge gate.</strong> A <code>REQUEST_CHANGES</code> review can leave a persistent blocking state. Keep <code>allowed-events: [COMMENT]</code> for this non-gating review policy.</li>
+    <li><strong>Don't assume every PR in a stack gets reviewed.</strong> Choose the <a href="#stack-admission">stack admission policy</a> before rollout; a skipped lower layer is not necessarily a broken review agent.</li>
+    <li><strong>Don't trust &ldquo;tests only&rdquo; as enforcement.</strong> Inspect the complete diff. A PR that changes production code to make a new test pass violates this recipe's intent; configure and verify file-scope controls when that boundary must be mechanical.</li>
+    <li><strong>Don't delegate the merge in this library.</strong> Retain human review and repository protections; do not enable merge outputs or another auto-merge automation for these recipes. A draft is one constraint, not the entire policy.</li>
+    <li><strong>Don't run a refactoring agent on a repo without good tests.</strong> Tests provide regression evidence, not proof that all behavior is preserved. Ship Testing before Refactoring.</li>
   </ul>
 </section>
 
 <section data-slot="worked-example-a-pr-review-plus-daily-test-improver-pair" data-title="Worked example: a PR-review plus daily-test-improver pair">
-  <p>Two complementary quality agents: one reacts to every PR, the other proactively strengthens the tests. Both compile cleanly, and both stop short of the merge.</p>
+  <p>Two complementary quality agents: one reacts to admitted PR events, the other looks for a useful test addition each day. Their source recipes are retained unchanged and passed the v0.88.7 strict-compilation preflight. Below are the <strong>complete Markdown workflows</strong>, including their prompts &mdash; not abbreviated frontmatter presented as full recipes.</p>
 
   <figure class="code">
-    <figcaption>examples/ch10/continuous-review.md &mdash; comment-only PR review (compiles: 0/0)</figcaption>
-    <pre><code class="language-yaml">on:
-  pull_request: { types: [opened, synchronize] }
-permissions: { contents: read, pull-requests: read }
+    <figcaption><code>examples/ch10/continuous-review.md</code> &mdash; complete COMMENT-only review workflow; v0.88.7 strict preflight PASS, live run not performed</figcaption>
+    <pre><code class="language-markdown">---
+on:
+  pull_request:
+    types: [opened, synchronize]
+permissions:
+  contents: read
+  pull-requests: read
 engine: copilot
-network: { allowed: [defaults, github] }
+network:
+  allowed:
+    - defaults
+    - github
 tools:
-  github: { toolsets: [pull_requests] }
+  github:
+    toolsets: [pull_requests]
 safe-outputs:
-  create-pull-request-review-comment: { max: 10 }
+  create-pull-request-review-comment:
+    max: 10
   submit-pull-request-review:
-    allowed-events: [COMMENT]     # can never approve or block
-    max: 1</code></pre>
+    allowed-events: [COMMENT]
+    max: 1
+---
+
+# Continuous Review
+
+You are the Repo Assistant's **review** agent. A pull request was opened or
+updated. Give it a focused, constructive review.
+
+1. Read the diff and the surrounding code for context.
+2. Leave inline review comments on specific lines where you see real problems:
+   likely bugs, missing edge cases, unclear names, or missing tests. Be specific
+   and kind. Skip style nits a linter already covers.
+3. Submit a single **COMMENT** review summarizing what you found. Never approve or
+   request changes — a human decides the merge.
+
+If the PR looks good, submit a short COMMENT review saying so rather than
+inventing problems.</code></pre>
   </figure>
 
   <figure class="code">
-    <figcaption>examples/ch10/daily-test-improver.md &mdash; proposes tests as a draft PR (compiles: 0/0)</figcaption>
-    <pre><code class="language-yaml">on:
+    <figcaption><code>examples/ch10/daily-test-improver.md</code> &mdash; complete draft-PR workflow with a tests-only prompt, not a file allowlist; v0.88.7 strict preflight PASS with a schedule-context warning, live run not performed</figcaption>
+    <pre><code class="language-markdown">---
+on:
   schedule: daily
   workflow_dispatch:
-permissions: { contents: read }
+permissions:
+  contents: read
 engine: copilot
-network: { allowed: [defaults, github, node] }
+network:
+  allowed:
+    - defaults
+    - github
+    - node
 tools:
-  github: { toolsets: [repos] }
-  bash: ["npm ci", "npm test", "npx jest", "npx vitest run"]   # scoped shell
+  github:
+    toolsets: [repos]
+  bash: ["npm ci", "npm test", "npx jest", "npx vitest run"]
   edit:
 safe-outputs:
-  create-pull-request: { title-prefix: "[tests] ", labels: [tests, automated], draft: true }</code></pre>
+  create-pull-request:
+    title-prefix: "[tests] "
+    labels: [tests, automated]
+    draft: true
+---
+
+# Daily Test Improver
+
+You are the Repo Assistant's **test-improver** agent, running once a day.
+
+1. Run the existing test suite and inspect coverage to find one under-tested area
+   of the code that matters (core logic, a bug-prone module, an untested branch).
+2. Write **new tests only** — do not change production code. Make them pass
+   against the current behavior.
+3. Open one **draft** pull request titled `[tests] ...` adding those tests, with a
+   body explaining what you covered and why it matters.
+
+Keep the change small and focused: one area, a handful of solid tests. If the
+suite is already well covered, report no action instead of padding it.</code></pre>
   </figure>
 
-  <p>The review agent holds <strong>read-only</strong> PR access and can only emit a <code>COMMENT</code> review &mdash; the <code>allowed-events</code> setting makes &ldquo;never block a merge&rdquo; an infrastructural guarantee, not a hope. The test-improver gets a <strong>scoped shell</strong> to run the suite and <code>edit</code> to write tests, but its sole output is a <strong>draft</strong> PR a human reviews. Both accelerate the work right up to the human's decision, then hand it over.</p>
+  <p>The review agent's repository permissions are <strong>read-only</strong>; its two declared safe outputs permit up to ten inline comments and one COMMENT review. The test-improver gets the supported Bash allowlist and <code>edit</code> for local work, then proposes a draft through a separate write-capable safe-output job. Read these as <a href="#human-merge-policy">bounded output contracts</a>, not evidence that the model followed every prompt instruction.</p>
 
+  <h3>What compilation verified</h3>
+  <p>The 2026-09-15 preflight emitted locks for both unchanged recipes using v0.88.7 and <code>--strict</code>. Review had no compiler warnings; the test-improver warned that fuzzy scheduling lacked repository context in the isolated fixture. Both also emitted an informational Copilot billing tip. The separate CI-trigger probe passed target strict compilation with <code>--validate</code>; that evidence covers the diagnostic fixture, not a live diagnosis.</p>
+  <!-- Final technical verification: both complete HTML workflows match their sources;
+       those sources and the CI-conclusion fixture passed strict v0.88.7 compilation
+       with nonempty target/strict locks and exit 0. The complete max-stack:-1 context
+       also passed; no live stack admission ran. Evidence under
+       content/research/updates/v0.88.7/: verification.json,
+       embedded-verification.json and max-stack-verification.json.
+       Earlier preflight diagnostics remain historical, not relabeled. -->
   <figure class="code">
-    <figcaption>Verifying both examples</figcaption>
-    <pre><code class="language-text">gh aw compile examples/ch10/continuous-review.md
-# ✓ examples\ch10\continuous-review.md (101.8 KB) — 0 error(s), 0 warning(s)
-gh aw compile examples/ch10/daily-test-improver.md
-# ✓ examples\ch10\daily-test-improver.md (103.8 KB) — 0 error(s), 0 warning(s)</code></pre>
+    <figcaption>Reproduce strict compilation in a scratch copy with the v0.88.7 compiler selected &mdash; commands, not a runtime transcript</figcaption>
+    <pre><code class="language-text">gh aw version
+gh aw compile --strict examples/ch10/continuous-review.md
+gh aw compile --strict examples/ch10/daily-test-improver.md
+gh aw compile --strict examples/ch10/workflow-run-conclusion.md</code></pre>
   </figure>
-  <aside class="callout callout--note" aria-label="The safe output enforces the principle">
-    <p class="callout-title">The principle is enforced, not just documented</p>
-    <p>Notice how <code>allowed-events: [COMMENT]</code> and <code>draft: true</code> turn &ldquo;humans keep the merge&rdquo; from a guideline into a compiled constraint. Even a hijacked agent can't approve a PR or merge one &mdash; the safe-outputs layer simply won't let the request through. That's the quality loop closed <em>safely</em>.</p>
+  <p>Check that the version command reports <code>v0.88.7</code> before compiling; see <a class="xref" href="your-first-workflow.html">Chapter 2</a> for compiler setup. Compilation writes generated artifacts and may resolve dependencies, but it does not invoke the agent or require its credential. No test suite, model, runtime container, or security scanner was exercised for these checks; they produced no review, PR, coverage improvement, or measured cost.</p>
+  <aside class="callout callout--note" aria-label="Live-run prerequisites">
+    <p class="callout-title">Live-run prerequisites &mdash; not exercised here</p>
+    <ul>
+      <li><strong>Engine access:</strong> these unchanged Copilot recipes use the <code>COPILOT_GITHUB_TOKEN</code> PAT path; they do not declare organization-billing permission. An eligible credential and account policy are live-run prerequisites, not compilation exceptions (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/auth.mdx">target authentication</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/billing.md">billing</a>).</li>
+      <li><strong>Repository context:</strong> the review recipe retains default role and fork restrictions. The tester needs a working Node test setup and meaningful coverage evidence; compilation cannot establish that its commands or dependencies work in your repository.</li>
+      <li><strong>Output policy:</strong> allow Actions to create PRs in the intended repository and prepare its labels. <code>create-pull-request</code> retains its default issue fallback if PR creation is blocked, so a draft PR is not its only possible reporting path. That fallback needs Issues enabled; the book repository has Issues disabled. No issue-output deployment success is claimed (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs-pull-requests.md#pull-request-creation-create-pull-request">PR creation and fallback</a>).</li>
+      <li><strong>Human validation:</strong> inspect the changed files, verify the tests, and arrange the required CI and review gates. An agent-created PR does not by itself prove that follow-up CI ran; token and trigger configuration matter (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/triggering-ci.md">triggering CI</a>).</li>
+    </ul>
   </aside>
 </section>
 
@@ -134,8 +220,10 @@ gh aw compile examples/ch10/daily-test-improver.md
   <ul>
     <li>Quality automation fills the <strong>judgement gaps</strong> CI can't: is this change good, is this test worth adding, why did CI break.</li>
     <li>Four patterns &mdash; <strong>Review</strong> (PR, comment-only), <strong>Testing</strong> (scheduled draft PR), <strong>CI-Doctor</strong> (<code>workflow_run</code> on failure), <strong>Refactoring</strong> (scheduled draft PR).</li>
-    <li>The unbreakable rule is <strong>humans keep the merge</strong> &mdash; enforced by <code>allowed-events: [COMMENT]</code> and <code>draft: true</code>, not just by convention.</li>
-    <li>Automate the noticing and drafting; reserve the deciding. Ship Testing before Refactoring, and never auto-merge an agent's PR.</li>
+    <li><strong>Humans keep the merge is our policy.</strong> Explicit <code>allowed-events: [COMMENT]</code> and <code>draft: true</code> enforce narrower output constraints; repository review rules and human judgment complete the policy.</li>
+    <li>Review defaults to top-of-stack admission in v0.88.7; ordinary non-stacked PRs are unaffected. Choosing every layer means accepting potentially more work, not gaining a budget guarantee.</li>
+    <li>Tests-only intent needs file controls when enforcement matters. Keep Copilot's supported Bash restriction rather than swapping to an engine that cannot enforce it.</li>
+    <li>Automate the noticing and drafting; reserve the deciding. Ship Testing before Refactoring, and distinguish a compile PASS from evidence that tests improved or a PR succeeded.</li>
   </ul>
   <p><strong>What's next.</strong> You now have a shelf of patterns &mdash; and you're about to notice how much they repeat. <strong>Part III</strong> scales from one repo to an org. <a class="xref" href="reuse-and-memory.html">Chapter 11: Reuse &amp; Memory</a> factors the shared parts into imported components and gives the Repo Assistant memory that persists across runs.</p>
 </section>

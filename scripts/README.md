@@ -4,6 +4,9 @@ The normal operation is **incremental maintenance**, not a new whole-book build.
 Saved prompts coordinate the existing specialist agents; deterministic helpers and CI
 enforce the release prerequisites.
 
+The update/release helpers require **Python 3.12**, Git, and GitHub CLI; the CI gate
+uses Python 3.12. The Windows installer/launcher require PowerShell 7.
+
 | Operation | Saved prompt | Launcher |
 | --- | --- | --- |
 | Follow a framework release | `/update-book` | `.\scripts\run-fleet.ps1` |
@@ -72,6 +75,17 @@ Optional `--validate`, container/scanner checks, and live execution have separat
 environment requirements; they are not implied by this source-compilation gate. In
 particular, an example using Issues needs Issues enabled in its deployment repository.
 Restricted-secret review warnings remain in stderr and are never hidden with `--approve`.
+
+For `examples\<chapter>\strict-policy\`, keep `aw.json` directly beside the workflow.
+The verifier stages this self-contained directory as `.github\workflows` and omits
+the CLI `--strict` flag, so the emitted `strict: true` must come from the repository
+policy. A missing, ignored, malformed, or ineffective policy fails instead of falling
+back to a forced CLI override. Ordinary workflows still use `--strict`.
+
+Regular nonignored Markdown, JSON, YAML, TXT, and example-local `.gitignore` inputs
+are staged and bound into review fingerprints; generated locks/build output are not.
+The report records the compilation mode and policy digest. Unsupported binary/source
+types fail explicitly rather than disappearing from the proof.
 
 On a fresh Linux CI runner, the equivalent is a pinned extension:
 

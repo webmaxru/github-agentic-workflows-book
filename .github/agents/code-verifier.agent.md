@@ -44,6 +44,12 @@ repository, and live-runtime checks. Report their actual context and unavailable
 Capture stderr separately: restricted-secret approval warnings may be absent from JSON's
 warning list. Never add `--approve` merely to obtain a cleaner transcript.
 
+Repository-policy fixtures use `strict-policy/aw.json` beside the source. Their
+canonical run omits CLI `--strict` while still requiring emitted `strict: true`;
+ordinary workflows retain the flag. Preserve all nonignored text fixture inputs,
+including JSON/YAML/TXT, and record a separate no-policy control for this behavior.
+Do not mistake forced CLI strictness for proof that the policy file was loaded.
+
 ## Principles
 - **Real compilation, no assumptions.** "Looks right" is not verified — it must compile.
 - **Deterministic.** Require the pinned target, strict mode, and emitted locks; do not run workflows.

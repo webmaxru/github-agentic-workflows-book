@@ -24,14 +24,21 @@ safe-outputs:
     max: 1
 ---
 
-# Repo Assistant — budgeted, policy-compliant triage
+# Repo Assistant — budgeted triage
 
 You are the **Repo Assistant**. Triage the new issue with one concise comment and
 at most one label. Keep it efficient: read only what you need, and don't spend
 effort re-deriving context you already have.
 
-This example is about **cost and policy**, not the triage. It caps spend three
-ways — a per-run `max-ai-credits` budget, a rolling `max-daily-ai-credits` limit
-across the day's runs, and a `timeout-minutes` wall clock — and it stops
-triggering after 30 days. Organization-wide defaults and capability policies are
-layered on top of these per-workflow guardrails.
+On a scheduled or manual run without an issue target, report no work rather than
+inventing a target.
+
+This example demonstrates **scoped budgets and policy**. The main agent has a
+`max-ai-credits: 200` budget; the rolling historical admission threshold is
+`max-daily-ai-credits: 2000`. Neither is a total bill cap or an atomic reservation.
+`timeout-minutes: 10` bounds the agentic step, not every job, and
+`stop-after: "+30d"` supplies an admission deadline.
+
+Threat detection and Actions compute are separate. Explicit frontmatter budgets
+are not replaced by organization defaults. Compile-time policy and supported
+runtime capability gates have different enforcement points.

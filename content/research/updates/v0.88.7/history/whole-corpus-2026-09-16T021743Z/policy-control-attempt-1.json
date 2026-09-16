@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "scope": "Separate no-policy control, not a canonical book workflow or a strict-compilation waiver. Identical MD input bytes are shared by the ch07/ch13 positive fixtures.",
+  "target": "v0.88.7",
+  "compiler": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+  "version_output": "gh aw version v0.88.7\n",
+  "policy_positive_sources": [
+    "examples/ch07/strict-policy/opt-out.md",
+    "examples/ch13/strict-policy/opt-out.md"
+  ],
+  "source_raw_sha256": "3ba53a4d97306d95a216cb25e57ee7d0f6cd47922aff8b52a9d77dc279613f44",
+  "source_lf_normalized_sha256": "1747d05bfecfb5e8e019b0615bde80798ffb1e0a6f4b3b0827e82016ac24e74f",
+  "expected_effective_strict": false,
+  "cli_strict_flag_used": false,
+  "policy_file_staged": false,
+  "runtime": "NOT RUN",
+  "approval_granted": false,
+  "environment_errors": [],
+  "status": "FAIL",
+  "command": [
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+    "compile",
+    ".github\\workflows\\opt-out.md"
+  ],
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "explicit-control-origin"
+  },
+  "started_at_utc": "2026-09-16T02:17:43.878170+00:00",
+  "compiler_exit_code": 0,
+  "stdout": "",
+  "stderr": "✓ .github\\workflows\\opt-out.md (114.0 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+  "lock_emitted": true,
+  "finished_at_utc": "2026-09-16T02:17:47.622843+00:00",
+  "lock_metadata": {
+    "schema_version": "v4",
+    "frontmatter_hash": "ab3825da3c669841461bdd23976d610257aa569161d98be1acaf5857264e9a2f",
+    "body_hash": "529efc06f01d588ce8af12b43c10fc62a5a80aa0b77c116f5f0366685b60fa42",
+    "compiler_version": "v0.88.7",
+    "agent_id": "copilot",
+    "engine_versions": {
+      "copilot": "1.0.80"
+    }
+  },
+  "scratch_removed": true
+}

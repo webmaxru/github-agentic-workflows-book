@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "scope": "One fresh no-policy control, separate from the strict positive corpus.",
+  "target": "v0.88.7",
+  "compiler": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+  "version_output": "gh aw version v0.88.7\n",
+  "source_paths_with_identical_bytes": [
+    "examples/ch07/strict-policy/opt-out.md",
+    "examples/ch13/strict-policy/opt-out.md"
+  ],
+  "source_raw_sha256": "3ba53a4d97306d95a216cb25e57ee7d0f6cd47922aff8b52a9d77dc279613f44",
+  "policy_file_staged": false,
+  "cli_strict_flag_used": false,
+  "expected_effective_strict": false,
+  "runtime": "NOT RUN",
+  "approval_granted": false,
+  "environment_errors": [],
+  "status": "PASS",
+  "serialization_reference": {
+    "path": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\upstream-v0.88.7\\github-gh-aw-bde3679\\pkg\\workflow\\lock_schema.go",
+    "sha256": "463922d9a748585d75269519789bcb1b0bf919bcbbf7b2b577af597257efd6e2",
+    "line": 42,
+    "definition": "Strict bool `json:\"strict,omitempty\"`",
+    "url": "https://github.com/github/gh-aw/blob/v0.88.7/pkg/workflow/lock_schema.go"
+  },
+  "effective_strict_emission_reference": {
+    "path": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\upstream-v0.88.7\\github-gh-aw-bde3679\\pkg\\workflow\\compiler_yaml_step_lifecycle.go",
+    "sha256": "a8409a435013ffe446134446f6183b03fad4627b0b76826bce64421d0f6dfbb5",
+    "line": 205,
+    "url": "https://github.com/github/gh-aw/blob/v0.88.7/pkg/workflow/compiler_yaml_step_lifecycle.go"
+  },
+  "command": [
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+    "compile",
+    ".github\\workflows\\opt-out.md"
+  ],
+  "compiler_exit_code": 0,
+  "stdout": "",
+  "stderr": "✓ .github\\workflows\\opt-out.md (114.0 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+  "started_at_utc": "2026-09-16T03:13:13.178308+00:00",
+  "finished_at_utc": "2026-09-16T03:13:17.436882+00:00",
+  "lock_emitted": true,
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "explicit-control-origin"
+  },
+  "lock_metadata": {
+    "schema_version": "v4",
+    "frontmatter_hash": "ab3825da3c669841461bdd23976d610257aa569161d98be1acaf5857264e9a2f",
+    "body_hash": "529efc06f01d588ce8af12b43c10fc62a5a80aa0b77c116f5f0366685b60fa42",
+    "compiler_version": "v0.88.7",
+    "agent_id": "copilot",
+    "engine_versions": {
+      "copilot": "1.0.80"
+    }
+  },
+  "strict_field_present": false,
+  "observed_effective_strict": false,
+  "compiled_strict_values": [
+    "false"
+  ],
+  "strict_encoding_note": "Target LockMetadata.Strict is bool with omitempty; false is omitted. No positive gate accepts an omitted field.",
+  "scratch_removed": true
+}

@@ -24,18 +24,32 @@ import sys
 if sys.argv[1:] == ["version"]:
     print("gh-aw version v0.81.6 (test compiler)")
     raise SystemExit(0)
-if sys.argv[1:3] != ["compile", "--strict"]:
-    print("strict compilation is required", file=sys.stderr)
+if sys.argv[1] != "compile":
+    print("compilation is required", file=sys.stderr)
     raise SystemExit(9)
 assert "--validate" not in sys.argv, "canonical verification must not require Issues/scanners"
+forced_strict = "--strict" in sys.argv
 if not pathlib.Path(".git").is_dir():
     raise SystemExit("not an isolated git repository")
-workflow = pathlib.Path(sys.argv[3])
+workflow = pathlib.Path(sys.argv[-1])
 text = workflow.read_text(encoding="utf-8")
 print("repository=" + str(pathlib.Path.cwd()))
 print("origin=" + subprocess.check_output(
     ["git", "config", "--local", "--get", "remote.origin.url"], text=True
 ).strip())
+print("arguments=" + json.dumps(sys.argv[1:]))
+policy = pathlib.Path(".github/workflows/aw.json")
+if forced_strict:
+    effective_strict = True
+else:
+    assert policy.is_file(), "repository policy was not staged beside the workflow"
+    assert workflow.parent == policy.parent, "policy fixture was not self-contained"
+    effective_strict = json.loads(policy.read_text())["strict"] is True
+if "EXPECT_FIXTURE_DATA" in text:
+    assert pathlib.Path(".github/workflows/notes.txt").read_text() == "Fixture notes.\n"
+    assert pathlib.Path(".github/workflows/policy.excerpt.yml").read_bytes() == b"allow: []\r\n"
+    assert not pathlib.Path(".github/workflows/ignored.txt").exists()
+assert not list(pathlib.Path(".github/workflows").rglob("*.lock.yml")), "generated locks were staged"
 if "EXPECT_POLICY" in text:
     assert pathlib.Path(".github/workflows/shared/policy.md").read_text() == "Original shared bytes.\n"
 if "FAIL" in text or not text.startswith("---\n"):
@@ -44,11 +58,11 @@ if "FAIL" in text or not text.startswith("---\n"):
 if "NOLOCK" not in text:
     metadata = {
         "schema_version": "v4", "compiler_version": "v0.81.6",
-        "strict": True, "agent_id": "copilot",
+        "strict": effective_strict, "agent_id": "copilot",
     }
     if "WRONG_VERSION" in text:
         metadata["compiler_version"] = "v0.88.7"
-    if "NON_STRICT" in text:
+    if "NON_STRICT" in text or "INEFFECTIVE_POLICY" in text:
         metadata["strict"] = False
     header = "# gh-aw-metadata: " + json.dumps(metadata) + "\n"
     if "MISSING_HEADER" in text:
@@ -91,6 +105,7 @@ class ExampleTests(RepositoryTest):
         self.assertEqual(len(report["fragments"]), 2)
         self.assertTrue(all(item["lock_emitted"] for item in report["results"]))
         for item in report["results"]:
+            self.assertEqual(item["compilation_mode"], "cli-strict")
             self.assertEqual(item["lock_metadata"]["compiler_version"], "v0.81.6")
             self.assertIs(item["lock_metadata"]["strict"], True)
         self.assertEqual((self.root / "examples/ch01/one.md").read_text(), source)
@@ -114,6 +129,89 @@ class ExampleTests(RepositoryTest):
         self.assertEqual(report["results"][0]["exit_code"], 7)
         self.assertEqual(report["results"][0]["stderr"], "frontmatter: invalid field at line 2\n")
         self.assertFalse(list(self.scratch.iterdir()))
+
+    def policy_fixture(self, policy='{"strict": true}\n', body=""):
+        self.put(
+            "examples/ch02/strict-policy/opt-out.md",
+            "---\non: workflow_dispatch\nstrict: false\n---\n" + body + "\n",
+        )
+        if policy is not None:
+            self.put("examples/ch02/strict-policy/aw.json", policy)
+
+    def test_repository_policy_is_loaded_without_cli_strict_and_copies_local_data(self):
+        self.policy_fixture(body="EXPECT_FIXTURE_DATA")
+        self.put("examples/ch02/strict-policy/notes.txt", "Fixture notes.\n")
+        self.put("examples/ch02/strict-policy/policy.excerpt.yml", "allow: []\r\n")
+        self.put("examples/ch02/strict-policy/ignored.txt", "Do not stage ignored input.")
+        self.put("examples/ch02/strict-policy/.gitignore", "ignored.txt\n")
+        self.put("examples/ch02/strict-policy/stale.lock.yml", "An old generated lock.")
+        self.put("examples/ch02/strict-policy/build/generated.md", "A build artifact, not a workflow.")
+        before = self.git("status", "--short")
+        report = self.run_verifier()
+        self.assertEqual(report["status"], "PASS", report)
+        self.assertEqual(report["passed"], 2)
+        ordinary, policy = report["results"]
+        self.assertEqual(ordinary["compilation_mode"], "cli-strict")
+        self.assertIn('"--strict"', ordinary["stdout"])
+        self.assertEqual(policy["compilation_mode"], "repository-policy")
+        self.assertNotIn("--strict", policy["stdout"])
+        self.assertIs(policy["lock_metadata"]["strict"], True)
+        self.assertEqual(policy["repository_policy"]["path"], "examples/ch02/strict-policy/aw.json")
+        self.assertEqual(policy["repository_policy"]["staged_path"], ".github/workflows/aw.json")
+        self.assertEqual(len(policy["repository_policy"]["sha256"]), 64)
+        self.assertTrue(policy["repository_policy"]["strict"])
+        self.assertIn("examples/ch02/strict-policy/notes.txt", report["inputs"])
+        self.assertIn("examples/ch02/strict-policy/policy.excerpt.yml", report["inputs"])
+        self.assertNotIn("examples/ch02/strict-policy/ignored.txt", report["inputs"])
+        self.assertFalse(any(name.endswith(".lock.yml") for name in report["inputs"]))
+        self.assertFalse(any("/build/" in name for name in report["inputs"]))
+        self.assertEqual(before, self.git("status", "--short"))
+
+    def test_missing_or_ignored_policy_fails_without_a_strict_flag_fallback(self):
+        self.policy_fixture(policy=None)
+        for ignored in (False, True):
+            with self.subTest(ignored=ignored):
+                if ignored:
+                    self.put("examples/ch02/strict-policy/aw.json", '{"strict": true}\n')
+                    self.put("examples/ch02/strict-policy/.gitignore", "aw.json\n")
+                report = self.run_verifier()
+                self.assertEqual(report["status"], "FAIL")
+                self.assertEqual((report["passed"], report["failed"]), (1, 1))
+                item = report["results"][1]
+                self.assertEqual(item["compilation_mode"], "repository-policy")
+                self.assertIn("missing or ignored", item["error"])
+                self.assertNotIn("exit_code", item)
+
+    def test_malformed_or_non_strict_repository_policy_fails_before_compilation(self):
+        self.policy_fixture()
+        for policy in ('{broken JSON', '[]', '{}', '{"strict": false}', '{"strict": "true"}', '{"strict": 1}'):
+            with self.subTest(policy=policy):
+                self.put("examples/ch02/strict-policy/aw.json", policy)
+                report = self.run_verifier()
+                self.assertEqual(report["status"], "FAIL")
+                item = report["results"][1]
+                self.assertEqual(item["compilation_mode"], "repository-policy")
+                self.assertIn("policy", item["error"])
+                self.assertNotIn("exit_code", item)
+
+    def test_repository_policy_cannot_pass_with_non_strict_lock_metadata(self):
+        self.policy_fixture(body="INEFFECTIVE_POLICY")
+        report = self.run_verifier()
+        self.assertEqual(report["status"], "FAIL")
+        item = report["results"][1]
+        self.assertEqual(item["compilation_mode"], "repository-policy")
+        self.assertEqual(item["exit_code"], 0)
+        self.assertTrue(item["lock_emitted"])
+        self.assertIn("strict must be boolean true", item["metadata_error"])
+        self.assertNotIn("--strict", item["stdout"])
+
+    def test_nested_policy_workflows_cannot_fall_back_to_cli_strict(self):
+        self.put("examples/ch02/strict-policy/nested/opt-out.md", "---\nstrict: false\n---\nProbe.\n")
+        self.put("examples/ch02/strict-policy/aw.json", '{"strict": true}\n')
+        report = self.run_verifier()
+        self.assertEqual(report["status"], "FAIL")
+        self.assertEqual(report["results"][1]["compilation_mode"], "repository-policy")
+        self.assertIn("directly adjacent", report["results"][1]["error"])
 
     def test_invalid_frontmatter_is_never_silently_skipped(self):
         self.put("examples/ch01/one.md", "Not frontmatter, but still a standalone example.\n")

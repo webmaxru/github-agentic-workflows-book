@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "scope": "Ch10 max-stack:-1 claim in a complete COMMENT-only review context; scratch-only compilation, not live stack admission.",
+  "target": "v0.88.7",
+  "version_output": "gh aw version v0.88.7\n",
+  "source": "examples/ch10/continuous-review.md",
+  "source_raw_sha256": "365f78f4fda15467bba087cc92746a53f16ca965ea01c16a159c9cd41d462cc9",
+  "source_body_unchanged": true,
+  "cases": [
+    {
+      "name": "default-stack-filter",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        "--strict",
+        ".github\\workflows\\continuous-review.md"
+      ],
+      "compiler_exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\continuous-review.md (121.4 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "started_at_utc": "2026-09-16T03:15:38.898017+00:00",
+      "finished_at_utc": "2026-09-16T03:15:41.931588+00:00",
+      "input_sha256": "7f0dba909bad0826521bfbe7831140283783089c924882847b19db33416afb0d",
+      "input_text": "---\non:\n  pull_request:\n    types: [opened, synchronize]\npermissions:\n  contents: read\n  pull-requests: read\nengine: copilot\nnetwork:\n  allowed:\n    - defaults\n    - github\ntools:\n  github:\n    toolsets: [pull_requests]\nsafe-outputs:\n  create-pull-request-review-comment:\n    max: 10\n  submit-pull-request-review:\n    allowed-events: [COMMENT]\n    max: 1\n---\n\n# Continuous Review\n\nYou are the Repo Assistant's **review** agent. A pull request was opened or\nupdated. Give it a focused, constructive review.\n\n1. Read the diff and the surrounding code for context.\n2. Leave inline review comments on specific lines where you see real problems:\n   likely bugs, missing edge cases, unclear names, or missing tests. Be specific\n   and kind. Skip style nits a linter already covers.\n3. Submit a single **COMMENT** review summarizing what you found. Never approve or\n   request changes — a human decides the merge.\n\nIf the PR looks good, submit a short COMMENT review saying so rather than\ninventing problems.\n",
+      "lock_emitted": true,
+      "status": "PASS",
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "ceafec436596445cb41bd989ed996ae1b4b8f3adaef39b6c244986a93f1d56ca",
+        "body_hash": "a011ca16bafe1007a998b84b49fff3c13c600a4ee07c5b1902056093599414bb",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compiled_guard_lines": [
+        "      ((github.event_name != 'pull_request' && github.event_name != 'pull_request_review') || github.event.pull_request.stack == null ||",
+        "      github.event.pull_request.stack.position == github.event.pull_request.stack.size))",
+        "      ((github.event_name != 'pull_request' && github.event_name != 'pull_request_review') || github.event.pull_request.stack == null ||",
+        "      github.event.pull_request.stack.position == github.event.pull_request.stack.size)",
+        "          GH_AW_REQUIRED_ROLES: \"admin,maintainer,write\""
+      ],
+      "lock_sha256": "74b52baa1d1f632899ce1ecf2d3b9fd5a6585c50a13412439524893a5c5d3918"
+    },
+    {
+      "name": "max-stack-minus-one",
+      "command": [
+        "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+        "compile",
+        "--strict",
+        ".github\\workflows\\continuous-review.md"
+      ],
+      "compiler_exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\continuous-review.md (121.0 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "started_at_utc": "2026-09-16T03:15:42.273911+00:00",
+      "finished_at_utc": "2026-09-16T03:15:45.101136+00:00",
+      "input_sha256": "f6c9dc81f79474c0be27f63ad72b7ad23c543c1c2c14865944eae5a7d887a858",
+      "input_text": "---\non:\n  pull_request:\n    max-stack: -1\n    types: [opened, synchronize]\npermissions:\n  contents: read\n  pull-requests: read\nengine: copilot\nnetwork:\n  allowed:\n    - defaults\n    - github\ntools:\n  github:\n    toolsets: [pull_requests]\nsafe-outputs:\n  create-pull-request-review-comment:\n    max: 10\n  submit-pull-request-review:\n    allowed-events: [COMMENT]\n    max: 1\n---\n\n# Continuous Review\n\nYou are the Repo Assistant's **review** agent. A pull request was opened or\nupdated. Give it a focused, constructive review.\n\n1. Read the diff and the surrounding code for context.\n2. Leave inline review comments on specific lines where you see real problems:\n   likely bugs, missing edge cases, unclear names, or missing tests. Be specific\n   and kind. Skip style nits a linter already covers.\n3. Submit a single **COMMENT** review summarizing what you found. Never approve or\n   request changes — a human decides the merge.\n\nIf the PR looks good, submit a short COMMENT review saying so rather than\ninventing problems.\n",
+      "lock_emitted": true,
+      "status": "PASS",
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "81f2a6283928f998650c49da5dd763867e5549fe9bb1ee6e3d548957b2fe19ed",
+        "body_hash": "a011ca16bafe1007a998b84b49fff3c13c600a4ee07c5b1902056093599414bb",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      },
+      "compiled_guard_lines": [
+        "    # max-stack: -1 # Stack filtering applied via job conditions",
+        "          GH_AW_REQUIRED_ROLES: \"admin,maintainer,write\""
+      ],
+      "lock_sha256": "5a1b6d98702fc91c85a366999589064eac8df9cb38076211a47298284eea64f0"
+    }
+  ],
+  "environment_errors": [],
+  "runtime": "NOT RUN",
+  "status": "PASS",
+  "scratch_removed": true
+}

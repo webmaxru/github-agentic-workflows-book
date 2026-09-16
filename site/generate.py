@@ -411,6 +411,7 @@ def root_head(
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="{prefix}assets/style.css">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer src="{prefix}assets/app.js"></script>
   {analytics_head(prefix)}
   {json_ld}"""
@@ -787,7 +788,7 @@ def render_chapter(
 BOOK_CSS = """
 *{box-sizing:border-box;}
 html{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-scheme:light;}
-body.book{margin:0;background:#fff;color:var(--ink);font-family:var(--font-body);font-size:11pt;line-height:1.62;-webkit-font-smoothing:antialiased;}
+body.book{margin:0;background:#fff;color:var(--ink);font-family:var(--font-body);font-size:11pt;line-height:1.62;overflow-wrap:anywhere;-webkit-font-smoothing:antialiased;}
 :root{
   --surface-2:#f1f4fa;--ink:#181d29;--muted:#4f5768;--faint:#626b80;
   --line:#dce1ec;--line-strong:#c5cddd;
@@ -954,6 +955,7 @@ def render_book(
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <style>{BOOK_CSS}</style>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer>
     window.addEventListener('load', function () {{
       try {{

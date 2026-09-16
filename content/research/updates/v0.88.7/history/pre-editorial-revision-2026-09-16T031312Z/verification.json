@@ -1,0 +1,553 @@
+{
+  "schema_version": 1,
+  "expected_version": "v0.88.7",
+  "compiler": [
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe"
+  ],
+  "strict": true,
+  "inputs": [
+    "examples/ch02/repo-assistant-triage.md",
+    "examples/ch04/repo-assistant-cooldown.md",
+    "examples/ch04/repo-assistant-issue-shorthand.md",
+    "examples/ch04/repo-assistant-triggers.md",
+    "examples/ch05/repo-assistant-claude.md",
+    "examples/ch06/repo-assistant-open-pr.md",
+    "examples/ch07/no-network.md",
+    "examples/ch07/repo-assistant-hardened.md",
+    "examples/ch07/strict-policy/aw.json",
+    "examples/ch07/strict-policy/opt-out.md",
+    "examples/ch08/mcp-shape.md",
+    "examples/ch08/playwright-cli.md",
+    "examples/ch08/repo-assistant-tools.md",
+    "examples/ch09/continuous-docs.md",
+    "examples/ch09/continuous-triage.md",
+    "examples/ch10/continuous-review.md",
+    "examples/ch10/daily-test-improver.md",
+    "examples/ch10/workflow-run-conclusion.md",
+    "examples/ch11/repo-assistant-shared.md",
+    "examples/ch11/repo-memory-validation.md",
+    "examples/ch11/shared/triage-policy.md",
+    "examples/ch12/repo-assistant-observable.md",
+    "examples/ch13/apm-policy.excerpt.yml",
+    "examples/ch13/models-policy.md",
+    "examples/ch13/repo-assistant-budgeted.md",
+    "examples/ch13/strict-policy/aw.json",
+    "examples/ch13/strict-policy/opt-out.md",
+    "examples/ch13/verification-notes.txt",
+    "examples/ch14/fleet-triage.md",
+    "examples/ch14/shared/triage-policy.md"
+  ],
+  "fragments": [
+    "examples/ch11/shared/triage-policy.md",
+    "examples/ch14/shared/triage-policy.md"
+  ],
+  "results": [
+    {
+      "path": "examples/ch02/repo-assistant-triage.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-triage.md (119.6 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a783ee7316147865b8aee02ec2873beec4319cbc73914340f25e303f1ea7b9cb",
+        "body_hash": "8c11b173a5204ea2a0b0768f9fe40e57418b0c35ab2cf4b56b391267550a377b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch04/repo-assistant-cooldown.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-cooldown.md (118.7 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "801e377666f95c0f1bb7fd3165ebbfe24620ccb0d31c7af8fed351f9dc628802",
+        "body_hash": "403133ab36ce0a024c3f392473fd6179da80fd23357e472e72d4ebf85ba00fe1",
+        "stop_time": "2026-10-16 03:13:19",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch04/repo-assistant-issue-shorthand.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-issue-shorthand.md (119.4 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "86c75ed6e9a37949c6e0d59995a4d325b45ebfdcc38dcbb8fba70bef8bf45c52",
+        "body_hash": "6e4c9fe14a2d966f979a664321723edffa3b49ba4ac66697a52b24c68f507713",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch04/repo-assistant-triggers.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-triggers.md (122.3 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "3e695aa4d875cc5a51efc7c8d8eaff725e7613c245f54020c03b84c7d2091e2f",
+        "body_hash": "ddc9ffe739ae561569f62021eb708109bbfe9c50d4db70c4b84cc88f31299bb9",
+        "stop_time": "2026-10-16 03:13:25",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch05/repo-assistant-claude.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\repo-assistant-claude.md: warning: safe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - ANTHROPIC_API_KEY\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\n✓ .github\\workflows\\repo-assistant-claude.md (121.1 KB)\n⚠ ⚠️  SECURITY REVIEW REQUIRED — safe update mode detected unapproved changes:\n\nsafe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - ANTHROPIC_API_KEY\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\nAction required for the calling agent:\n  1. Review every new secret and action listed above for potential malicious use\n     (e.g. credential exfiltration, supply-chain attacks, unexpected network access).\n  2. Add a security review note to the pull request description that:\n     - Lists any new or removed secrets, actions, and redirect changes from this compilation.\n     - Confirms you have reviewed each one and explains why it is safe to add.\n     - Flags any item you cannot fully verify so a human reviewer can inspect it.\n\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "32dec13fb28a635513e7a83831a294f444733d6ab69886a0eae97b244d0cba96",
+        "body_hash": "4a625033204b035ebf3cb48827e337e7bfa479e14b9d12b992b15956e7de3e61",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "claude",
+        "agent_model": "claude-sonnet-4.5",
+        "engine_versions": {
+          "claude": "2.1.70"
+        }
+      }
+    },
+    {
+      "path": "examples/ch06/repo-assistant-open-pr.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-open-pr.md (124.8 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "912749c04eb03fb0555280318011bed716baeee3d17248a9c1ea05b40cda923e",
+        "body_hash": "73ae0fc081ee19f652c9b04fd93f40fcb36b21ce299595916c487ed3077af0b5",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch07/no-network.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\no-network.md (111.8 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "16193b860a1fbf8a98fa4e598db81a52af91e708928a8865c9243e3c0767703c",
+        "body_hash": "1c630d8f2236d616968c65a6a8c1b2170318c98451f9ea400a833de393c0f0fb",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch07/repo-assistant-hardened.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-hardened.md (121.1 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "9e2e01b0e0f2712652e88615217732a5c47da6c7c9f6d7302341c605da7e8a4e",
+        "body_hash": "6f8f001e58f916b2fdf0dce23b5cc540761727e05af1f7c310595d0dc7563a3d",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch07/strict-policy/opt-out.md",
+      "compilation_mode": "repository-policy",
+      "repository_policy": {
+        "path": "examples/ch07/strict-policy/aw.json",
+        "staged_path": ".github/workflows/aw.json",
+        "sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+        "strict": true
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\opt-out.md (113.7 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "ab3825da3c669841461bdd23976d610257aa569161d98be1acaf5857264e9a2f",
+        "body_hash": "529efc06f01d588ce8af12b43c10fc62a5a80aa0b77c116f5f0366685b60fa42",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch08/mcp-shape.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\mcp-shape.md (115.5 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "da269a07ab69adfade0dceaca4909d202fa5e9cbb4686b477bb70dfc42e21d22",
+        "body_hash": "4439182882d6571dd2820251ba4cec6d9cde02b05d8486223e66cd2669aeb0a4",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch08/playwright-cli.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\playwright-cli.md (115.2 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "0d1e37248d29cbf471ed487cf92f5a491daedd9db68571d3eed7236a9367b61c",
+        "body_hash": "95f11e37cc4d44dc8cbf0db471476196884c379019c75954daa63cc1dfe28f04",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch08/repo-assistant-tools.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-tools.md (120.2 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "cbb0a71d9c13a2fbc21fc21120525e8b1e75e581a5de4aec46cbdcbd7e1c337b",
+        "body_hash": "901a3d2ddf5fe10735da270710fa3eb142f6ea740fcc393766e9435cd911e857",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch09/continuous-docs.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\continuous-docs.md (123.1 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "f6e923da02b1d3557e8717bf0725fafd48954576dddc8f7efcd67a90cdd636fc",
+        "body_hash": "243fc806a6542f3eccc5778574463fbe863aa3d6ed5a023e0c43f47ec1788928",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch09/continuous-triage.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\continuous-triage.md (121.1 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "79257831ec311bf101a9a0bc0f5f341442302ea537026c801323cf0957a2c74b",
+        "body_hash": "d6590fb13410036d10aa8a06fb6ce4da8bcca3a3af2f7837943e9227ab7bcf5b",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch10/continuous-review.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\continuous-review.md (121.4 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "ceafec436596445cb41bd989ed996ae1b4b8f3adaef39b6c244986a93f1d56ca",
+        "body_hash": "a011ca16bafe1007a998b84b49fff3c13c600a4ee07c5b1902056093599414bb",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch10/daily-test-improver.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\daily-test-improver.md (122.9 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "9f9c0f4bf32ac17efa60f96818806559e17247a990a10afbcbc6b5d38cd7dc82",
+        "body_hash": "aa7f3dc0dcd4ea4091ccf8efa70f54140ad17d7dcb22fdadf8ccd89b1c666753",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch10/workflow-run-conclusion.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\workflow-run-conclusion.md (117.5 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "4665c368664643c13c631013deb70eff8be4d509e8e3c8854068e891e1af382e",
+        "body_hash": "43473bb69e263803e50ab9c0406f659638201a140ddb991087a8c94b91d4f224",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch11/repo-assistant-shared.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-shared.md (127.6 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "2566c0c9621fd31f5cec44211ab49d3ba41cb9c3a8071d8c1092d6972280fc8f",
+        "body_hash": "273ee709f61d28ca38c7c966320ec8fea7e64396ade8dd608eee928062a48435",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch11/repo-memory-validation.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\repo-memory-validation.md: warning: safe update mode detected unapproved changes\n\nMemory validation script changes:\n  - repo-memory:default (added)\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\n✓ .github\\workflows\\repo-memory-validation.md (123.4 KB)\n⚠ ⚠️  SECURITY REVIEW REQUIRED — safe update mode detected unapproved changes:\n\nsafe update mode detected unapproved changes\n\nMemory validation script changes:\n  - repo-memory:default (added)\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\nAction required for the calling agent:\n  1. Review every new secret and action listed above for potential malicious use\n     (e.g. credential exfiltration, supply-chain attacks, unexpected network access).\n  2. Add a security review note to the pull request description that:\n     - Lists any new or removed secrets, actions, and redirect changes from this compilation.\n     - Confirms you have reviewed each one and explains why it is safe to add.\n     - Flags any item you cannot fully verify so a human reviewer can inspect it.\n\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "c8c8775adeb0c597b0a8f67ef58100f32384737ac8e759e6e1b49d66f1e7554d",
+        "body_hash": "4d8ffc34c67afc8e96df115a2460a694c1942172d69cac4226999fbf511024c0",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch12/repo-assistant-observable.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\repo-assistant-observable.md: warning: safe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - OTLP_ENDPOINT\n  - OTLP_TOKEN\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\n✓ .github\\workflows\\repo-assistant-observable.md (120.0 KB)\n⚠ ⚠️  SECURITY REVIEW REQUIRED — safe update mode detected unapproved changes:\n\nsafe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - OTLP_ENDPOINT\n  - OTLP_TOKEN\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\nAction required for the calling agent:\n  1. Review every new secret and action listed above for potential malicious use\n     (e.g. credential exfiltration, supply-chain attacks, unexpected network access).\n  2. Add a security review note to the pull request description that:\n     - Lists any new or removed secrets, actions, and redirect changes from this compilation.\n     - Confirms you have reviewed each one and explains why it is safe to add.\n     - Flags any item you cannot fully verify so a human reviewer can inspect it.\n\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "0f942b2daa673f2866c66f9c371d7593db2c11a9b73186924091f46035ed12c9",
+        "body_hash": "4447a9caa0eda4967f97321fd2191447666430b5997abb8b2f64f2eb7f457a67",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch13/models-policy.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\models-policy.md (113.9 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "f204fdb33a945d682c412d83f4d2d921a5ccaf423f1920730e511e754c10b9a0",
+        "body_hash": "c766cbdd2c7188a1c65a441609170530a18361999d22421fc81203a6da9270b4",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "agent_model": "auto",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch13/repo-assistant-budgeted.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\repo-assistant-budgeted.md (120.6 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "dcdf7001b31ec6295171885166bbd0a883ec22abbc4daac9947b406b9ff70ca2",
+        "body_hash": "5b7b0fb32772ae51fc76adf8ea5b2fb922667e78adb29d2b6f99d37e418dd127",
+        "stop_time": "2026-10-16 03:14:22",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch13/strict-policy/opt-out.md",
+      "compilation_mode": "repository-policy",
+      "repository_policy": {
+        "path": "examples/ch13/strict-policy/aw.json",
+        "staged_path": ".github/workflows/aw.json",
+        "sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+        "strict": true
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\opt-out.md (113.7 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "ab3825da3c669841461bdd23976d610257aa569161d98be1acaf5857264e9a2f",
+        "body_hash": "529efc06f01d588ce8af12b43c10fc62a5a80aa0b77c116f5f0366685b60fa42",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/ch14/fleet-triage.md",
+      "compilation_mode": "cli-strict",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\fleet-triage.md (128.0 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "166b524ca88bbaa762e98c4b468c1655e464e4e91cf137d062e41137488f8b6b",
+        "body_hash": "6a6087b4bd7f3ce5a99881469e62303a95751e92d6cc43cbe8b3732d680dabf7",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    }
+  ],
+  "environment_errors": [],
+  "compiler_version": "v0.88.7",
+  "version_output": "gh aw version v0.88.7\n",
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "book-default"
+  },
+  "passed": 24,
+  "failed": 0,
+  "status": "PASS"
+}

@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "scope": "Whole authored workflow/chapter snapshot compatibility proof, not editorial ACCEPT or a global release attestation. Parent-managed TOC/brief integration is separate.",
+  "target": "v0.88.7",
+  "status": "PASS",
+  "checked_at_utc": "2026-09-16T03:00:27.706853+00:00",
+  "canonical_command": [
+    "C:\\Users\\masalnik\\scoop\\apps\\python312\\current\\python.exe",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\scripts\\verify_examples.py",
+    "--root",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\w-_2w7tx26",
+    "--compiler",
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+    "--version",
+    "v0.88.7",
+    "--report",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\content\\research\\updates\\v0.88.7\\verification.json"
+  ],
+  "canonical_cli_exit_code": 0,
+  "canonical_started_at_utc": "2026-09-16T02:17:43.469408+00:00",
+  "canonical_finished_at_utc": "2026-09-16T02:19:06.305455+00:00",
+  "canonical_workflows": 24,
+  "ordinary_cli_strict_workflows": 22,
+  "repository_policy_workflows": 2,
+  "shared_fragments": 2,
+  "non_markdown_inputs": 4,
+  "embedded_workflows": 16,
+  "embedded_cli_strict_workflows": 15,
+  "embedded_repository_policy_workflows": 1,
+  "embedded_cli_exit_code": 0,
+  "all_positive_locks_nonempty_exact_target_and_strict_true": true,
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "book-default"
+  },
+  "environment_errors": [],
+  "cleanup_pending": null,
+  "policy_control": "PASS: same source without aw.json/CLI --strict has emitted effective strict=false and omitted false metadata field, as specified by target bool omitempty. Positive strict:true gate unchanged.",
+  "source_pre_post_hashes": [
+    {
+      "path": "examples/ch02/repo-assistant-triage.md",
+      "snapshot_raw_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "lf_normalized_sha256": "db15365912439c756d22125e38c8bf77825ca66e365c06161fc3bea2d0f6fda6",
+      "live_post_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659"
+    },
+    {
+      "path": "examples/ch04/repo-assistant-cooldown.md",
+      "snapshot_raw_sha256": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+      "lf_normalized_sha256": "fdf6ae282e9a89c0fb0d6f860263eb6cad44392d09490d61d8a61dec5e7c914e",
+      "live_post_sha256": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec"
+    },
+    {
+      "path": "examples/ch04/repo-assistant-issue-shorthand.md",
+      "snapshot_raw_sha256": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+      "lf_normalized_sha256": "516fee4eb42732a0f085237f75696977863dd6b012cbef7fb1b0e4235275a5a2",
+      "live_post_sha256": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc"
+    },
+    {
+      "path": "examples/ch04/repo-assistant-triggers.md",
+      "snapshot_raw_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+      "lf_normalized_sha256": "a7378bcaab5d55b20444ec142fdb72d9439566d1c15484060747ab7b7fdc7c27",
+      "live_post_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3"
+    },
+    {
+      "path": "examples/ch05/repo-assistant-claude.md",
+      "snapshot_raw_sha256": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9",
+      "lf_normalized_sha256": "dae117dcd03a2ba9b84112f8f725e63a465de1aa543061d4f990632d6215e909",
+      "live_post_sha256": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9"
+    },
+    {
+      "path": "examples/ch06/repo-assistant-open-pr.md",
+      "snapshot_raw_sha256": "08205f6984dda0f27449dd6be2cc1ccc092be948e2f2dcf95922208050582b84",
+      "lf_normalized_sha256": "466d8175649b090133a71e150a252ea551f4e0488f131edc5d2cf9fbad61807a",
+      "live_post_sha256": "08205f6984dda0f27449dd6be2cc1ccc092be948e2f2dcf95922208050582b84"
+    },
+    {
+      "path": "examples/ch07/no-network.md",
+      "snapshot_raw_sha256": "48957eb463b349bd64865b1764583531713e557645a70a33b03cdde0d4e95a0f",
+      "lf_normalized_sha256": "a94d5c64b883eb5a6573143c649402823bf9595f1b07e27cdb255e33a5e1d4d1",
+      "live_post_sha256": "48957eb463b349bd64865b1764583531713e557645a70a33b03cdde0d4e95a0f"
+    },
+    {
+      "path": "examples/ch07/repo-assistant-hardened.md",
+      "snapshot_raw_sha256": "3c85e9bc89b516751355a578212bd2e76eadce6b55020e9d8be3880b21395b3d",
+      "lf_normalized_sha256": "7eb28dbfaed019d542f2e715d2ed287f391386e3a893fc6879cf00566b7df91a",
+      "live_post_sha256": "3c85e9bc89b516751355a578212bd2e76eadce6b55020e9d8be3880b21395b3d"
+    },
+    {
+      "path": "examples/ch07/strict-policy/aw.json",
+      "snapshot_raw_sha256": "64f32f75325c11314f325e7eddfbd5e70beea7335cd87467ff446f7299436e1f",
+      "lf_normalized_sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+      "live_post_sha256": "64f32f75325c11314f325e7eddfbd5e70beea7335cd87467ff446f7299436e1f"
+    },
+    {
+      "path": "examples/ch07/strict-policy/opt-out.md",
+      "snapshot_raw_sha256": "3ba53a4d97306d95a216cb25e57ee7d0f6cd47922aff8b52a9d77dc279613f44",
+      "lf_normalized_sha256": "1747d05bfecfb5e8e019b0615bde80798ffb1e0a6f4b3b0827e82016ac24e74f",
+      "live_post_sha256": "3ba53a4d97306d95a216cb25e57ee7d0f6cd47922aff8b52a9d77dc279613f44"
+    },
+    {
+      "path": "examples/ch08/mcp-shape.md",
+      "snapshot_raw_sha256": "1703e07cc94cb61d9091691af30604f431a1419613d9624e87be209b82d440e0",
+      "lf_normalized_sha256": "2798055c609ccd34973480b3e3558d2a7e2acddd3f2ec3d6d4ffa745ccd6a730",
+      "live_post_sha256": "1703e07cc94cb61d9091691af30604f431a1419613d9624e87be209b82d440e0"
+    },
+    {
+      "path": "examples/ch08/playwright-cli.md",
+      "snapshot_raw_sha256": "b72e16c43dda78cc0cb61e2a983ac5d01f87065867d7e8ad03172931fa30c203",
+      "lf_normalized_sha256": "268185d1a1ca1c2cca8b369473e81ed01a22a3c0d77b00ffc311bd29e4f9ed1d",
+      "live_post_sha256": "b72e16c43dda78cc0cb61e2a983ac5d01f87065867d7e8ad03172931fa30c203"
+    },
+    {
+      "path": "examples/ch08/repo-assistant-tools.md",
+      "snapshot_raw_sha256": "2c05579963d59092a7d24e7991d777dcedd6c02f9d99f0a7d456c6fb0ec5a1e3",
+      "lf_normalized_sha256": "278cb9a8e9611a53d970a97ee29254c7b8e169265967549fea8dcf59d98bad22",
+      "live_post_sha256": "2c05579963d59092a7d24e7991d777dcedd6c02f9d99f0a7d456c6fb0ec5a1e3"
+    },
+    {
+      "path": "examples/ch09/continuous-docs.md",
+      "snapshot_raw_sha256": "2f3be7fa9c3228cc8a080479000bbf11add3db90f8da2f10c0392b51d7761f0d",
+      "lf_normalized_sha256": "658325e68c3d71debda4cdd923388fc22dbe92e8133cbe2fc011fac6e19853ab",
+      "live_post_sha256": "2f3be7fa9c3228cc8a080479000bbf11add3db90f8da2f10c0392b51d7761f0d"
+    },
+    {
+      "path": "examples/ch09/continuous-triage.md",
+      "snapshot_raw_sha256": "bda49e0b752d71eaf5d7ebb711812fb16f06e425bf83c01f425d5b38f322e9f7",
+      "lf_normalized_sha256": "3c8aa888912ec886278dc904242741c583f9e47e3c535afd04d9cef58bb1cb5f",
+      "live_post_sha256": "bda49e0b752d71eaf5d7ebb711812fb16f06e425bf83c01f425d5b38f322e9f7"
+    },
+    {
+      "path": "examples/ch10/continuous-review.md",
+      "snapshot_raw_sha256": "365f78f4fda15467bba087cc92746a53f16ca965ea01c16a159c9cd41d462cc9",
+      "lf_normalized_sha256": "7f0dba909bad0826521bfbe7831140283783089c924882847b19db33416afb0d",
+      "live_post_sha256": "365f78f4fda15467bba087cc92746a53f16ca965ea01c16a159c9cd41d462cc9"
+    },
+    {
+      "path": "examples/ch10/daily-test-improver.md",
+      "snapshot_raw_sha256": "4d8f5dc05d2c3e224b21758b3cf90b7c7d78e3000977bb1d81dbf73d46f49348",
+      "lf_normalized_sha256": "aabf914af011444327cf4193a68f21a043217a59d03c10562bbab23bb076162d",
+      "live_post_sha256": "4d8f5dc05d2c3e224b21758b3cf90b7c7d78e3000977bb1d81dbf73d46f49348"
+    },
+    {
+      "path": "examples/ch10/workflow-run-conclusion.md",
+      "snapshot_raw_sha256": "33a47a525c6f97f285b5f112b735fb1361b53d0e03d14b70f2a030c6b102176a",
+      "lf_normalized_sha256": "975dc1f480020a117b248c3c3e6a7de9ffb4886aef91ea9cc4d3cddd0651e426",
+      "live_post_sha256": "33a47a525c6f97f285b5f112b735fb1361b53d0e03d14b70f2a030c6b102176a"
+    },
+    {
+      "path": "examples/ch11/repo-assistant-shared.md",
+      "snapshot_raw_sha256": "74fdf84b2d99f0899bcb1be72da6b7e13abb8e76fdea76e64277881cb25c533f",
+      "lf_normalized_sha256": "e2eda1f9903f79da0d06d98c22f8e45a794b9bad22d5741abe1814a3ae54481f",
+      "live_post_sha256": "74fdf84b2d99f0899bcb1be72da6b7e13abb8e76fdea76e64277881cb25c533f"
+    },
+    {
+      "path": "examples/ch11/repo-memory-validation.md",
+      "snapshot_raw_sha256": "174eb0410ed4fb473e23e37d02be832f5a3b4fdf65c8ae50ed7e74c3e24ae5d2",
+      "lf_normalized_sha256": "0f1d859414e8eb07566075ca35c26e9b4c67ddc58512e60c532ceda36a5a7033",
+      "live_post_sha256": "174eb0410ed4fb473e23e37d02be832f5a3b4fdf65c8ae50ed7e74c3e24ae5d2"
+    },
+    {
+      "path": "examples/ch11/shared/triage-policy.md",
+      "snapshot_raw_sha256": "0b7516566d3dd0e19bc964b80d109fb0a1ae27c0fb53855b3cb21a63cef39745",
+      "lf_normalized_sha256": "e9ba3a8c10aa6f2bc7ad1b9718506986b00ce4d840e5b35d6392e2b5de42c7a4",
+      "live_post_sha256": "0b7516566d3dd0e19bc964b80d109fb0a1ae27c0fb53855b3cb21a63cef39745"
+    },
+    {
+      "path": "examples/ch12/repo-assistant-observable.md",
+      "snapshot_raw_sha256": "70d7c20b2a47ce1797319ba6f659796ff59a047bac1dc4613bf8679d7eda8605",
+      "lf_normalized_sha256": "aa2ef29036be7b01e408cb72fd7349c14a6596fbde4a94630787528c824cc3a4",
+      "live_post_sha256": "70d7c20b2a47ce1797319ba6f659796ff59a047bac1dc4613bf8679d7eda8605"
+    },
+    {
+      "path": "examples/ch13/apm-policy.excerpt.yml",
+      "snapshot_raw_sha256": "fcf0421aa04e87edd4dec9532173969be33c3d2ef1111adbf63ed6d1afc925ca",
+      "lf_normalized_sha256": "c454c5ec2f539f4b0c4f69401ce5a541aacb94b18b0175e1376947f77f962794",
+      "live_post_sha256": "fcf0421aa04e87edd4dec9532173969be33c3d2ef1111adbf63ed6d1afc925ca"
+    },
+    {
+      "path": "examples/ch13/models-policy.md",
+      "snapshot_raw_sha256": "e06a0f183d64e87fb49cf3ce4d8cb7bd12daecd44fe645a05c67ad570b683a57",
+      "lf_normalized_sha256": "215e81ab5c2f1d8e4860a2102bd4ccbd1eb4e0770051a9b28675e711470fb1d7",
+      "live_post_sha256": "e06a0f183d64e87fb49cf3ce4d8cb7bd12daecd44fe645a05c67ad570b683a57"
+    },
+    {
+      "path": "examples/ch13/repo-assistant-budgeted.md",
+      "snapshot_raw_sha256": "6aefb71f774134503741e9b17cd01cc0344aee2111580ce8414d117b9277c3a5",
+      "lf_normalized_sha256": "19674dff12e38a8aceb295e7a13c389e4530d717c0bcc0ea5ddbb56bdf4d0433",
+      "live_post_sha256": "6aefb71f774134503741e9b17cd01cc0344aee2111580ce8414d117b9277c3a5"
+    },
+    {
+      "path": "examples/ch13/strict-policy/aw.json",
+      "snapshot_raw_sha256": "64f32f75325c11314f325e7eddfbd5e70beea7335cd87467ff446f7299436e1f",
+      "lf_normalized_sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+      "live_post_sha256": "64f32f75325c11314f325e7eddfbd5e70beea7335cd87467ff446f7299436e1f"
+    },
+    {
+      "path": "examples/ch13/strict-policy/opt-out.md",
+      "snapshot_raw_sha256": "3ba53a4d97306d95a216cb25e57ee7d0f6cd47922aff8b52a9d77dc279613f44",
+      "lf_normalized_sha256": "1747d05bfecfb5e8e019b0615bde80798ffb1e0a6f4b3b0827e82016ac24e74f",
+      "live_post_sha256": "3ba53a4d97306d95a216cb25e57ee7d0f6cd47922aff8b52a9d77dc279613f44"
+    },
+    {
+      "path": "examples/ch13/verification-notes.txt",
+      "snapshot_raw_sha256": "72a04b4ac637b3a54288971c07cf43fc5cc9d299bc9cd937165c413313d4c629",
+      "lf_normalized_sha256": "f3b392edf58060f6f9b60c7e7d80969df36dfdec081eed5eb00d7fd805ae6a6c",
+      "live_post_sha256": "72a04b4ac637b3a54288971c07cf43fc5cc9d299bc9cd937165c413313d4c629"
+    },
+    {
+      "path": "examples/ch14/fleet-triage.md",
+      "snapshot_raw_sha256": "fbd116e521f6c013aa53302e77aa9eba083d6f26c3fcf65621c0b5778f29ff50",
+      "lf_normalized_sha256": "a6ea53d4ef94cd0cf7e0307dbc250daf355c828d441ac65ba97337a8c924523f",
+      "live_post_sha256": "fbd116e521f6c013aa53302e77aa9eba083d6f26c3fcf65621c0b5778f29ff50"
+    },
+    {
+      "path": "examples/ch14/shared/triage-policy.md",
+      "snapshot_raw_sha256": "915784a5b8fc3f75592ea0fef311ddea748038aaed248221e594ea427f4f50ac",
+      "lf_normalized_sha256": "a9a4f4185bd698d381de9feac3cda62b20b4183d6685e645e1471dfd845ba19f",
+      "live_post_sha256": "915784a5b8fc3f75592ea0fef311ddea748038aaed248221e594ea427f4f50ac"
+    }
+  ],
+  "chapter_pre_post_hashes": [
+    {
+      "path": "content/chapters/anatomy-and-compile-model.html",
+      "snapshot_sha256": "1e1f18be6dbae452a33ea594a26ba563b755c8910147f554e62fbca0b50cd094",
+      "live_post_sha256": "1e1f18be6dbae452a33ea594a26ba563b755c8910147f554e62fbca0b50cd094"
+    },
+    {
+      "path": "content/chapters/continuous-review-and-testing.html",
+      "snapshot_sha256": "ab66eea9f40d830e5689785575cfd9e94c94d6b3e593b3e89fbc76bb1c94c6f3",
+      "live_post_sha256": "ab66eea9f40d830e5689785575cfd9e94c94d6b3e593b3e89fbc76bb1c94c6f3"
+    },
+    {
+      "path": "content/chapters/continuous-triage-and-docs.html",
+      "snapshot_sha256": "07fcfe3cb65499a659cbd4c3869db15fda8a57d958c91c99f9fbb3448c98d514",
+      "live_post_sha256": "07fcfe3cb65499a659cbd4c3869db15fda8a57d958c91c99f9fbb3448c98d514"
+    },
+    {
+      "path": "content/chapters/defense-in-depth.html",
+      "snapshot_sha256": "5dde5b85659f2616dbb329b775970aa11cd0ef6643c1154a63ffb381d1bbd0ee",
+      "live_post_sha256": "5dde5b85659f2616dbb329b775970aa11cd0ef6643c1154a63ffb381d1bbd0ee"
+    },
+    {
+      "path": "content/chapters/engines.html",
+      "snapshot_sha256": "6d6d8cc6f25fcb3deb6286ad95d90f48d6fb5f65b273c6ededffcf8611f56b78",
+      "live_post_sha256": "6d6d8cc6f25fcb3deb6286ad95d90f48d6fb5f65b273c6ededffcf8611f56b78"
+    },
+    {
+      "path": "content/chapters/fleets-and-adoption.html",
+      "snapshot_sha256": "deea3f1a9155836c8b222d3ea8b8401935df4137957fa327188019c12dc01315",
+      "live_post_sha256": "deea3f1a9155836c8b222d3ea8b8401935df4137957fa327188019c12dc01315"
+    },
+    {
+      "path": "content/chapters/governance-and-finops.html",
+      "snapshot_sha256": "9b42741c87e71c4217b7968ded297d15b7cd104db3e663e6fc377de08cb01b81",
+      "live_post_sha256": "9b42741c87e71c4217b7968ded297d15b7cd104db3e663e6fc377de08cb01b81"
+    },
+    {
+      "path": "content/chapters/observability-and-debugging.html",
+      "snapshot_sha256": "68453b41dbaeaeb8f2ea605d6f4a0b336edbf2314072384cea8ddbd390a0651d",
+      "live_post_sha256": "68453b41dbaeaeb8f2ea605d6f4a0b336edbf2314072384cea8ddbd390a0651d"
+    },
+    {
+      "path": "content/chapters/reuse-and-memory.html",
+      "snapshot_sha256": "cc15076427c4ce465139e31d38e1054454fce0132114c10b8ccb53f4f07fda3e",
+      "live_post_sha256": "cc15076427c4ce465139e31d38e1054454fce0132114c10b8ccb53f4f07fda3e"
+    },
+    {
+      "path": "content/chapters/safe-outputs.html",
+      "snapshot_sha256": "90d56fccde99d6223b23bbf671d22794e0e9a8ace405636c9a3628b45c4d75ad",
+      "live_post_sha256": "90d56fccde99d6223b23bbf671d22794e0e9a8ace405636c9a3628b45c4d75ad"
+    },
+    {
+      "path": "content/chapters/tools-and-mcp.html",
+      "snapshot_sha256": "c0332e095f816caa40648ac1ce08a669a676ee7d6c42c7a6e0a1111b384cdded",
+      "live_post_sha256": "c0332e095f816caa40648ac1ce08a669a676ee7d6c42c7a6e0a1111b384cdded"
+    },
+    {
+      "path": "content/chapters/triggers.html",
+      "snapshot_sha256": "10248589efe43b2bb149185eca6765f43abaaeb96ba63837934d22c6156accbd",
+      "live_post_sha256": "10248589efe43b2bb149185eca6765f43abaaeb96ba63837934d22c6156accbd"
+    },
+    {
+      "path": "content/chapters/what-are-agentic-workflows.html",
+      "snapshot_sha256": "9c7e311b2c5e5d8ffb5144a9a10b9c425833a9f627e9557f84af7de227a3078a",
+      "live_post_sha256": "9c7e311b2c5e5d8ffb5144a9a10b9c425833a9f627e9557f84af7de227a3078a"
+    },
+    {
+      "path": "content/chapters/your-first-workflow.html",
+      "snapshot_sha256": "0221e6b1e5d31b629d90d7ff0be53d3dd17809598e59feff36b711906f3aaa10",
+      "live_post_sha256": "0221e6b1e5d31b629d90d7ff0be53d3dd17809598e59feff36b711906f3aaa10"
+    }
+  ],
+  "source_and_chapter_inputs_unchanged_during_verification": true,
+  "metadata_snapshot_and_live": [
+    {
+      "path": ".gitignore",
+      "snapshot_sha256": "4e644418b2a7bd845708ed7552f41e050d8f6bfe37d930e167ae2d5bbb0c64da",
+      "live_post_sha256": "4e644418b2a7bd845708ed7552f41e050d8f6bfe37d930e167ae2d5bbb0c64da",
+      "changed_by_parent_or_other_actor": false
+    },
+    {
+      "path": "content/toc.yml",
+      "snapshot_sha256": "b0e25a00ea6f31d523ac928610277185f74d112f79eef7bcfc761e53869f5966",
+      "live_post_sha256": "b0e25a00ea6f31d523ac928610277185f74d112f79eef7bcfc761e53869f5966",
+      "changed_by_parent_or_other_actor": false
+    },
+    {
+      "path": "content/FRAMEWORK_VERSION",
+      "snapshot_sha256": "6dbf8be6e6e8c71101266323f26d43aebb264df6ca926cba03fccd984cda98d2",
+      "live_post_sha256": "6dbf8be6e6e8c71101266323f26d43aebb264df6ca926cba03fccd984cda98d2",
+      "changed_by_parent_or_other_actor": false
+    },
+    {
+      "path": "content/VERSION",
+      "snapshot_sha256": "d8bb74080a94aa97d78e90f9a656c6a75216e55736f53d5433a0812c5dbc2ec4",
+      "live_post_sha256": "d8bb74080a94aa97d78e90f9a656c6a75216e55736f53d5433a0812c5dbc2ec4",
+      "changed_by_parent_or_other_actor": false
+    }
+  ],
+  "parent_metadata_alignment_note": "No assertion that TOC/brief or eventual review fingerprints stay unchanged; this is not a global metadata/review attestation.",
+  "preserved_earlier_evidence_count": 37,
+  "helpers": {
+    "scripts/verify_examples.py": "8006500fdffe068d0f9117f3130fa92b2a25d1daa6b24161673c2bea22bb9638",
+    "scripts/release_content.py": "b182add4d0cfc65560c949baad249d4e84ff065433fd09bebb2af6c97fc9599e"
+  },
+  "compiler_sha256": "8d88047c1e162f16a01e1920124092c80a8bdf98c1635357067a0ac34c00d4c7",
+  "evidence_sha256": {
+    "verification.json": "5e7f57c28b8e447a143bb2e8d0f3bf410f5a535e1f3892c0f9b5a07aa3252a8c",
+    "embedded-verification.json": "cdf63d7531344ddb73ed56670f7b25b91f3a498f4c839459cc80692b90c56a05",
+    "embedded-inventory.json": "7f49f1ba03f1bf62359338b42bd885a30b5df9f664a4dbeb26f948a7bc7e47d8",
+    "policy-control-verification.json": "da62d09c6bf2151d3fb94053710cac6f8398cd39836170d10cd0ed8a43f06072",
+    "policy-control-attempt-1.json": "155a020b572a3e4ed43432695fbdd698a07f0387f831f789aea549143e06a38a",
+    "dependency-fingerprint-verification.json": "87188a1f43df598af71c27a25c09c49fee670b0a659a71deb9c4f08859e1dc9c",
+    "staging-verification.json": "c32647e10d1b3a0457751b1faf25f716420ffbd5d02ea8425f41edcabfd1ab96",
+    "excerpt-verification.json": "1333be4ddf0727cc03820b45b5743e7c53e053c1d7fb3c740843304d1ef24fbc",
+    "cli-verification.json": "a6f62b4fc1f399a1b65b765036a76930262b014f5b153ab8c6a78f16ce0b57cd",
+    "cli-verification-attempt-1.json": "0273190023484323bbbe89b8e2442b500cb9eb34b732c4913f8c71f2e62455a9",
+    "verification-inputs.json": "a6660548fa9dd0087fa39bc6e5e1e5f7e82f6d4d4206cab82170b1e6c7fdf7f9",
+    "verified-inputs-archive.json": "cdec78a2b7c09f9c18b16e33f0a9694e80928cef7c370b1dfa71ae58d6db9232"
+  },
+  "source_edits_by_verifier": false,
+  "runtime": "NOT RUN",
+  "optional_validate_scanners_credentials_or_deployment": "NOT RUN / NOT VERIFIED",
+  "approval_granted": false,
+  "global_metadata_advanced": false
+}

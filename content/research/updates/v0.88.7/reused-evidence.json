@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "scope": "Reuse unchanged controls/context/help evidence for one consolidated refresh; no probe reruns or operational commands.",
+  "target": "v0.88.7",
+  "status": "PASS",
+  "checked_at_utc": "2026-09-16T04:12:15.998693+00:00",
+  "specific_revision_proof": [
+    {
+      "source": "examples/ch08/repo-assistant-tools.md",
+      "yaml_unchanged": true,
+      "source_raw_sha256": "a89a91ea296afb5b5d273905693596d778830b4dcd1bff708409fc907e894a23",
+      "task_instructions_unchanged": true,
+      "comment_max": 1,
+      "change_scope": "Explanatory footer only; intended triage comment is mediated, reads/fetches retain separate boundaries.",
+      "compile_status": "PASS",
+      "compiler_version": "v0.88.7",
+      "strict": true,
+      "fresh_body_hash": "4e5350277e5676809a12396f9426918620b5a2d1086533edc3bc6d478ec29c9f",
+      "prior_global_body_hash": "901a3d2ddf5fe10735da270710fa3eb142f6ea740fcc393766e9435cd911e857",
+      "frontmatter_hash": "cbb0a71d9c13a2fbc21fc21120525e8b1e75e581a5de4aec46cbdcbd7e1c337b"
+    },
+    {
+      "source": "examples/ch09/continuous-triage.md",
+      "yaml_unchanged": true,
+      "source_raw_sha256": "a05e69080e9b28135c5832074c68650ecc6b6d69f91a18dd7ad9aaa69cd1898c",
+      "comment_max": 1,
+      "label_max": 3,
+      "focused_expected_body_hash": "ca4bab5c43af79d42ab27c927a64781d7e488f72a836e718e95616eee3bcc3fb",
+      "change_scope": "At-most-one eligible issue sweep, complete its comment/labels, defer others, skip ambiguity, no action when none qualifies.",
+      "compile_status": "PASS",
+      "compiler_version": "v0.88.7",
+      "strict": true,
+      "fresh_body_hash": "ca4bab5c43af79d42ab27c927a64781d7e488f72a836e718e95616eee3bcc3fb",
+      "prior_global_body_hash": "d6590fb13410036d10aa8a06fb6ce4da8bcca3a3af2f7837943e9227ab7bcf5b",
+      "frontmatter_hash": "79257831ec311bf101a9a0bc0f5f341442302ea537026c801323cf0957a2c74b"
+    }
+  ],
+  "policy_control_reuse": {
+    "artifact": "policy-control-verification.json",
+    "sha256": "a7b3fdb94af5704cc40fedbbb3519794e74d9b300b31cd2714c99af230a9ca29",
+    "identical_policy_md_and_json_inputs": true,
+    "positive_current_modes_without_cli_override": true,
+    "expected_control_effective_strict": false
+  },
+  "max_stack_reuse": {
+    "artifact": "max-stack-verification.json",
+    "sha256": "d2e3de7a13c4a43f830422e06dbead97a3d86e4d24689c490723a7f9ef632d54",
+    "source_input_unchanged": true
+  },
+  "non_md_binding_reuse": {
+    "inputs": [
+      "examples/ch07/strict-policy/aw.json",
+      "examples/ch13/apm-policy.excerpt.yml",
+      "examples/ch13/strict-policy/aw.json",
+      "examples/ch13/verification-notes.txt"
+    ],
+    "input_bytes_and_helpers_unchanged": true,
+    "artifacts": [
+      "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\content\\research\\updates\\v0.88.7\\history\\whole-corpus-2026-09-16T021743Z\\dependency-fingerprint-verification.json",
+      "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\content\\research\\updates\\v0.88.7\\history\\whole-corpus-2026-09-16T021743Z\\staging-verification.json"
+    ]
+  },
+  "cli_reuse": {
+    "artifact": "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\content\\research\\updates\\v0.88.7\\history\\whole-corpus-2026-09-16T021743Z\\cli-verification.json",
+    "sha256": "a6f62b4fc1f399a1b65b765036a76930262b014f5b153ab8c6a78f16ce0b57cd",
+    "unchanged_command_entries": 95,
+    "only_added_recipe": [
+      [
+        "content/chapters/defense-in-depth.html",
+        "gh aw audit <run-id> --repo owner/repo"
+      ]
+    ],
+    "only_removed_recipe": [
+      [
+        "content/chapters/defense-in-depth.html",
+        "gh aw audit <run-id>"
+      ]
+    ],
+    "new_audit_repo_flag_supported_by_existing_help": true,
+    "help_or_operation_probes_rerun": 0
+  },
+  "contexts_reuse": {
+    "artifact": "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\content\\research\\updates\\v0.88.7\\history\\whole-corpus-2026-09-16T021743Z\\excerpt-verification.json",
+    "sha256": "1333be4ddf0727cc03820b45b5743e7c53e053c1d7fb3c740843304d1ef24fbc",
+    "basis": "Configuration/dependency excerpts unaffected; changed Ch08/Ch09 source frontmatter is exactly preserved and freshly compiled. Ch14 changes are citations/status, not compiler inputs. Supplied APM/native-skill/package evidence remains scoped, not an installation claim."
+  },
+  "runtime": "NOT RUN",
+  "approval_granted": false
+}

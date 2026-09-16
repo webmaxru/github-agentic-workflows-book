@@ -1,6 +1,8 @@
 import hashlib
 import json
 import unittest
+from pathlib import Path
+from unittest.mock import patch
 
 from helpers import RepositoryTest, SourceTest
 
@@ -128,6 +130,72 @@ class ReviewTests(SourceTest):
         before = release.fingerprint(self.root)
         self.put("content/FRAMEWORK_VERSION", "v0.88.7\n")
         self.assertNotEqual(before, release.fingerprint(self.root))
+
+    def test_non_markdown_inputs_are_bound_and_policy_deletion_invalidates_review(self):
+        names = (
+            "examples/ch01/strict-policy/aw.json",
+            "examples/ch01/policy.excerpt.yml",
+            "examples/ch01/context.yaml",
+            "examples/ch01/verification-notes.txt",
+        )
+        for name in names:
+            self.put(name, '{"strict": true}\n' if name.endswith(".json") else "Original fixture text.\n")
+        for name in names:
+            with self.subTest(name=name):
+                self.accept()
+                self.put(name, '{"strict": false}\n' if name.endswith(".json") else "Changed fixture text.\n")
+                with self.assertRaisesRegex(release.ReleaseError, "fingerprint"):
+                    release.check_review(self.root)
+        self.accept()
+        (self.root / "examples/ch01/strict-policy/aw.json").unlink()
+        with self.assertRaisesRegex(release.ReleaseError, "fingerprint"):
+            release.check_review(self.root)
+
+    def test_non_markdown_text_fingerprints_normalize_windows_line_endings(self):
+        names = ("examples/ch01/aw.json", "examples/ch01/policy.yml", "examples/ch01/policy.yaml",
+                 "examples/ch01/notes.txt")
+        for name in names:
+            self.put(name, '{"strict": true}\n' if name.endswith(".json") else "Text line.\nNext line.\n")
+        before = release.fingerprint(self.root)
+        for name in names:
+            path = self.root / name
+            path.write_bytes(path.read_bytes().replace(b"\n", b"\r\n"))
+        self.assertEqual(before, release.fingerprint(self.root))
+
+    def test_ignored_inputs_locks_and_build_outputs_do_not_change_fingerprint(self):
+        self.put(".gitignore", "build/\nexamples/ch01/ignored.txt\n")
+        before = release.fingerprint(self.root)
+        self.put("examples/ch01/ignored.txt", "Ignored local notes.")
+        self.put("examples/ch01/one.lock.yml", "Generated workflow.")
+        self.put("examples/ch01/shared/fragment.lock.yml", "Generated import output.")
+        self.put("examples/ch01/build/output.md", "Not an authored workflow.")
+        self.put("examples/ch01/dist/binary.bin", "Not a source dependency.")
+        self.assertEqual(before, release.fingerprint(self.root))
+        self.put("examples/ch01/one.lock.yml", "Changed generated workflow.")
+        self.assertEqual(before, release.fingerprint(self.root))
+
+    def test_unsupported_or_binary_example_inputs_are_explicit_errors(self):
+        unknown = self.put("examples/ch01/dependency.bin", "A type outside the supported text contract.")
+        with self.assertRaisesRegex(release.ReleaseError, "Unsupported example input type"):
+            release.fingerprint(self.root)
+        unknown.unlink()
+        text = self.root / "examples/ch01/notes.txt"
+        text.write_bytes(b"\xffnot UTF-8")
+        with self.assertRaisesRegex(release.ReleaseError, "not valid UTF-8"):
+            release.fingerprint(self.root)
+        text.write_bytes(b"contains\0binary")
+        with self.assertRaisesRegex(release.ReleaseError, "NUL byte"):
+            release.fingerprint(self.root)
+
+    def test_example_links_and_escape_paths_are_rejected_before_reading(self):
+        target = self.put("examples/ch01/aw.json", '{"strict": true}\n')
+        original = Path.is_symlink
+        with patch.object(Path, "is_symlink", lambda path: path == target or original(path)):
+            with self.assertRaisesRegex(release.ReleaseError, "symlinks or junctions"):
+                release.example_source_bytes(self.root, target)
+        outside = self.put("outside.json", '{"strict": true}\n')
+        with self.assertRaisesRegex(release.ReleaseError, "escapes examples"):
+            release.example_source_bytes(self.root, outside)
 
     def test_record_review_accepts_windows_relative_report_path(self):
         self.put("content/research/review.md", "Verdict: ACCEPT\n")

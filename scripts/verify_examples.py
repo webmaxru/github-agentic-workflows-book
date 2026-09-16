@@ -4,8 +4,8 @@
 Shared components are identified by the ``shared/`` directory convention, not
 by parsing frontmatter: malformed standalone workflows must fail, never disappear
 from the verification corpus. Each workflow is compiled in a fresh Git repository
-with its chapter's original Markdown files under .github/workflows, preserving
-relative imports without ever staging files in the book's live workflows directory.
+with its regular, nonignored text inputs under .github/workflows, preserving relative
+imports without ever staging files in the book's live workflows directory.
 The isolated repositories receive a credential-free source origin, or the public
 book repository when no usable GitHub origin exists. This configures context only;
 it never fetches or runs workflows. Scratch space lives under this tool checkout's
@@ -14,12 +14,15 @@ Setup/cleanup errors preserve per-workflow results but fail the overall report.
 The passed/failed counts describe compilation only; callers must honor status and
 environment_errors even when every workflow compiled successfully.
 An emitted lock must start with gh-aw metadata naming the expected compiler and
-literal strict=true. Compilation uses --strict only, not repository/scanner-dependent
---validate checks.
+literal strict=true. Ordinary workflows use --strict. A strict-policy/ fixture must
+have adjacent aw.json declaring strict:true; its self-contained directory is staged
+as .github/workflows and compiled WITHOUT --strict to prove effective repository policy.
+No mode uses repository/scanner-dependent --validate checks.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -31,7 +34,10 @@ from tempfile import TemporaryDirectory
 from typing import Any, Sequence
 from urllib.parse import urlsplit
 
-from release_content import ROOT, ReleaseError, read_framework_version, validate_framework_version
+from release_content import (
+    ROOT, ReleaseError, example_input_paths, example_source_bytes,
+    read_framework_version, validate_framework_version,
+)
 
 VERSION_OUTPUT_RE = re.compile(r"(?<![\w.-])v[0-9]+\.[0-9]+\.[0-9]+(?:[-+][\w.-]+)?(?![\w.-])")
 SCRATCH_ROOT = ROOT / "build" / "v"
@@ -53,13 +59,11 @@ def compiler_version(compiler: Sequence[str], root: Path) -> tuple[str, str]:
     return versions.pop(), output
 
 
-def discover_examples(root: Path) -> tuple[list[Path], list[Path]]:
+def discover_examples(root: Path, inputs: Sequence[Path] | None = None) -> tuple[list[Path], list[Path]]:
     workflows, fragments = [], []
-    for path in sorted((root / "examples").rglob("*")):
-        if not path.is_file() or path.suffix != ".md":
+    for path in example_input_paths(root) if inputs is None else inputs:
+        if path.suffix != ".md":
             continue
-        if path.is_symlink() or not path.resolve().is_relative_to(root / "examples"):
-            raise ReleaseError(f"Examples must be regular files inside examples/: {path}")
         relative = path.relative_to(root / "examples")
         (fragments if "shared" in relative.parts[:-1] else workflows).append(path)
     if not workflows:
@@ -105,16 +109,50 @@ def repository_context(root: Path) -> dict[str, str]:
     }
 
 
-def _stage(root: Path, workflow: Path, repo: Path, remote: str) -> Path:
+def _compilation_mode(root: Path, workflow: Path) -> str:
+    parents = workflow.relative_to(root / "examples").parts[:-1]
+    return "repository-policy" if "strict-policy" in parents else "cli-strict"
+
+
+def _fixture_context(
+    root: Path, workflow: Path, inputs: Sequence[Path], item: dict[str, Any],
+) -> tuple[Path, list[str]]:
     relative = workflow.relative_to(root / "examples")
     chapter = root / "examples" / relative.parts[0] if len(relative.parts) > 1 else root / "examples"
+    if item["compilation_mode"] == "cli-strict":
+        return chapter, ["--strict"]
+    if workflow.parent.name != "strict-policy":
+        raise ReleaseError("strict-policy workflows must be directly adjacent to their fixture's aw.json.")
+    policy = workflow.parent / "aw.json"
+    item["repository_policy"] = {
+        "path": policy.relative_to(root).as_posix(),
+        "staged_path": ".github/workflows/aw.json",
+    }
+    if policy not in inputs:
+        raise ReleaseError(f"Required adjacent repository policy is missing or ignored: {policy}")
+    data = example_source_bytes(root, policy)
+    item["repository_policy"]["sha256"] = hashlib.sha256(data).hexdigest()
+    try:
+        config = json.loads(data.decode("utf-8"))
+    except ValueError as exc:
+        raise ReleaseError(f"Malformed repository policy {policy}: {exc}") from exc
+    if not isinstance(config, dict) or config.get("strict") is not True:
+        raise ReleaseError(f"Repository policy must declare boolean strict:true: {policy}")
+    item["repository_policy"]["strict"] = True
+    return workflow.parent, []
+
+
+def _stage(
+    root: Path, workflow: Path, repo: Path, remote: str,
+    fixture: Path, inputs: Sequence[Path],
+) -> Path:
     target = repo / ".github" / "workflows"
     target.mkdir(parents=True)
-    for source in chapter.rglob("*"):
-        if source.is_file() and source.suffix == ".md":
-            destination = target / source.relative_to(chapter)
+    for source in inputs:
+        if source.is_relative_to(fixture):
+            destination = target / source.relative_to(fixture)
             destination.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(source, destination)
+            destination.write_bytes(example_source_bytes(root, source, normalize=False))
     for command in (
         ["git", "init", "--quiet", str(repo)],
         ["git", "-C", str(repo), "remote", "add", "origin", remote],
@@ -124,7 +162,7 @@ def _stage(root: Path, workflow: Path, repo: Path, remote: str) -> Path:
         )
         if result.returncode:
             raise ReleaseError(f"Cannot prepare isolated example repository:\n{result.stderr}")
-    return target / workflow.relative_to(chapter)
+    return target / workflow.relative_to(fixture)
 
 
 def _environment_error(report: dict[str, Any], phase: str, error: Exception, path: Path) -> None:
@@ -182,12 +220,14 @@ def verify_examples(
     root: Path, compiler: Sequence[str], version: str
 ) -> dict[str, Any]:
     version = validate_framework_version(version)
-    workflows, fragments = discover_examples(root)
+    inputs = example_input_paths(root)
+    workflows, fragments = discover_examples(root, inputs)
     report: dict[str, Any] = {
         "schema_version": 1,
         "expected_version": version,
         "compiler": list(compiler),
         "strict": True,
+        "inputs": [path.relative_to(root).as_posix() for path in inputs],
         "fragments": [path.relative_to(root).as_posix() for path in fragments],
         "results": [],
         "environment_errors": [],
@@ -200,7 +240,8 @@ def verify_examples(
     except (OSError, ValueError) as exc:
         report["error"] = str(exc)
         report["results"] = [
-            {"path": path.relative_to(root).as_posix(), "status": "FAIL", "error": str(exc)}
+            {"path": path.relative_to(root).as_posix(), "status": "FAIL", "error": str(exc),
+             "compilation_mode": _compilation_mode(root, path)}
             for path in workflows
         ]
     else:
@@ -218,14 +259,20 @@ def verify_examples(
             run = Path(temporary.name)
             phase = "compilation"
             for number, workflow in enumerate(workflows):
-                item: dict[str, Any] = {"path": workflow.relative_to(root).as_posix()}
+                item: dict[str, Any] = {
+                    "path": workflow.relative_to(root).as_posix(),
+                    "compilation_mode": _compilation_mode(root, workflow),
+                }
                 report["results"].append(item)
                 try:
                     repo = run / str(number)
-                    staged = _stage(root, workflow, repo, report["repository_context"]["url"])
+                    fixture, flags = _fixture_context(root, workflow, inputs, item)
+                    staged = _stage(
+                        root, workflow, repo, report["repository_context"]["url"], fixture, inputs,
+                    )
                     relative = str(staged.relative_to(repo))
                     result = subprocess.run(
-                        [*compiler, "compile", "--strict", relative], cwd=repo,
+                        [*compiler, "compile", *flags, relative], cwd=repo,
                         capture_output=True, text=True, encoding="utf-8", errors="replace",
                     )
                     item.update(
@@ -269,7 +316,8 @@ def verify_examples(
             if "status" not in item:
                 item.update(status="FAIL", error=report["error"])
         report["results"].extend(
-            {"path": path.relative_to(root).as_posix(), "status": "FAIL", "error": report["error"]}
+            {"path": path.relative_to(root).as_posix(), "status": "FAIL", "error": report["error"],
+             "compilation_mode": _compilation_mode(root, path)}
             for path in workflows[len(report["results"]) :]
         )
     report["passed"] = sum(item["status"] == "PASS" for item in report["results"])

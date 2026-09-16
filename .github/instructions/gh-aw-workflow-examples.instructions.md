@@ -34,6 +34,13 @@ Applies to all example agentic workflows in the book (under `examples/`). Goal: 
   a `.lock.yml`, before it ships. A runtime needs-secret marker cannot waive compilation.
 - Stage examples and relative shared imports in temporary git repositories, never in the
   book's actual `.github/workflows`. Shared fragments are not standalone workflow targets.
+- Keep repository-policy demonstrations in a `strict-policy/` fixture directory with
+  `aw.json` directly beside the Markdown. The verifier stages that directory as
+  `.github/workflows`, omits CLI `--strict`, and requires effective strict metadata;
+  forcing the flag would mask a broken policy example. Record a no-policy control
+  separately when establishing the behavior.
+- Required regular nonignored Markdown/JSON/YAML/TXT and example-local ignore files
+  are fixture inputs and are bound into review fingerprints, not just the workflow Markdown.
 - Framework updates require the **entire** corpus to pass, including unchanged workflows.
 - Require the emitted lock's exact compiler version and effective strict metadata, overall
   report PASS, and exit zero. Zero workflow failures do not waive setup/cleanup errors.

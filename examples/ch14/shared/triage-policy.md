@@ -1,5 +1,5 @@
 ---
-description: Central triage policy — the org's single source of truth for issue triage
+description: Shared triage policy — a local vendored fleet policy
 tools:
   github:
     toolsets: [issues]
@@ -11,9 +11,10 @@ safe-outputs:
     max: 3
 ---
 
-## Central triage policy
+## Shared triage policy
 
-Every repository in the fleet triages the same way by importing this file:
+This fragment shares triage instructions and safe-output limits with its
+importing workflow. It does not distribute updates or share repository memory.
 
 - Categorize the issue and summarize it in one sentence.
 - Note any missing information the reporter should add.

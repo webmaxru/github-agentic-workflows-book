@@ -33,7 +33,10 @@ reopened issue, and on a daily sweep.
 duplicates, then post one triage comment (category, a one-line summary, and any
 missing info) and apply up to three fitting labels from the allowed set.
 
-**On the daily sweep:** look for open issues missing a category label and triage
-the few clearest ones the same way. Be conservative — skip anything ambiguous.
+**On the daily sweep:** look for open issues missing a category label. Select
+**at most one clearly eligible issue per run** and complete its comment and label
+triage as described above. Leave all remaining issues for later runs. Be
+conservative — skip anything ambiguous.
 
-If nothing needs doing on a sweep, report no action rather than inventing work.
+If no clearly eligible issue needs triage on a sweep, report no action rather than
+inventing work.

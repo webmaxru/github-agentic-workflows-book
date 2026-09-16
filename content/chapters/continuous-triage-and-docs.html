@@ -4,71 +4,107 @@
      with inner HTML; keep the data-slot ids unchanged (they map 1:1 to page slots). -->
 
 <section data-slot="objective" data-title="Objective">
-  <p>By the end of this chapter you can ship <strong>two production-shaped patterns</strong> &mdash; <strong>Continuous Triage</strong> and <strong>Continuous Docs</strong> &mdash; as mini-products the Repo Assistant runs on its own. You've learned all the machinery; now you assemble it into workflows that deliver a repeatable outcome, not just a demo.</p>
-  <p>Everything targets <strong>gh aw v0.81.6</strong>. These recipes are drawn from the <a href="https://github.com/githubnext/agentics">githubnext/agentics</a> samples and the &ldquo;Continuous X&rdquo; family GitHub Next calls the <em>Agent Factory</em>.</p>
+  <p>By the end of this chapter you can assemble <strong>two production-shaped patterns</strong> &mdash; <strong>Continuous Triage</strong> and <strong>Continuous Docs</strong> &mdash; as monitored, bounded mini-products that let the Repo Assistant deliver repeatable outcomes on repository events and schedules.</p>
+  <p>This chapter targets <strong><a href="https://github.com/github/gh-aw/releases/tag/v0.88.7">gh aw v0.88.7</a></strong>, inspected on 15 September 2026. The recipes draw on the <a href="https://github.com/githubnext/agentics">githubnext/agentics</a> samples and the &ldquo;Continuous X&rdquo; family GitHub Next calls the <em>Agent Factory</em>. The existing sources passed target strict compilation; deployment prerequisites and live behavior are separate checks.</p>
 </section>
 
 <section data-slot="concept-continuous-x-patterns-as-mini-products" data-title="Concept: Continuous X — patterns as mini-products">
-  <p>Back in <a class="xref" href="what-are-agentic-workflows.html">Chapter 1</a> we framed gh-aw as <strong>Continuous AI</strong> &mdash; the third leg of repository automation beside CI and CD. This chapter is where that abstraction becomes a habit. A <strong>&ldquo;Continuous X&rdquo; pattern</strong> takes one recurring judgement task &mdash; triage, docs, review, testing &mdash; and turns it into a standing workflow that does that job every time it's needed, forever, without a human kicking it off.</p>
+  <p>Back in <a class="xref" href="what-are-agentic-workflows.html">Chapter 1</a> we framed gh-aw as <strong>Continuous AI</strong> &mdash; the third leg of repository automation beside CI and CD. This chapter is where that abstraction becomes a habit. A <strong>&ldquo;Continuous X&rdquo; pattern</strong> takes one recurring judgement task &mdash; triage, docs, review, testing &mdash; and turns it into a standing workflow that can start without a human kicking off each run. Standing does not mean guaranteed service forever: someone still owns its policy, failures, and cost.</p>
 
   <h3>Patterns, not scripts</h3>
-  <p>The mental shift is from &ldquo;a workflow&rdquo; to <strong>a mini-product</strong>. A pattern has a clear owner-task, a trigger cadence, a bounded set of outputs, and a definition of &ldquo;done&rdquo; &mdash; just like a small internal tool. Continuous Triage <em>owns</em> the question &ldquo;is this issue categorized and acknowledged?&rdquo; Continuous Docs <em>owns</em> &ldquo;do the docs still match the code?&rdquo; You ship the pattern once; it earns its keep on every issue and every merge thereafter.</p>
-  <p>This is exactly the reframing from the brief's spine: CI/CD automates deterministic work; Continuous X automates the <em>judgement</em> work that used to require a human to notice and act.</p>
+  <p>The mental shift is from &ldquo;a workflow&rdquo; to <strong>a mini-product</strong>. A pattern has a clear owner-task, a trigger cadence, a bounded set of outputs, and a definition of &ldquo;done&rdquo; &mdash; just like a small internal tool. Continuous Triage <em>owns</em> the question &ldquo;is this issue categorized and acknowledged?&rdquo; Continuous Docs <em>owns</em> &ldquo;do the docs still match the code?&rdquo; It earns its keep when later runs produce useful results within those boundaries.</p>
+  <p>CI/CD automates deterministic work; Continuous X automates the <em>judgement</em> work that used to require a human to notice and act.</p>
+  <p id="ch09-operating-contract">Give that mini-product an <strong>operating contract</strong>: which events merit agent work (<em>admission</em>), what each run may change or spend (<em>enforcement</em>), and what evidence its owner will review. Define three outcomes: useful work completed, no work needed, and unable to complete. A quiet inbox can be success; an unreadable inbox is not.</p>
   <aside class="callout callout--leader" aria-label="Real adopters">
-    <p class="callout-title">Measured: patterns in the wild</p>
-    <p>These aren't hypotheticals. Adopters run Continuous-X fleets today: <code>backend.ai-webui</code> runs a daily test-improver and an e2e-healer; <code>euparliamentmonitor</code> coordinates 20+ agents; a review agent from <code>clash-verge-rev</code> has been cloned across 215+ repositories. The patterns in this chapter are the same shape, scaled down to one repo.</p>
+    <p class="callout-title">Leader lens: patterns in the wild (historical)</p>
+    <p>The <a href="https://github.com/webmaxru/github-agentic-workflows-book/blob/content-v1.1/content/research/ch09-features.md">July 2026 chapter brief</a> recorded <code>backend.ai-webui</code>'s daily test-improver and e2e-healer, <code>euparliamentmonitor</code>'s 20+ agents, and a review agent from <code>clash-verge-rev</code> cloned across 215+ repositories. These are historical adoption examples, not measurements repeated for v0.88.7. The patterns here have the same shape, scaled down to one repo.</p>
   </aside>
 </section>
 
 <section data-slot="in-gh-aw-the-triage-and-docs-recipes" data-title="In gh-aw: the Triage and Docs recipes">
-  <p>Neither recipe needs anything new &mdash; they're compositions of Chapters 4&ndash;8. What makes them <em>patterns</em> is the shape.</p>
+  <p>Neither recipe needs a new output type &mdash; they're compositions of Chapters 4&ndash;8. Their triggers and safe outputs implement the <a href="#ch09-operating-contract">operating contract</a>: wake up for relevant work, read with narrow tools, and propose only the intended changes.</p>
 
   <h3>Continuous Triage</h3>
-  <p>Triage is <strong>reactive plus proactive</strong>: respond to each new issue, and sweep periodically for anything missed. So it combines an event trigger with a schedule (<a class="xref" href="triggers.html">Chapter 4</a>), reads with the GitHub tool (<a class="xref" href="tools-and-mcp.html">Chapter 8</a>), and writes only through <code>add-comment</code> + <code>add-labels</code> (<a class="xref" href="safe-outputs.html">Chapter 6</a>).</p>
-  <figure class="code">
-    <figcaption>The Triage recipe, in one glance</figcaption>
+  <p>Triage is <strong>reactive plus proactive</strong>: respond to each new issue, and sweep periodically for anything missed &mdash; completing triage for at most one clearly eligible issue per sweep run. So it combines an event trigger with a schedule (<a class="xref" href="triggers.html">Chapter 4</a>), reads with the GitHub tool (<a class="xref" href="tools-and-mcp.html">Chapter 8</a>), and routes its triage changes through <code>add-comment</code> + <code>add-labels</code> (<a class="xref" href="safe-outputs.html">Chapter 6</a>).</p>
+  <figure class="code" id="ch09-triage-excerpt">
+    <figcaption>Triage frontmatter excerpt &mdash; selected trigger, tool, and output fields from the <a href="#ch09-triage-workflow">complete source below</a>; not a standalone workflow</figcaption>
     <pre><code class="language-yaml">on:
-  issues: { types: [opened, reopened] }
-  schedule: daily          # sweep for anything missed
+  issues:
+    types: [opened, reopened]
+  schedule: daily
+  workflow_dispatch:
   reaction: eyes
 tools:
-  github: { toolsets: [issues] }   # find duplicates
+  github:
+    toolsets: [issues]
 safe-outputs:
-  add-comment: { max: 1 }
+  add-comment:
+    max: 1
   add-labels:
     allowed: [bug, enhancement, question, documentation, duplicate, needs-info]
     max: 3</code></pre>
   </figure>
+  <p><strong>Provision the taxonomy before running.</strong> Every label in <code>allowed</code> must already exist in the deployment repository: an allowlist constrains choices; it does not create labels. At v0.88.7, absent or false <code>create-if-missing</code> rejects nonexistent labels. Explicitly selecting <code>create-if-missing: true</code> is a different policy, discussed in <a class="xref" href="safe-outputs.html">Chapter 6</a>; this recipe does not select it (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs.md">tagged safe-output reference</a>).</p>
 
   <h3>Continuous Docs</h3>
-  <p>Docs-sync is triggered by <strong>the thing that makes docs stale</strong> &mdash; a code merge &mdash; plus a weekly backstop. It reads code and docs, then <em>proposes</em> a fix as a draft PR (or flags an issue when the drift is too big). The defining move is that it writes via <code>create-pull-request</code>, so a human always approves the doc change.</p>
-  <figure class="code">
-    <figcaption>The Docs recipe, in one glance</figcaption>
+  <p>Docs-sync is triggered by <strong>the thing that makes docs stale</strong> &mdash; a push to code paths on <code>main</code>, including a merge &mdash; plus a weekly backstop. It reads code and docs, then <em>proposes</em> a fix as a draft PR (or flags an issue when the drift is too big). The defining move is <code>create-pull-request</code> with <code>draft: true</code>: human review and merge remain <strong>our policy</strong>, not a claim that gh-aw lacks opt-in merge capabilities (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs-pull-requests.md">tagged PR-output reference</a>).</p>
+  <figure class="code" id="ch09-docs-excerpt">
+    <figcaption>Docs frontmatter excerpt &mdash; selected trigger, tool, and output fields from the <a href="#ch09-docs-workflow">complete source below</a>; not a standalone workflow</figcaption>
     <pre><code class="language-yaml">on:
-  push: { branches: [main], paths: ["src/**", "lib/**"] }  # docs go stale on merge
+  push:
+    branches: [main]
+    paths: ["src/**", "lib/**"]
   schedule: weekly
+  workflow_dispatch:
 tools:
-  github: { toolsets: [repos] }
+  github:
+    toolsets: [repos]
   edit:
 safe-outputs:
-  create-pull-request: { title-prefix: "[docs] ", draft: true }
-  create-issue: { max: 1 }         # fallback when drift is too large</code></pre>
+  create-pull-request:
+    title-prefix: "[docs] "
+    labels: [documentation, automated]
+    draft: true
+  create-issue:
+    max: 1</code></pre>
   </figure>
+  <p><strong>The fallback needs a home.</strong> <code>create-issue</code> requires Issues to be enabled in the practice or deployment repository, even if most runs would propose a docs PR. Check that prerequisite rather than removing the fallback to get a green check (<a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/workflow/repository_features_validation.go">target repository-feature validator</a>).</p>
   <aside class="callout callout--builder" aria-label="Builder detail">
     <p class="callout-title">Builder detail: trigger on the cause of the problem</p>
-    <p>The art of a good pattern is choosing the trigger that matches <em>when the work arises</em>. Triage fires on new issues because that's when categorization is needed; Docs fires on merges to code paths because that's when docs drift. The <code>paths:</code> filter keeps the docs agent from running on unrelated changes &mdash; both accurate and cheap.</p>
+    <p>The art of a good pattern is choosing the trigger that matches <em>when the work arises</em>. Triage fires on new issues because that's when categorization is needed; Docs reacts to code-path pushes because that's when docs can drift. The push <code>paths:</code> filter reduces unrelated invocations. It does not filter weekly or manual triggers, and it is not a spending limit.</p>
   </aside>
 </section>
 
 <section data-slot="when-these-patterns-pay-off-and-their-failure-modes" data-title="When these patterns pay off (and their failure modes)">
-  <p>Continuous Triage pays off on any repo where issues arrive faster than maintainers can categorize them; Continuous Docs pays off wherever docs and code drift apart between releases. Both shine because they attack the <em>&ldquo;nobody got around to it&rdquo;</em> tax &mdash; work that's valuable but rarely urgent.</p>
+  <p>Continuous Triage pays off on repos where issues arrive faster than maintainers can categorize them; Continuous Docs pays off wherever docs and code drift apart between releases. Both attack the <em>&ldquo;nobody got around to it&rdquo;</em> tax &mdash; work that's valuable but easy to defer. Some triage is urgent, though: keep that reaction path responsive.</p>
 
   <h3>Failure modes to design against</h3>
   <ul>
-    <li><strong>The over-eager triager.</strong> An agent that comments on everything becomes noise. Cap outputs (<code>max: 1</code> comment), restrict labels with <code>allowed</code>, and instruct it to skip ambiguous cases rather than guess.</li>
-    <li><strong>The confidently wrong docs PR.</strong> A doc &ldquo;fix&rdquo; that misreads the code is worse than stale docs. That's why Docs opens a <strong>draft</strong> PR and falls back to an issue for large drift &mdash; the human stays on the merge decision.</li>
-    <li><strong>The runaway schedule.</strong> A daily sweep with no bound quietly burns credits. Pair schedules with a <code>stop-after:</code> and, later, a budget (<a class="xref" href="governance-and-finops.html">Chapter 13</a>).</li>
+    <li><strong>The over-eager triager.</strong> An agent that comments on everything becomes noise. Cap outputs (<code>max: 1</code> comment per run), restrict labels with <code>allowed</code>, and keep the sweep's instruction to skip ambiguous cases rather than guess. Each sweep selects at most one clearly eligible issue, completes its comment and label triage, and leaves the rest for later runs.</li>
+    <li><strong>The confidently wrong docs PR.</strong> A doc &ldquo;fix&rdquo; that misreads the code is worse than stale docs. That's why Docs proposes a <strong>draft</strong> PR and falls back to an issue for large drift &mdash; the human stays on the merge decision.</li>
+    <li><strong>The runaway schedule.</strong> Start with an owner, a review date, and monitored limits, not &ldquo;set and forget.&rdquo; Use a stop deadline where appropriate (<a class="xref" href="triggers.html">Chapter 4</a>) and review resource budgets from the first rollout (<a class="xref" href="governance-and-finops.html">Chapter 13</a>). Neither recipe below sets an explicit stop deadline or custom credit budgets.</li>
   </ul>
+
+  <h3>Separate admission from enforcement</h3>
+  <p><a class="xref" href="triggers.html">Chapter 4's</a> <code>on.cooldown</code> can reduce redundant work, but it is <strong>not a concurrency lock or a hard spending cap</strong>. In v0.88.7 it measures from completion of the most recent completed run whose agent started, including failed agent runs; skipped agents do not reset it. If the API history lookup fails, admission can <strong>fail open</strong> (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/triggers.md">tagged trigger reference</a>; <a href="https://github.com/github/gh-aw/commit/91c53ccc9e0c408546b384ad2e8cb3484b5e15d8">cooldown implementation change</a>).</p>
+  <p>Do not add a workflow-wide cooldown to this mixed event-and-sweep triager if it would quietly skip urgent issue work. These recipes deliberately leave cooldown unset. If routine sweeps need different admission rules, separate that policy deliberately and verify the resulting workflow; use Actions concurrency controls for overlapping executions, not cooldown as a substitute.</p>
+  <p>Omitting credit fields does not mean unlimited execution: generated defaults still apply. Review the effective <strong>main-agent budget, separate detector budget, and execution timeouts</strong>. The <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/cost-management.md">daily credit guardrail</a> is a rolling, history-based admission threshold, not an atomic reservation against concurrent runs. Main-agent limits do not cap detector spending or Actions compute, and neither admission nor a per-run budget guarantees the total bill. <a class="xref" href="governance-and-finops.html">Chapter 13</a> develops these separate controls (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compiler-enterprise-environment-controls.md">tagged default-resolution reference</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/threat-detection.md">detector budget</a>).</p>
+
+  <h3>No work is not failed work</h3>
+  <p>Both prompts already say to report no action rather than invent work. Apply that instruction honestly: &ldquo;I checked and nothing needs doing&rdquo; is different from &ldquo;I could not check.&rdquo;</p>
+  <table>
+    <caption>Illustrative outcomes to check during a live pilot &mdash; not captured run results</caption>
+    <thead>
+      <tr><th scope="col">Situation</th><th scope="col">Expected outcome</th><th scope="col">Operator response</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>No eligible triage work, or the docs already match the code</td><td>No work needed: <code>noop</code></td><td>Accept the quiet result; do not demand a comment or PR just to prove activity.</td></tr>
+      <tr><td>Docs drift is too large, and the configured gap-issue fallback succeeds</td><td>Completed escalation under the prompt's policy</td><td>A human decides the next step; this is not automatically incomplete work.</td></tr>
+      <tr><td>Required context is unavailable, or the required output cannot be completed</td><td>Incomplete work: <code>report_incomplete</code> if the agent can report it</td><td>Investigate the blocker; do not count inability to finish as a healthy no-work run.</td></tr>
+    </tbody>
+  </table>
+  <p>In v0.88.7, <code>report_incomplete</code> makes the workflow's conclusion step <strong>fail</strong>; optional issue-reporting logic can still proceed (<a href="https://github.com/github/gh-aw/commit/17102565c7209c3dc26b04a396f4afd0e33fe477">incomplete-work failure change</a>). Setup failures may happen before the agent can report anything. Review the conclusion and available evidence together, as in <a class="xref" href="observability-and-debugging.html">Chapter 12</a>; <a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/artifacts.md">retained artifacts</a> and bounded log samples are not permanent, unlimited history.</p>
+  <p><strong><code>noop</code> is an outcome, not a no-writes configuration.</strong> Declaring only <code>safe-outputs.noop</code> can still enable an automatic issue fallback. Keep the recipes' explicit, narrow output policies rather than replacing them with a presumed &ldquo;no writes&rdquo; switch (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/safe-outputs.md">tagged safe-output defaults</a>).</p>
 
   <h3>When <em>not</em> to</h3>
   <ul>
@@ -76,56 +112,138 @@ safe-outputs:
     <li><strong>Don't let a pattern write where it should only suggest.</strong> High-stakes changes (docs that ship to customers, labels that trigger releases) belong behind a draft PR or a human review, not a direct write.</li>
     <li><strong>Don't run every pattern on day one.</strong> Ship one, watch it for a week, tune the prompt, then add the next. Patterns compound; mistakes compound too.</li>
   </ul>
+  <p>If you use a <a class="xref" href="safe-outputs.html">staged preview from Chapter 6</a> for that rollout, treat it as live execution with selected outputs staged &mdash; <strong>not compile-only validation</strong>. It can invoke models and incur inference costs, and activation/status work can still happen. The sources below do not enable staged mode (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/staged-mode.md">tagged staged-mode reference</a>).</p>
 </section>
 
 <section data-slot="worked-example-the-triage-plus-docs-sync-duo" data-title="Worked example: the triage plus docs-sync duo">
-  <p>Ship both as two files in <code>.github/workflows/</code>. Together they cover the two most common &ldquo;nobody got around to it&rdquo; gaps &mdash; and both compile cleanly under strict mode.</p>
+  <p>Prepare both as two Markdown files for <code>.github/workflows/</code> in a practice repository. Together they cover the triage and documentation gaps without widening the main agent's repository permissions. Start with the <a class="xref" href="your-first-workflow.html">Chapter 2 setup</a> and the <a class="xref" href="anatomy-and-compile-model.html">Chapter 3 compile/review loop</a>.</p>
 
-  <figure class="code">
-    <figcaption>examples/ch09/continuous-triage.md &mdash; reactive + proactive triage (compiles: 0/0)</figcaption>
-    <pre><code class="language-yaml">on:
-  issues: { types: [opened, reopened] }
+  <h3>Check deployment prerequisites</h3>
+  <ul>
+    <li><strong>Issues enabled.</strong> Triage needs issue intake, and Docs needs an issue tracker for its <code>create-issue</code> fallback. The book's actual remote, <code>webmaxru/github-agentic-workflows-book</code>, had Issues disabled in the 15 September 2026 checks. Use an appropriate practice repository; a reference-context PASS does not certify the book remote for deployment.</li>
+    <li><strong>Labels and paths ready.</strong> Create the six allowed triage labels and the Docs PR labels <code>documentation</code> and <code>automated</code> in that repository. Check that <code>main</code>, <code>src/</code>, <code>lib/</code>, <code>docs/</code>, and the README match the project you intend to operate on.</li>
+    <li><strong>Live-run identity and policy.</strong> As written, both Copilot recipes use the <code>COPILOT_GITHUB_TOKEN</code> secret path, not explicit organization-token billing. Follow the authentication prerequisites in <a class="xref" href="your-first-workflow.html">Chapter 2</a> and <a class="xref" href="engines.html">Chapter 5</a>; also check repository/organization policy for Actions and PR creation (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/auth.mdx">tagged authentication reference</a>). Do not put a credential in either source file.</li>
+    <li><strong>Review before enabling.</strong> Inspect the generated locks, preserve compiler stderr and approval diagnostics, and confirm the intended runner, sandbox, and tools can operate. A successful compile does not approve a workflow change or exercise its runtime.</li>
+  </ul>
+
+  <figure class="code" id="ch09-triage-workflow">
+    <figcaption>Complete Markdown: <code>examples/ch09/continuous-triage.md</code> &mdash; reactive + proactive triage, at most one clearly eligible issue per sweep; focused v0.88.7 strict compilation PASS for source and embedded copy; evidence: <code>content/research/updates/v0.88.7/triage-revision-verification.json</code>; runtime NOT RUN</figcaption>
+    <pre><code class="language-markdown">---
+on:
+  issues:
+    types: [opened, reopened]
   schedule: daily
   workflow_dispatch:
   reaction: eyes
-permissions: { contents: read, issues: read }
+permissions:
+  contents: read
+  issues: read
 engine: copilot
-network: { allowed: [defaults, github] }
+network:
+  allowed:
+    - defaults
+    - github
 tools:
-  github: { toolsets: [issues] }
+  github:
+    toolsets: [issues]
 safe-outputs:
-  add-comment: { max: 1 }
+  add-comment:
+    max: 1
   add-labels:
     allowed: [bug, enhancement, question, documentation, duplicate, needs-info]
-    max: 3</code></pre>
+    max: 3
+---
+
+# Continuous Triage
+
+You are the Repo Assistant's **triage** agent. You run two ways: on each new or
+reopened issue, and on a daily sweep.
+
+**On a new/reopened issue:** read it, use the GitHub tools to check for likely
+duplicates, then post one triage comment (category, a one-line summary, and any
+missing info) and apply up to three fitting labels from the allowed set.
+
+**On the daily sweep:** look for open issues missing a category label. Select
+**at most one clearly eligible issue per run** and complete its comment and label
+triage as described above. Leave all remaining issues for later runs. Be
+conservative — skip anything ambiguous.
+
+If no clearly eligible issue needs triage on a sweep, report no action rather than
+inventing work.
+</code></pre>
   </figure>
 
-  <figure class="code">
-    <figcaption>examples/ch09/continuous-docs.md &mdash; docs-sync that proposes a PR (compiles: 0/0)</figcaption>
-    <pre><code class="language-yaml">on:
-  push: { branches: [main], paths: ["src/**", "lib/**"] }
+  <figure class="code" id="ch09-docs-workflow">
+    <figcaption>Complete Markdown: <code>examples/ch09/continuous-docs.md</code> &mdash; draft docs PR or gap-issue fallback; strict v0.88.7 preflight PASS, live run not tested</figcaption>
+    <pre><code class="language-markdown">---
+on:
+  push:
+    branches: [main]
+    paths: ["src/**", "lib/**"]
   schedule: weekly
   workflow_dispatch:
-permissions: { contents: read }
+permissions:
+  contents: read
 engine: copilot
-network: { allowed: [defaults, github] }
+network:
+  allowed:
+    - defaults
+    - github
 tools:
-  github: { toolsets: [repos] }
+  github:
+    toolsets: [repos]
   edit:
 safe-outputs:
-  create-pull-request: { title-prefix: "[docs] ", labels: [documentation, automated], draft: true }
-  create-issue: { max: 1 }</code></pre>
+  create-pull-request:
+    title-prefix: "[docs] "
+    labels: [documentation, automated]
+    draft: true
+  create-issue:
+    max: 1
+---
+
+# Continuous Docs
+
+You are the Repo Assistant's **docs-sync** agent. Code on the default branch just
+changed (or it's the weekly sweep). Your job is to keep the documentation honest.
+
+1. Compare the changed code against the docs in `docs/` and the README.
+2. If the docs are now inaccurate or incomplete, make the **minimal** edits that
+   bring them back in line and open a **draft** pull request titled `[docs] ...`
+   explaining what drifted and why.
+3. If the drift is too large or ambiguous to fix safely, open a single issue
+   describing the gap so a human can decide.
+
+Do not touch code, tests, or workflow files — documentation only. If the docs are
+already accurate, report no action.
+</code></pre>
   </figure>
 
-  <p>Read them as two mini-products with different rhythms. Triage is <strong>read-mostly and chatty</strong> &mdash; it comments and labels, never touches code. Docs is <strong>read-mostly and proposes</strong> &mdash; it drafts a PR a human merges. Neither holds a write token; both are bounded by the same firewall and safe-outputs boundary you've applied since Part II opened.</p>
+  <p>Read them as two mini-products with different rhythms. Triage is <strong>read-mostly and chatty</strong> &mdash; its intended changes are comments and labels. Docs is <strong>read-mostly and proposes</strong> &mdash; a draft PR for human review, or a gap issue. The main agent jobs have the declared read-only repository permissions; separately permissioned safe-output jobs mediate the authorized writes. The <a class="xref" href="defense-in-depth.html">Chapter 7 firewall and security layers</a> still matter, but neither mediation nor detection guarantees a correct result.</p>
+  <p>The Docs prompt's &ldquo;documentation only&rdquo; instruction is a task policy, <strong>not an enforced file allowlist</strong>. Review the proposed patch before merging; this unchanged recipe does not configure file-scope enforcement. See <a class="xref" href="safe-outputs.html">Chapter 6</a> for that separate boundary.</p>
 
+  <h3>Verify source, then deployment context</h3>
+  <p>The following commands are a reproduction recipe, not a captured transcript. Use the fixed v0.88.7 compiler from Chapter 2: if <code>gh aw version</code> reports another version, use your verified isolated executable in place of <code>gh aw</code>. Run in a scratch Git repository containing copies of <code>examples/ch09/</code>, not in the book's real workflow directory; compilation writes adjacent locks and may write other local artifacts.</p>
   <figure class="code">
-    <figcaption>Verifying both examples</figcaption>
-    <pre><code class="language-text">gh aw compile examples/ch09/continuous-triage.md
-# ✓ examples\ch09\continuous-triage.md (102.1 KB) — 0 error(s), 0 warning(s)
-gh aw compile examples/ch09/continuous-docs.md
-# ✓ examples\ch09\continuous-docs.md (104.0 KB) — 0 error(s), 0 warning(s)</code></pre>
+    <figcaption>Strict source compilation in an isolated fixture &mdash; require the fixed compiler before proceeding</figcaption>
+    <pre><code class="language-text">gh aw version
+gh aw compile examples/ch09/continuous-triage.md --strict
+gh aw compile examples/ch09/continuous-docs.md --strict</code></pre>
   </figure>
+  <table>
+    <caption>Recorded v0.88.7 checks on the unchanged sources, 15 September 2026</caption>
+    <thead>
+      <tr><th scope="col">Check</th><th scope="col">Triage</th><th scope="col">Docs</th><th scope="col">What it establishes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Isolated source compilation with <code>--strict</code></td><td>PASS; lock emitted</td><td>PASS; lock emitted</td><td>Source compatibility, not deployment readiness. Both emitted a missing-repository-context schedule warning.</td></tr>
+      <tr><td>Additional <code>--strict --validate</code>, scratch remote <code>github/gh-aw</code> (Issues enabled)</td><td>PASS</td><td>PASS</td><td>Validation in that reference context only; nothing was installed or run there.</td></tr>
+      <tr><td>Additional <code>--strict --validate</code>, scratch remote <code>webmaxru/github-agentic-workflows-book</code></td><td>PASS</td><td>FAIL: Issues disabled</td><td>The Docs issue fallback is incompatible with the book remote's checked settings.</td></tr>
+    </tbody>
+  </table>
+  <p>The strict preflight evidence is in <code>content/research/updates/v0.88.7/preflight-verification.json</code> and <code>preflight-diagnostics.md</code>; the two repository-context checks are documented in <code>framework-delta.md</code>, section 3, in the same directory. The preflight also retained the Copilot billing tip. A PASS with these diagnostics is not a zero-warning result.</p>
+  <p>After source compilation, repeat with <code>--validate</code> using your <em>intended deployment repository's</em> context. Do not substitute the reference remote to hide an incompatible setting. The <a href="https://github.com/github/gh-aw/blob/v0.88.7/pkg/workflow/repository_features_validation.go">target validator</a> can skip a feature check if context or lookup is unavailable; a skip does not prove Issues are enabled.</p>
+  <p><strong>Live-run limitation:</strong> these checks invoked no engine and needed no engine secrets. Compilation can still resolve network-backed data (<a href="https://github.com/github/gh-aw/blob/v0.88.7/docs/src/content/docs/reference/compilation-process.md">tagged compile reference</a>). Neither workflow was run, no issue or PR was created, and no runtime costs or audit results were measured. Runtime/image tests and optional scanners were not exercised; credentials, repository prerequisites, required approvals, and runtime checks remain separate from a strict-compilation PASS.</p>
   <aside class="callout callout--note" aria-label="Composition, not new syntax">
     <p class="callout-title">You already knew how to build these</p>
     <p>There's no new frontmatter here &mdash; just triggers (Ch4), an engine (Ch5), safe outputs (Ch6), the firewall (Ch7), and tools (Ch8), composed with intent. That's the whole point of a pattern: the value is in the <em>combination and the prompt</em>, not in a new feature.</p>
@@ -133,12 +251,13 @@ gh aw compile examples/ch09/continuous-docs.md
 </section>
 
 <section data-slot="recap-and-what-s-next" data-title="Recap &amp; what&#x27;s next">
-  <p>You've shipped your first two Continuous-X mini-products:</p>
+  <p>You now have two Continuous-X recipes to validate and deploy:</p>
   <ul>
-    <li>A <strong>Continuous X pattern</strong> turns one recurring judgement task into a standing workflow &mdash; a <strong>mini-product</strong> with an owner-task, a cadence, and bounded outputs.</li>
-    <li><strong>Continuous Triage</strong> is reactive + proactive, writing via <code>add-comment</code>/<code>add-labels</code>; <strong>Continuous Docs</strong> triggers on code merges and <em>proposes</em> a draft PR.</li>
+    <li>A <strong>Continuous X pattern</strong> turns one recurring judgement task into a standing workflow &mdash; a <strong>mini-product</strong> with an owner-task, a cadence, bounded outputs, and monitored operating limits.</li>
+    <li><strong>Continuous Triage</strong> is reactive + proactive, writing via <code>add-comment</code>/<code>add-labels</code>; <strong>Continuous Docs</strong> reacts to code-path pushes and <em>proposes</em> a draft PR or a gap issue.</li>
     <li>Both are <strong>compositions</strong> of Chapters 4&ndash;8 &mdash; no new syntax; the value is in the combination and the prompt.</li>
-    <li>Design against the failure modes: cap outputs, prefer draft PRs for anything high-stakes, and ship one pattern at a time.</li>
+    <li>Prepare repository features and labels, keep mediated outputs narrow, and distinguish strict compilation from context validation, review approval, and live execution.</li>
+    <li>Treat <code>noop</code> as a legitimate no-work outcome and incomplete work as a failure to investigate. Keep urgent triage responsive; admission controls do not replace concurrency, scoped budgets, or monitoring.</li>
   </ul>
   <p><strong>What's next.</strong> Triage and docs keep the <em>inbox</em> honest. The other half of a healthy repo is the <em>code</em> itself. In <a class="xref" href="continuous-review-and-testing.html">Chapter 10: Continuous Review, Testing &amp; CI-Doctor</a>, we close the quality loop &mdash; while keeping humans firmly on the merge decision.</p>
 </section>

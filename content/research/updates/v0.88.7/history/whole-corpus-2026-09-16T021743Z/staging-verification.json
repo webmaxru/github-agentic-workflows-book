@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "scope": "Independent physical staging check using the exact current hashed helper on frozen inputs; no extra compilation or runtime execution.",
+  "target": "v0.88.7",
+  "status": "PASS",
+  "checks": [
+    {
+      "path": "examples/ch07/strict-policy/opt-out.md",
+      "compilation_mode": "repository-policy",
+      "repository_policy": {
+        "path": "examples/ch07/strict-policy/aw.json",
+        "staged_path": ".github/workflows/aw.json",
+        "sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+        "strict": true
+      },
+      "compiler_flags": [],
+      "staged_inputs": [
+        {
+          "source": "examples/ch07/strict-policy/aw.json",
+          "staged_path": ".github/workflows/aw.json",
+          "raw_sha256": "64f32f75325c11314f325e7eddfbd5e70beea7335cd87467ff446f7299436e1f",
+          "lf_normalized_sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd"
+        },
+        {
+          "source": "examples/ch07/strict-policy/opt-out.md",
+          "staged_path": ".github/workflows/opt-out.md",
+          "raw_sha256": "3ba53a4d97306d95a216cb25e57ee7d0f6cd47922aff8b52a9d77dc279613f44",
+          "lf_normalized_sha256": "1747d05bfecfb5e8e019b0615bde80798ffb1e0a6f4b3b0827e82016ac24e74f"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "path": "examples/ch13/strict-policy/opt-out.md",
+      "compilation_mode": "repository-policy",
+      "repository_policy": {
+        "path": "examples/ch13/strict-policy/aw.json",
+        "staged_path": ".github/workflows/aw.json",
+        "sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd",
+        "strict": true
+      },
+      "compiler_flags": [],
+      "staged_inputs": [
+        {
+          "source": "examples/ch13/strict-policy/aw.json",
+          "staged_path": ".github/workflows/aw.json",
+          "raw_sha256": "64f32f75325c11314f325e7eddfbd5e70beea7335cd87467ff446f7299436e1f",
+          "lf_normalized_sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd"
+        },
+        {
+          "source": "examples/ch13/strict-policy/opt-out.md",
+          "staged_path": ".github/workflows/opt-out.md",
+          "raw_sha256": "3ba53a4d97306d95a216cb25e57ee7d0f6cd47922aff8b52a9d77dc279613f44",
+          "lf_normalized_sha256": "1747d05bfecfb5e8e019b0615bde80798ffb1e0a6f4b3b0827e82016ac24e74f"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "path": "examples/ch13/repo-assistant-budgeted.md",
+      "compilation_mode": "cli-strict",
+      "compiler_flags": [
+        "--strict"
+      ],
+      "staged_inputs": [
+        {
+          "source": "examples/ch13/apm-policy.excerpt.yml",
+          "staged_path": ".github/workflows/apm-policy.excerpt.yml",
+          "raw_sha256": "fcf0421aa04e87edd4dec9532173969be33c3d2ef1111adbf63ed6d1afc925ca",
+          "lf_normalized_sha256": "c454c5ec2f539f4b0c4f69401ce5a541aacb94b18b0175e1376947f77f962794"
+        },
+        {
+          "source": "examples/ch13/models-policy.md",
+          "staged_path": ".github/workflows/models-policy.md",
+          "raw_sha256": "e06a0f183d64e87fb49cf3ce4d8cb7bd12daecd44fe645a05c67ad570b683a57",
+          "lf_normalized_sha256": "215e81ab5c2f1d8e4860a2102bd4ccbd1eb4e0770051a9b28675e711470fb1d7"
+        },
+        {
+          "source": "examples/ch13/repo-assistant-budgeted.md",
+          "staged_path": ".github/workflows/repo-assistant-budgeted.md",
+          "raw_sha256": "6aefb71f774134503741e9b17cd01cc0344aee2111580ce8414d117b9277c3a5",
+          "lf_normalized_sha256": "19674dff12e38a8aceb295e7a13c389e4530d717c0bcc0ea5ddbb56bdf4d0433"
+        },
+        {
+          "source": "examples/ch13/strict-policy/aw.json",
+          "staged_path": ".github/workflows/strict-policy/aw.json",
+          "raw_sha256": "64f32f75325c11314f325e7eddfbd5e70beea7335cd87467ff446f7299436e1f",
+          "lf_normalized_sha256": "ac435ce17af7e52534d887ad321a7dd2ad128e449e95427aac8c4fa5e35fc4bd"
+        },
+        {
+          "source": "examples/ch13/strict-policy/opt-out.md",
+          "staged_path": ".github/workflows/strict-policy/opt-out.md",
+          "raw_sha256": "3ba53a4d97306d95a216cb25e57ee7d0f6cd47922aff8b52a9d77dc279613f44",
+          "lf_normalized_sha256": "1747d05bfecfb5e8e019b0615bde80798ffb1e0a6f4b3b0827e82016ac24e74f"
+        },
+        {
+          "source": "examples/ch13/verification-notes.txt",
+          "staged_path": ".github/workflows/verification-notes.txt",
+          "raw_sha256": "72a04b4ac637b3a54288971c07cf43fc5cc9d299bc9cd937165c413313d4c629",
+          "lf_normalized_sha256": "f3b392edf58060f6f9b60c7e7d80969df36dfdec081eed5eb00d7fd805ae6a6c"
+        }
+      ],
+      "status": "PASS"
+    }
+  ],
+  "all_four_non_md_inputs_staged_with_exact_bytes": true,
+  "policy_inputs_adjacent_under_workflows": true,
+  "policy_cli_strict_override_absent": true,
+  "ordinary_cli_strict_retained": true,
+  "scratch_removed": true,
+  "helper_sha256": {
+    "scripts/verify_examples.py": "8006500fdffe068d0f9117f3130fa92b2a25d1daa6b24161673c2bea22bb9638",
+    "scripts/release_content.py": "b182add4d0cfc65560c949baad249d4e84ff065433fd09bebb2af6c97fc9599e"
+  },
+  "runtime": "NOT RUN"
+}

@@ -29,6 +29,8 @@ ROOT = Path(__file__).resolve().parents[1]
 FRAMEWORK_PATH = "content/FRAMEWORK_VERSION"
 REVIEW_PATH = "content/release-review.json"
 TOC_PATH = "content/toc.yml"
+EXAMPLE_TEXT_SUFFIXES = {".md", ".json", ".yaml", ".yml", ".txt"}
+EXAMPLE_ARTIFACT_DIRS = {"build", "dist", "node_modules", "__pycache__", ".git"}
 
 
 class ReleaseError(ValueError):
@@ -68,6 +70,65 @@ def source_bytes(root: Path, name: str) -> bytes:
     if not path.is_file() or path.is_symlink() or not path.resolve().is_relative_to(root):
         raise ReleaseError(f"Required source must be a regular file inside the repository: {name}")
     return normalize_text(path.read_bytes())
+
+
+def _regular_example_file(root: Path, path: Path) -> None:
+    examples = root / "examples"
+    try:
+        relative = path.relative_to(examples)
+    except ValueError as exc:
+        raise ReleaseError(f"Example input escapes examples/: {path}") from exc
+    current = examples
+    for part in ("", *relative.parts):
+        current = current / part
+        if current.is_symlink() or current.is_junction():
+            raise ReleaseError(f"Example inputs cannot use symlinks or junctions: {path}")
+    if not path.is_file() or not path.resolve().is_relative_to(examples.resolve()):
+        raise ReleaseError(f"Example input must be a regular file inside examples/: {path}")
+
+
+def example_input_paths(root: Path) -> list[Path]:
+    """Inventory tracked/untracked text inputs, honoring Git ignores without writing an index."""
+    try:
+        git_dir = git(root, "rev-parse", "--absolute-git-dir").decode("utf-8").strip()
+    except ReleaseError:
+        git_dir = git(ROOT, "rev-parse", "--absolute-git-dir").decode("utf-8").strip()
+    # An explicit work tree also supports standalone source snapshots inside an
+    # ignored build directory: their own ignore files, not the parent's build rule, apply.
+    listed = git(
+        root, f"--git-dir={git_dir}", f"--work-tree={root}",
+        "ls-files", "--cached", "--others", "--exclude-standard", "-z", "--", "examples",
+    )
+    paths = []
+    for name in sorted({item.decode("utf-8") for item in listed.split(b"\0") if item}):
+        relative = PurePosixPath(name)
+        if relative.is_absolute() or ".." in relative.parts or relative.parts[0] != "examples":
+            raise ReleaseError(f"Invalid example input path: {name}")
+        if name.lower().endswith(".lock.yml") or set(relative.parts[1:-1]) & EXAMPLE_ARTIFACT_DIRS:
+            continue
+        path = root / name
+        if not path.exists() and not path.is_symlink():
+            continue  # A tracked deletion changes the input set, rather than hashing old index bytes.
+        _regular_example_file(root, path)
+        if path.suffix not in EXAMPLE_TEXT_SUFFIXES and path.name != ".gitignore":
+            raise ReleaseError(
+                f"Unsupported example input type: {name}. Expected Markdown, JSON, YAML, TXT, or .gitignore."
+            )
+        paths.append(path)
+    return paths
+
+
+def example_source_bytes(root: Path, path: Path, *, normalize: bool = True) -> bytes:
+    """Validate regular UTF-8 text; staging can retain the original line endings."""
+    _regular_example_file(root, path)
+    raw = path.read_bytes()
+    try:
+        normalized = normalize_text(raw)
+    except UnicodeError as exc:
+        raise ReleaseError(f"Example input is not valid UTF-8 text: {path}: {exc}") from exc
+    if b"\0" in normalized:
+        raise ReleaseError(f"Example input contains a NUL byte, not supported text: {path}")
+    return normalized if normalize else raw
 
 
 def validate_framework_version(version: str) -> str:
@@ -217,6 +278,7 @@ def changes(root: Path, base: str) -> dict[str, Any]:
 
 
 def fingerprint(root: Path = ROOT) -> str:
+    """Bind chapter/TOC/pin text and all supported nonignored example inputs, not build outputs."""
     chapters = sorted(
         path.relative_to(root).as_posix()
         for path in (root / "content" / "chapters").rglob("*")
@@ -224,14 +286,13 @@ def fingerprint(root: Path = ROOT) -> str:
     )
     if not chapters:
         raise ReleaseError("No chapter HTML sources were found.")
-    examples = [
-        path.relative_to(root).as_posix()
-        for path in (root / "examples").rglob("*")
-        if path.is_file() and path.suffix == ".md"
-    ]
+    examples = {path.relative_to(root).as_posix(): path for path in example_input_paths(root)}
     digest = hashlib.sha256()
     for name in sorted([*chapters, *examples, TOC_PATH, FRAMEWORK_PATH]):
-        data = source_bytes(root, name)
+        data = (
+            example_source_bytes(root, examples[name]) if name in examples
+            else source_bytes(root, name)
+        )
         path_bytes = name.encode("utf-8")
         for part in (path_bytes, data):
             digest.update(len(part).to_bytes(8, "big"))

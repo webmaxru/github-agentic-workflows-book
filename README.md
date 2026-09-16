@@ -338,6 +338,8 @@ metadata need explicit historical recovery; the original v1.0 remains notes-only
 `scripts/release_content.py` rejects metadata-only edition bumps, invalid versions,
 missing notes, and stale review evidence. The workflow gate compiles every standalone
 example on the pinned framework; live runs and engine secrets are not required.
+Policy fixtures include their `aw.json` context and must produce strict metadata
+without the CLI override. Review fingerprints also cover non-Markdown example inputs.
 
 ---
 
