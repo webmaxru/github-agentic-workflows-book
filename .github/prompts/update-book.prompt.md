@@ -21,6 +21,8 @@ create a GitHub Release unless the user separately authorizes that action.
    `authoring`, `verified`, or `accepted`); a `prepared` plan is a completed PR handoff,
    not a permanent instruction to reuse that target on future updates. If several active
    targets conflict, stop and resolve their scope rather than combining them.
+   Resume an active plan's original baseline/target even if its successful verification
+   already advanced `FRAMEWORK_VERSION`; do not rewrite its historical interval.
 2. Resolve the last published **content** release and its exact tag/commit. Fetch the tag if
    it is missing locally; an unavailable or ambiguous baseline is a blocker, not an empty diff.
    Inspect pending reader-visible edits, including staged, unstaged, and untracked files:
@@ -34,13 +36,23 @@ create a GitHub Release unless the user separately authorizes that action.
    Reject a draft/prerelease as the default target. An explicitly requested prerelease needs
    an explicit scope decision. Resolve the tag's commit as well; record the tag, commit,
    publication date, and release URL. Do not follow a moving `main` or `latest` afterward.
-4. Save the intended baseline/target, release sources, chapter decisions, and initial
-   `status: researching` in `content/research/updates/<target>/impact.json`. Keep raw large downloads in session
-   artifacts. Do **not** change `content/FRAMEWORK_VERSION` yet: it records the validated
-   book baseline, not an aspiration.
-5. If the framework target equals the baseline and there are no substantive pending edits,
+4. **Resolve no-op/retry cases before writing a plan.** If the framework target equals the
+   baseline and there are no substantive pending edits,
    stop without an edition bump. A metadata, research, tooling, or styling change alone is
    not a new book edition.
+   Before treating an existing prepared PR's diff as new work, compare the current source
+   fingerprint with that plan's `prepared_fingerprint`. If it matches and there is no newer
+   requested framework target, return the existing PR (or report up to date if published),
+   without another bump or rewriting research. For genuinely new prose-only changes on the
+   same framework, skip new upstream archaeology: reuse its research, perform scoped
+   author/verify/review as needed, and hand off to `release-content` with fresh edition/
+   revision review filenames. Do not overwrite completed framework-delta artifacts.
+5. For a real new framework delta, save the intended baseline/target, release sources,
+   chapter decisions, and initial `status: researching` in
+   `content/research/updates/<target>/impact.json`. On resume, keep the saved state and
+   evidence instead of resetting it. Keep raw large downloads in session artifacts.
+   Do **not** change `content/FRAMEWORK_VERSION` yet: it records the validated book
+   baseline, not an aspiration.
 
 ## 2. Research the entire interval
 
@@ -127,7 +139,8 @@ the baseline release tag. Use a minor edition for substantive additions, a patch
 and a major edition only for a structural rewrite.
 
 Prepare the changelog, edition bump, generated output, evidence, and a PR. Record
-`status: prepared`, the proposed content edition, and the PR URL in the plan. This is a
+`status: prepared`, the proposed content edition, the current `prepared_fingerprint`
+from `release_content.py fingerprint`, and the PR URL in the plan. This is a
 completed preparation handoff, not a claim of publication. On a later fresh update,
 ignore prepared historical plans when deciding whether to resolve a new latest target.
 The reusable

@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "expected_version": "v0.88.7",
+  "compiler": [
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe"
+  ],
+  "strict": true,
+  "fragments": [],
+  "results": [
+    {
+      "path": "examples/context/defaults.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\defaults.md (113.8 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "c753e2633befff2f65ef9f4b26c4530f7c461365ee00edcc00d5347d47edcdc9",
+        "body_hash": "7d51af844fe1d76e5f7a39d5b6e142b74b23c18a2b663bf1fdc5bea44ca9e0a8",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/context/max-turns-claude.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\max-turns-claude.md: warning: safe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - ANTHROPIC_API_KEY\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\n✓ .github\\workflows\\max-turns-claude.md (115.4 KB)\n⚠ ⚠️  SECURITY REVIEW REQUIRED — safe update mode detected unapproved changes:\n\nsafe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - ANTHROPIC_API_KEY\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\nAction required for the calling agent:\n  1. Review every new secret and action listed above for potential malicious use\n     (e.g. credential exfiltration, supply-chain attacks, unexpected network access).\n  2. Add a security review note to the pull request description that:\n     - Lists any new or removed secrets, actions, and redirect changes from this compilation.\n     - Confirms you have reviewed each one and explains why it is safe to add.\n     - Flags any item you cannot fully verify so a human reviewer can inspect it.\n\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "fe63f018a9118b15ec7cece36e533d037285c6b17de62a42427292ca7af6e438",
+        "body_hash": "f468aa8c94e8d244cf065062f7bdb7a5c2048fb202cc570818cf5b5382c3f2a6",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "claude",
+        "engine_versions": {
+          "claude": "2.1.247"
+        }
+      }
+    },
+    {
+      "path": "examples/context/max-turns-codex.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\max-turns-codex.md: warning: safe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - CODEX_API_KEY\n  - OPENAI_API_KEY\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\n✓ .github\\workflows\\max-turns-codex.md (117.0 KB)\n⚠ ⚠️  SECURITY REVIEW REQUIRED — safe update mode detected unapproved changes:\n\nsafe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - CODEX_API_KEY\n  - OPENAI_API_KEY\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\nAction required for the calling agent:\n  1. Review every new secret and action listed above for potential malicious use\n     (e.g. credential exfiltration, supply-chain attacks, unexpected network access).\n  2. Add a security review note to the pull request description that:\n     - Lists any new or removed secrets, actions, and redirect changes from this compilation.\n     - Confirms you have reviewed each one and explains why it is safe to add.\n     - Flags any item you cannot fully verify so a human reviewer can inspect it.\n\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "f7cda4defe479deb39ff59c6cd79a1f7c92a532bb3f7e1bd32867a31a064b40d",
+        "body_hash": "628c587a3c879fa5e0a67e22cafae11912eea6a795a058c71fbfb120016b7d67",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "codex",
+        "engine_versions": {
+          "codex": "0.150.1"
+        }
+      }
+    },
+    {
+      "path": "examples/context/max-turns-copilot.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\max-turns-copilot.md (114.2 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "18bfff7db972f4c9af60e833c763180bfa726e21f5ff52c8c217caf2efff9cf0",
+        "body_hash": "8b07008f708c9af56950eb009a41c26bad9128be216c0927f91c579dd9eabc65",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/context/max-turns-gemini.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\max-turns-gemini.md: warning: safe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - GEMINI_API_KEY\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\n✓ .github\\workflows\\max-turns-gemini.md (108.1 KB)\n⚠ ⚠️  SECURITY REVIEW REQUIRED — safe update mode detected unapproved changes:\n\nsafe update mode detected unapproved changes\n\nNew restricted secret(s):\n  - GEMINI_API_KEY\n\nRemediation options:\n  1. Use the --approve flag to allow the changes.\n  2. Revert the unapproved changes.\n  3. Use an interactive coding agent to review and approve the changes.\n\nAction required for the calling agent:\n  1. Review every new secret and action listed above for potential malicious use\n     (e.g. credential exfiltration, supply-chain attacks, unexpected network access).\n  2. Add a security review note to the pull request description that:\n     - Lists any new or removed secrets, actions, and redirect changes from this compilation.\n     - Confirms you have reviewed each one and explains why it is safe to add.\n     - Flags any item you cannot fully verify so a human reviewer can inspect it.\n\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "ac06ae85497378a848cc2263d1e72bcfe9d08a07077d041d80a59cf3162972ea",
+        "body_hash": "945d90ff29a734d764d6547747437af20181b1dec77691410ce66379b468f160",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "gemini",
+        "engine_versions": {
+          "gemini": "0.55.1"
+        }
+      }
+    },
+    {
+      "path": "examples/context/max-turns-pi.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\max-turns-pi.md: warning: Threat detection for engine: pi runs on the GitHub Copilot CLI. This workflow does not grant permissions.copilot-requests: write, so detection requires a COPILOT_GITHUB_TOKEN secret. Without that secret, threat detection will fail with \"No authentication information found\".\n\n✓ .github\\workflows\\max-turns-pi.md (109.0 KB)\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "6636fde9265a597656df13e2d88e97e8df9da858ca6b3b6b6b44d8f0595f0656",
+        "body_hash": "2a40458a4fe3a537ef6a44e260a1806a6b490898f96b9ea615ab60dffe2c2d39",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "pi",
+        "engine_versions": {
+          "pi": "0.84.3"
+        }
+      }
+    },
+    {
+      "path": "examples/context/model-precedence.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\model-precedence.md (114.1 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "e224afafb85ccf280418c28545e37dcfba355d239175fa949ded704befa5f6dd",
+        "body_hash": "e31d7f84a2d54d4b22445e54223c71a6d3e08804ee3f5af8dbccae5cb356b92f",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "agent_model": "claude-sonnet-4.6",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/context/model-top-level.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "✓ .github\\workflows\\model-top-level.md (114.0 KB)\n✓ Compiled 1 workflow: 1 succeeded, 0 warnings\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "a7bc7f72834ad49b845eda2f0ed1a8ae300d5b819dc73bea610427b0ecec702b",
+        "body_hash": "1e7c1043405e7c851ef91dc3c8174001ef99632a95a42413781a2b8b3f16e59f",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "copilot",
+        "agent_model": "auto",
+        "engine_versions": {
+          "copilot": "1.0.80"
+        }
+      }
+    },
+    {
+      "path": "examples/context/pi-engine.md",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".github\\workflows\\pi-engine.md: warning: Threat detection for engine: pi runs on the GitHub Copilot CLI. This workflow does not grant permissions.copilot-requests: write, so detection requires a COPILOT_GITHUB_TOKEN secret. Without that secret, threat detection will fail with \"No authentication information found\".\n\n✓ .github\\workflows\\pi-engine.md (108.9 KB)\n⚠ Compiled 1 workflow: 1 succeeded, 1 warning\n",
+      "lock_emitted": true,
+      "lock_metadata": {
+        "schema_version": "v4",
+        "frontmatter_hash": "3980c69bb73a2361baa637d2cc7b874253b647f8550a6edd6a2ddc529b7e5a9f",
+        "body_hash": "eae4be7ea89c277c03a4db64a0139dcae304b0efa41509c20de1f0dce8508763",
+        "compiler_version": "v0.88.7",
+        "strict": true,
+        "agent_id": "pi",
+        "engine_versions": {
+          "pi": "0.84.3"
+        }
+      }
+    }
+  ],
+  "environment_errors": [],
+  "compiler_version": "v0.88.7",
+  "version_output": "gh aw version v0.88.7\n",
+  "repository_context": {
+    "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+    "source": "book-default"
+  },
+  "passed": 9,
+  "failed": 0,
+  "status": "PASS"
+}

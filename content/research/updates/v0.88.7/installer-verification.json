@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "inspected_on": "2026-09-16",
+  "target_version": "v0.88.7",
+  "fix": "Capture native stdout and stderr for version validation, preserving the native exit status independently.",
+  "regressions": {
+    "command": "python -B -m unittest discover -s scripts\\tests -p test_install_gh_aw.py -v",
+    "tests_passed": 7,
+    "tests_failed": 0,
+    "native_stream_cases": [
+      "Successful stderr-only version returns the verified executable path.",
+      "Wrong stderr version fails and preserves the previous executable.",
+      "Nonzero native exit fails even with the expected version text and preserves the previous executable."
+    ]
+  },
+  "end_to_end": {
+    "command": ".\\scripts\\install-gh-aw.ps1 -Version v0.88.7 -InstallDir <workspace>\\build\\installer-e2e\\v0.88.7",
+    "exit_code": 0,
+    "single_absolute_executable_return_confirmed": true,
+    "installed_path_relative_to_workspace": "build/installer-e2e/v0.88.7/gh-aw.exe",
+    "actual_version_output": "gh aw version v0.88.7",
+    "installed_sha256": "8d88047c1e162f16a01e1920124092c80a8bdf98c1635357067a0ac34c00d4c7",
+    "release_checksum_verified_before_activation": true,
+    "download_staging_directories_remaining": 0,
+    "personal_extension_after": "gh aw version v0.81.6"
+  },
+  "live_workflows_executed": false,
+  "publication_actions": false
+}

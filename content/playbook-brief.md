@@ -81,25 +81,31 @@ Motivation comes from real adopters, not hypotheticals. Chapters open or close w
 
 ## Language & format
 - Workflow examples are **Markdown files with YAML frontmatter** (`.github/workflows/*.md`),
-  compiled with `gh aw compile`. Examples are verified at **compile time** (no secrets/live runs
-  required unless explicitly demonstrating a run).
+  compiled with `gh aw compile`. Positive examples must pass **strict source compilation**
+  with the exact selected compiler and emitted strict metadata. Engine credentials and
+  live execution are separate from that gate; warnings remain visible.
 - Prose targets the official docs terminology; behavior claims are grounded by the
-  `gh-aw-explorer` inspecting the real `gh aw` CLI and frontmatter schema, against a recorded version
-  (current known latest: **v0.81.6**, Public Preview).
+  `gh-aw-explorer` inspecting the real `gh aw` CLI and frontmatter schema against a recorded
+  version. `content/FRAMEWORK_VERSION` records validated coverage; an active update keeps its
+  fixed pending target and original baseline in `content/research/updates/<target>/impact.json`.
+  Do not substitute a moving "latest" or relabel historical evidence.
 
 ## Topics in scope (indicative — the architect refines these into chapters)
 - **The thesis:** what agentic workflows are, the outer loop, and Continuous AI vs. plain Actions.
 - **The model & loop:** Markdown + frontmatter → `.lock.yml`; the `gh aw` CLI (`init`, `new`,
   `compile`, `run`, `logs`, `audit`, `status`).
-- **Triggers & engines:** `on:` events and the agentic engines (Copilot, Claude, Codex, Gemini).
+- **Triggers & engines:** `on:` events/admission controls and the agentic engines
+  (Copilot, Claude, Codex, Gemini, Pi at v0.88.7), with explicit identity/tool portability limits.
 - **Safe Outputs (`safe-outputs:`):** how agent writes (issues, PRs, comments) are gated safely.
-- **The security model:** permissions, network firewall, Strict Mode, and sandbox isolation.
+- **The security model:** permissions, network firewall, Strict Mode, runtime isolation and
+  independent AI detection; layered risk reduction, not an absolute safety guarantee.
 - **Tools & MCP (`tools:`):** giving workflows real, governed capabilities.
 - **The Continuous-X pattern library:** triage, docs, review, CI-doctor, testing, refactoring.
-- **Reuse & memory:** shared components (`imports:`), agent dependencies via APM (`shared/apm.md`), and repo memory.
+- **Reuse & memory:** shared components (`imports:`), native skills/experimental plugins,
+  independently versioned APM integration, and filtered/validated repo memory.
 - **Trust & operate:** reviewing, debugging (`gh aw logs` / `gh aw audit`), human-in-the-loop.
 - **Scale for leaders:** governance and policy, cost & FinOps (AI Credits, token efficiency),
-  agent-dependency governance (APM: pinning, allowlists, isolation), multi-repo fleets, and an
+  agent-dependency governance (APM: pinning, allowlists, context preparation), multi-repo fleets, and an
   enterprise adoption playbook.
 
 ## Out of scope
@@ -112,7 +118,8 @@ Motivation comes from real adopters, not hypotheticals. Chapters open or close w
   where possible, a real adopter who felt it.
 - **Theory before API.** Anchor every capability to a concept introduced first.
 - **Serve both readers.** Each chapter earns its keep for Builders *and* Leaders.
-- **Verify before ship.** Every example must `gh aw compile` cleanly (or be clearly marked as
-  needing a live run/secret).
+- **Verify before ship.** Every positive example must strictly compile with the selected
+  version and emitted locks. Full embedded copies match their source; configuration fixtures
+  retain required context. Missing runtime credentials do not waive compilation.
 - **No secrets in content.** Engine keys live in Actions secrets, never in the book.
 - **Version-aware.** Record the inspected `gh aw` version in research/verification artifacts.

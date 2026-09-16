@@ -48,6 +48,9 @@ refresh, first run `.github/prompts/update-book.prompt.md`.
    - MINOR: new chapters, sections, or substantive material (`1.1` -> `1.2`).
    - PATCH: corrections/clarifications only (`1.1` -> `1.1.1`).
    Book versions must be well-formed and increase; they never mirror gh-aw's version number.
+   Calculate the default bump from the last **published** content edition, not an already
+   proposed/unreleased `content/VERSION`. Reuse an appropriate proposed edition on retries;
+   do not increment it again merely because preparation was interrupted or its PR is open.
 5. **Add a changelog entry** above the existing entries and update `content/VERSION`:
    ```markdown
    ## [1.2] - YYYY-MM-DD
@@ -79,7 +82,8 @@ refresh, first run `.github/prompts/update-book.prompt.md`.
    tracked `site` output. Do not commit PDFs, binaries, raw downloads, secrets, or unrelated
    work. Suggested message: `Prepare content v<edition> for gh-aw <target>`, with trailer:
    `Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>`.
-8. **Open a PR using the available PR-creation tool.** Describe the baseline/target,
+8. **Open a PR using the available PR-creation tool, or update the existing preparation PR
+   for this branch.** Do not create duplicate handoffs. Describe the baseline/target,
    reader-visible changes, verification, and editorial verdict. Wait for the validation
    workflow and leave the PR for human review. Do not merge, create a release/tag, or
    dispatch publishing as part of preparation.

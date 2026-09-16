@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "scope": "Exact compilation inputs retained for reproducing this frozen foundation batch after scratch cleanup; not additional published examples.",
+  "target": "v0.88.7",
+  "encoding": "UTF-8; utf8_text preserves original source line endings. Encode each string as UTF-8 to reproduce its SHA-256.",
+  "inputs": [
+    {
+      "kind": "canonical source",
+      "source_path": "examples/ch02/repo-assistant-triage.md",
+      "fixture_path": "examples/ch02/repo-assistant-triage.md",
+      "sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "utf8_text": "---\r\non:\r\n  issues:\r\n    types: [opened]\r\n  workflow_dispatch:\r\npermissions:\r\n  contents: read\r\n  issues: read\r\nengine: copilot\r\nnetwork: defaults\r\nsafe-outputs:\r\n  add-comment:\r\n    max: 1\r\n  add-labels:\r\n    allowed: [bug, enhancement, question, documentation]\r\n    max: 1\r\n---\r\n\r\n# Repo Assistant — triage a new issue\r\n\r\nYou are the **Repo Assistant**. A new issue was just opened in this repository.\r\n\r\nRead the triggering issue's title and body, then triage it:\r\n\r\n1. Decide what kind of issue it is (a bug report, a feature request, a question,\r\n   or a documentation gap) and how a maintainer should treat it.\r\n2. Post **one** short, friendly triage comment that (a) restates the request in a\r\n   sentence, (b) names the category you chose and why, and (c) lists any missing\r\n   information the reporter should add.\r\n3. Apply **at most one** label from the allowed set that best matches the issue.\r\n\r\nIf the issue is empty or too vague to categorize, post a comment asking for the\r\nmissing details and do not apply a label.\r\n\r\nThis workflow demonstrates **safe-outputs**: the agent runs read-only and never\r\nwrites to GitHub directly — it *requests* a comment and a label, which gh-aw\r\napplies from separate, permission-scoped jobs.\r\n"
+    },
+    {
+      "kind": "canonical source",
+      "source_path": "examples/ch04/repo-assistant-triggers.md",
+      "fixture_path": "examples/ch04/repo-assistant-triggers.md",
+      "sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+      "utf8_text": "---\r\non:\r\n  issues:\r\n    types: [opened, reopened]\r\n  schedule: daily\r\n  workflow_dispatch:\r\n  reaction: eyes\r\n  stop-after: \"+30d\"\r\npermissions:\r\n  contents: read\r\n  issues: read\r\nengine: copilot\r\nnetwork: defaults\r\nsafe-outputs:\r\n  add-comment:\r\n    max: 1\r\n  add-labels:\r\n    allowed: [bug, enhancement, question, documentation, needs-info, stale]\r\n    max: 3\r\n---\r\n\r\n# Repo Assistant — triage on open, sweep on a schedule\r\n\r\nYou are the **Repo Assistant**. This workflow wakes up in two different ways, and\r\nyour job depends on which one fired. Check `${{ github.event_name }}` first.\r\n\r\n## If an issue was just opened or reopened (`issues`)\r\n\r\nA single issue triggered this run. Read its title and body, then:\r\n\r\n1. Post **one** short, friendly triage comment that restates the request in a\r\n   sentence and names any missing information the reporter should add.\r\n2. Apply the single best-matching label from the allowed set.\r\n\r\n## If this is the daily schedule (`schedule`) or a manual run (`workflow_dispatch`)\r\n\r\nNo single issue triggered this run — you are doing a **daily sweep**. Look at the\r\nopen issues that have seen no activity in the last 30 days and, for the few most\r\nclearly abandoned, add the `stale` label and a gentle comment asking whether the\r\nissue is still relevant. Be conservative: when in doubt, leave the issue alone.\r\n\r\nThis example demonstrates **triggers**: the same Repo Assistant responds to a\r\nper-issue event *and* runs on a recurring `daily` schedule, reacts with :eyes: on\r\nthe triggering item, and sets a relative 30-day stop deadline. A fresh compile\r\nwith no existing lock resolves that deadline; ordinary recompilation preserves\r\nthe existing stop time. Renew it deliberately with `--refresh-stop-time`, not by\r\nassuming every compile extends it.\r\n"
+    },
+    {
+      "kind": "canonical source",
+      "source_path": "examples/ch04/repo-assistant-cooldown.md",
+      "fixture_path": "examples/ch04/repo-assistant-cooldown.md",
+      "sha256": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+      "utf8_text": "---\r\non:\r\n  schedule: hourly\r\n  workflow_dispatch:\r\n  cooldown: 4h\r\n  stop-after: \"+30d\"\r\npermissions:\r\n  contents: read\r\n  issues: read\r\nengine: copilot\r\nnetwork: defaults\r\nsafe-outputs:\r\n  create-issue:\r\n    title-prefix: \"[maintenance-digest] \"\r\n    max: 1\r\n---\r\n\r\n# Repo Assistant — maintenance digest with cooldown\r\n\r\nYou are the **Repo Assistant** on a proactive maintenance pass. This separate\r\nworkflow demonstrates `on.cooldown`: scheduled and manual runs share a\r\nfour-hour admission interval. It does not handle urgent issue-open events.\r\n\r\nRead open issues in this repository and look for issues with no activity in the\r\nlast 30 days that clearly need a maintainer's decision. Ignore existing\r\nmaintenance-digest issues as candidates.\r\n\r\nIf there are actionable candidates not already covered by an open\r\nmaintenance-digest issue, request **at most one** new issue summarizing them.\r\nUse a title beginning with `[maintenance-digest] `, link to each candidate,\r\nand suggest a next step for a human. Do not close, label, or comment on the\r\ncandidate issues. If there is nothing new to report, report no work.\r\n\r\nCooldown is best-effort admission, not a concurrency lock or a spending cap.\r\nHistory lookup failure fails open. The relative stop deadline is preserved\r\non ordinary recompilation; renewing it requires `--refresh-stop-time`.\r\n"
+    },
+    {
+      "kind": "canonical source",
+      "source_path": "examples/ch04/repo-assistant-issue-shorthand.md",
+      "fixture_path": "examples/ch04/repo-assistant-issue-shorthand.md",
+      "sha256": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+      "utf8_text": "---\r\non: issue opened\r\npermissions:\r\n  contents: read\r\n  issues: read\r\nengine: copilot\r\nnetwork: defaults\r\nsafe-outputs:\r\n  add-comment:\r\n    max: 1\r\n---\r\n\r\n# Repo Assistant — issue-opened shorthand\r\n\r\nYou are the **Repo Assistant**. This workflow demonstrates the reactive\r\n`issue opened` shorthand and its compiler-added manual dispatch trigger.\r\nIt is a separate one-comment triager, not the daily-sweep workflow.\r\n\r\nCheck `${{ github.event_name }}`. If an issue was opened, read the triggering\r\nissue and request one short, friendly comment that summarizes the request\r\nand identifies any missing information. Do not change labels or close issues.\r\n\r\nOn a manual dispatch there is no triggering issue. Report no work rather than\r\nchoosing an unrelated issue to comment on.\r\n"
+    },
+    {
+      "kind": "canonical source",
+      "source_path": "examples/ch05/repo-assistant-claude.md",
+      "fixture_path": "examples/ch05/repo-assistant-claude.md",
+      "sha256": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9",
+      "utf8_text": "---\r\non:\r\n  issues:\r\n    types: [opened]\r\n  workflow_dispatch:\r\nengine:\r\n  id: claude\r\n  version: \"2.1.70\"\r\n  model: claude-sonnet-4.5\r\npermissions:\r\n  contents: read\r\n  issues: read\r\nnetwork: defaults\r\nsafe-outputs:\r\n  add-comment:\r\n    max: 1\r\n  add-labels:\r\n    allowed: [bug, enhancement, question, documentation]\r\n    max: 1\r\n---\r\n\r\n# Repo Assistant — triage a new issue (Claude engine)\r\n\r\nYou are the **Repo Assistant**. A new issue was just opened in this repository.\r\n\r\nRead the triggering issue's title and body, then:\r\n\r\n1. Post **one** short, friendly triage comment that restates the request in a\r\n   sentence, names the category (bug, feature, question, or docs) and why, and\r\n   lists any missing information the reporter should add.\r\n2. Apply **at most one** label from the allowed set that best matches the issue.\r\n\r\nThis workflow illustrates **engine selection**: the Repo Assistant uses Claude\r\nfor a triage mission bounded by read-only permissions and safe outputs.\r\nIt is not a controlled same-prompt comparison between engines. Switching engines\r\nstill requires review of authentication, tools, model behavior, and network access.\r\n"
+    },
+    {
+      "kind": "complete embedded workflow",
+      "chapter": "content/chapters/what-are-agentic-workflows.html",
+      "line_range": [
+        86,
+        122
+      ],
+      "source_path": "examples/ch02/repo-assistant-triage.md",
+      "fixture_path": "examples/embedded/what-are-agentic-workflows-1.md",
+      "sha256": "db15365912439c756d22125e38c8bf77825ca66e365c06161fc3bea2d0f6fda6",
+      "utf8_text": "---\non:\n  issues:\n    types: [opened]\n  workflow_dispatch:\npermissions:\n  contents: read\n  issues: read\nengine: copilot\nnetwork: defaults\nsafe-outputs:\n  add-comment:\n    max: 1\n  add-labels:\n    allowed: [bug, enhancement, question, documentation]\n    max: 1\n---\n\n# Repo Assistant — triage a new issue\n\nYou are the **Repo Assistant**. A new issue was just opened in this repository.\n\nRead the triggering issue's title and body, then triage it:\n\n1. Decide what kind of issue it is (a bug report, a feature request, a question,\n   or a documentation gap) and how a maintainer should treat it.\n2. Post **one** short, friendly triage comment that (a) restates the request in a\n   sentence, (b) names the category you chose and why, and (c) lists any missing\n   information the reporter should add.\n3. Apply **at most one** label from the allowed set that best matches the issue.\n\nIf the issue is empty or too vague to categorize, post a comment asking for the\nmissing details and do not apply a label.\n\nThis workflow demonstrates **safe-outputs**: the agent runs read-only and never\nwrites to GitHub directly — it *requests* a comment and a label, which gh-aw\napplies from separate, permission-scoped jobs.\n"
+    },
+    {
+      "kind": "complete embedded workflow",
+      "chapter": "content/chapters/your-first-workflow.html",
+      "line_range": [
+        165,
+        201
+      ],
+      "source_path": "examples/ch02/repo-assistant-triage.md",
+      "fixture_path": "examples/embedded/your-first-workflow-9.md",
+      "sha256": "db15365912439c756d22125e38c8bf77825ca66e365c06161fc3bea2d0f6fda6",
+      "utf8_text": "---\non:\n  issues:\n    types: [opened]\n  workflow_dispatch:\npermissions:\n  contents: read\n  issues: read\nengine: copilot\nnetwork: defaults\nsafe-outputs:\n  add-comment:\n    max: 1\n  add-labels:\n    allowed: [bug, enhancement, question, documentation]\n    max: 1\n---\n\n# Repo Assistant — triage a new issue\n\nYou are the **Repo Assistant**. A new issue was just opened in this repository.\n\nRead the triggering issue's title and body, then triage it:\n\n1. Decide what kind of issue it is (a bug report, a feature request, a question,\n   or a documentation gap) and how a maintainer should treat it.\n2. Post **one** short, friendly triage comment that (a) restates the request in a\n   sentence, (b) names the category you chose and why, and (c) lists any missing\n   information the reporter should add.\n3. Apply **at most one** label from the allowed set that best matches the issue.\n\nIf the issue is empty or too vague to categorize, post a comment asking for the\nmissing details and do not apply a label.\n\nThis workflow demonstrates **safe-outputs**: the agent runs read-only and never\nwrites to GitHub directly — it *requests* a comment and a label, which gh-aw\napplies from separate, permission-scoped jobs.\n"
+    },
+    {
+      "kind": "complete embedded workflow",
+      "chapter": "content/chapters/triggers.html",
+      "line_range": [
+        149,
+        195
+      ],
+      "source_path": "examples/ch04/repo-assistant-triggers.md",
+      "fixture_path": "examples/embedded/triggers-5.md",
+      "sha256": "a7378bcaab5d55b20444ec142fdb72d9439566d1c15484060747ab7b7fdc7c27",
+      "utf8_text": "---\non:\n  issues:\n    types: [opened, reopened]\n  schedule: daily\n  workflow_dispatch:\n  reaction: eyes\n  stop-after: \"+30d\"\npermissions:\n  contents: read\n  issues: read\nengine: copilot\nnetwork: defaults\nsafe-outputs:\n  add-comment:\n    max: 1\n  add-labels:\n    allowed: [bug, enhancement, question, documentation, needs-info, stale]\n    max: 3\n---\n\n# Repo Assistant — triage on open, sweep on a schedule\n\nYou are the **Repo Assistant**. This workflow wakes up in two different ways, and\nyour job depends on which one fired. Check `${{ github.event_name }}` first.\n\n## If an issue was just opened or reopened (`issues`)\n\nA single issue triggered this run. Read its title and body, then:\n\n1. Post **one** short, friendly triage comment that restates the request in a\n   sentence and names any missing information the reporter should add.\n2. Apply the single best-matching label from the allowed set.\n\n## If this is the daily schedule (`schedule`) or a manual run (`workflow_dispatch`)\n\nNo single issue triggered this run — you are doing a **daily sweep**. Look at the\nopen issues that have seen no activity in the last 30 days and, for the few most\nclearly abandoned, add the `stale` label and a gentle comment asking whether the\nissue is still relevant. Be conservative: when in doubt, leave the issue alone.\n\nThis example demonstrates **triggers**: the same Repo Assistant responds to a\nper-issue event *and* runs on a recurring `daily` schedule, reacts with :eyes: on\nthe triggering item, and sets a relative 30-day stop deadline. A fresh compile\nwith no existing lock resolves that deadline; ordinary recompilation preserves\nthe existing stop time. Renew it deliberately with `--refresh-stop-time`, not by\nassuming every compile extends it.\n"
+    },
+    {
+      "kind": "complete embedded workflow",
+      "chapter": "content/chapters/triggers.html",
+      "line_range": [
+        204,
+        239
+      ],
+      "source_path": "examples/ch04/repo-assistant-cooldown.md",
+      "fixture_path": "examples/embedded/triggers-6.md",
+      "sha256": "fdf6ae282e9a89c0fb0d6f860263eb6cad44392d09490d61d8a61dec5e7c914e",
+      "utf8_text": "---\non:\n  schedule: hourly\n  workflow_dispatch:\n  cooldown: 4h\n  stop-after: \"+30d\"\npermissions:\n  contents: read\n  issues: read\nengine: copilot\nnetwork: defaults\nsafe-outputs:\n  create-issue:\n    title-prefix: \"[maintenance-digest] \"\n    max: 1\n---\n\n# Repo Assistant — maintenance digest with cooldown\n\nYou are the **Repo Assistant** on a proactive maintenance pass. This separate\nworkflow demonstrates `on.cooldown`: scheduled and manual runs share a\nfour-hour admission interval. It does not handle urgent issue-open events.\n\nRead open issues in this repository and look for issues with no activity in the\nlast 30 days that clearly need a maintainer's decision. Ignore existing\nmaintenance-digest issues as candidates.\n\nIf there are actionable candidates not already covered by an open\nmaintenance-digest issue, request **at most one** new issue summarizing them.\nUse a title beginning with `[maintenance-digest] `, link to each candidate,\nand suggest a next step for a human. Do not close, label, or comment on the\ncandidate issues. If there is nothing new to report, report no work.\n\nCooldown is best-effort admission, not a concurrency lock or a spending cap.\nHistory lookup failure fails open. The relative stop deadline is preserved\non ordinary recompilation; renewing it requires `--refresh-stop-time`.\n"
+    },
+    {
+      "kind": "configuration context",
+      "fixture_path": "examples/context/defaults.md",
+      "sha256": "5d30327d21ed4035b77d4a83384096b6e1388abb64f51cf11f276922ad9f3b8e",
+      "utf8_text": "---\r\non:\r\n  workflow_dispatch:\r\nsafe-outputs:\r\n  noop:\r\n---\r\n\r\nReport no work. This compile-only probe demonstrates compiler-supplied defaults.\r\n"
+    },
+    {
+      "kind": "configuration context",
+      "fixture_path": "examples/context/model-top-level.md",
+      "sha256": "b12084b828c82cfcc072c99c41ce64bfee7e622c43e95ce377bd14cb51312bda",
+      "utf8_text": "---\r\non:\r\n  workflow_dispatch:\r\nengine: copilot\r\nmodel: auto\r\nsafe-outputs:\r\n  noop:\r\n---\r\n\r\nReport no work. This compile-only probe demonstrates top-level model selection.\r\n"
+    },
+    {
+      "kind": "configuration context",
+      "fixture_path": "examples/context/model-precedence.md",
+      "sha256": "acf048798fd9fc39abe6f8e467995eeb0ce738a05f09e0b5bd9fcae69ca20762",
+      "utf8_text": "---\r\non:\r\n  workflow_dispatch:\r\nmodel: auto\r\nengine:\r\n  id: copilot\r\n  model: claude-sonnet-4.6\r\nsafe-outputs:\r\n  noop:\r\n---\r\n\r\nReport no work. This compile-only probe inspects the per-engine model override.\r\n"
+    },
+    {
+      "kind": "configuration context",
+      "fixture_path": "examples/context/pi-engine.md",
+      "sha256": "a044c6befdc89ef290552a24d829326865c8b4c0cdff2c440082e03db1817918",
+      "utf8_text": "---\r\non:\r\n  workflow_dispatch:\r\nengine: pi\r\nsafe-outputs:\r\n  noop:\r\n---\r\n\r\nReport no work. This compile-only probe demonstrates the built-in Pi engine.\r\n"
+    },
+    {
+      "kind": "configuration context",
+      "fixture_path": "examples/context/max-turns-copilot.md",
+      "sha256": "a8319c7368cdc26b00493f35068e6f037f9e0f98f9015fdf0477812c02984e5e",
+      "utf8_text": "---\non:\n  workflow_dispatch:\nengine: copilot\nmax-turns: 7\nsafe-outputs:\n  noop:\n---\n\nReport no work. This compile-only diagnostic context checks the documented\ntop-level max-turns configuration for copilot; it is not a runtime test.\n"
+    },
+    {
+      "kind": "configuration context",
+      "fixture_path": "examples/context/max-turns-claude.md",
+      "sha256": "8cbc59b61677ea28408721aa73718e263ade3d1e4b8fbcd580484b95017ec868",
+      "utf8_text": "---\non:\n  workflow_dispatch:\nengine: claude\nmax-turns: 7\nsafe-outputs:\n  noop:\n---\n\nReport no work. This compile-only diagnostic context checks the documented\ntop-level max-turns configuration for claude; it is not a runtime test.\n"
+    },
+    {
+      "kind": "configuration context",
+      "fixture_path": "examples/context/max-turns-codex.md",
+      "sha256": "a3ccf9734da0ef8b1617dcf211dcf9bbb44a61ceac81f23bac730fca91dd0db7",
+      "utf8_text": "---\non:\n  workflow_dispatch:\nengine: codex\nmax-turns: 7\nsafe-outputs:\n  noop:\n---\n\nReport no work. This compile-only diagnostic context checks the documented\ntop-level max-turns configuration for codex; it is not a runtime test.\n"
+    },
+    {
+      "kind": "configuration context",
+      "fixture_path": "examples/context/max-turns-gemini.md",
+      "sha256": "515705d5eff1acb242860dae5d70ad1d895fd914da3bc3d03e61f949a40822c1",
+      "utf8_text": "---\non:\n  workflow_dispatch:\nengine: gemini\nmax-turns: 7\nsafe-outputs:\n  noop:\n---\n\nReport no work. This compile-only diagnostic context checks the documented\ntop-level max-turns configuration for gemini; it is not a runtime test.\n"
+    },
+    {
+      "kind": "configuration context",
+      "fixture_path": "examples/context/max-turns-pi.md",
+      "sha256": "3480973387e5691fdc9f6e226344edc01f11c2850771ee641b58885405f017bb",
+      "utf8_text": "---\non:\n  workflow_dispatch:\nengine: pi\nmax-turns: 7\nsafe-outputs:\n  noop:\n---\n\nReport no work. This compile-only diagnostic context checks the documented\ntop-level max-turns configuration for pi; it is not a runtime test.\n"
+    }
+  ],
+  "all_source_embedded_frontmatter_body_metadata_hashes_match": true,
+  "behavior_inputs": "Reuse the three canonical ch04 inputs with the original basenames, identical relative workflow identity, and explicit schedule seed recorded in foundations-behavior-verification.json.",
+  "report_sha256": {
+    "foundations-verification.json": "0bbf2dfea6821f3ee51cab18e460fd0315fe0cfa529dd6fca48c592b4815361a",
+    "foundations-embedded-verification.json": "d75efd3444355e010a38ba034e6faf4cbe93370dbe42fa8c971c844ad563758c",
+    "foundations-context-verification.json": "ea745fbd21396c4690e399dd4a42b4b2ddc1e5823e8b24c552da29600b61835d"
+  }
+}

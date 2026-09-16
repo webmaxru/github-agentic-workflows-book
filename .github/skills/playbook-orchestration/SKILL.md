@@ -68,6 +68,8 @@ For each chapter in the wave, run **research in parallel**, then author, verify,
    Reuse an active target on resume; do not upgrade it halfway through a wave. Track plan
    status through researching, researched, authoring, verified, accepted, and prepared.
    Prepared plans are finished PR handoffs, not active targets to reuse forever.
+   Retain an active plan's original baseline after advancing the validated pin. A matching
+   prepared fingerprint with no new target is a no-op/reuse of that PR, not a new edition.
 3. `gh-aw-explorer` assesses the entire baseline-to-target interval, including changes in
    intervening prereleases that reached the target. Read tagged docs/schema and verify
    behavior with the exact binary. Produce cited feature deltas and an impact map with
@@ -92,7 +94,8 @@ For each chapter in the wave, run **research in parallel**, then author, verify,
 9. `frontend-builder` regenerates the existing site/PDF. Run the `release-content` prompt
    to choose an appropriate prose edition, update notes, and prepare a PR. The reusable
    validation workflow gates publishing; human review and merge remain the release boundary.
-   Mark the plan prepared with its edition and PR URL, without claiming publication.
+   Mark the plan prepared with its edition, source fingerprint and PR URL, without claiming
+   publication. Retries reuse the appropriate proposed edition rather than bumping twice.
 
 No reader-visible changes means no new prose edition. A version bump for research, framework
 metadata, tooling, or styling alone is not a release.

@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "scope": "Frozen Ch01-Ch05 snapshot only; other author paths are moving and intentionally excluded.",
+  "captured_at_utc": "2026-09-16T01:02:46.293978+00:00",
+  "snapshot_root": "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\f-26nilw1o",
+  "workspace": "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness",
+  "target": "v0.88.7",
+  "chapters": [
+    "content/chapters/what-are-agentic-workflows.html",
+    "content/chapters/your-first-workflow.html",
+    "content/chapters/anatomy-and-compile-model.html",
+    "content/chapters/triggers.html",
+    "content/chapters/engines.html"
+  ],
+  "standalone_sources": [
+    "examples/ch02/repo-assistant-triage.md",
+    "examples/ch04/repo-assistant-triggers.md",
+    "examples/ch04/repo-assistant-cooldown.md",
+    "examples/ch04/repo-assistant-issue-shorthand.md",
+    "examples/ch05/repo-assistant-claude.md"
+  ],
+  "snapshot_sha256": {
+    "content/chapters/what-are-agentic-workflows.html": "9c7e311b2c5e5d8ffb5144a9a10b9c425833a9f627e9557f84af7de227a3078a",
+    "content/chapters/your-first-workflow.html": "8f123eea317957f0fd0805386fac456eef20d1fd0de925d14691170c5cd3d411",
+    "content/chapters/anatomy-and-compile-model.html": "1dddcbcd3a8f04585906a7aff61e5a756be81ad073b851f1f957a337741d0f8e",
+    "content/chapters/triggers.html": "6d7aa97fe5c1c1078de27da429b7eab3acc1eef10ff89a0a4e0d6daefcda4753",
+    "content/chapters/engines.html": "6d6d8cc6f25fcb3deb6286ad95d90f48d6fb5f65b273c6ededffcf8611f56b78",
+    "examples/ch02/repo-assistant-triage.md": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+    "examples/ch04/repo-assistant-triggers.md": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+    "examples/ch04/repo-assistant-cooldown.md": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+    "examples/ch04/repo-assistant-issue-shorthand.md": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+    "examples/ch05/repo-assistant-claude.md": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9"
+  },
+  "workspace_sha256_at_capture": {
+    "content/chapters/what-are-agentic-workflows.html": "9c7e311b2c5e5d8ffb5144a9a10b9c425833a9f627e9557f84af7de227a3078a",
+    "content/chapters/your-first-workflow.html": "8f123eea317957f0fd0805386fac456eef20d1fd0de925d14691170c5cd3d411",
+    "content/chapters/anatomy-and-compile-model.html": "1dddcbcd3a8f04585906a7aff61e5a756be81ad073b851f1f957a337741d0f8e",
+    "content/chapters/triggers.html": "6d7aa97fe5c1c1078de27da429b7eab3acc1eef10ff89a0a4e0d6daefcda4753",
+    "content/chapters/engines.html": "6d6d8cc6f25fcb3deb6286ad95d90f48d6fb5f65b273c6ededffcf8611f56b78",
+    "examples/ch02/repo-assistant-triage.md": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+    "examples/ch04/repo-assistant-triggers.md": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+    "examples/ch04/repo-assistant-cooldown.md": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+    "examples/ch04/repo-assistant-issue-shorthand.md": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+    "examples/ch05/repo-assistant-claude.md": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9"
+  },
+  "compiler": "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+  "compiler_sha256": "8d88047c1e162f16a01e1920124092c80a8bdf98c1635357067a0ac34c00d4c7",
+  "verifier_sha256": "783491d5c44e14dba37a0ffbabd91174ea02faadc370d7a386ab094c9d057273",
+  "global_metadata_sha256": {
+    "content/FRAMEWORK_VERSION": "6dbf8be6e6e8c71101266323f26d43aebb264df6ca926cba03fccd984cda98d2",
+    "content/VERSION": "d8bb74080a94aa97d78e90f9a656c6a75216e55736f53d5433a0812c5dbc2ec4"
+  },
+  "preserved_earlier_report_sha256": {
+    "content/research/updates/v0.88.7/pilot-cli-help.json": "7fc0af2fd2a7a07c66adfd1baf95ecbf05a7d28cb1043e074f5c81cd26598902",
+    "content/research/updates/v0.88.7/pilot-cli-verification.json": "f621bf92b0aeb02d4b743ad84833395f8e56ea6475a0792a871e888a551adbda",
+    "content/research/updates/v0.88.7/pilot-diagnostics.md": "5b0477bdaffd1a2fd172eb79ea566e6dc747b98154061ff168b9f8ac1e607f06",
+    "content/research/updates/v0.88.7/pilot-embedded-inventory.json": "14c23985873d6b9e3706dfd2de23a2b0d955d1a1203b6a7d4dc30ea482192d27",
+    "content/research/updates/v0.88.7/pilot-embedded-verification.json": "a641aa069321a8242c92b544989f6c33242ca9f716beeb91f4e0df456265bbb6",
+    "content/research/updates/v0.88.7/pilot-inputs.json": "f726bd252014c9c9fc1e807e0037d716b808148d847a89f4d6d70f6b59ed3d04",
+    "content/research/updates/v0.88.7/pilot-review-1.md": "4e100ae6c0db6fb9ee5b67d2ba3a7d2cbfa8ddc34eeda87d56928df6cc27fa53",
+    "content/research/updates/v0.88.7/pilot-review.md": "3d1adbbb1150ef2a13d9c40ae9367d6f4d5854be90d23cfb87fb89bb7f81b622",
+    "content/research/updates/v0.88.7/pilot-revision-diagnostics.md": "73cc40a8d569b686e9c0402af8e52c8e539bd8faa9262e7747ae4f5ed093e352",
+    "content/research/updates/v0.88.7/pilot-revision-verification.json": "f9eec70704a5c980b1977f0965e069a77553f16020519d51d0ad10928232b31c",
+    "content/research/updates/v0.88.7/pilot-verification-summary.json": "fb78080eddeabd85105b84de6f30ddfd78c7bd51d3fb255a80c1aeada9e78b79",
+    "content/research/updates/v0.88.7/pilot-verification.json": "fdc2d9b86c950b42e4d4feb0e1515c70df6eae531fd3dc97989a57574a13cc05",
+    "content/research/updates/v0.88.7/preflight-diagnostics.md": "897033ad3c659f3d1b9ccbd5f2dcb5a6bb69a1233fa313d524091f4bcab0fe73",
+    "content/research/updates/v0.88.7/preflight-embedded-inventory.json": "423a180afeb7bbfc74e331307bb1ef073262e9aec73810d1f02dab23b35829bb",
+    "content/research/updates/v0.88.7/preflight-embedded-verification.json": "e03afbff206a217328cafb200fa3c8fb648d53e5380fec042558dddc2be9a3f3",
+    "content/research/updates/v0.88.7/preflight-inputs.json": "102c1160f5cb789a2cd7599fe78b201f11513a501b77096bbe34d0c2ec6f1251",
+    "content/research/updates/v0.88.7/preflight-verification.json": "6ce49a7328b7eca55730dd0034d21076afe4bd7b0385b482ce6428b5e579eaf9"
+  },
+  "immutable_ch02_matches_prior_pilot": true,
+  "runtime": "NOT RUN",
+  "out_of_scope_chapters_inventoried": false
+}

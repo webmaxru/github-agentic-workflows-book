@@ -137,6 +137,10 @@ session todos. Reuse completed research and accepted waves only while their sour
 still match. Do not resolve a new latest release on resume or overwrite historical evidence.
 The plan moves through `researching`, `researched`, `authoring`, `verified`, `accepted`,
 and `prepared`. Only unfinished states resume automatically. A prepared plan records its
-edition and PR URL; later fresh updates ignore it when resolving a new upstream target.
+edition, `prepared_fingerprint`, and PR URL; later fresh updates ignore it when resolving
+a new upstream target. If the target and fingerprint still match, reuse the existing PR
+without bumping again. Determine a default bump from the last published edition, not from
+an already proposed version. Prose-only followups reuse framework research and preserve old
+review reports under distinct edition/revision filenames.
 If the fixed target is already covered and there are no reader-visible changes, stop without
 creating an empty edition.

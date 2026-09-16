@@ -14,7 +14,9 @@
 #     features:    (optional) list of gh-aw features/capabilities this chapter covers
 #     depends_on:  (optional) list of prerequisite chapter ids
 #
-# Targets gh aw v0.81.6 (Public Preview). Each chapter keeps the fixed 6-part arc
+# Validated coverage lives in content/FRAMEWORK_VERSION; an active update fixes its
+# pending target in content/research/updates/<target>/impact.json.
+# Each chapter keeps the fixed 6-part arc
 # (Objective -> Concept & theory -> In gh-aw -> When to use / when not to ->
 # Worked example -> Recap & next), lightly renamed per chapter for voice.
 # The optional top-level `parts:` and per-chapter `part:` are for grouping only;
@@ -96,6 +98,8 @@ chapters:
       - ".lock.yml artifact"
       - "gh aw status"
       - "the authoring loop"
+      - "main-agent and detector inference boundaries"
+      - "compile-time versus runtime dependency resolution"
     depends_on: ["ch02-your-first-workflow"]
 
   - id: "ch04-triggers"
@@ -103,7 +107,7 @@ chapters:
     slug: "triggers"
     part: "Part I — The Individual"
     title: "Triggers: When Workflows Wake Up"
-    objective: "Choose the right on: events so the Repo Assistant runs at exactly the right moments and no others."
+    objective: "Choose repository events and admission controls for the Repo Assistant's intended work without assuming punctual or exclusive execution."
     sections:
       - "Objective"
       - "Concept: event-driven work (the outer loop's clock)"
@@ -118,6 +122,9 @@ chapters:
       - "workflow_dispatch"
       - "command / alias triggers"
       - "workflow_run"
+      - "on.cooldown admission"
+      - "stack filtering (max-stack)"
+      - "stop-time preservation and explicit refresh"
     depends_on: ["ch03-anatomy-and-compile-model"]
 
   - id: "ch05-engines"
@@ -125,7 +132,7 @@ chapters:
     slug: "engines"
     part: "Part I — The Individual"
     title: "Engines: Choosing the Agent's Brain"
-    objective: "Select and configure an engine (Copilot, Claude, Codex, or Gemini) and understand the portability that engine-neutral design buys you."
+    objective: "Select and configure Copilot, Claude, Codex, Gemini, or Pi, control CLI/model selection, and distinguish portable intent from engine-specific runtime requirements."
     sections:
       - "Objective"
       - "Concept: engine-neutral by design"
@@ -139,7 +146,10 @@ chapters:
       - "Claude engine"
       - "Codex engine"
       - "Gemini engine"
+      - "Pi engine"
       - "model selection"
+      - "model / engine.model precedence"
+      - "authentication and tool portability"
     depends_on: ["ch04-triggers"]
 
   # ----------------------------------------------------------------- Part II
@@ -163,6 +173,8 @@ chapters:
       - "create-pull-request"
       - "add-labels"
       - "sanitized write boundary"
+      - "label provisioning versus allowed labels"
+      - "staged execution and explicit review constraints"
     depends_on: ["ch04-triggers", "ch05-engines"]
 
   - id: "ch07-defense-in-depth"
@@ -170,7 +182,7 @@ chapters:
     slug: "defense-in-depth"
     part: "Part II — The Team"
     title: "Defense in Depth: Permissions, Firewall & Strict Mode"
-    objective: "Harden a workflow with least-privilege permissions, an egress firewall, and strict mode so a compromised prompt can do little damage."
+    objective: "Reduce a workflow's authority and exposure with least-privilege permissions, runtime isolation, egress controls, and strict mode while explaining the remaining risks."
     sections:
       - "Objective"
       - "Concept: the lethal trifecta and defense in depth"
@@ -183,6 +195,8 @@ chapters:
       - "network: firewall (egress allowlist)"
       - "strict mode"
       - "sandbox isolation"
+      - "sandbox.agent.runtime profiles"
+      - "independent AI threat detection"
       - "threat model (lethal trifecta)"
     depends_on: ["ch06-safe-outputs"]
 
@@ -205,6 +219,9 @@ chapters:
       - "MCP gateway (gh-aw-mcpg)"
       - "built-in tools"
       - "tool permissions"
+      - "engine-specific Bash enforcement"
+      - "Playwright CLI"
+      - "process, container, and remote MCP boundaries"
     depends_on: ["ch07-defense-in-depth"]
 
   - id: "ch09-continuous-triage-and-docs"
@@ -226,6 +243,8 @@ chapters:
       - "scheduled + event triggers"
       - "safe-outputs in patterns"
       - "githubnext/agentics samples"
+      - "deployment prerequisites and bounded operation"
+      - "no-work versus incomplete outcomes"
     depends_on: ["ch06-safe-outputs", "ch08-tools-and-mcp"]
 
   - id: "ch10-continuous-review-and-testing"
@@ -247,6 +266,8 @@ chapters:
       - "CI-Doctor pattern"
       - "Continuous Refactoring pattern"
       - "pull_request triggers"
+      - "workflow_run conclusion filtering"
+      - "prompt intent versus enforced file scope"
     depends_on: ["ch09-continuous-triage-and-docs"]
 
   # ---------------------------------------------------------------- Part III
@@ -270,6 +291,9 @@ chapters:
       - "memory / persistence"
       - "AGENTS.md context"
       - "DRY workflows"
+      - "native skills and experimental Agent Plugins"
+      - "memory filtering and validation"
+      - "deliberate pinned dependency updates"
     depends_on: ["ch10-continuous-review-and-testing"]
 
   - id: "ch12-observability-and-debugging"
@@ -291,6 +315,8 @@ chapters:
       - "OpenTelemetry (OTel)"
       - "Actions run summary"
       - "human-in-the-loop review"
+      - "bounded log downloads and cached audits"
+      - "explicit incomplete-work outcomes"
     depends_on: ["ch11-reuse-and-memory"]
 
   - id: "ch13-governance-and-finops"
@@ -298,7 +324,7 @@ chapters:
     slug: "governance-and-finops"
     part: "Part III — The Organization"
     title: "Governance & FinOps: Policy and Cost at Scale"
-    objective: "Cap, meter, and gate agentic spend with AI Credits and max-ai-credits, and set org policy so the fleet stays affordable and compliant."
+    objective: "Separate agent, detector, admission, and compute costs; apply scoped budgets and policy; and use forecasts without mistaking them for a complete bill cap."
     sections:
       - "Objective"
       - "Concept: agentic work has a budget and a policy surface"
@@ -313,6 +339,9 @@ chapters:
       - "governance / policy"
       - "APM governance (apm-policy.yml)"
       - "cost controls (FinOps)"
+      - "models.allowed / models.blocked"
+      - "forecast uncertainty"
+      - "repository strict policy and default-resolution timing"
     depends_on: ["ch12-observability-and-debugging"]
 
   - id: "ch14-fleets-and-adoption"
@@ -334,4 +363,6 @@ chapters:
       - "cross-repo composition"
       - "enterprise adoption playbook"
       - "gh-aw-fleet (community)"
+      - "aw.yml packages and recursive includes"
+      - "reviewed consumer updates and action-bump semantics"
     depends_on: ["ch13-governance-and-finops"]

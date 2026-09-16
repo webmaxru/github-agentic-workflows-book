@@ -90,8 +90,9 @@ try {
     if ($expected -cne $actual) {
         throw "SHA256 mismatch for $assetName. The existing executable has not been changed."
     }
-    $versionOutput = & $binary version
-    if ($LASTEXITCODE -ne 0) {
+    $versionOutput = & $binary version 2>&1
+    $versionExitCode = $LASTEXITCODE
+    if ($versionExitCode -ne 0) {
         throw "The downloaded compiler failed its version check."
     }
     $versions = @([regex]::Matches(

@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "scope": "Only frozen Ch01-Ch05 plus the five named sources. Out-of-scope authors may change their paths; no whole-book unchanged-input assertion.",
+  "target": "v0.88.7",
+  "status": "PASS",
+  "checked_at_utc": "2026-09-16T01:30:11.462161+00:00",
+  "in_scope_file_count": 10,
+  "in_scope_pre_post_hashes": [
+    {
+      "path": "content/chapters/what-are-agentic-workflows.html",
+      "snapshot_sha256": "9c7e311b2c5e5d8ffb5144a9a10b9c425833a9f627e9557f84af7de227a3078a",
+      "live_sha256_before_tagging": "9c7e311b2c5e5d8ffb5144a9a10b9c425833a9f627e9557f84af7de227a3078a",
+      "live_sha256_after_tagging": "9c7e311b2c5e5d8ffb5144a9a10b9c425833a9f627e9557f84af7de227a3078a",
+      "annotation_only_change": false,
+      "compilation_source_bytes_unchanged": null
+    },
+    {
+      "path": "content/chapters/your-first-workflow.html",
+      "snapshot_sha256": "8f123eea317957f0fd0805386fac456eef20d1fd0de925d14691170c5cd3d411",
+      "live_sha256_before_tagging": "8f123eea317957f0fd0805386fac456eef20d1fd0de925d14691170c5cd3d411",
+      "live_sha256_after_tagging": "8f123eea317957f0fd0805386fac456eef20d1fd0de925d14691170c5cd3d411",
+      "annotation_only_change": false,
+      "compilation_source_bytes_unchanged": null
+    },
+    {
+      "path": "content/chapters/anatomy-and-compile-model.html",
+      "snapshot_sha256": "1dddcbcd3a8f04585906a7aff61e5a756be81ad073b851f1f957a337741d0f8e",
+      "live_sha256_before_tagging": "1dddcbcd3a8f04585906a7aff61e5a756be81ad073b851f1f957a337741d0f8e",
+      "live_sha256_after_tagging": "1dddcbcd3a8f04585906a7aff61e5a756be81ad073b851f1f957a337741d0f8e",
+      "annotation_only_change": false,
+      "compilation_source_bytes_unchanged": null
+    },
+    {
+      "path": "content/chapters/triggers.html",
+      "snapshot_sha256": "6d7aa97fe5c1c1078de27da429b7eab3acc1eef10ff89a0a4e0d6daefcda4753",
+      "live_sha256_before_tagging": "6d7aa97fe5c1c1078de27da429b7eab3acc1eef10ff89a0a4e0d6daefcda4753",
+      "live_sha256_after_tagging": "64e57438658ac09aa6fdf55f133e0a70007904538b7adc0c8074d92216204292",
+      "annotation_only_change": true,
+      "compilation_source_bytes_unchanged": null
+    },
+    {
+      "path": "content/chapters/engines.html",
+      "snapshot_sha256": "6d6d8cc6f25fcb3deb6286ad95d90f48d6fb5f65b273c6ededffcf8611f56b78",
+      "live_sha256_before_tagging": "6d6d8cc6f25fcb3deb6286ad95d90f48d6fb5f65b273c6ededffcf8611f56b78",
+      "live_sha256_after_tagging": "6d6d8cc6f25fcb3deb6286ad95d90f48d6fb5f65b273c6ededffcf8611f56b78",
+      "annotation_only_change": false,
+      "compilation_source_bytes_unchanged": null
+    },
+    {
+      "path": "examples/ch02/repo-assistant-triage.md",
+      "snapshot_sha256": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "live_sha256_before_tagging": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "live_sha256_after_tagging": "a5b7b93adfb71f90f69f09ecd06c52f4b833ab256cebeb2931db07b55f405659",
+      "annotation_only_change": false,
+      "compilation_source_bytes_unchanged": true
+    },
+    {
+      "path": "examples/ch04/repo-assistant-triggers.md",
+      "snapshot_sha256": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+      "live_sha256_before_tagging": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+      "live_sha256_after_tagging": "fce145058e44c0947bdc82c229b0780b62d1f0df4a054b76b74d47fa5f7047c3",
+      "annotation_only_change": false,
+      "compilation_source_bytes_unchanged": true
+    },
+    {
+      "path": "examples/ch04/repo-assistant-cooldown.md",
+      "snapshot_sha256": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+      "live_sha256_before_tagging": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+      "live_sha256_after_tagging": "a117ef05ff0ed1bacc86503933d8356f148f8896b9b6985ebe2b145978886aec",
+      "annotation_only_change": false,
+      "compilation_source_bytes_unchanged": true
+    },
+    {
+      "path": "examples/ch04/repo-assistant-issue-shorthand.md",
+      "snapshot_sha256": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+      "live_sha256_before_tagging": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+      "live_sha256_after_tagging": "ccffee9cb2f316766b82ed73e5f45046478ba6146ce6784312206401efc513bc",
+      "annotation_only_change": false,
+      "compilation_source_bytes_unchanged": true
+    },
+    {
+      "path": "examples/ch05/repo-assistant-claude.md",
+      "snapshot_sha256": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9",
+      "live_sha256_before_tagging": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9",
+      "live_sha256_after_tagging": "eedcf52cb94fb4e79c5927ca60875746c54277d3939b62788c625cfed95646a9",
+      "annotation_only_change": false,
+      "compilation_source_bytes_unchanged": true
+    }
+  ],
+  "all_five_canonical_source_bytes_unchanged_by_verifier": true,
+  "all_four_complete_embedded_input_hashes_unchanged_by_tagging": true,
+  "all_in_scope_pre_code_blocks_unchanged_by_tagging": true,
+  "all_five_chapters_keep_six_slots": true,
+  "annotation_edits": [
+    {
+      "path": "content/chapters/triggers.html",
+      "before": "  <!-- Author handoff: the original trigger configuration and cooldown syntax have\n       target research evidence, not final source-bound verification of this edit.\n       Verify all three examples/ch04 sources and both complete HTML copies.\n       Final edition evidence is planned at\n       content/research/updates/v0.88.7/verification.json and verification-notes.md.\n       No compile, runtime, or editorial completion is asserted here. -->",
+      "after": "  <!-- Verification status: the frozen foundation snapshot passed strict gh-aw v0.88.7\n       compilation for all three examples/ch04 sources and both complete HTML copies.\n       Every emitted lock records compiler_version v0.88.7 and strict true; CLI exit 0.\n       Evidence: content/research/updates/v0.88.7/foundations-verification.json and\n       foundations-embedded-verification.json. Scratch-only deadline and same-seed cron\n       checks passed in foundations-behavior-verification.json.\n       This is foundation-batch compilation evidence, not whole-book acceptance or\n       final-edition verification. Runtime and scheduler execution remain NOT RUN. -->",
+      "scope": "One factual verification-provenance HTML comment only; no visible prose, commands, YAML, or workflow body edit."
+    }
+  ],
+  "chapter_bytes_changed_intentionally": [
+    "content/chapters/triggers.html"
+  ],
+  "canonical_command": [
+    "C:\\Users\\masalnik\\scoop\\apps\\python312\\current\\python.exe",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\scripts\\verify_examples.py",
+    "--root",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\build\\f-26nilw1o",
+    "--compiler",
+    "C:\\Users\\masalnik\\.copilot\\session-state\\e9e760c4-bdb3-46e7-b867-b7f4d7e28a28\\files\\tools\\gh-aw\\v0.88.7\\gh-aw.exe",
+    "--version",
+    "v0.88.7",
+    "--report",
+    "C:\\Users\\masalnik\\scoop\\buckets\\copilot-worktrees\\github-agentic-workflows-book\\webmaxru-turbo-happiness\\content\\research\\updates\\v0.88.7\\foundations-verification.json"
+  ],
+  "canonical_started_at_utc": "2026-09-16T01:04:10.019196+00:00",
+  "canonical_finished_at_utc": "2026-09-16T01:04:26.051689+00:00",
+  "canonical_cli_exit_code": 0,
+  "embedded_cli_exit_code": 0,
+  "context_cli_exit_code": 0,
+  "all_four_behavior_cli_exit_codes": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "raw_reports": {
+    "foundations-verification.json": {
+      "status": "PASS",
+      "repository_context": {
+        "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+        "source": "book-default"
+      },
+      "environment_errors": [],
+      "cleanup_pending": null
+    },
+    "foundations-embedded-verification.json": {
+      "status": "PASS",
+      "repository_context": {
+        "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+        "source": "book-default"
+      },
+      "environment_errors": [],
+      "cleanup_pending": null
+    },
+    "foundations-context-verification.json": {
+      "status": "PASS",
+      "repository_context": {
+        "url": "https://github.com/webmaxru/github-agentic-workflows-book.git",
+        "source": "book-default"
+      },
+      "environment_errors": [],
+      "cleanup_pending": null
+    }
+  },
+  "effective_reference_report": "foundations-reference-verification.json",
+  "resolved_supplemental_comparison_issue": "Initial Claude-prefix comparison used the replacement footer marker against the old file. The raw FAIL is retained as foundations-reference-attempt-1.json; corrected exact lines 1-32 comparison PASS, no compiler or core-helper error.",
+  "earlier_completed_reports_preserved_count": 17,
+  "evidence_sha256": {
+    "foundations-behavior-verification.json": "4c851cb47649a4300f7118ca73d59d93f7b5f7478f8a4efc707f705280e679d2",
+    "foundations-cli-verification.json": "0563c58b44069fa2f6b1bdc892d550c34e9617966f6ff54011a0f89e70f5c030",
+    "foundations-context-inventory.json": "d882a8bc33165dc469fa1cfbbf04936dfddbefadb96b3f709aba881cfcfbf4a9",
+    "foundations-context-verification.json": "ea745fbd21396c4690e399dd4a42b4b2ddc1e5823e8b24c552da29600b61835d",
+    "foundations-embedded-verification.json": "d75efd3444355e010a38ba034e6faf4cbe93370dbe42fa8c971c844ad563758c",
+    "foundations-inputs.json": "71ac354ce824b14be712d17dbdca44c150e2c4a9735a0efc86a21a26a4a9592b",
+    "foundations-inventory.json": "9141e7337543ddba04db34854040d8695ae3c73feb5f9b4a353e2b044928c8c9",
+    "foundations-reference-attempt-1.json": "c6ac92a08e79d6386d055bf544b8e3735a1cc35b06e29677c0f95b244929ef49",
+    "foundations-reference-verification.json": "5cfcdff1c5331dd02990c0e1c9f2037d70b522824fb85dc14ba25d08b4571863",
+    "foundations-verification.json": "0bbf2dfea6821f3ee51cab18e460fd0315fe0cfa529dd6fca48c592b4815361a"
+  },
+  "compiler_sha256": "8d88047c1e162f16a01e1920124092c80a8bdf98c1635357067a0ac34c00d4c7",
+  "verifier_sha256": "783491d5c44e14dba37a0ffbabd91174ea02faadc370d7a386ab094c9d057273",
+  "runtime": "NOT RUN",
+  "approval_granted": false,
+  "whole_book_acceptance": false,
+  "global_metadata_advanced": false
+}
