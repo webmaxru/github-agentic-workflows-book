@@ -39,13 +39,16 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Download the validated site, analytics beacon, and PDF
+      - name: Download the validated site and analytics beacon
         uses: actions/download-artifact@v4
         with:
           name: validated-pages
           path: artifact
 
-      - name: Publish the exact validated site to gh-pages
+      - name: Remove the gated PDF from the public site
+        run: rm -f artifact/site/gh-aw-book.pdf
+
+      - name: Publish the validated site to gh-pages
         run: |
           cd artifact/site
           touch .nojekyll

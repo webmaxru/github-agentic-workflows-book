@@ -2,7 +2,7 @@
 
 > Learn GitHub Agentic Workflows (gh-aw): write your repository's outer loop in Markdown, compile it to hardened GitHub Actions, and run safe, reviewed Continuous AI.
 
-Source: https://aw.isainative.dev/ | Author: Maxim Salnikov | Content edition: v1.2 | Generated: 2026-09-16
+Source: https://aw.isainative.dev/ | Author: Maxim Salnikov | Content edition: v1.2 | Generated: 2026-09-20
 Framework coverage: [Verified with gh-aw v0.88.7](https://github.com/github/gh-aw/releases/tag/v0.88.7)
 
 ## Chapter 1: What Are Agentic Workflows?

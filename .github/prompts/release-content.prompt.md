@@ -91,7 +91,7 @@ refresh, first run `.github/prompts/update-book.prompt.md`.
 ## After the human merges
 
 `validate-book.yml` builds and gates the exact artifacts consumed by both publishing
-workflows. `deploy-pages.yml` publishes that site/PDF without rebuilding;
+workflows. `deploy-pages.yml` publishes the online site without the gated PDF;
 `release-content.yml` creates `content-v<edition>` with the matching
 `gh-aw-book-v<edition>.pdf` and changelog notes. Verify both workflow outcomes, the release
 asset, and the live version-history page before calling the edition published.

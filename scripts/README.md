@@ -135,7 +135,7 @@ not committed sources.
 helpers, release/evidence contract, pinned whole-corpus compilation, and HTML/PDF generation.
 The PR still needs human review/merge; these workflows do not configure branch protection.
 
-After merge, `deploy-pages.yml` publishes the current online/PDF edition and
+After merge, `deploy-pages.yml` publishes the current online edition and
 `release-content.yml` publishes its matching tag, changelog notes, and versioned PDF.
 Both consume the exact artifacts produced by validation instead of rebuilding afterward.
 The release workflow also evaluates content/example/tooling pushes; a complete existing

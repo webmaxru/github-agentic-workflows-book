@@ -8,7 +8,7 @@ Content edition v1.2. [Verified with gh-aw v0.88.7](https://github.com/github/gh
 
 ## Start here
 - [Home & table of contents](https://aw.isainative.dev/): Overview, reading guide, and the full chapter list.
-- [Download the PDF](https://aw.isainative.dev/gh-aw-book.pdf): The complete book as a single downloadable PDF.
+- [Get the free PDF](https://isainative.substack.com/p/free-agentic-workflows-book): Get the complete book PDF through Substack.
 - [Version history](https://aw.isainative.dev/versions.html): Content edition v1.2; every version is a GitHub Release with a PDF.
 
 ## Chapters
