@@ -14,9 +14,9 @@ __pycache__/
 dist/
 build/
 
-# Downloadable book PDF — a binary build artifact rendered from site/book.html by
-# scripts/build_pdf.py (in CI on every deploy, and locally on demand). It is
-# published to gh-pages but not committed to main.
+# Book PDF — a binary build artifact rendered from site/book.html by
+# scripts/build_pdf.py for release assets and local use. It is not committed to main
+# or published on the public website.
 site/gh-aw-book.pdf
 
 # Playwright browser-download marker (browsers install to a shared cache, not here)

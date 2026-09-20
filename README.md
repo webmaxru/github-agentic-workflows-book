@@ -256,13 +256,14 @@ python scripts\verify_examples.py --compiler <absolute-gh-aw-executable>
 
 ---
 
-## Download the book as a PDF
+## Get the book as a PDF
 
-The whole book is also available as a **single downloadable PDF**, linked from the site (home page
-"Download PDF", the reader nav, and every chapter). It is rendered from a **single-page edition**
-(`site/book.html`, which `site/generate.py` produces alongside the chapter pages) using headless
-Chromium via [Playwright](https://playwright.dev/python/), so code blocks keep their syntax
-highlighting and the PDF carries page numbers and a chapter outline.
+The whole book is available as a **single downloadable PDF** through the
+[Substack download page](https://isainative.substack.com/p/free-agentic-workflows-book). The
+website links to that gated page rather than publishing the PDF directly. The PDF is rendered from
+a **single-page edition** (`site/book.html`, which `site/generate.py` produces alongside the chapter
+pages) using headless Chromium via [Playwright](https://playwright.dev/python/), so code blocks keep
+their syntax highlighting and the PDF carries page numbers and a chapter outline.
 
 ```powershell
 # 1. (re)generate the site, including site/book.html (the PDF's source)
@@ -275,10 +276,10 @@ python scripts/build_pdf.py
 ```
 
 The PDF (`site/gh-aw-book.pdf`) is a **binary build artifact**: it is gitignored, not committed to
-`main`. On every push that changes the book, the deploy workflow
-([`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)) regenerates it right
-after `generate.py` and publishes it to the live site — so the downloadable PDF always matches the
-current book.
+`main`, and removed before the site is published. The deploy workflow
+([`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)) still validates the
+single-page source and release tooling, while the public site sends readers to the gated Substack
+page.
 
 ---
 
