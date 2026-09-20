@@ -23,8 +23,9 @@ site/gh-aw-book.pdf
 .playwright/
 
 # gh-aw compiled lock files — examples are verified at compile time (gh aw compile),
-# but the generated *.lock.yml (≈100 KB each) are build outputs, not committed sources.
+# but their generated *.lock.yml files are build outputs, not committed sources.
 *.lock.yml
+!.github/workflows/scan-gh-aw-updates.lock.yml
 
 # Private research working notes (not part of the published book)
 .source-docs/
