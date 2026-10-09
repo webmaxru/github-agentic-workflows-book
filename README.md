@@ -19,12 +19,53 @@ What makes this repository interesting is not just the book itself, but **how it
 small **fleet of GitHub Copilot primitives** (custom agents, skills, instruction files, and a driver
 prompt) that collaborate under an orchestrator in a wave-based pipeline.
 
+## Release Truth: the book's release control plane
+
+This project is designed around a real pain point for enterprise teams: **technical literature is still
+built by hand even when the product already has reliable docs, examples, and release notes**.
+
+The problem is simple and costly:
+
+- product docs change in multiple repos and systems
+- the book or handbook is updated manually and slowly
+- demo assets and screenshots drift from the current release
+- no one can easily see which source changed, what needs a refresh, or when the release is actually ready
+
+This repo turns that problem into a reusable pattern: a **release-based book builder** with a real
+GitHub Copilot **Book release canvas** that tracks source drift, proof artifacts, demos, and
+publication readiness. The GitHub Agentic Workflows book is the reference case for that system.
+
+A team can reuse this same workflow for any docs-driven product book, architecture guide, onboarding
+manual, or customer ebook. The opportunity is not "build a book site" — it is **turn technical content
+production into a controlled, auditable release process**.
+
+The project-scoped extension lives in `.github/extensions/release-book-canvas/`. It scans the
+repository's git changes, version pins, research, examples, verification receipts, and review record.
+The visual **truth spine** connects:
+
+```text
+source change -> chapter impact -> demo + proof -> human release
+```
+
+To reuse it for another publication, fork the repo and edit `.book-release-canvas.json`. The Canvas
+requests no secret, binds its renderer to loopback only, constrains configured paths to the repo, and
+stores human demo decisions outside committed source evidence.
+
 > 💡 **Inspired by [*The Agentic SDLC Handbook* by Daniel Meppiel](https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch01-the-agentic-sdlc-thesis.html)** — in particular its [case study on agentic handbook writing](https://danielmeppiel.github.io/agentic-sdlc-handbook/case-study-handbook-writing.html). This project applies that thesis: composing **primitives** (agents + prompts + skills + instructions) into a squad that produces real software artifacts.
 
 > 🧬 **Built on the foundation of [`microsoft-agent-framework-playbook-fleets-generated` by Valentina Alto](https://github.com/Valentina-Alto/microsoft-agent-framework-playbook-fleets-generated)** — this project adapts that repository's fleet-of-primitives methodology and site tooling from the **Microsoft Agent Framework** to **GitHub Agentic Workflows**.
 
 > 🛠️ **Build & preview locally:** the site is generated from `content/toc.yml` by `site/generate.py`
 > and served from `site/` (see [Run the book locally](#run-the-book-locally)). Published at <https://aw.isainative.dev/>.
+
+### Run the Canvas
+
+1. Open this repository in the GitHub Copilot App.
+2. Reload extensions after changing the extension source.
+3. Ask Copilot to open the **Book release canvas**.
+4. Run `npm run test:canvas` to verify the generic evidence scanner.
+
+The production artifact is the Copilot Canvas extension and its live repository scan.
 
 ---
 

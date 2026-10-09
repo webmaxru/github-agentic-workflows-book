@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build:analytics": "esbuild analytics/analytics.entry.js --bundle --minify --format=iife --target=es2019 --legal-comments=none --outfile=site/assets/analytics.js",
+    "test:canvas": "node --test .github/extensions/release-book-canvas/release-scanner.test.mjs",
     "report": "cookieless-insights report --resource-group is-ai-native-rg --app-insights aw-book-ai --days 30 --open"
   },
   "dependencies": {
@@ -16,5 +17,12 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "commonjs"
 }

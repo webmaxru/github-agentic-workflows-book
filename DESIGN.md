@@ -22,6 +22,17 @@ colors:
   code-caption: "#b9c3dc"
   code-hairline: "rgba(148, 163, 184, 0.22)"
   code-badge-ink: "#ffe1c2"
+  release-night: "#060912"
+  release-panel: "#0d1324"
+  release-panel-raised: "#121a2d"
+  release-panel-control: "#1a2440"
+  release-ink: "#f8faff"
+  release-muted: "#c4cbdd"
+  release-violet: "#b8a1ff"
+  release-cyan: "#70e8f5"
+  release-mint: "#7bf2b8"
+  release-amber: "#ffd36f"
+  release-rose: "#ff91ad"
 typography:
   display:
     fontFamily: "Literata, Georgia, Times New Roman, serif"

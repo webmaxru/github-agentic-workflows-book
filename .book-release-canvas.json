@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "repository": {
+    "name": "GitHub Agentic Workflows book"
+  },
+  "publication": {
+    "name": "GitHub Agentic Workflows: An Interactive Book",
+    "promise": "Every published claim stays traceable to current product documentation and verified examples.",
+    "contentVersionPath": "content/VERSION",
+    "frameworkVersionPath": "content/FRAMEWORK_VERSION",
+    "chapterPath": "content/chapters",
+    "examplePath": "examples"
+  },
+  "sources": [
+    {
+      "id": "upstream-product",
+      "label": "Official product docs and releases",
+      "owner": "gh-aw-explorer",
+      "url": "https://github.com/github/gh-aw",
+      "paths": [
+        "content/research/updates/{frameworkVersion}"
+      ],
+      "evidence": "content/research/updates/{frameworkVersion}/framework-delta.md",
+      "why": "Defines what changed in the product and which claims may now be stale."
+    },
+    {
+      "id": "manuscript",
+      "label": "Book manuscript",
+      "owner": "chapter-author",
+      "paths": [
+        "content/chapters",
+        "content/toc.yml"
+      ],
+      "evidence": "content/release-review.json",
+      "why": "Reader-facing explanations must match the fixed framework target."
+    },
+    {
+      "id": "examples",
+      "label": "Runnable examples",
+      "owner": "code-verifier",
+      "paths": [
+        "examples",
+        "scripts/verify_examples.py"
+      ],
+      "evidence": "content/research/updates/{frameworkVersion}/final-verification-receipt.json",
+      "why": "Copyable workflows must compile before the edition can ship."
+    },
+    {
+      "id": "presentation",
+      "label": "Interactive book experience",
+      "owner": "frontend-builder",
+      "paths": [
+        "site",
+        "assets"
+      ],
+      "ignorePaths": [
+        "site/release-canvas.html",
+        "site/book.html",
+        "site/llms-full.txt",
+        "site/sitemap.xml"
+      ],
+      "evidence": "site/index.html",
+      "why": "Accepted content must reach the book, PDF, and discovery surfaces."
+    }
+  ],
+  "demos": [
+    {
+      "id": "source-drift",
+      "label": "Source drift to chapter impact",
+      "owner": "gh-aw-explorer",
+      "paths": [
+        "content/research/updates/{frameworkVersion}/framework-delta.md",
+        "content/chapters"
+      ],
+      "evidence": "content/research/updates/{frameworkVersion}/framework-delta.md",
+      "cue": "Open one changed source and show the exact chapter decision it triggered."
+    },
+    {
+      "id": "strict-compile",
+      "label": "Strict example compilation",
+      "owner": "code-verifier",
+      "paths": [
+        "examples",
+        "scripts/verify_examples.py"
+      ],
+      "evidence": "content/research/updates/{frameworkVersion}/final-verification-receipt.json",
+      "cue": "Show the pinned compiler version and the complete workflow pass count."
+    },
+    {
+      "id": "human-release-gate",
+      "label": "Human release decision",
+      "owner": "chapter-reviewer",
+      "paths": [
+        "content/chapters",
+        "content/release-review.json"
+      ],
+      "evidence": "content/release-review.json",
+      "cue": "Show that automation prepares evidence, but ACCEPT remains an explicit review gate."
+    }
+  ],
+  "gates": [
+    {
+      "id": "framework-pin",
+      "label": "Framework target is pinned",
+      "kind": "text-equals",
+      "path": "content/FRAMEWORK_VERSION",
+      "equals": "v0.88.7"
+    },
+    {
+      "id": "strict-verification",
+      "label": "Whole example corpus passed",
+      "kind": "json-field",
+      "path": "content/research/updates/{frameworkVersion}/final-verification-receipt.json",
+      "field": "status",
+      "equals": "PASS"
+    },
+    {
+      "id": "editorial-review",
+      "label": "Editorial review accepted",
+      "kind": "json-field",
+      "path": "content/release-review.json",
+      "field": "verdict",
+      "equals": "ACCEPT"
+    },
+    {
+      "id": "published-site",
+      "label": "Generated book is present",
+      "kind": "file-exists",
+      "path": "site/index.html"
+    }
+  ],
+  "agents": [
+    {
+      "name": "Research",
+      "role": "Find the exact upstream change and map its impact."
+    },
+    {
+      "name": "Author",
+      "role": "Update only the affected explanation and example."
+    },
+    {
+      "name": "Verifier",
+      "role": "Compile every example against the pinned product release."
+    },
+    {
+      "name": "Reviewer",
+      "role": "Hold the human-quality gate before publication."
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "GitHub-native enterprise context",
+      "proof": "The canvas reads versions, git changes, workflows, examples, reviews, and release evidence from the repository."
+    },
+    {
+      "criterion": "Multi-agent collaboration",
+      "proof": "Research, authoring, verification, review, and integration have explicit owners and hand-offs."
+    },
+    {
+      "criterion": "Governance and human review",
+      "proof": "Pinned sources, strict compilation, source-bound review, and an explicit final release decision."
+    },
+    {
+      "criterion": "Customer repeatability",
+      "proof": "Fork the repo, edit one JSON configuration file, and reuse the same canvas for another documentation-led publication."
+    }
+  ]
+}
