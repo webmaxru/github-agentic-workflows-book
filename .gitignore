@@ -33,6 +33,9 @@ site/gh-aw-book.pdf
 # Local tooling artifacts (browser automation snapshots/logs)
 .playwright-mcp/
 
+# Local hackathon submission package (video, deck, form copy, and rehearsal assets)
+.hackathon/
+
 # APM dependencies
 apm_modules/
 

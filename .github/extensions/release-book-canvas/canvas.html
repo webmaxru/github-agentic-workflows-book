@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Release truth</title>
+  <style>
+    :root {
+      color-scheme: dark only;
+      --ink: #f8faff;
+      --muted: #c4cbdd;
+      --night: #060912;
+      --panel: #0d1324;
+      --panel-2: #121a2d;
+      --panel-3: #1a2440;
+      --line: rgba(203, 213, 255, .32);
+      --line-soft: rgba(203, 213, 255, .17);
+      --violet: #b8a1ff;
+      --cyan: #70e8f5;
+      --mint: #7bf2b8;
+      --amber: #ffd36f;
+      --rose: #ff91ad;
+      --shadow: 0 24px 68px rgba(0, 0, 0, .48);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--night); }
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: var(--font-sans, "Segoe UI Variable", "Segoe UI", sans-serif);
+      background:
+        radial-gradient(circle at 92% -10%, rgba(112, 232, 245, .14), transparent 33rem),
+        radial-gradient(circle at -12% 25%, rgba(184, 161, 255, .15), transparent 32rem),
+        linear-gradient(155deg, #060912 0%, #0a1020 52%, #071019 100%);
+    }
+    button { font: inherit; }
+    button:focus-visible, [tabindex]:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+    .app { max-width: 1440px; margin: 0 auto; padding: 22px; }
+    .mast {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      padding: 17px 19px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(13, 19, 36, .96);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+    .identity { display: flex; align-items: center; gap: 13px; min-width: 0; }
+    .mark {
+      width: 42px; height: 42px; flex: 0 0 auto;
+      display: grid; place-items: center;
+      border-radius: 13px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.25), transparent 42%),
+        linear-gradient(145deg, var(--violet), var(--cyan));
+      color: #0b0d18; font: 900 18px/1 var(--font-mono, Consolas, monospace);
+      box-shadow: 0 0 34px rgba(94, 231, 247, .25);
+    }
+    .identity strong, .identity span { display: block; }
+    .identity strong { font-size: 15px; letter-spacing: -.01em; }
+    .identity span { color: var(--muted); font-size: 12px; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .actions { display: flex; gap: 9px; align-items: center; }
+    .button {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--panel-3);
+      color: var(--ink);
+      padding: 9px 12px;
+      cursor: pointer;
+      transition: border-color .16s ease, transform .16s ease, background .16s ease;
+    }
+    .button:hover { border-color: var(--cyan); background:#223053; transform: translateY(-1px); }
+    .button.primary { color: #051014; background: var(--cyan); border-color: var(--cyan); font-weight: 800; }
+    .button[disabled] { opacity: .55; cursor: wait; transform: none; }
+    .hero {
+      margin-top: 17px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(270px, .75fr);
+      gap: 17px;
+    }
+    .thesis, .decision {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 4px);
+      background: linear-gradient(150deg, #151d35, #0d1427);
+      box-shadow: var(--shadow);
+    }
+    .thesis { min-height: 290px; padding: 30px; }
+    .thesis::after {
+      content: "";
+      position: absolute; inset: auto -8% -45% 26%; height: 72%;
+      background: repeating-radial-gradient(ellipse at center, transparent 0 18px, rgba(112,232,245,.09) 19px 20px);
+      transform: rotate(-8deg);
+      pointer-events: none;
+    }
+    .kicker { color: var(--cyan); font: 700 11px/1 var(--font-mono, Consolas, monospace); letter-spacing: .14em; text-transform: uppercase; }
+    h1 { max-width: 770px; margin: 18px 0 15px; font-size: clamp(34px, 5vw, 72px); line-height: .95; letter-spacing: -.065em; }
+    .thesis p { position: relative; z-index: 1; max-width: 64ch; margin: 0; color: #dde3f2; font-size: 16px; line-height: 1.65; }
+    .edition { position: relative; z-index: 1; margin-top: 25px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { border: 1px solid var(--line); border-radius: 999px; padding: 7px 10px; background: #17213a; color: #edf1fb; font-size: 12px; }
+    .decision { display: grid; place-items: center; padding: 22px; text-align: center; }
+    .orbit { width: 190px; aspect-ratio: 1; position: relative; display: grid; place-items: center; }
+    .orbit::before, .orbit::after {
+      content: ""; position: absolute; inset: 0; border-radius: 50%;
+      border: 1px solid rgba(94,231,247,.24);
+    }
+    .orbit::after { inset: 16px; border-color: rgba(167,139,250,.35); }
+    .orbit svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .orbit .track { fill: none; stroke: rgba(255,255,255,.16); stroke-width: 7; }
+    .orbit .value { fill: none; stroke: var(--mint); stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset .7s cubic-bezier(.2,.8,.2,1), stroke .2s; }
+    .score { position: absolute; }
+    .score strong { display: block; font: 800 50px/.9 var(--font-mono, Consolas, monospace); letter-spacing: -.08em; }
+    .score span { display: block; color: var(--muted); margin-top: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: .13em; }
+    .decision h2 { margin: 16px 0 5px; font-size: 22px; letter-spacing: -.03em; }
+    .decision p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .truth {
+      margin-top: 17px;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 4px);
+      background: rgba(13, 19, 36, .96);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; padding: 20px 22px 14px; }
+    .section-head h2 { margin: 0; font-size: 20px; letter-spacing: -.03em; }
+    .section-head p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+    .legend { display: flex; gap: 10px; color: var(--muted); font-size: 11px; }
+    .legend span::before { content:""; display:inline-block; width:7px; height:7px; margin-right:5px; border-radius:50%; background:var(--mint); }
+    .legend span:nth-child(2)::before { background:var(--amber); }
+    .legend span:nth-child(3)::before { background:var(--rose); }
+    .spine {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(175px, 1fr));
+      padding: 14px 22px 25px;
+      overflow-x: auto;
+    }
+    .stage { position: relative; min-width: 175px; padding: 0 14px; }
+    .stage:first-child { padding-left: 0; }
+    .stage:last-child { padding-right: 0; }
+    .stage::before { content:""; position:absolute; left:0; right:0; top:17px; height:2px; background:linear-gradient(90deg,var(--violet),var(--cyan)); opacity:.5; }
+    .stage:first-child::before { left:17px; }
+    .stage:last-child::before { right:calc(100% - 17px); }
+    .node { position:relative; z-index:1; width:35px; height:35px; display:grid; place-items:center; border-radius:50%; background:#101a30; border:2px solid var(--mint); color:var(--mint); font:800 12px/1 var(--font-mono,Consolas,monospace); box-shadow:0 0 24px rgba(123,242,184,.2); }
+    .stage.warn .node { color:var(--amber); border-color:var(--amber); box-shadow:0 0 24px rgba(255,204,102,.18); }
+    .stage.block .node { color:var(--rose); border-color:var(--rose); box-shadow:0 0 24px rgba(255,124,158,.18); }
+    .stage h3 { margin:13px 0 5px; font-size:14px; }
+    .stage p { margin:0; color:var(--muted); font-size:12px; line-height:1.45; }
+    .workspace { margin-top: 17px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(290px, .75fr); gap:17px; }
+    .panel { border:1px solid var(--line); border-radius:var(--radius); background:rgba(13,19,36,.98); box-shadow:var(--shadow); overflow:hidden; }
+    .tabs { display:flex; gap:4px; padding:9px; border-bottom:1px solid var(--line); overflow-x:auto; }
+    .tab { border:1px solid transparent; border-radius:9px; background:transparent; color:var(--muted); padding:8px 10px; cursor:pointer; white-space:nowrap; }
+    .tab:hover { color:var(--ink); background:#17213a; border-color:var(--line-soft); }
+    .tab[aria-selected="true"] { background:#243154; border-color:var(--line); color:var(--ink); }
+    .view { display:none; padding:8px 15px 17px; }
+    .view.active { display:block; }
+    .row { display:grid; grid-template-columns:12px minmax(0,1fr) auto; gap:12px; align-items:start; padding:14px 4px; border-bottom:1px solid var(--line-soft); }
+    .row:last-child { border-bottom:0; }
+    .dot { width:9px; height:9px; margin-top:5px; border-radius:50%; background:var(--mint); box-shadow:0 0 14px rgba(116,240,181,.45); }
+    .row.warn .dot { background:var(--amber); box-shadow:0 0 14px rgba(255,204,102,.38); }
+    .row.block .dot { background:var(--rose); box-shadow:0 0 14px rgba(255,124,158,.38); }
+    .row strong { display:block; font-size:13px; }
+    .row .meta { margin-top:4px; color:var(--muted); font-size:11px; line-height:1.5; }
+    .owner { color:#edf1fb; background:#17213a; font:700 10px/1 var(--font-mono,Consolas,monospace); border:1px solid var(--line); border-radius:999px; padding:6px 8px; white-space:nowrap; }
+    .status-actions { display:flex; gap:4px; margin-top:8px; flex-wrap:wrap; }
+    .status-actions button { border:1px solid var(--line); background:#17213a; color:#e4e9f6; border-radius:8px; padding:6px 8px; cursor:pointer; font-size:11px; }
+    .status-actions button:hover { color:#051014; background:var(--cyan); border-color:var(--cyan); }
+    .blockers { padding:18px; }
+    .blockers h2 { margin:0 0 5px; font-size:18px; }
+    .blockers > p { margin:0 0 14px; color:var(--muted); font-size:12px; }
+    .blocker { padding:12px; margin-top:9px; border:1px solid rgba(255,124,158,.24); border-radius:12px; background:rgba(255,124,158,.055); }
+    .blocker.ready { border-color:rgba(116,240,181,.22); background:rgba(116,240,181,.05); }
+    .blocker strong { font-size:12px; }
+    .blocker p { margin:4px 0 0; color:var(--muted); font-size:11px; line-height:1.45; }
+    .agents { margin-top:15px; padding-top:15px; border-top:1px solid var(--line); }
+    .agent { display:grid; grid-template-columns:55px 1fr; gap:8px; margin-top:10px; font-size:11px; }
+    .agent b { color:var(--cyan); font-family:var(--font-mono,Consolas,monospace); }
+    .agent span { color:var(--muted); line-height:1.4; }
+    .foot { margin:17px 2px 3px; display:flex; justify-content:space-between; gap:16px; color:var(--muted); font-size:10px; }
+    .pulse { animation:pulse 1.8s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity:.45; } }
+    @media (max-width: 900px) {
+      .hero, .workspace { grid-template-columns:1fr; }
+      .spine { grid-template-columns:repeat(4, 220px); }
+    }
+    @media (max-width: 560px) {
+      .app { padding:12px; }
+      .mast { grid-template-columns:1fr; }
+      .actions { justify-content:flex-start; }
+      .thesis { padding:22px; min-height:260px; }
+      h1 { font-size:42px; }
+      .legend { display:none; }
+      .foot { flex-direction:column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation:none !important; transition:none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="mast">
+      <div class="identity">
+        <div class="mark" aria-hidden="true">RT</div>
+        <div><strong>Release truth</strong><span id="repo-name">Reading repository evidence…</span></div>
+      </div>
+      <div class="actions">
+        <span class="chip" id="branch">branch —</span>
+        <button class="button primary" id="refresh">Rescan evidence</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <article class="thesis">
+        <div class="kicker">Documentation-led publishing</div>
+        <h1>Know what changed before the reader does.</h1>
+        <p id="promise">Trace every product update to the chapters, demos, and proof it can invalidate. Agents do the chase work; people keep the release decision.</p>
+        <div class="edition">
+          <span class="chip" id="content-version">Edition —</span>
+          <span class="chip" id="framework-version">Framework —</span>
+          <span class="chip" id="counts">— chapters · — examples</span>
+        </div>
+      </article>
+      <aside class="decision">
+        <div class="orbit" aria-label="Release readiness">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="track" cx="60" cy="60" r="48"></circle>
+            <circle class="value" id="score-ring" cx="60" cy="60" r="48" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"></circle>
+          </svg>
+          <div class="score"><strong id="score">—</strong><span>release confidence</span></div>
+        </div>
+        <h2 id="decision">Scanning…</h2>
+        <p id="decision-detail">Checking source freshness, demo work, and release proof.</p>
+      </aside>
+    </section>
+
+    <section class="truth" aria-labelledby="truth-title">
+      <div class="section-head">
+        <div><h2 id="truth-title">The truth spine</h2><p>One release path. Every hand-off leaves evidence.</p></div>
+        <div class="legend" aria-label="Status legend"><span>Ready</span><span>Review</span><span>Blocked</span></div>
+      </div>
+      <div class="spine" id="spine"></div>
+    </section>
+
+    <section class="workspace">
+      <article class="panel">
+        <div class="tabs" role="tablist" aria-label="Release evidence views">
+          <button class="tab" role="tab" aria-selected="true" data-view="sources">Sources</button>
+          <button class="tab" role="tab" aria-selected="false" data-view="demos">Demo rebuilds</button>
+          <button class="tab" role="tab" aria-selected="false" data-view="proof">Release proof</button>
+          <button class="tab" role="tab" aria-selected="false" data-view="rubric">Challenge proof</button>
+        </div>
+        <div class="view active" id="sources"></div>
+        <div class="view" id="demos"></div>
+        <div class="view" id="proof"></div>
+        <div class="view" id="rubric"></div>
+      </article>
+      <aside class="panel blockers">
+        <h2>Release decision</h2>
+        <p>Only unresolved evidence appears here.</p>
+        <div id="blockers"></div>
+        <div class="agents">
+          <div class="kicker">Delegation with review gates</div>
+          <div id="agents"></div>
+        </div>
+      </aside>
+    </section>
+    <footer class="foot">
+      <span id="generated">Not scanned yet</span>
+      <span>Generic engine · configure <code>.book-release-canvas.json</code></span>
+    </footer>
+  </main>
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+    const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    })[char]);
+    const tone = (status) => status === "ready" ? "" : status === "blocked" ? "block" : "warn";
+    let snapshot;
+
+    function row(item, detail, owner, extra = "") {
+      return `<div class="row ${tone(item.status)}"><span class="dot"></span><div><strong>${escapeHtml(item.label || item.criterion)}</strong><div class="meta">${escapeHtml(detail)}</div>${extra}</div>${owner ? `<span class="owner">${escapeHtml(owner)}</span>` : ""}</div>`;
+    }
+
+    function render(data) {
+      snapshot = data;
+      $("#repo-name").textContent = `${data.repository.name} · ${data.repository.dirtyFiles} working change${data.repository.dirtyFiles === 1 ? "" : "s"}`;
+      $("#branch").textContent = `${data.repository.branch || "detached"} @ ${data.repository.head || "—"}`;
+      $("#promise").textContent = data.publication.promise;
+      $("#content-version").textContent = `Content v${data.publication.contentVersion}`;
+      $("#framework-version").textContent = `Product ${data.publication.frameworkVersion}`;
+      $("#counts").textContent = `${data.publication.chapterCount} chapters · ${data.publication.exampleCount} examples`;
+      $("#score").textContent = `${data.readiness}%`;
+      const ring = $("#score-ring");
+      ring.style.strokeDashoffset = String(100 - data.readiness);
+      ring.style.stroke = data.decision === "ready" ? "var(--mint)" : data.readiness >= 70 ? "var(--amber)" : "var(--rose)";
+      $("#decision").textContent = data.decision === "ready" ? "Ready for human release" : "Hold the release";
+      $("#decision-detail").textContent = data.blockers.length
+        ? `${data.blockers.length} item${data.blockers.length === 1 ? " needs" : "s need"} evidence or a decision.`
+        : "All configured machine checks pass. A person can make the final call.";
+
+      const stages = [
+        { n:"01", title:"Source change", status: data.sources.every(x => x.status === "ready") ? "ready" : "needs-refresh", detail:`${data.sources.filter(x => x.status !== "ready").length} source area(s) need review` },
+        { n:"02", title:"Chapter impact", status: data.impactedChapters.length ? "needs-refresh" : "ready", detail:data.impactedChapters.length ? `${data.impactedChapters.length} chapter(s) changed` : "No manuscript drift detected" },
+        { n:"03", title:"Demo + proof", status: [...data.demos, ...data.gates].some(x => x.status === "blocked") ? "blocked" : [...data.demos, ...data.gates].some(x => x.status !== "ready") ? "needs-refresh" : "ready", detail:`${data.gates.filter(x => x.passed).length}/${data.gates.length} gates pass` },
+        { n:"04", title:"Human release", status: data.decision === "ready" ? "ready" : "blocked", detail:data.decision === "ready" ? "Evidence package is complete" : "Release stays closed" }
+      ];
+      $("#spine").innerHTML = stages.map(stage => `<article class="stage ${tone(stage.status)}"><div class="node">${stage.n}</div><h3>${stage.title}</h3><p>${stage.detail}</p></article>`).join("");
+      $("#sources").innerHTML = data.sources.map(source => row(source, `${source.why} ${source.changedFiles.length ? `Changed: ${source.changedFiles.map(x => x.path).join(", ")}.` : "Evidence is current."}`, source.owner)).join("");
+      $("#demos").innerHTML = data.demos.map(demo => row(demo, `${demo.cue}${demo.note ? ` Decision note: ${demo.note}` : ""}`, demo.owner,
+        `<div class="status-actions" data-demo="${escapeHtml(demo.id)}"><button data-status="ready">Mark ready</button><button data-status="needs-refresh">Needs rebuild</button><button data-status="blocked">Block</button></div>`
+      )).join("");
+      $("#proof").innerHTML = data.gates.map(gate => row(gate, `${gate.path} · ${gate.passed ? "verified" : `expected ${gate.equals ?? "present"}, found ${gate.actual}`}`, null)).join("");
+      $("#rubric").innerHTML = data.rubric.map(item => row({ ...item, status:"ready" }, item.proof, null)).join("");
+      $("#blockers").innerHTML = data.blockers.length
+        ? data.blockers.map(item => `<div class="blocker"><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.detail)}</p></div>`).join("")
+        : `<div class="blocker ready"><strong>Evidence package complete</strong><p>The canvas found no configured release blocker. Human review remains the publication boundary.</p></div>`;
+      $("#agents").innerHTML = data.agents.map(agent => `<div class="agent"><b>${escapeHtml(agent.name)}</b><span>${escapeHtml(agent.role)}</span></div>`).join("");
+      $("#generated").textContent = `Scanned ${new Date(data.generatedAt).toLocaleString()}`;
+      document.querySelectorAll("[data-demo] button").forEach(button => button.addEventListener("click", updateDemo));
+    }
+
+    async function getSnapshot() {
+      const response = await fetch("/api/snapshot", { cache:"no-store" });
+      if (!response.ok) throw new Error(`Scan failed (${response.status})`);
+      return response.json();
+    }
+    async function refresh() {
+      const button = $("#refresh");
+      button.disabled = true;
+      button.textContent = "Scanning…";
+      try {
+        const response = await fetch("/api/refresh", { method:"POST" });
+        if (!response.ok) throw new Error(`Scan failed (${response.status})`);
+        render(await response.json());
+      } catch (error) {
+        $("#decision").textContent = "Canvas cannot read evidence";
+        $("#decision-detail").textContent = error.message;
+      } finally {
+        button.disabled = false;
+        button.textContent = "Rescan evidence";
+      }
+    }
+    async function updateDemo(event) {
+      const demoId = event.currentTarget.closest("[data-demo]").dataset.demo;
+      const status = event.currentTarget.dataset.status;
+      const response = await fetch("/api/demo-status", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({ demoId, status })
+      });
+      if (response.ok) render(await response.json());
+    }
+    document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(item => item.setAttribute("aria-selected", String(item === tab)));
+      document.querySelectorAll(".view").forEach(view => view.classList.toggle("active", view.id === tab.dataset.view));
+    }));
+    $("#refresh").addEventListener("click", refresh);
+    getSnapshot().then(render).catch((error) => {
+      $("#decision").textContent = "Open this in GitHub Copilot";
+      $("#decision-detail").textContent = error.message;
+    });
+    try {
+      const events = new EventSource("/events");
+      events.addEventListener("snapshot", (event) => render(JSON.parse(event.data)));
+    } catch {}
+  </script>
+</body>
+</html>
