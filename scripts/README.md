@@ -134,6 +134,10 @@ not committed sources.
 
 `validate-book.yml` runs on PRs and is reused by both publishing workflows. It checks the
 helpers, release/evidence contract, pinned whole-corpus compilation, and HTML/PDF generation.
+The hosted Linux runner supplies browser system libraries; CI installs only Chromium,
+without an APT refresh. Browser installation and PDF rendering are separate, bounded
+steps so a download or renderer failure is reported distinctly. Other Linux environments
+may still need Playwright's `--with-deps` setup.
 The PR still needs explicit owner approval; these workflows do not configure branch protection.
 
 For a same-repository, content-only PR, webmaxru approves the current head with a GitHub

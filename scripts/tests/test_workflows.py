@@ -28,6 +28,15 @@ class WorkflowTests(unittest.TestCase):
         self.assertNotIn("record-review", commands)
         self.assertIn("APPINSIGHTS_CONNECTION_STRING", str(steps))
 
+    def test_browser_install_and_pdf_render_have_separate_bounds(self):
+        steps = self.workflow("validate-book.yml")["jobs"]["validate"]["steps"]
+        install = next(step for step in steps if "playwright install" in step.get("run", ""))
+        render = next(step for step in steps if "scripts/build_pdf.py" in step.get("run", ""))
+        self.assertNotIn("--with-deps", install["run"])
+        self.assertEqual(install["timeout-minutes"], "5")
+        self.assertEqual(render["timeout-minutes"], "5")
+        self.assertEqual(render["working-directory"], "source")
+
     def test_both_publishers_require_validation_and_consume_its_artifact(self):
         for name, publisher in (("deploy-pages.yml", "deploy"), ("release-content.yml", "release")):
             with self.subTest(workflow=name):
