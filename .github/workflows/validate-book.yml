@@ -1,4 +1,4 @@
-name: Validate book
+name: Check book update
 
 on:
   pull_request:
@@ -17,6 +17,9 @@ on:
       artifact-name:
         type: string
         default: validated-book
+      require-content-change:
+        type: boolean
+        default: false
     outputs:
       source-sha:
         value: ${{ jobs.validate.outputs.source-sha }}
@@ -30,6 +33,7 @@ permissions:
 
 jobs:
   validate:
+    name: Book release preflight
     runs-on: ubuntu-latest
     timeout-minutes: 30
     outputs:
@@ -66,6 +70,7 @@ jobs:
         id: meta
         env:
           COMPARISON_BASE: ${{ inputs.comparison-base }}
+          REQUIRE_CONTENT_CHANGE: ${{ inputs.require-content-change }}
         run: |
           ARGS=()
           if [[ -n "$COMPARISON_BASE" ]]; then
@@ -77,6 +82,8 @@ jobs:
           import json, os, subprocess
           from pathlib import Path
           data = json.loads(Path("validation.json").read_text())
+          if os.environ.get("REQUIRE_CONTENT_CHANGE") == "true" and not data["changed"]:
+              raise SystemExit("No reader-visible content change since the published edition.")
           data["source_sha"] = subprocess.check_output(
               ["git", "-C", "source", "rev-parse", "HEAD"], text=True
           ).strip()

@@ -1,0 +1,124 @@
+name: Release approved book
+
+on:
+  issue_comment:
+    types: [created, edited, deleted]
+  workflow_run:
+    workflows: ["Book review signal", "Check book update"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      pull-request:
+        description: "Content PR number for an explicit retry"
+        required: true
+        type: number
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: read
+
+concurrency:
+  group: release-approved-book
+  cancel-in-progress: false
+
+jobs:
+  select:
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name != 'issue_comment' ||
+       (github.event.issue.pull_request && github.event.comment.user.login == 'webmaxru' &&
+        github.event.action != 'deleted' && startsWith(github.event.comment.body, '/release-book ')))
+    runs-on: ubuntu-latest
+    outputs:
+      number: ${{ steps.select.outputs.number }}
+      head: ${{ steps.select.outputs.head }}
+      base: ${{ steps.select.outputs.base }}
+      comparison: ${{ steps.select.outputs.comparison }}
+      merge-sha: ${{ steps.select.outputs.merge_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - id: select
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          COMMENT_PR: ${{ github.event.issue.pull_request.url && github.event.issue.number || '' }}
+          INPUT_PR: ${{ inputs.pull-request }}
+        run: |
+          args=()
+          if [[ "$EVENT_NAME" == "issue_comment" ]]; then
+            if [[ -z "$COMMENT_PR" ]]; then exit 0; fi
+            args=(--number "$COMMENT_PR")
+          elif [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            args=(--number "$INPUT_PR")
+          fi
+          python scripts/approved_book.py select "${args[@]}" > selected.json
+          python - <<'PY'
+          import json, os, subprocess
+          data = json.load(open("selected.json"))
+          if data:
+              comparison = data["comparison"]
+              subprocess.run(["git", "merge-base", "--is-ancestor", comparison, data["base"]], check=True)
+              with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+                  for key in ("number", "head", "base"):
+                      print(f"{key}={data[key]}", file=out)
+                  print(f"comparison={comparison}", file=out)
+                  print(f"merge_sha={data.get('merge_sha', '')}", file=out)
+          PY
+
+  preflight:
+    needs: select
+    if: needs.select.outputs.number != '' && needs.select.outputs.merge-sha == ''
+    uses: ./.github/workflows/validate-book.yml
+    with:
+      source-ref: ${{ needs.select.outputs.head }}
+      comparison-base: ${{ needs.select.outputs.comparison }}
+      artifact-name: approved-head
+      require-content-change: true
+
+  merge:
+    needs: [select, preflight]
+    if: needs.select.outputs.number != '' && needs.select.outputs.merge-sha == '' && needs.preflight.outputs.source-sha == needs.select.outputs.head
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: read
+    outputs:
+      merge-sha: ${{ steps.merge.outputs.merge_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - id: merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ needs.select.outputs.number }}
+          HEAD: ${{ needs.select.outputs.head }}
+          BASE: ${{ needs.select.outputs.base }}
+          COMPARISON: ${{ needs.select.outputs.comparison }}
+        run: |
+          python scripts/approved_book.py merge --number "$NUMBER" --head "$HEAD" --base "$BASE" --comparison "$COMPARISON" > merged.json
+          python -c 'import json,os; print("merge_sha="+json.load(open("merged.json"))["merge_sha"], file=open(os.environ["GITHUB_OUTPUT"],"a"))'
+
+  publish:
+    needs: [select, merge]
+    if: always() && needs.select.result == 'success' && needs.select.outputs.number != '' && (needs.merge.result == 'success' || needs.select.outputs.merge-sha != '')
+    uses: ./.github/workflows/release-content.yml
+    permissions:
+      contents: write
+      pull-requests: read
+      checks: read
+      pages: write
+    with:
+      pull-request: ${{ needs.select.outputs.number }}
+      source-sha: ${{ needs.merge.outputs.merge-sha || needs.select.outputs.merge-sha }}
+      merge-base: ${{ needs.select.outputs.base }}
+      comparison-base: ${{ needs.select.outputs.comparison }}

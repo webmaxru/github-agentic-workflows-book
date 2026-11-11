@@ -469,7 +469,7 @@ def github_release(repository: str, tag: str) -> dict[str, Any] | None:
 
 def release_plan(
     root: Path, repository: str, base: str | None = None,
-    env: Mapping[str, str] | None = None,
+    env: Mapping[str, str] | None = None, expected_source: str | None = None,
 ) -> dict[str, Any]:
     """Read-only publication planning; existing tags always select their own source."""
     if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
@@ -477,10 +477,21 @@ def release_plan(
     version = content_version.read_version(root / "content" / "VERSION")
     tag = content_version.tag_for(version)
     asset = f"gh-aw-book-v{version}.pdf"
+    tag_exists = tag in git(root, "tag", "--list", tag).decode().splitlines()
+    if expected_source is not None:
+        expected = resolve_ref(root, expected_source)
+        if expected != resolve_ref(root, "HEAD"):
+            raise ReleaseError("Expected source does not match the checked-out source.")
+        if tag_exists and resolve_ref(root, tag) != expected:
+            raise ReleaseError(f"Existing tag {tag} points to a different source.")
     metadata = github_release(repository, tag)
     if metadata is not None:
         if metadata.get("tag_name") != tag or not isinstance(metadata.get("assets"), list):
             raise ReleaseError("The release API response does not match the requested tag/assets.")
+        if metadata.get("prerelease"):
+            raise ReleaseError(f"Release {tag} is a prerelease; explicit recovery is required.")
+        if expected_source is not None and not tag_exists:
+            raise ReleaseError(f"Release {tag} exists but its tag is unavailable.")
         matching = [item for item in metadata["assets"] if item.get("name") == asset]
         if matching:
             if (
@@ -489,19 +500,23 @@ def release_plan(
                 and type(matching[0].get("size")) is int
                 and matching[0]["size"] > 0
             ):
-                return {"action": "skip", "version": version, "tag": tag, "asset": asset}
-            details = "; ".join(
-                f"id={item.get('id')!r}, state={item.get('state')!r}, size={item.get('size')!r}"
-                for item in matching
-            )
-            raise ReleaseError(
-                f"Release {tag} has an incomplete or ambiguous upload for {asset} ({details}). "
-                "A completed asset must have state='uploaded' and a positive integer size. "
-                f"Inspect https://github.com/{repository}/releases/tag/{tag}; have a maintainer "
-                "restore the correct tagged PDF or remove the incomplete asset before retrying "
-                "exact-tag repair. No asset was deleted or overwritten."
-            )
-    tag_exists = tag in git(root, "tag", "--list", tag).decode().splitlines()
+                if not metadata.get("draft"):
+                    return {"action": "skip", "version": version, "tag": tag, "asset": asset}
+                has_asset = True
+            else:
+                details = "; ".join(
+                    f"id={item.get('id')!r}, state={item.get('state')!r}, size={item.get('size')!r}"
+                    for item in matching
+                )
+                raise ReleaseError(
+                    f"Release {tag} has an incomplete or ambiguous upload for {asset} ({details}). "
+                    "A completed asset must have state='uploaded' and a positive integer size. "
+                    f"Inspect https://github.com/{repository}/releases/tag/{tag}; have a maintainer "
+                    "restore the correct tagged PDF or remove the incomplete asset before retrying "
+                    "exact-tag repair. No asset was deleted or overwritten."
+                )
+        else:
+            has_asset = False
     if metadata is not None and not tag_exists:
         raise ReleaseError(f"Release {tag} exists but its tag is unavailable; fetch tags before repair.")
     source = resolve_ref(root, tag if tag_exists else "HEAD")
@@ -525,7 +540,8 @@ def release_plan(
     )
     comparison, reason = (tag, "existing-tag-replay") if tag_exists else select_base(root, base, env)
     return {
-        "action": "upload" if metadata is not None else "create",
+        "action": ("publish" if metadata is not None and has_asset else
+                   "upload" if metadata is not None else "create"),
         "version": version,
         "tag": tag,
         "asset": asset,
@@ -534,6 +550,7 @@ def release_plan(
         "comparison_base": comparison,
         "base_reason": reason,
         "tag_exists": tag_exists,
+        "draft": bool(metadata and metadata.get("draft")),
     }
 
 
@@ -615,6 +632,7 @@ def main(argv: list[str] | None = None) -> int:
     plan_parser = commands.add_parser("release-plan", help="Read-only create/repair/skip source selection.")
     plan_parser.add_argument("--repo", required=True)
     plan_parser.add_argument("--base")
+    plan_parser.add_argument("--expected-source")
     review_parser = commands.add_parser("record-review", help="Record an actual editorial verdict.")
     review_parser.add_argument(
         "--report", required=True,
@@ -637,7 +655,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "check-generated":
             print(_json(check_generated(root)), end="")
         elif args.command == "release-plan":
-            print(_json(release_plan(root, args.repo, args.base)), end="")
+            print(_json(release_plan(root, args.repo, args.base, expected_source=args.expected_source)), end="")
         elif args.command == "record-review":
             record = _json(review_record(root, args.report, args.verdict))
             (root / REVIEW_PATH).write_text(record, encoding="utf-8", newline="\n")

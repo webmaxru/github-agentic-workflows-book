@@ -30,7 +30,8 @@ maintenance does not rebuild architecture or scaffold over existing chapters.
 `-PromptPath` cannot be combined with `-Mode`/`-TargetVersion`. The headless launcher uses
 `copilot -p ... --allow-all-tools`, which grants broad tool access; use an interactive
 Copilot session instead when you want per-action approvals. Prompts stop at a prepared PR.
-They do not grant permission to merge, dispatch publishing, or create a release.
+They do not themselves merge, dispatch publishing, or create a release. The separately
+configured approval controller acts only after an eligible content PR receives owner approval.
 
 ## Version and evidence contracts
 
@@ -133,16 +134,29 @@ not committed sources.
 
 `validate-book.yml` runs on PRs and is reused by both publishing workflows. It checks the
 helpers, release/evidence contract, pinned whole-corpus compilation, and HTML/PDF generation.
-The PR still needs human review/merge; these workflows do not configure branch protection.
+The PR still needs explicit owner approval; these workflows do not configure branch protection.
 
-After merge, `deploy-pages.yml` publishes the current online edition and
-`release-content.yml` publishes its matching tag, changelog notes, and versioned PDF.
-Both consume the exact artifacts produced by validation instead of rebuilding afterward.
-The release workflow also evaluates content/example/tooling pushes; a complete existing
-release is a no-op, not a new tooling edition. Missing-asset repair must build the original tagged
-source, never a different HEAD under an old edition label. Legacy tags without build/version
-metadata require explicit historical recovery. A failed/empty existing upload is surfaced
-for recovery, not mistaken for a complete PDF or silently overwritten.
+For a same-repository, content-only PR, webmaxru approves the current head with a GitHub
+review. Since GitHub prevents self-approval, a webmaxru-authored PR instead requires an
+owner comment `/release-book <full-40-character-head-sha>`. The trusted controller
+rechecks the approval, scope and checks, validates the head, merges with a SHA precondition,
+and explicitly chains a second validation and publication of the exact merge commit.
+`release-content.yml` creates a draft with the PDF before publishing, then deploys the
+same validated site without the gated PDF. A direct content push never releases.
+Because a `GITHUB_TOKEN` push does not itself trigger a branch-source Pages build,
+the publisher requests a legacy Pages build through GitHub's API and fails unless that
+build reports the exact generated `gh-pages` commit. It needs `pages: write`; check the
+workflow result if the repository or token cannot request that build.
+To retry a failed merge/publication, dispatch `Release approved book` on `main` with the PR
+number; authorization and source are rechecked. A complete release is a no-op and repair
+never substitutes a newer source. A failed/empty asset requires manual recovery. Legacy
+tags without build/version metadata require explicit historical recovery. Historical
+repairs do not replace the current site or mark an older release as latest.
+
+The controller rejects workflow, script, dependency, presentation and other infrastructure
+changes even if they accompany content; prepare those separately. `deploy-pages.yml`
+continues to deploy infrastructure changes only while book content matches the last
+published edition.
 
 ## Resume an interrupted update
 
