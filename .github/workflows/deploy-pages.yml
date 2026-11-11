@@ -9,8 +9,6 @@ on:
     branches: [main]
     paths:
       - "site/**"
-      - "content/**"
-      - "examples/**"
       - "assets/**"
       - "scripts/**"
       - "analytics/**"
@@ -28,7 +26,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  published-source:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Require content to match the last published edition
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="$(python -c "import sys; sys.path.insert(0,'scripts'); import release_content as r; print(r.select_base(r.ROOT, env={})[0])")"
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq '.isDraft == false' | grep -qx true
+          git diff --quiet "$TAG" HEAD -- content examples
   validate:
+    needs: published-source
     uses: ./.github/workflows/validate-book.yml
     with:
       artifact-name: validated-pages
@@ -38,7 +52,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pages: write
     steps:
+      - name: Checkout trusted Pages helper
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
       - name: Download the validated site and analytics beacon
         uses: actions/download-artifact@v4
         with:
@@ -50,6 +70,8 @@ jobs:
 
       - name: Publish the validated site to gh-pages
         run: |
+          test "$(GH_TOKEN="$GITHUB_TOKEN" gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" = "$SOURCE_SHA"
+          GH_TOKEN="$GITHUB_TOKEN" python scripts/publish_pages.py check
           cd artifact/site
           touch .nojekyll
           git init -q -b gh-pages
@@ -57,7 +79,9 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -q -m "Deploy ${SOURCE_SHA} from ${GITHUB_REF_NAME}"
+          DEPLOY_SHA="$(git rev-parse HEAD)"
           git push -q --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+          GH_TOKEN="$GITHUB_TOKEN" python "$GITHUB_WORKSPACE/scripts/publish_pages.py" build --commit "$DEPLOY_SHA"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SOURCE_SHA: ${{ needs.validate.outputs.source-sha }}

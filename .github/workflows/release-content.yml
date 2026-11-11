@@ -1,21 +1,25 @@
-name: Release book content
+name: Publish approved book
 
-# Content editions are independent of tooling/framework pins. Existing complete
-# releases are no-ops. Missing assets are built from their existing tag, never
-# from a newer checkout that happens to have the same content/VERSION.
 on:
-  push:
-    branches: [main]
-    paths:
-      - "content/**"
-      - "examples/**"
-      - "scripts/**"
-      - ".github/workflows/release-content.yml"
-      - ".github/workflows/validate-book.yml"
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      pull-request:
+        type: string
+        required: true
+      source-sha:
+        type: string
+        required: true
+      merge-base:
+        type: string
+        required: true
+      comparison-base:
+        type: string
+        required: true
 
 permissions:
   contents: read
+  pull-requests: read
+  checks: read
 
 concurrency:
   group: release-content
@@ -29,82 +33,131 @@ jobs:
       version: ${{ steps.plan.outputs.version }}
       tag: ${{ steps.plan.outputs.tag }}
       asset: ${{ steps.plan.outputs.asset }}
-      source_sha: ${{ steps.plan.outputs.source_sha }}
-      framework_version: ${{ steps.plan.outputs.framework_version }}
-      comparison_base: ${{ steps.plan.outputs.comparison_base }}
-      tag_exists: ${{ steps.plan.outputs.tag_exists }}
+      draft: ${{ steps.plan.outputs.draft }}
+      tag-exists: ${{ steps.plan.outputs.tag_exists }}
     steps:
-      - name: Checkout the triggering source and all edition tags
+      - name: Checkout trusted control code
         uses: actions/checkout@v4
         with:
+          ref: main
+          path: tooling
           fetch-depth: 0
           persist-credentials: false
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Checkout approved merged source
+        uses: actions/checkout@v4
         with:
-          python-version: "3.12"
-
-      - name: Select create, exact-tag repair, or idempotent skip
+          ref: ${{ inputs.source-sha }}
+          path: source
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify the approved PR and exact merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ inputs.pull-request }}
+          SOURCE_SHA: ${{ inputs.source-sha }}
+          MERGE_BASE: ${{ inputs.merge-base }}
+        run: |
+          python tooling/scripts/approved_book.py verify-merged --number "$NUMBER" --merge-sha "$SOURCE_SHA" --base "$MERGE_BASE"
+          git -C tooling merge-base --is-ancestor "$SOURCE_SHA" HEAD
+      - name: Select immutable publication action
         id: plan
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ inputs.source-sha }}
+          COMPARISON: ${{ inputs.comparison-base }}
         run: |
-          python scripts/release_content.py release-plan --repo "$GITHUB_REPOSITORY" > release-plan.json
-          cat release-plan.json
+          python tooling/scripts/release_content.py --root source release-plan --repo "$GITHUB_REPOSITORY" --base "$COMPARISON" --expected-source "$SOURCE_SHA" > plan.json
+          cat plan.json
           python - <<'PY'
           import json, os
-          from pathlib import Path
-          data = json.loads(Path("release-plan.json").read_text())
-          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+          data = json.load(open("plan.json"))
+          if data["action"] != "skip" and not data.get("tag_exists"):
+              import subprocess
+              main = subprocess.check_output(["git", "-C", "tooling", "rev-parse", "HEAD"], text=True).strip()
+              if main != os.environ["SOURCE_SHA"]:
+                  raise SystemExit("Cannot create a release for an outdated main commit.")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
               for key, value in data.items():
                   if isinstance(value, bool):
                       value = str(value).lower()
-                  output.write(f"{key}={value}\n")
+                  print(f"{key}={value}", file=out)
           PY
 
   validate:
     needs: plan
-    if: needs.plan.outputs.action != 'skip'
     uses: ./.github/workflows/validate-book.yml
     with:
-      source-ref: ${{ needs.plan.outputs.source_sha }}
-      comparison-base: ${{ needs.plan.outputs.comparison_base }}
+      source-ref: ${{ inputs.source-sha }}
+      comparison-base: ${{ inputs.comparison-base }}
       artifact-name: validated-release
+      require-content-change: true
 
   release:
     needs: [plan, validate]
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: read
+      checks: read
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      ACTION: ${{ needs.plan.outputs.action }}
+      GH_TOKEN: ${{ github.token }}
       TAG: ${{ needs.plan.outputs.tag }}
       VERSION: ${{ needs.plan.outputs.version }}
       ASSET: ${{ needs.plan.outputs.asset }}
-      SOURCE_SHA: ${{ needs.plan.outputs.source_sha }}
-      FRAMEWORK_VERSION: ${{ needs.plan.outputs.framework_version }}
-      TAG_EXISTS: ${{ needs.plan.outputs.tag_exists }}
+      ACTION: ${{ needs.plan.outputs.action }}
+      DRAFT: ${{ needs.plan.outputs.draft }}
+      TAG_EXISTS: ${{ needs.plan.outputs.tag-exists }}
+      SOURCE_SHA: ${{ inputs.source-sha }}
     steps:
-      - name: Download the gated artifact, without rebuilding
-        uses: actions/download-artifact@v4
+      - name: Checkout trusted authorization code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Recheck approval and source before publication
+        env:
+          NUMBER: ${{ inputs.pull-request }}
+          MERGE_BASE: ${{ inputs.merge-base }}
+        run: |
+          python scripts/approved_book.py verify-merged --number "$NUMBER" --merge-sha "$SOURCE_SHA" --base "$MERGE_BASE"
+          if [[ "$ACTION" != "skip" && "$TAG_EXISTS" != "true" ]]; then
+            test "$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" = "$SOURCE_SHA"
+          fi
+      - uses: actions/download-artifact@v4
         with:
           name: validated-release
           path: artifact
-
-      - name: Check artifact identity and prepare release notes
+      - name: Verify artifact and prohibit older releases becoming latest
+        id: versions
         run: |
           python - <<'PY'
           import json, os
-          from pathlib import Path
-          data = json.loads(Path("artifact/validation.json").read_text())
-          for key, env in (("version", "VERSION"), ("tag", "TAG"), ("source_sha", "SOURCE_SHA"),
-                           ("framework_version", "FRAMEWORK_VERSION")):
-              if data.get(key) != os.environ[env]:
+          data = json.load(open("artifact/validation.json"))
+          for key, expected in (("version", "VERSION"), ("tag", "TAG"), ("source_sha", "SOURCE_SHA")):
+              if data.get(key) != os.environ[expected]:
                   raise SystemExit(f"Validated artifact mismatch: {key}")
           if data.get("status") != "PASS":
-              raise SystemExit("The artifact did not pass validation.")
+              raise SystemExit("Artifact did not pass validation.")
+          PY
+          gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/releases?per_page=100" > releases.json
+          python - <<'PY'
+          import json, os, re
+          version = tuple(int(x) for x in os.environ["VERSION"].split("."))
+          version = (version + (0, 0, 0))[:3]
+          newer = False
+          for page in json.load(open("releases.json")):
+              for release in page:
+                  match = re.fullmatch(r"content-v(\d+)\.(\d+)(?:\.(\d+))?", release["tag_name"])
+                  if match and not release["draft"] and not release["prerelease"]:
+                      other = tuple(int(x or 0) for x in match.groups())
+                      if other == version and release["tag_name"] != os.environ["TAG"]:
+                          raise SystemExit("Another tag identifies this content edition.")
+                      if other > version:
+                          newer = True
+          if newer and os.environ["ACTION"] == "create":
+              raise SystemExit("Cannot create an older edition after a newer release.")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              print(f"latest={str(not newer).lower()}", file=out)
           PY
           cp artifact/site/gh-aw-book.pdf "$ASSET"
           {
@@ -114,36 +167,68 @@ jobs:
             echo
             echo "---"
             echo
-            echo "📖 Read online: https://aw.isainative.dev/ · [Version history](https://aw.isainative.dev/versions.html)"
+            echo "Read online: https://aw.isainative.dev/ · [Version history](https://aw.isainative.dev/versions.html)"
             echo
-            echo "📄 The single-file PDF for this version is attached below."
+            echo "The single-file PDF for this version is attached below."
           } > release-notes.md
-
-      - name: Create or verify the tag without overwriting another source
+      - name: Create or verify immutable tag
         run: |
-          if [[ "$TAG_EXISTS" != "true" ]]; then
-            # Atomic creation fails if another publisher created the ref meanwhile.
-            gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" \
-              -f ref="refs/tags/$TAG" -f sha="$SOURCE_SHA" --silent
+          if [[ "$ACTION" != "skip" && "$TAG_EXISTS" != "true" ]]; then
+            gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref="refs/tags/$TAG" -f sha="$SOURCE_SHA" --silent
           fi
-          ACTUAL_SHA="$(gh api "repos/$GITHUB_REPOSITORY/commits/$TAG" --jq .sha)"
-          if [[ "$ACTUAL_SHA" != "$SOURCE_SHA" ]]; then
-            echo "::error::Tag $TAG no longer points to the validated source; refusing to publish."
-            exit 1
-          fi
-
-      - name: Create the content release
+          test "$(gh api "repos/$GITHUB_REPOSITORY/commits/$TAG" --jq .sha)" = "$SOURCE_SHA"
+      - name: Create draft with validated PDF
         if: env.ACTION == 'create'
         run: |
-          gh release create "$TAG" \
-            "$ASSET#GitHub Agentic Workflows — v$VERSION (PDF)" \
-            --repo "$GITHUB_REPOSITORY" --verify-tag \
+          gh release create "$TAG" "$ASSET#GitHub Agentic Workflows — v$VERSION (PDF)" \
+            --repo "$GITHUB_REPOSITORY" --verify-tag --draft \
             --title "Content v$VERSION" --notes-file release-notes.md
-
-      - name: Repair the missing PDF using only the exact-tag artifact
+      - name: Upload missing PDF without overwriting
         if: env.ACTION == 'upload'
+        run: gh release upload "$TAG" "$ASSET#GitHub Agentic Workflows — v$VERSION (PDF)" --repo "$GITHUB_REPOSITORY"
+      - name: Publish completed draft
+        if: env.ACTION == 'create' || env.DRAFT == 'true'
+        env:
+          LATEST: ${{ steps.versions.outputs.latest }}
+        run: gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest="$LATEST"
+
+  pages:
+    needs: [validate, release]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-gh-pages
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - name: Checkout trusted Pages helper
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: validated-release
+          path: artifact
+      - name: Publish exact validated site without gated PDF
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ inputs.source-sha }}
         run: |
-          # Do not clobber an asset uploaded concurrently by another publisher.
-          gh release upload "$TAG" \
-            "$ASSET#GitHub Agentic Workflows — v$VERSION (PDF)" \
-            --repo "$GITHUB_REPOSITORY"
+          if [[ "$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" != "$SOURCE_SHA" ]]; then
+            echo "Historical release recovery: leaving the current site unchanged."
+            exit 0
+          fi
+          python scripts/publish_pages.py check
+          rm -f artifact/site/gh-aw-book.pdf
+          cd artifact/site
+          touch .nojekyll
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Deploy $SOURCE_SHA"
+          DEPLOY_SHA="$(git rev-parse HEAD)"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+          python "$GITHUB_WORKSPACE/scripts/publish_pages.py" build --commit "$DEPLOY_SHA"

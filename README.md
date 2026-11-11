@@ -355,15 +355,13 @@ historical editions.
 
 **GitHub Releases.** Each content version is published as a GitHub Release tagged
 `content-v<version>` with the matching single-file PDF attached. This is automated by
-[`.github/workflows/release-content.yml`](.github/workflows/release-content.yml): when a push to
-`main` changes content, examples, release tooling, or the release/validation workflow,
-the planner selects a new release, exact-tag repair, or idempotent no-op. New editions and
-repairs must pass the reusable validation gate, which builds the exact site/PDF artifacts
-the publishers consume without rebuilding. A complete existing release is a no-op, not a
-new tooling edition. A missing-asset repair must use the original tag's
-source, not the current branch's content. Manual dispatch is a separately authorized
-recovery operation, not a way to bypass review. Legacy tags that predate the build/version
-metadata need explicit historical recovery; the original v1.0 remains notes-only.
+[`Release approved book`](.github/workflows/release-approved-book.yml) checks the PR's
+exact revision, approval and content-only scope, then validates and merges it. It explicitly
+chains publication of the exact merge commit; a direct push does not release a book.
+The release is created as a draft, receives its validated PDF, and is then published.
+The same validated build supplies the website, without its gated PDF. Existing complete
+releases are no-ops; repairs use only the original tag. Legacy tags without release
+metadata require explicit historical recovery.
 
 **To prepare a new version:**
 
@@ -373,9 +371,22 @@ metadata need explicit historical recovery; the original v1.0 remains notes-only
    changes require renewed review.
 3. Run `/release-content`: inspect real pending prose changes (including uncommitted files),
    add the changelog entry, bump the prose edition, and regenerate HTML/PDF.
-4. Open a PR and pass `validate-book.yml`. A human reviews and merges it.
-5. The gated deploy and release workflows publish the site and `content-v<edition>` with
-   its matching PDF. Confirm both outcomes before calling it published.
+4. Open a same-repository content-only PR targeting `main` and pass **Book release preflight**.
+   If the PR has a different author, webmaxru approves the current head in GitHub review.
+   GitHub does not allow authors to approve their own PRs, so for a webmaxru-authored PR
+   comment `/release-book <full-40-character-head-sha>` instead. A new commit needs a new
+   approval. Deleting the command withdraws it.
+5. The controller rechecks approval, files and checks, merges with a head-SHA precondition,
+   validates the merged source and publishes the website and `content-v<edition>` PDF.
+   Check **Release approved book** for errors. To retry an interrupted publication, dispatch
+   that workflow on `main` with the PR number; it rechecks the original authorization.
+   Historical repairs keep their original tag and never replace the current website or
+   mark an older release as latest.
+
+Automatic merge rejects mixed infrastructure changes, including workflows, scripts,
+dependency manifests, and presentation assets. Those PRs retain ordinary CI and must be
+reviewed separately. Infrastructure-only site deployments require book content to match the
+last published edition.
 
 `scripts/release_content.py` rejects metadata-only edition bumps, invalid versions,
 missing notes, and stale review evidence. The workflow gate compiles every standalone
