@@ -6,7 +6,6 @@ import os
 import re
 import sys
 import time
-from urllib.parse import urlsplit
 
 from approved_book import GitHub, GitHubError, PolicyError, SHA
 
@@ -22,13 +21,11 @@ def request_build(api, commit, *, sleep=time.sleep, attempts=60):
         raise PolicyError("An exact gh-pages commit SHA is required.")
     check_source(api)
     response = api.request(f"/repos/{api.repo}/pages/builds", "POST")
-    url = urlsplit(response.get("url", ""))
-    expected_path = f"/repos/{api.repo}/pages/builds/"
-    if (url.scheme != "https" or url.netloc != "api.github.com"
-            or not re.fullmatch(re.escape(expected_path) + r"\d+", url.path)
-            or url.query or url.fragment):
+    url = response.get("url")
+    repo_url = f"https://api.github.com/repos/{api.repo}/"
+    if not isinstance(url, str) or not re.fullmatch(re.escape(repo_url) + r"pages/builds/(?:latest|[0-9]+)", url):
         raise PolicyError("Pages returned an unexpected build URL.")
-    suffix = url.path.removeprefix(f"/repos/{api.repo}/")
+    suffix = url.removeprefix(repo_url)
     for attempt in range(attempts):
         build = api.get(suffix)
         if build.get("status") == "built":
