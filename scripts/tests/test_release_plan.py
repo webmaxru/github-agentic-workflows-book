@@ -169,6 +169,22 @@ class ReleasePlanTests(RepositoryTest):
         with self.assertRaisesRegex(release.ReleaseError, "selected source contains 1.0"):
             release.release_plan(self.root, "owner/book", env={})
 
+    @patch.object(release, "github_release")
+    def test_expected_source_rejects_tag_reuse_and_complete_draft_resumes(self, api):
+        self.accept()
+        self.commit()
+        head = self.git("rev-parse", "HEAD")
+        api.return_value = self.metadata(["gh-aw-book-v1.1.pdf"])
+        with self.assertRaisesRegex(release.ReleaseError, "different source"):
+            release.release_plan(self.root, "owner/book", env={}, expected_source=head)
+        self.git("tag", "--force", "content-v1.1")
+        api.return_value["draft"] = True
+        plan = release.release_plan(self.root, "owner/book", env={}, expected_source=head)
+        self.assertEqual(plan["action"], "publish")
+        self.assertTrue(plan["draft"])
+        api.return_value["draft"] = False
+        self.assertEqual(release.release_plan(self.root, "owner/book", env={}, expected_source=head)["action"], "skip")
+
 
 if __name__ == "__main__":
     unittest.main()

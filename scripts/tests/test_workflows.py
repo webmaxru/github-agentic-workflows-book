@@ -28,29 +28,65 @@ class WorkflowTests(unittest.TestCase):
         self.assertNotIn("record-review", commands)
         self.assertIn("APPINSIGHTS_CONNECTION_STRING", str(steps))
 
+    def test_browser_install_and_pdf_render_have_separate_bounds(self):
+        steps = self.workflow("validate-book.yml")["jobs"]["validate"]["steps"]
+        install = next(step for step in steps if "playwright install" in step.get("run", ""))
+        render = next(step for step in steps if "scripts/build_pdf.py" in step.get("run", ""))
+        self.assertNotIn("--with-deps", install["run"])
+        self.assertEqual(install["timeout-minutes"], "5")
+        self.assertEqual(render["timeout-minutes"], "5")
+        self.assertEqual(render["working-directory"], "source")
+
     def test_both_publishers_require_validation_and_consume_its_artifact(self):
         for name, publisher in (("deploy-pages.yml", "deploy"), ("release-content.yml", "release")):
             with self.subTest(workflow=name):
                 workflow = self.workflow(name)
-                self.assertEqual(workflow["permissions"], {"contents": "read"})
+                self.assertEqual(workflow["permissions"]["contents"], "read")
                 jobs = workflow["jobs"]
                 self.assertEqual(jobs["validate"]["uses"], "./.github/workflows/validate-book.yml")
                 self.assertIn("validate", jobs[publisher]["needs"])
-                self.assertEqual(jobs[publisher]["permissions"], {"contents": "write"})
+                self.assertEqual(jobs[publisher]["permissions"]["contents"], "write")
                 steps = jobs[publisher]["steps"]
                 self.assertTrue(any(step.get("uses", "").startswith("actions/download-artifact@") for step in steps))
                 self.assertFalse(any("scripts/build_pdf.py" in step.get("run", "") for step in steps))
-                self.assertIn("examples/**", workflow["on"]["push"]["paths"])
+        self.assertNotIn("push", self.workflow("release-content.yml")["on"])
+        self.assertNotIn("workflow_dispatch", self.workflow("release-content.yml")["on"])
 
     def test_release_repairs_use_explicit_source_and_never_clobber(self):
         jobs = self.workflow("release-content.yml")["jobs"]
-        self.assertIn("source_sha", jobs["validate"]["with"]["source-ref"])
-        self.assertIn("comparison_base", jobs["validate"]["with"]["comparison-base"])
+        self.assertIn("source-sha", jobs["validate"]["with"]["source-ref"])
+        self.assertIn("comparison-base", jobs["validate"]["with"]["comparison-base"])
         commands = "\n".join(step.get("run", "") for step in jobs["release"]["steps"])
         self.assertIn("--verify-tag", commands)
-        self.assertIn("ACTUAL_SHA", commands)
+        self.assertIn("--draft", commands)
+        self.assertIn("--draft=false", commands)
         self.assertNotIn("--clobber", commands)
         self.assertNotIn("--target", commands)
+
+    def test_controller_is_default_branch_trusted_and_chains_publication(self):
+        signal = self.workflow("book-review-signal.yml")
+        self.assertEqual(signal["permissions"], {})
+        self.assertIn("pull_request_review", signal["on"])
+        controller = self.workflow("release-approved-book.yml")
+        self.assertIn("workflow_run", controller["on"])
+        self.assertIn("issue_comment", controller["on"])
+        self.assertIn("refs/heads/main", controller["jobs"]["select"]["if"])
+        self.assertIn("preflight", controller["jobs"]["merge"]["needs"])
+        self.assertEqual(controller["jobs"]["preflight"]["with"]["require-content-change"], "true")
+        self.assertEqual(controller["jobs"]["publish"]["uses"], "./.github/workflows/release-content.yml")
+        self.assertIn("merge-sha", controller["jobs"]["publish"]["with"]["source-sha"])
+        release = self.workflow("release-content.yml")
+        self.assertEqual(release["jobs"]["validate"]["with"]["require-content-change"], "true")
+
+    def test_legacy_pages_build_is_explicit_and_checks_generated_commit(self):
+        for workflow, job in (("deploy-pages.yml", "deploy"), ("release-content.yml", "pages")):
+            with self.subTest(workflow=workflow):
+                settings = self.workflow(workflow)["jobs"][job]
+                self.assertEqual(settings["permissions"]["pages"], "write")
+                commands = "\n".join(step.get("run", "") for step in settings["steps"])
+                self.assertIn("publish_pages.py", commands)
+                self.assertIn('build --commit "$DEPLOY_SHA"', commands)
+                self.assertIn("gh-aw-book.pdf", commands)
 
 
 if __name__ == "__main__":

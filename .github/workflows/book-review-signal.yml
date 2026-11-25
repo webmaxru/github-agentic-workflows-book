@@ -1,0 +1,13 @@
+name: Book review signal
+
+on:
+  pull_request_review:
+    types: [submitted, dismissed]
+
+permissions: {}
+
+jobs:
+  signal:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Review event received; trusted controller independently checks authorization."

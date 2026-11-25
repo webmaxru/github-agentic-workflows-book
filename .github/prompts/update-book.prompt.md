@@ -145,7 +145,9 @@ completed preparation handoff, not a claim of publication. On a later fresh upda
 ignore prepared historical plans when deciding whether to resolve a new latest target.
 The reusable
 validation workflow checks source/evidence, pinned compilation, and site/PDF builds before
-the existing publishing workflows can run. Leave the PR for human review and merge.
+publication. Leave the content-only PR for owner approval; the release controller handles
+an eligible approved merge. Keep workflow, script, dependency and presentation changes
+in a separate PR.
 
 ## Coordination and stopping rules
 

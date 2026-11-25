@@ -11,7 +11,7 @@ refresh, first run `.github/prompts/update-book.prompt.md`.
 **What changed:** <content-change summary, or inspect the pending content diff>
 **Baseline release:** <last published content-v tag; resolve it if unset>
 **Version bump:** <major | minor | patch | explicit x.y or x.y.z>
-**Publication boundary:** open a PR and stop; a human reviews and merges it.
+**Publication boundary:** open a PR and stop; owner approval authorizes the separate release controller.
 
 ## Sources of truth
 
@@ -85,14 +85,16 @@ refresh, first run `.github/prompts/update-book.prompt.md`.
 8. **Open a PR using the available PR-creation tool, or update the existing preparation PR
    for this branch.** Do not create duplicate handoffs. Describe the baseline/target,
    reader-visible changes, verification, and editorial verdict. Wait for the validation
-   workflow and leave the PR for human review. Do not merge, create a release/tag, or
-   dispatch publishing as part of preparation.
+   workflow and leave the PR for human review. Keep infrastructure changes out of a content
+   PR. Do not merge, create a release/tag, or dispatch publishing as part of preparation.
 
-## After the human merges
+## After owner approval
 
-`validate-book.yml` builds and gates the exact artifacts consumed by both publishing
-workflows. `deploy-pages.yml` publishes the online site without the gated PDF;
-`release-content.yml` creates `content-v<edition>` with the matching
+The owner reviews a non-owner-authored PR, or comments `/release-book <full-40-character-head-sha>`
+on their own PR (GitHub does not allow self-approval). The controller rechecks the exact
+head and content-only scope, validates and merges it, then explicitly validates the merge
+and publishes the online site without the gated PDF. `release-content.yml` creates
+`content-v<edition>` with the matching
 `gh-aw-book-v<edition>.pdf` and changelog notes. Verify both workflow outcomes, the release
 asset, and the live version-history page before calling the edition published.
 

@@ -93,7 +93,8 @@ For each chapter in the wave, run **research in parallel**, then author, verify,
    Covered changes invalidate acceptance and require renewed review.
 9. `frontend-builder` regenerates the existing site/PDF. Run the `release-content` prompt
    to choose an appropriate prose edition, update notes, and prepare a PR. The reusable
-   validation workflow gates publishing; human review and merge remain the release boundary.
+   validation workflow gates publishing; explicit owner approval triggers the separate
+   content-only release controller.
    Mark the plan prepared with its edition, source fingerprint and PR URL, without claiming
    publication. Retries reuse the appropriate proposed edition rather than bumping twice.
 
