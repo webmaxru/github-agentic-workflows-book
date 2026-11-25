@@ -3,7 +3,6 @@
 
 import argparse
 import os
-import re
 import sys
 import time
 
@@ -20,15 +19,15 @@ def request_build(api, commit, *, sleep=time.sleep, attempts=60):
     if not SHA.fullmatch(commit):
         raise PolicyError("An exact gh-pages commit SHA is required.")
     check_source(api)
-    response = api.request(f"/repos/{api.repo}/pages/builds", "POST")
-    url = response.get("url")
-    builds_url = re.escape(f"https://api.github.com/repos/{api.repo}/pages/builds/")
-    if not isinstance(url, str) or not re.fullmatch(builds_url + r"(?:latest|[0-9]+)", url):
-        raise PolicyError("Pages returned an unexpected build URL.")
+    # The response body is deliberately ignored: its URL is never followed or trusted.
+    # Verification polls only this repository's build list, so success requires a
+    # `built` build of the exact commit regardless of what the request returned.
+    api.request(f"/repos/{api.repo}/pages/builds", "POST")
     # The gh-pages push queues its own build, which the requested one can supersede
     # (leaving it errored), so `latest` may show another build. Wait for any build of
     # the exact commit to succeed; builds of other commits never count.
     newest = None
+    last_error = None
     for attempt in range(attempts):
         builds = api.get("pages/builds?per_page=100")
         if not isinstance(builds, list):
@@ -38,12 +37,17 @@ def request_build(api, commit, *, sleep=time.sleep, attempts=60):
             if build.get("status") == "built":
                 return build
         newest = exact[0] if exact else newest
+        failed = next((build for build in exact if build.get("status") in {"errored", "failed", "cancelled"}), None)
+        if failed is not None:
+            error = failed.get("error")
+            last_error = (error.get("message") if isinstance(error, dict) else None) or f"build {failed['status']}"
         if attempt + 1 < attempts:
             sleep(10)
     status = (newest or {}).get("status")
-    if status in {"errored", "failed", "cancelled"}:
-        raise PolicyError(f"Pages build failed: {(newest.get('error') or {}).get('message')}")
-    raise PolicyError(f"Pages build did not complete before the timeout (last status: {status or 'not seen'}).")
+    detail = f"last status: {status or 'not seen'}"
+    if last_error is not None:
+        detail += f"; last error: {last_error}"
+    raise PolicyError(f"Pages build did not complete before the timeout ({detail}).")
 
 
 def main():
