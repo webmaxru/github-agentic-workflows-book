@@ -7,6 +7,8 @@ import subprocess
 import sys
 import unittest
 from copy import deepcopy
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from unittest.mock import patch
 
 from helpers import ROOT
@@ -25,6 +27,11 @@ class ApiFixture(unittest.TestCase):
     """A fake repository served as API routes; tests mutate the attributes between calls."""
 
     def setUp(self):
+        scratch = ROOT.parent / "build" / "tests"
+        scratch.mkdir(parents=True, exist_ok=True)
+        directory = TemporaryDirectory(prefix="approval-", dir=scratch)
+        self.addCleanup(directory.cleanup)
+        self.summary = Path(directory.name) / "summary.md"
         self.pr = {
             "number": 7, "state": "open", "draft": False, "changed_files": 2, "mergeable": True,
             "user": {"login": "webmaxru"},
@@ -48,11 +55,13 @@ class ApiFixture(unittest.TestCase):
         self.merge_parents = [BASE]
         self.merge_tree = TREE
         self.reject_merge = False
+        self.reads = []
         self.writes = []
 
     def routes(self):
         content = base64.b64encode(f"{self.version}\n".encode()).decode()
         return {
+            "pulls": [self.pr],
             "pulls/7": self.pr, "pulls/7/files": self.files, "pulls/7/reviews": self.review,
             "issues/7/comments": self.comments, "issues/7/timeline": self.timeline,
             "contents/content/VERSION": {"encoding": "base64", "content": content},
@@ -76,6 +85,7 @@ class ApiFixture(unittest.TestCase):
                 raise policy.GitHubError("GitHub API PUT failed: HTTP Error 409", 409)
             self.writes.append((method, route, data))
             return {"merged": True, "sha": MERGE} if route == "pulls/7/merge" else {}
+        self.reads.append(route)
         payload = self.routes().get(route)
         if payload is None:
             self.fail(f"unexpected route {route}")
@@ -84,7 +94,8 @@ class ApiFixture(unittest.TestCase):
     def cli(self, *args):
         out, err = io.StringIO(), io.StringIO()
         with patch.object(sys, "argv", ["approved_book.py", *args]), \
-                patch.dict(os.environ, {"GITHUB_REPOSITORY": REPO, "GH_TOKEN": "fixture"}), \
+                patch.dict(os.environ, {"GITHUB_REPOSITORY": REPO, "GH_TOKEN": "fixture",
+                                        "GITHUB_STEP_SUMMARY": str(self.summary)}), \
                 patch.object(policy.GitHub, "request", self.api_request), \
                 patch.object(policy.time, "sleep"), \
                 contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
@@ -304,7 +315,44 @@ class EligibilityTests(ApiFixture):
         self.main = "9" * 40
         code, _, err = self.cli("select", "--number", "7")
         self.assertEqual(code, 1)
-        self.assertIn("main moved", err)
+        self.assertIn(f"its base {BASE[:12]} is behind main {self.main[:12]}", err)
+
+    def test_stale_base_is_reported_before_remaining_validation(self):
+        self.main = "9" * 40
+        message = (f"PR #7: approved, but its base {BASE[:12]} is behind main {self.main[:12]}; "
+                   "update the branch from main, then approve the new head.")
+        for args in ((), ("--number", "7")):
+            with self.subTest(args=args):
+                self.summary.write_text("Existing summary\n\n", encoding="utf-8")
+                self.reads.clear()
+                code, out, err = self.cli("select", *args)
+                self.assertEqual(code, 1 if args else 0, err)
+                self.assertEqual(out, "" if args else "{}\n")
+                self.assertEqual(err.count("::warning::"), 1)
+                self.assertIn("::warning::" + message, err)
+                self.assertEqual(self.summary.read_text(encoding="utf-8"),
+                                 "Existing summary\n\n" + message + "\n\n")
+                self.assertNotIn(f"commits/{PR_MERGE}", self.reads)
+                self.assertNotIn("releases", self.reads)
+                self.assertNotIn("contents/content/VERSION", self.reads)
+                self.assertEqual(self.writes, [])
+
+    def test_stale_warning_requires_current_approval_and_green_preflight(self):
+        self.main = "9" * 40
+        for missing in ("approval", "preflight"):
+            with self.subTest(missing=missing):
+                if missing == "approval":
+                    self.comments[0]["body"] = "/release-book " + "f" * 40
+                else:
+                    self.comments[0]["body"] = "/release-book " + HEAD
+                    self.check["conclusion"] = "failure"
+                code, out, err = self.cli("select")
+                self.assertEqual((code, json.loads(out)), (0, {}))
+                self.assertIn(missing, err)
+                self.assertNotIn("::warning::", err)
+                self.assertFalse(self.summary.exists())
+                self.assertNotIn("git/ref/heads/main", self.reads)
+                self.assertEqual(self.writes, [])
 
     def test_a_stale_pr_is_never_merged(self):
         self.compare_status = "behind"

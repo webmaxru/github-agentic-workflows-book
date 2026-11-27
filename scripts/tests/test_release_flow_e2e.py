@@ -58,6 +58,8 @@ class Rehearsal(helpers.RepositoryTest):
                     "GITHUB_REPOSITORY": REPOSITORY, "GH_TOKEN": "test-token"}
         self.work = self.root / "build" / "work"
         self.work.mkdir(parents=True)
+        self.summary = self.work / "summary.md"
+        self.env["GITHUB_STEP_SUMMARY"] = str(self.summary)
 
     # ------------------------------------------------------------------ plumbing
     def run_script(self, script, *args):
@@ -178,8 +180,13 @@ class ControllerEligibility(Rehearsal):
         self.open_pr()
         self.advance("main", {"scripts/unrelated.txt": "main moved on\n"})
         self.not_selected("does not contain the current main")
+        self.assertIn("PR #7: The head does not contain the current main",
+                      self.summary.read_text(encoding="utf-8"))
+        self.assertIn("update the branch from main, then approve the new head",
+                      self.summary.read_text(encoding="utf-8"))
         refused = self.run_script("approved_book.py", "select", "--number", "7")
         self.refused(refused, "does not contain the current main")
+        self.assertIn("::warning::PR #7:", refused.stderr)
         self.assertEqual(self.fake.writes, [])
 
         self.git("checkout", "--quiet", "book-update")
@@ -189,9 +196,13 @@ class ControllerEligibility(Rehearsal):
         self.git("checkout", "--quiet", "main")
         self.fake.pr["head"] = updated
         self.fake.check(updated)
+        self.summary.unlink()
         self.not_selected("approval")
+        self.assertFalse(self.summary.exists())
         self.fake.review(OWNER, "APPROVED", updated)
         self.assertEqual(self.select()["head"], updated)
+        self.assertFalse(self.summary.exists())
+        self.assertEqual(self.fake.writes, [])
 
     def test_a_push_after_approval_revokes_it(self):
         self.open_pr()
@@ -270,6 +281,21 @@ class ControllerEligibility(Rehearsal):
 
 
 class ControllerMerge(Rehearsal):
+    def test_main_moving_after_selection_still_blocks_the_merge(self):
+        self.open_pr()
+        selected = self.select()
+        advanced = self.advance("main", {"scripts/unrelated.txt": "merged during preflight\n"})
+        result = self.run_script(
+            "approved_book.py", "merge", "--number", "7", "--head", selected["head"],
+            "--base", selected["base"], "--comparison", selected["comparison"])
+        self.refused(result, "does not contain the current main")
+        self.assertIn("::warning::PR #7:", result.stderr)
+        self.assertIn("update the branch from main, then approve the new head",
+                      self.summary.read_text(encoding="utf-8"))
+        self.assertEqual(self.fake.writes, [])
+        self.assertFalse(self.fake.dispatches)
+        self.assertEqual(self.git("rev-parse", "main"), advanced)
+
     def test_the_squash_merge_is_conditioned_on_the_approved_head(self):
         self.open_pr()
         selected = self.select()
