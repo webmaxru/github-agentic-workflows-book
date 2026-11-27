@@ -50,12 +50,12 @@ Everything that may differ between the four books. The workflow names, triggers,
 | Rollback | `gh workflow run deploy-pages.yml -f ref=content-vX.Y` with a published tag (or the commit of one). Only editions that carry `content/VERSION` can be redeployed, so `content-v1.2` and later; the legacy tags `content-v1.0` and `content-v1.1` predate release metadata. |
 | Catch-up PR rules | A manual merge strands the edition on `main`. The catch-up PR needs a real chapter or TOC change and a **patch** bump above the stranded edition (`1.3` becomes `1.3.1`), with the stranded CHANGELOG entries moved under it. See [scenario 9](#9-a-manual-merge-by-mistake). |
 | Upstream scouting | The scheduled gh-aw workflow `scan-gh-aw-updates` (every two weeks) files an advisory issue "[gh-aw update scan] …" when gh-aw has moved. It never edits files and is not part of the release flow. |
-| Tests | `python -m unittest discover -s scripts/tests`, which includes `scripts/tests/test_flow_contract.py` and an end-to-end rehearsal of the whole flow (`test_release_flow_e2e.py`). |
+| Tests | `python -m unittest discover -s scripts/tests`, which includes `scripts/tests/test_flow_contract.py`, the shared authorization cases `scripts/tests/test_approval_contract.py` (identical in every book and run against `scripts/approved_book.py`), and an end-to-end rehearsal of the whole flow (`test_release_flow_e2e.py`). This book keeps its tests in `scripts/tests/`, so the contract's `tests/test_flow_contract.py` lives there. |
 
 Where this book is stricter than the contract requires:
 
 - **Squash only.** The controller refuses to publish a merge that is not a squash of exactly the approved head (one parent, the head's tree).
-- **Review barriers apply to all reviewers.** After anyone requests changes or a review is dismissed, the owner must authorize again.
+- **Review barriers apply to all reviewers.** A **Request changes** review or a review dismissal by anyone, including the owner, is a barrier. Only owner authorization created strictly after the latest barrier counts; one with the same timestamp does not. A dismissal takes effect at the time of the dismissal event, not of the review it dismissed. Ordinary comments and **Comment** reviews are never barriers.
 - **The preflight is repeated by trusted code.** The controller re-runs it on the approved head, with validators from `main`, before it merges, and `release.yml` builds the merge commit again before it publishes.
 - **A release deploys through `deploy-pages.yml`**, so the same gate, build, publish and smoke test run for a release, a rollback and a push to `main`.
 - **Only the highest stable edition is Latest and deployed.** An older edition is never created after a newer one; finishing an interrupted older draft publishes it without Latest and without a deploy.
@@ -91,9 +91,9 @@ The edition lives in [`content/VERSION`](content/VERSION) and the tag is `conten
 
 ## Authorize and publish
 
-For **someone else's PR**, the latest formal review from **webmaxru** must be **Approve** on the current head, after any change request or dismissal. A **Comment** review neither grants nor withdraws approval. For example, approving a head and then leaving a comment still authorizes that head.
+For **someone else's PR**, the latest formal review from **webmaxru** must be **Approve** on the current head, submitted strictly after the latest change request or dismissal by any reviewer. A **Comment** review neither grants nor withdraws approval. For example, approving a head and then leaving a comment still authorizes that head.
 
-For **your own PR**, post `/release-book <full lowercase 40-character head SHA>` as the entire body of a new conversation comment. Use one space before the SHA and no surrounding whitespace, newline or extra text. At least one exact owner command must still be present, unedited and posted after any change request or dismissal. Unrelated comments, malformed commands and commands for another SHA do not cancel a valid command. Editing or deleting a command invalidates only that comment; if it was the last valid one, post a new one to authorize again.
+For **your own PR**, post `/release-book <full lowercase 40-character head SHA>` as the entire body of a new conversation comment. Use one space before the SHA and no surrounding whitespace, newline or extra text. At least one exact owner command must still be present, unedited and posted strictly after the latest change request or dismissal by any reviewer. Unrelated comments, malformed commands and commands for another SHA do not cancel a valid command. Editing or deleting a command invalidates only that comment; if it was the last valid one, post a new one to authorize again.
 
 The controller, **Release approved book** (`approved-book.yml`), runs on `main` with its own trusted validators. It reacts to the review (relayed by **Book approval signal**) or the comment, to the completion of **Book CI**, to a scan of open PRs every 30 minutes (`17,47 * * * *`), and to **Run workflow → pr**. None of those triggers grants approval. It requires a non-draft, same-repository PR against `main` whose files are all on the content allowlist, whose head contains the current `main`, with **Book release preflight** passing on the exact head (from GitHub Actions) and every other latest check green. It repeats the preflight on the approved head, then **squash-merges** conditionally on that head's SHA, and aborts if the head, the base or the published-edition baseline moved in the meantime.
 
@@ -216,7 +216,7 @@ You now own the new PR, so continue with scenario 1: add the version bump, CHANG
 
 ### 4. A new push after approval, requested changes or a dismissed review
 
-After a push, authorize the new head. After a **Request changes** review or a dismissal, authorize again even if the head did not change. Use a new **Approve** review on someone else's PR or a new `/release-book <SHA>` comment on your own. The controller checks authorization again after preflight, before the exact-head squash merge. An ordinary comment during preflight does not undo approval.
+After a push, authorize the new head. After a **Request changes** review or a dismissal by any reviewer, including you, authorize again even if the head did not change. Use a new **Approve** review on someone else's PR or a new `/release-book <SHA>` comment on your own, created strictly after that review or dismissal event. Earlier approvals and commands no longer count, even if the head is unchanged. The controller checks authorization again after preflight, before the exact-head squash merge. An ordinary comment or a **Comment** review during preflight does not undo approval.
 
 ### 5. The branch is behind `main`
 

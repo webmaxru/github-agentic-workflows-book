@@ -147,8 +147,11 @@ For a same-repository, content-only PR, the latest formal review by webmaxru mus
 the current head. A `COMMENTED` review does not change that decision. Since GitHub prevents
 self-approval, a webmaxru-authored PR instead requires a still-present, unedited owner
 comment whose entire body is `/release-book <full-40-character-head-sha>`. Other comments
-cannot cancel it. Either form of approval must postdate the latest change request or
-dismissal, and a push requires approval for the new head. The trusted controller
+cannot cancel it. A `CHANGES_REQUESTED` review or a review dismissal by any reviewer,
+including the owner, is a barrier: either form of approval must be created strictly after
+the latest one (a dismissal counts from its timeline event). Ordinary comments and
+`COMMENTED` reviews are not barriers. A push requires approval for the new head. The
+shared cases in `scripts/tests/test_approval_contract.py` pin these rules. The trusted controller
 rechecks the approval, the scope, that the head contains the current `main`, and the checks,
 validates the head, squash-merges with a SHA precondition, and then dispatches `release.yml`
 (a merge made with `GITHUB_TOKEN` triggers no workflows) with `pr`, `head_sha`, `base_sha`,
