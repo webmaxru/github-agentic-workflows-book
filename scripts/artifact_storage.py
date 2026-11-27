@@ -110,6 +110,12 @@ def previews(api, run_id, attempt):
                for item in artifacts if item.get("name", "").startswith(PREFIX + "-")]
     matches = [(item, ref) for item, ref in matches if ref is not None]
     if not matches:
+        jobs = api.pages(f"actions/runs/{run_id}/attempts/{attempt}/jobs", "jobs")
+        uploads = [step for job in jobs for step in job.get("steps", [])
+                   if step.get("name") == "Upload book preview"]
+        if uploads and (len(uploads) != 1 or uploads[0].get("conclusion") != "skipped"):
+            raise PolicyError("Preview upload was not skipped, but its replacement artifact is missing "
+                              "or invalid; retaining all previous previews.")
         return {"deleted": [], "reason": "No preview in this run; ordinary/manual validation only."}
     if len(matches) != 1:
         raise PolicyError("Replacement preview identity is ambiguous.")

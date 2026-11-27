@@ -137,10 +137,24 @@ class StorageTests(unittest.TestCase):
         self.assertLess(self.requests.index(page), next(i for i, req in enumerate(self.requests)
                                                        if req[0] == "DELETE"))
 
-    def test_missing_replacement_or_failed_upload_never_retires_previous(self):
+    def test_successful_upload_with_missing_replacement_fails_and_retains_previous(self):
         self.pages("actions/runs/20/artifacts", "artifacts", [])
-        self.assertEqual(storage.previews(self.api, 20, 1)["deleted"], [])
-        self.pages("actions/runs/20/artifacts", "artifacts", [self.replacement])
+        with self.assertRaisesRegex(PolicyError, "replacement artifact is missing"):
+            storage.previews(self.api, 20, 1)
+        self.assertEqual(self.deleted, [])
+
+    def test_skipped_or_nonexistent_upload_without_replacement_is_a_validation_only_noop(self):
+        self.pages("actions/runs/20/artifacts", "artifacts", [])
+        for steps in ([], [{"name": "Upload book preview", "conclusion": "skipped"}]):
+            with self.subTest(steps=steps):
+                self.pages("actions/runs/20/attempts/1/jobs", "jobs", [
+                    {"status": "completed", "conclusion": "success", "steps": steps}])
+                result = storage.previews(self.api, 20, 1)
+                self.assertEqual(result["deleted"], [])
+                self.assertIn("validation only", result["reason"])
+        self.assertEqual(self.deleted, [])
+
+    def test_failed_upload_never_retires_previous(self):
         self.steps("Upload book preview", conclusion="failure")
         with self.assertRaisesRegex(PolicyError, "successful"):
             storage.previews(self.api, 20, 1)
