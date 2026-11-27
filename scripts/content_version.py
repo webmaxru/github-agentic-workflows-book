@@ -9,7 +9,7 @@ This module is imported by:
   * ``site/generate.py``    — to surface the version across the web edition and build the
                               version-history page,
   * ``scripts/build_pdf.py`` — to stamp the version into the PDF footer,
-and is used as a CLI by ``.github/workflows/release-content.yml`` to cut GitHub Releases:
+and is used as a CLI by ``.github/workflows/release.yml`` to cut GitHub Releases:
 
     python scripts/content_version.py version          # -> 1.1
     python scripts/content_version.py tag              # -> content-v1.1

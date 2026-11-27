@@ -1,0 +1,223 @@
+name: Release book
+
+# Publishes one GitHub Release from an owner-approved, merged content update, then deploys that
+# released edition to GitHub Pages. See RELEASING.md.
+#
+# Started only by workflow_dispatch:
+#   - by approved-book.yml right after it squash-merges an approved pull request (a merge made with
+#     GITHUB_TOKEN triggers no workflows), or
+#   - by hand, to retry or recover: gh workflow run release.yml with the five inputs the controller
+#     printed. The same provenance checks run either way.
+#
+#   plan      read-only: the merge is the approved PR's squash on main (one parent, the approved
+#             head's tree), the tag and edition match, and what is already published decides the
+#             action: create, skip a complete release, or fail without writes on partial state
+#   validate  build and check exactly the merge commit (site, examples, PDF)
+#   release   annotated tag at the merge (never moved), draft release, upload (never clobbered),
+#             publish; only the highest stable version becomes Latest
+#   pages     deploy the released tag through deploy-pages.yml (gate, build, publish, smoke test);
+#             only after a new publication was marked Latest
+#
+# A partial release (tag only, any draft, or incomplete PDF), a tag at another commit or a merge that is not the
+# approved head fails with nothing written. A fix is a new version. A tag push, a label or a branch
+# name never publishes.
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: "Merged content PR number"
+        required: true
+        type: string
+      head_sha:
+        description: "Approved head commit of the PR (40 characters)"
+        required: true
+        type: string
+      base_sha:
+        description: "Commit on main the approved head was squashed onto (40 characters)"
+        required: true
+        type: string
+      merge_sha:
+        description: "Squash-merge commit on main (40 characters)"
+        required: true
+        type: string
+      tag:
+        description: "Release tag, content-v followed by the edition in content/VERSION"
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: book-publish
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: read
+      checks: read
+      statuses: read
+    outputs:
+      action: ${{ steps.plan.outputs.action }}
+      version: ${{ steps.plan.outputs.version }}
+      tag: ${{ steps.plan.outputs.tag }}
+      asset: ${{ steps.plan.outputs.asset }}
+      comparison: ${{ steps.verify.outputs.comparison }}
+    steps:
+      - name: Checkout trusted control code
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          path: tooling
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Checkout approved merged source
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.merge_sha }}
+          path: source
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify the approved PR and the exact squash merge
+        id: verify
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ inputs.pr }}
+          HEAD_SHA: ${{ inputs.head_sha }}
+          BASE_SHA: ${{ inputs.base_sha }}
+          MERGE_SHA: ${{ inputs.merge_sha }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          python tooling/scripts/approved_book.py verify-merged --number "$PR" --head "$HEAD_SHA" --base "$BASE_SHA" --merge-sha "$MERGE_SHA" --tag "$TAG" > verified.json
+          git -C tooling merge-base --is-ancestor "$MERGE_SHA" HEAD
+          python - <<'PY'
+          import json, os, subprocess
+          data = json.load(open("verified.json"))
+          subprocess.run(["git", "-C", "tooling", "merge-base", "--is-ancestor", data["comparison"], os.environ["BASE_SHA"]], check=True)
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              print(f"comparison={data['comparison']}", file=out)
+          PY
+      - name: Select immutable publication action
+        id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MERGE_SHA: ${{ inputs.merge_sha }}
+          TAG: ${{ inputs.tag }}
+          COMPARISON: ${{ steps.verify.outputs.comparison }}
+        run: |
+          python tooling/scripts/release_content.py --root source release-plan --repo "$GITHUB_REPOSITORY" --base "$COMPARISON" --expected-source "$MERGE_SHA" > plan.json
+          cat plan.json
+          python - <<'PY'
+          import json, os, subprocess
+          data = json.load(open("plan.json"))
+          if data["tag"] != os.environ["TAG"]:
+              raise SystemExit(f"The planned tag {data['tag']} does not match the requested tag.")
+          if data["action"] == "create":
+              main = subprocess.check_output(["git", "-C", "tooling", "rev-parse", "HEAD"], text=True).strip()
+              if main != os.environ["MERGE_SHA"]:
+                  raise SystemExit("Cannot create a release for an outdated main commit.")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              for key, value in data.items():
+                  print(f"{key}={value}", file=out)
+          PY
+
+  validate:
+    needs: plan
+    if: github.ref == 'refs/heads/main' && needs.plan.outputs.action == 'create'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yml
+    with:
+      source-ref: ${{ inputs.merge_sha }}
+      comparison-base: ${{ needs.plan.outputs.comparison }}
+      artifact-name: validated-release
+      require-content-change: true
+
+  release:
+    needs: [plan, validate]
+    if: github.ref == 'refs/heads/main' && needs.plan.outputs.action == 'create'
+    runs-on: ubuntu-24.04
+    outputs:
+      latest: ${{ steps.publish.outputs.latest }}
+    permissions:
+      contents: write
+      pull-requests: read
+      checks: read
+      statuses: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ needs.plan.outputs.tag }}
+      VERSION: ${{ needs.plan.outputs.version }}
+      ASSET: ${{ needs.plan.outputs.asset }}
+      MERGE_SHA: ${{ inputs.merge_sha }}
+    steps:
+      - name: Checkout trusted authorization code
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Recheck approval and source before publication
+        env:
+          PR: ${{ inputs.pr }}
+          HEAD_SHA: ${{ inputs.head_sha }}
+          BASE_SHA: ${{ inputs.base_sha }}
+        run: |
+          python scripts/approved_book.py verify-merged --number "$PR" --head "$HEAD_SHA" --base "$BASE_SHA" --merge-sha "$MERGE_SHA" --tag "$TAG" > /dev/null
+          test "$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" = "$MERGE_SHA"
+      - uses: actions/download-artifact@v8
+        with:
+          name: validated-release
+          path: artifact
+      - name: Verify the artifact
+        run: |
+          python - <<'PY'
+          import json, os
+          data = json.load(open("artifact/validation.json"))
+          for key, expected in (("version", "VERSION"), ("tag", "TAG"), ("source_sha", "MERGE_SHA")):
+              if data.get(key) != os.environ[expected]:
+                  raise SystemExit(f"Validated artifact mismatch: {key}")
+          if data.get("status") != "PASS":
+              raise SystemExit("Artifact did not pass validation.")
+          PY
+          cp artifact/site/gh-aw-book.pdf "$ASSET"
+          {
+            echo "## GitHub Agentic Workflows — content $TAG"
+            echo
+            cat artifact/release-notes.md
+            echo
+            echo "---"
+            echo
+            echo "Read online: https://aw.isainative.dev/ · [Version history](https://aw.isainative.dev/versions.html)"
+            echo
+            echo "The single-file PDF for this version is attached below."
+          } > release-notes.md
+      - name: Create a new annotated tag (never reused or moved)
+        run: python scripts/publish_release.py tag --tag "$TAG" --sha "$MERGE_SHA"
+      - name: Create a new draft
+        run: |
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" --verify-tag --draft \
+            --title "Content v$VERSION" --notes-file release-notes.md
+      - name: Upload the validated PDF to the new draft
+        run: gh release upload "$TAG" "$ASSET#GitHub Agentic Workflows — v$VERSION (PDF)" --repo "$GITHUB_REPOSITORY"
+      - name: Publish and report whether this edition became Latest
+        id: publish
+        run: |
+          python scripts/publish_release.py latest --tag "$TAG" > latest.json
+          latest=$(jq -r '.latest' latest.json)
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest="$latest"
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+
+  pages:
+    needs: [plan, release]
+    if: github.ref == 'refs/heads/main' && needs.release.result == 'success' && needs.release.outputs.latest == 'true'
+    permissions:
+      contents: write
+      pages: write
+    uses: ./.github/workflows/deploy-pages.yml
+    with:
+      published-tag: ${{ needs.plan.outputs.tag }}

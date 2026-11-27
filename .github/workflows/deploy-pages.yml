@@ -1,8 +1,17 @@
 name: Deploy book to GitHub Pages
 
-# Builds the static site from content/ with site/generate.py and publishes it to the
-# gh-pages branch, which GitHub Pages serves (legacy branch source) at the custom
-# domain aw.isainative.dev. The committed images (cover, og-image, icons) ship as-is.
+# Builds the static site from content/ with site/generate.py and publishes it to the gh-pages
+# branch, which GitHub Pages serves (legacy branch source) at the custom domain in site/CNAME.
+# Production serves only released editions (see RELEASING.md):
+#
+#   push to main      deploys only when the book content equals the latest published release
+#                     (the published-source job); a content change deploys through release.yml
+#   release.yml       waits on this workflow to deploy its newly published highest stable tag
+#   manual dispatch   takes a released tag or its commit; this is the rollback path:
+#                     gh workflow run deploy-pages.yml -f ref=content-vX.Y
+#
+# Which content counts, and which refs are released, is decided by scripts/deploy_gate.py from the
+# trusted main branch; no path list is repeated here.
 
 on:
   push:
@@ -15,62 +24,117 @@ on:
       - "package.json"
       - "package-lock.json"
       - ".github/workflows/deploy-pages.yml"
-      - ".github/workflows/validate-book.yml"
+      - ".github/workflows/ci.yml"
   workflow_dispatch:
+    inputs:
+      ref:
+        description: "Released tag (content-vX.Y) or its commit to deploy; empty deploys main, which must equal the latest release"
+        required: false
+        type: string
+        default: ""
+  workflow_call:
+    inputs:
+      published-tag:
+        description: "Newly published tag to deploy"
+        required: true
+        type: string
 
-permissions:
-  contents: read
-
-concurrency:
-  group: deploy-gh-pages
-  cancel-in-progress: true
+permissions: {}
 
 jobs:
   published-source:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    outputs:
+      sha: ${{ steps.gate.outputs.sha }}
+      tag: ${{ steps.gate.outputs.tag }}
+      mode: ${{ steps.gate.outputs.mode }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Require content to match the last published edition
+      - name: Require a released source
+        id: gate
         env:
           GH_TOKEN: ${{ github.token }}
+          REF: ${{ inputs.published-tag || inputs.ref }}
+          REQUIRE_LATEST: ${{ inputs.published-tag != '' }}
         run: |
-          TAG="$(python -c "import sys; sys.path.insert(0,'scripts'); import release_content as r; print(r.select_base(r.ROOT, env={})[0])")"
-          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq '.isDraft == false' | grep -qx true
-          git diff --quiet "$TAG" HEAD -- content examples
+          args=()
+          if [[ "$REQUIRE_LATEST" == "true" ]]; then args+=(--require-latest); fi
+          python scripts/deploy_gate.py gate --ref "$REF" "${args[@]}" > gate.json
+          cat gate.json
+          python - <<'PY'
+          import json, os
+          data = json.load(open("gate.json"))
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              for key in ("sha", "tag", "mode"):
+                  print(f"{key}={data[key]}", file=out)
+          PY
+
   validate:
     needs: published-source
-    uses: ./.github/workflows/validate-book.yml
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yml
     with:
+      source-ref: ${{ needs.published-source.outputs.sha }}
       artifact-name: validated-pages
 
   deploy:
-    needs: validate
-    runs-on: ubuntu-latest
+    needs: [published-source, validate]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    concurrency:
+      group: deploy-gh-pages
+      cancel-in-progress: false
     permissions:
       contents: write
       pages: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SOURCE_SHA: ${{ needs.published-source.outputs.sha }}
+      RELEASE_TAG: ${{ needs.published-source.outputs.tag }}
+      DEPLOY_MODE: ${{ needs.published-source.outputs.mode }}
+      REQUIRE_LATEST: ${{ inputs.published-tag != '' }}
     steps:
       - name: Checkout trusted Pages helper
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: main
+          fetch-depth: 0
           persist-credentials: false
       - name: Download the validated site and analytics beacon
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: validated-pages
           path: artifact
+
+      - name: Check the validated artifact is the released source
+        env:
+          VALIDATED_SHA: ${{ needs.validate.outputs.source-sha }}
+        run: |
+          test "$VALIDATED_SHA" = "$SOURCE_SHA"
+          if [[ "$DEPLOY_MODE" == "main" ]]; then
+            # A push to main deploys only the tip of main; an older run must not overwrite a newer one.
+            test "$(GH_TOKEN="$GITHUB_TOKEN" gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" = "$SOURCE_SHA"
+            GH_TOKEN="$GITHUB_TOKEN" python scripts/deploy_gate.py gate > gate.json
+            test "$(jq -r '.tag' gate.json)" = "$RELEASE_TAG"
+          elif [[ "$REQUIRE_LATEST" == "true" ]]; then
+            # A newer stable edition may have appeared while validation or the Pages lock was pending.
+            GH_TOKEN="$GITHUB_TOKEN" python scripts/deploy_gate.py gate --ref "$RELEASE_TAG" --require-latest > gate.json
+            test "$(jq -r '.sha' gate.json)" = "$SOURCE_SHA"
+          fi
 
       - name: Remove the gated PDF from the public site
         run: rm -f artifact/site/gh-aw-book.pdf
 
       - name: Publish the validated site to gh-pages
         run: |
-          test "$(GH_TOKEN="$GITHUB_TOKEN" gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" = "$SOURCE_SHA"
           GH_TOKEN="$GITHUB_TOKEN" python scripts/publish_pages.py check
           cd artifact/site
           touch .nojekyll
@@ -78,10 +142,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -q -m "Deploy ${SOURCE_SHA} from ${GITHUB_REF_NAME}"
+          git commit -q -m "Deploy ${RELEASE_TAG} (${SOURCE_SHA}) from ${GITHUB_REF_NAME}"
           DEPLOY_SHA="$(git rev-parse HEAD)"
           git push -q --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
           GH_TOKEN="$GITHUB_TOKEN" python "$GITHUB_WORKSPACE/scripts/publish_pages.py" build --commit "$DEPLOY_SHA"
+
+      - name: Smoke test the live site
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SOURCE_SHA: ${{ needs.validate.outputs.source-sha }}
+          VERSION: ${{ needs.validate.outputs.content-version }}
+        run: |
+          DOMAIN="$(tr -d '[:space:]' < artifact/site/CNAME)"
+          python scripts/deploy_gate.py smoke --url "https://${DOMAIN}" --version "$VERSION"

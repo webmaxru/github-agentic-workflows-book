@@ -92,14 +92,14 @@ refresh, first run `.github/prompts/update-book.prompt.md`.
 
 The owner reviews a non-owner-authored PR, or comments `/release-book <full-40-character-head-sha>`
 on their own PR (GitHub does not allow self-approval). The controller rechecks the exact
-head and content-only scope, validates and merges it, then explicitly validates the merge
-and publishes the online site without the gated PDF. `release-content.yml` creates
-`content-v<edition>` with the matching
+head and content-only scope, validates and squash-merges it, then dispatches `release.yml`,
+which validates the merge and publishes the online site without the gated PDF. `release.yml`
+creates `content-v<edition>` with the matching
 `gh-aw-book-v<edition>.pdf` and changelog notes. Verify both workflow outcomes, the release
 asset, and the live version-history page before calling the edition published.
 
-An existing complete release is a no-op. A missing-asset repair must use the original tagged
-source; never attach a newly built HEAD PDF to an older tag. Legacy releases that predate
-the build/version metadata need an explicit historical recovery procedure, not invented
-defaults. Manual publication is a separate, explicitly authorized operation, not a shortcut
-around the review and compilation gates.
+An existing complete publication is a no-op, including no redeployment. A tag without a
+release, any existing draft, an incomplete published PDF or a provenance mismatch stops
+publication without writes. Leave the existing tag and assets untouched; prepare a new
+edition instead. If only the website failed, use the manual deployment of the released
+tag described in `RELEASING.md`.

@@ -31,11 +31,30 @@ class ApiTests(unittest.TestCase):
         run.side_effect = [
             self.response(404, "{}", 1),
             self.response(200, '{"full_name":"owner/book"}'),
+            self.response(200, "[]"),
         ]
         self.assertIsNone(release.github_release("owner/book", "content-v1.1"))
-        self.assertEqual(run.call_count, 2)
+        self.assertEqual(run.call_count, 3)
         run.side_effect = [self.response(404, "{}", 1), self.response(404, "{}", 1)]
         with self.assertRaisesRegex(release.ReleaseError, "failed"):
+            release.github_release("owner/book", "content-v1.1")
+
+    @patch.object(release.subprocess, "run")
+    def test_a_draft_is_found_although_the_tag_lookup_hides_it(self, run):
+        draft = '{"tag_name":"content-v1.1","draft":true,"assets":[]}'
+        run.side_effect = [
+            self.response(404, "{}", 1),
+            self.response(200, '{"full_name":"owner/book"}'),
+            self.response(200, f'[{{"tag_name":"content-v1.0","draft":false}},{draft}]'),
+        ]
+        found = release.github_release("owner/book", "content-v1.1")
+        self.assertTrue(found["draft"])
+        run.side_effect = [
+            self.response(404, "{}", 1),
+            self.response(200, '{"full_name":"owner/book"}'),
+            self.response(200, '{"not":"a list"}'),
+        ]
+        with self.assertRaisesRegex(release.ReleaseError, "unexpected response shape"):
             release.github_release("owner/book", "content-v1.1")
 
     @patch.object(release.subprocess, "run")
@@ -46,9 +65,10 @@ class ApiTests(unittest.TestCase):
 
 
 class ReleasePlanTests(RepositoryTest):
-    def metadata(self, assets=()):
+    def metadata(self, assets=(), draft=False):
         return {
             "tag_name": "content-v1.1",
+            "draft": draft,
             "assets": [
                 {"id": number, "name": name, "state": "uploaded", "size": 524288,
                  "content_type": "application/pdf",
@@ -66,7 +86,7 @@ class ReleasePlanTests(RepositoryTest):
         self.assertNotIn("source_sha", plan)
 
     @patch.object(release, "github_release")
-    def test_incomplete_matching_assets_fail_with_manual_recovery_instructions(self, api):
+    def test_incomplete_matching_assets_require_a_new_version(self, api):
         for state, size in (
             ("starter", 0), ("starter", 1024), ("failed", 1024),
             ("uploaded", 0), ("uploaded", -1), ("uploaded", None),
@@ -79,8 +99,7 @@ class ReleasePlanTests(RepositoryTest):
                 with self.assertRaisesRegex(release.ReleaseError, "incomplete or ambiguous") as raised:
                     release.release_plan(self.root, "owner/book", env={})
                 self.assertIn("state='uploaded' and a positive integer size", str(raised.exception))
-                self.assertIn("restore the correct tagged PDF", str(raised.exception))
-                self.assertIn("No asset was deleted or overwritten", str(raised.exception))
+                self.assertIn("Ship the fix as a new version", str(raised.exception))
 
     @patch.object(release, "github_release")
     def test_missing_asset_state_or_size_is_not_assumed_complete(self, api):
@@ -93,55 +112,29 @@ class ReleasePlanTests(RepositoryTest):
                     release.release_plan(self.root, "owner/book", env={})
 
     @patch.object(release, "github_release")
-    def test_duplicate_matching_assets_require_manual_recovery(self, api):
+    def test_duplicate_matching_assets_are_not_complete(self, api):
         api.return_value = self.metadata(["gh-aw-book-v1.1.pdf", "gh-aw-book-v1.1.pdf"])
         with self.assertRaisesRegex(release.ReleaseError, "incomplete or ambiguous"):
             release.release_plan(self.root, "owner/book", env={})
 
     @patch.object(release, "github_release")
-    def test_legacy_source_cannot_be_repaired_with_current_metadata(self, api):
-        self.accept()
-        self.commit()
-        api.return_value = self.metadata()
-        with self.assertRaisesRegex(release.ReleaseError, "Legacy tags are never rebuilt"):
-            release.release_plan(self.root, "owner/book", env={})
-
-    @patch.object(release, "github_release")
-    def test_tag_without_edition_metadata_cannot_borrow_current_build_inputs(self, api):
-        for name in ("VERSION", "CHANGELOG.md", "FRAMEWORK_VERSION"):
-            (self.root / "content" / name).unlink()
-        self.commit()
-        self.git("tag", "--force", "content-v1.1")
-        self.put("content/VERSION", "1.1\n")
-        self.put("content/CHANGELOG.md", "## [1.1] - 2026-07-08\n\nHistorical metadata.\n")
-        self.put("content/FRAMEWORK_VERSION", "v0.88.7\n")
-        self.accept()
-        self.commit()
-        api.return_value = self.metadata()
-
-        with self.assertRaisesRegex(release.ReleaseError, "Legacy tags are never rebuilt"):
-            release.release_plan(self.root, "owner/book", env={})
-
-    @patch.object(release, "github_release")
-    def test_repair_selects_tag_commit_and_pin_not_current_checkout(self, api):
-        self.accept()
-        self.commit()
-        source = self.git("rev-parse", "HEAD")
-        self.git("tag", "--force", "content-v1.1")
-        self.put("content/FRAMEWORK_VERSION", "v0.88.7\n")
-        self.put("content/chapters/one.html", "<p>Unreleased, different source.</p>")
-        self.commit()
+    def test_published_release_missing_its_pdf_fails(self, api):
         api.return_value = self.metadata(["unrelated-upload.txt"])
-        api.return_value["assets"][0].update(state="starter", size=0)
-        plan = release.release_plan(self.root, "owner/book", env={})
-        self.assertEqual(plan["action"], "upload")
-        self.assertEqual(plan["source_sha"], source)
-        self.assertEqual(plan["framework_version"], "v0.81.6")
-        self.assertEqual(plan["comparison_base"], "content-v1.1")
-        self.assertTrue(plan["tag_exists"])
+        with self.assertRaisesRegex(release.ReleaseError, "published without its PDF.*new version"):
+            release.release_plan(self.root, "owner/book", env={})
 
     @patch.object(release, "github_release")
-    def test_new_release_uses_the_same_event_base_even_after_tag_creation(self, api):
+    def test_any_existing_draft_blocks_publication_even_without_a_tag(self, api):
+        for with_tag in (True, False):
+            if not with_tag:
+                self.git("tag", "-d", "content-v1.1")
+            for assets in ([], ["gh-aw-book-v1.1.pdf"]):
+                api.return_value = self.metadata(assets, draft=True)
+                with self.subTest(tag=with_tag, assets=assets), self.assertRaisesRegex(release.ReleaseError, "draft"):
+                    release.release_plan(self.root, "owner/book", env={}, expected_source=self.base)
+
+    @patch.object(release, "github_release")
+    def test_only_a_fresh_tag_can_be_planned_for_creation(self, api):
         self.put("content/VERSION", "1.2\n")
         self.put("content/chapters/one.html", "<p>Next edition.</p>")
         self.accept()
@@ -151,38 +144,32 @@ class ReleasePlanTests(RepositoryTest):
         self.assertEqual(plan["action"], "create")
         self.assertEqual(plan["source_sha"], self.git("rev-parse", "HEAD"))
         self.assertEqual(plan["comparison_base"], self.base)
-        self.assertFalse(plan["tag_exists"])
         self.git("tag", "content-v1.2")
-        replay = release.release_plan(self.root, "owner/book", env={})
-        self.assertTrue(replay["tag_exists"])
-        self.assertEqual(replay["source_sha"], plan["source_sha"])
-        self.assertEqual(replay["comparison_base"], "content-v1.2")
+        with self.assertRaisesRegex(release.ReleaseError, "exists without a release"):
+            release.release_plan(self.root, "owner/book", env={}, expected_source=plan["source_sha"])
 
     @patch.object(release, "github_release")
-    def test_tag_version_mismatch_is_rejected(self, api):
+    def test_new_source_must_contain_the_requested_edition(self, api):
         self.accept()
-        self.put("content/VERSION", "1.0\n")
+        self.put("content/VERSION", "1.2\n")
         self.commit()
-        self.git("tag", "--force", "content-v1.1")
-        self.put("content/VERSION", "1.1\n")
-        api.return_value = self.metadata()
-        with self.assertRaisesRegex(release.ReleaseError, "selected source contains 1.0"):
+        self.put("content/VERSION", "1.3\n")
+        api.return_value = None
+        with self.assertRaisesRegex(release.ReleaseError, "selected source contains 1.2"):
             release.release_plan(self.root, "owner/book", env={})
 
     @patch.object(release, "github_release")
-    def test_expected_source_rejects_tag_reuse_and_complete_draft_resumes(self, api):
+    def test_complete_release_must_have_its_exact_tag_and_source(self, api):
         self.accept()
         self.commit()
         head = self.git("rev-parse", "HEAD")
         api.return_value = self.metadata(["gh-aw-book-v1.1.pdf"])
         with self.assertRaisesRegex(release.ReleaseError, "different source"):
             release.release_plan(self.root, "owner/book", env={}, expected_source=head)
-        self.git("tag", "--force", "content-v1.1")
-        api.return_value["draft"] = True
-        plan = release.release_plan(self.root, "owner/book", env={}, expected_source=head)
-        self.assertEqual(plan["action"], "publish")
-        self.assertTrue(plan["draft"])
-        api.return_value["draft"] = False
+        self.git("tag", "-d", "content-v1.1")
+        with self.assertRaisesRegex(release.ReleaseError, "tag is unavailable"):
+            release.release_plan(self.root, "owner/book", env={}, expected_source=head)
+        self.git("tag", "content-v1.1")
         self.assertEqual(release.release_plan(self.root, "owner/book", env={}, expected_source=head)["action"], "skip")
 
 

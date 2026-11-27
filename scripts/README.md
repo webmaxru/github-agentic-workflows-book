@@ -132,35 +132,50 @@ not committed sources.
 
 ## CI and publication boundary
 
-`validate-book.yml` runs on PRs and is reused by both publishing workflows. It checks the
-helpers, release/evidence contract, pinned whole-corpus compilation, and HTML/PDF generation.
+`ci.yml` (**Book CI**, whose aggregate job is **Book release preflight**) runs on PRs and on
+pushes to `main`, and is reused by the controller, `release.yml` and `deploy-pages.yml`. It
+checks the helpers, release/evidence contract, pinned whole-corpus compilation, and HTML/PDF
+generation. [`RELEASING.md`](../RELEASING.md) states the shared release flow contract and the
+scenarios.
 The hosted Linux runner supplies browser system libraries; CI installs only Chromium,
 without an APT refresh. Browser installation and PDF rendering are separate, bounded
 steps so a download or renderer failure is reported distinctly. Other Linux environments
 may still need Playwright's `--with-deps` setup.
 The PR still needs explicit owner approval; these workflows do not configure branch protection.
 
-For a same-repository, content-only PR, webmaxru approves the current head with a GitHub
-review. Since GitHub prevents self-approval, a webmaxru-authored PR instead requires an
-owner comment `/release-book <full-40-character-head-sha>`. The trusted controller
-rechecks the approval, scope and checks, validates the head, merges with a SHA precondition,
-and explicitly chains a second validation and publication of the exact merge commit.
-`release-content.yml` creates a draft with the PDF before publishing, then deploys the
-same validated site without the gated PDF. A direct content push never releases.
+For a same-repository, content-only PR, the latest formal review by webmaxru must approve
+the current head. A `COMMENTED` review does not change that decision. Since GitHub prevents
+self-approval, a webmaxru-authored PR instead requires a still-present, unedited owner
+comment whose entire body is `/release-book <full-40-character-head-sha>`. Other comments
+cannot cancel it. A `CHANGES_REQUESTED` review or a review dismissal by any reviewer,
+including the owner, is a barrier: either form of approval must be created strictly after
+the latest one (a dismissal counts from its timeline event). Ordinary comments and
+`COMMENTED` reviews are not barriers. A push requires approval for the new head. The
+shared cases in `scripts/tests/test_approval_contract.py` pin these rules. The trusted controller
+rechecks the approval, the scope, that the head contains the current `main`, and the checks,
+validates the head, squash-merges with a SHA precondition, and then dispatches `release.yml`
+(a merge made with `GITHUB_TOKEN` triggers no workflows) with `pr`, `head_sha`, `base_sha`,
+`merge_sha` and `tag`. `release.yml` verifies the squash is the approved head, validates the
+exact merge commit, creates an annotated tag and draft, uploads the PDF, then publishes.
+Only a new publication marked Latest runs `deploy-pages.yml` for its tag and waits for
+the deployment and live smoke test. A direct content push never releases.
 Because a `GITHUB_TOKEN` push does not itself trigger a branch-source Pages build,
 the publisher requests a legacy Pages build through GitHub's API and fails unless that
 build reports the exact generated `gh-pages` commit. It needs `pages: write`; check the
 workflow result if the repository or token cannot request that build.
 To retry a failed merge/publication, dispatch `Release approved book` on `main` with the PR
-number; authorization and source are rechecked. A complete release is a no-op and repair
-never substitutes a newer source. A failed/empty asset requires manual recovery. Legacy
-tags without build/version metadata require explicit historical recovery. Historical
-repairs do not replace the current site or mark an older release as latest.
+number (`gh workflow run approved-book.yml -f pr=N`); authorization and source are rechecked.
+A complete publication is a no-op, including no rebuild or redeployment. A tag without a
+release, any existing draft, an incomplete published PDF or a provenance mismatch fails
+without writes. Ship the fix as a new version. Only published stable editions count
+when deciding Latest; bare tags, drafts and prereleases do not compete.
 
 The controller rejects workflow, script, dependency, presentation and other infrastructure
 changes even if they accompany content; prepare those separately. `deploy-pages.yml`
-continues to deploy infrastructure changes only while book content matches the last
-published edition.
+(gate: `scripts/deploy_gate.py`) deploys a push to `main` only while the book content equals
+the latest published edition, and a manual dispatch with `-f ref=content-vX.Y` redeploys a
+released edition (rollback). Other scripts: `publish_release.py` decides Latest and creates the
+annotated tag (never moving one); `approved_book.py` holds the controller policy.
 
 ## Resume an interrupted update
 

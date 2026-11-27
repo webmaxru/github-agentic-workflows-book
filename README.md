@@ -137,7 +137,9 @@ Use **`/update-book`** to follow a gh-aw release. It resolves the latest stable 
 (or accepts an exact tag), assesses the full interval from the book's verified baseline,
 and maps changes to existing chapters. The existing agents update affected material in
 waves, strictly compile the entire example corpus, and obtain editorial/cross-chapter
-acceptance before handing off to **`/release-content`**.
+acceptance before handing off to **`/release-content`**. For what to do in each situation
+(your own PR, someone else's, a fork, a manual merge, a failed release), see
+[**RELEASING.md**](RELEASING.md).
 
 ```powershell
 # Preview the maintenance driver, without launching it.
@@ -156,7 +158,8 @@ whole-book build, or `-Mode Release` to package already reviewed content.
 A metadata/tooling change alone is not a new content edition.
 
 The flow finishes at a **PR**, not an automatic merge or publication. The reusable
-`validate-book.yml` gate runs before the existing publishing workflows. See
+`ci.yml` gate (**Book CI**, aggregate job **Book release preflight**) runs before the
+publishing workflows. The shared release flow contract is in [`RELEASING.md`](RELEASING.md); see
 [`scripts/README.md`](scripts/README.md) for commands, evidence rules, and recovery.
 
 ---
@@ -355,13 +358,17 @@ historical editions.
 
 **GitHub Releases.** Each content version is published as a GitHub Release tagged
 `content-v<version>` with the matching single-file PDF attached. This is automated by
-[`Release approved book`](.github/workflows/release-approved-book.yml) checks the PR's
-exact revision, approval and content-only scope, then validates and merges it. It explicitly
-chains publication of the exact merge commit; a direct push does not release a book.
-The release is created as a draft, receives its validated PDF, and is then published.
-The same validated build supplies the website, without its gated PDF. Existing complete
-releases are no-ops; repairs use only the original tag. Legacy tags without release
-metadata require explicit historical recovery.
+[`Release approved book`](.github/workflows/approved-book.yml), which checks the PR's
+exact revision, approval, that the head contains the current `main`, and content-only scope,
+then validates and squash-merges it. It then dispatches
+[`Release book`](.github/workflows/release.yml) for the exact merge commit; a direct push does
+not release a book.
+The release gets an annotated tag, is created as a draft, receives its validated PDF, and is
+then published. If that publication is the highest stable edition, its tag is deployed through
+[`deploy-pages.yml`](.github/workflows/deploy-pages.yml), which serves only released editions:
+the website, without its gated PDF, is built from the released tag. Existing complete
+releases are no-ops, with no rebuild or redeployment. A tag without a release, an existing
+draft or an incomplete PDF must be left untouched; ship the fix as a new version.
 
 **To prepare a new version:**
 
@@ -375,13 +382,17 @@ metadata require explicit historical recovery.
    If the PR has a different author, webmaxru approves the current head in GitHub review.
    GitHub does not allow authors to approve their own PRs, so for a webmaxru-authored PR
    comment `/release-book <full-40-character-head-sha>` instead. A new commit needs a new
-   approval. Deleting the command withdraws it.
+   approval. Deleting or editing the command withdraws it. The head must also contain the
+   current `main`; if `main` moved, update the branch and approve the new head.
 5. The controller rechecks approval, files and checks, merges with a head-SHA precondition,
-   validates the merged source and publishes the website and `content-v<edition>` PDF.
-   Check **Release approved book** for errors. To retry an interrupted publication, dispatch
-   that workflow on `main` with the PR number; it rechecks the original authorization.
-   Historical repairs keep their original tag and never replace the current website or
-   mark an older release as latest.
+   then dispatches **Release book**, which validates the merged source and publishes the
+   website and `content-v<edition>` PDF. Check **Release approved book** and **Release book**
+   for errors. To retry an interrupted publication, run
+   `gh workflow run approved-book.yml -f pr=N` on `main`; it rechecks the original
+   authorization. If only the website failed, redeploy the published tag using the manual
+   Pages workflow rather than retrying publication.
+
+The full guide, with commands for each scenario, is in [`RELEASING.md`](RELEASING.md).
 
 Automatic merge rejects mixed infrastructure changes, including workflows, scripts,
 dependency manifests, and presentation assets. Those PRs retain ordinary CI and must be
