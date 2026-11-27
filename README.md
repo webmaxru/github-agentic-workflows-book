@@ -137,7 +137,9 @@ Use **`/update-book`** to follow a gh-aw release. It resolves the latest stable 
 (or accepts an exact tag), assesses the full interval from the book's verified baseline,
 and maps changes to existing chapters. The existing agents update affected material in
 waves, strictly compile the entire example corpus, and obtain editorial/cross-chapter
-acceptance before handing off to **`/release-content`**.
+acceptance before handing off to **`/release-content`**. For what to do in each situation
+(your own PR, someone else's, a fork, a manual merge, a failed release), see
+[**RELEASING.md**](RELEASING.md).
 
 ```powershell
 # Preview the maintenance driver, without launching it.
@@ -355,7 +357,7 @@ historical editions.
 
 **GitHub Releases.** Each content version is published as a GitHub Release tagged
 `content-v<version>` with the matching single-file PDF attached. This is automated by
-[`Release approved book`](.github/workflows/release-approved-book.yml) checks the PR's
+[`Release approved book`](.github/workflows/release-approved-book.yml), which checks the PR's
 exact revision, approval and content-only scope, then validates and merges it. It explicitly
 chains publication of the exact merge commit; a direct push does not release a book.
 The release is created as a draft, receives its validated PDF, and is then published.
@@ -382,6 +384,8 @@ metadata require explicit historical recovery.
    that workflow on `main` with the PR number; it rechecks the original authorization.
    Historical repairs keep their original tag and never replace the current website or
    mark an older release as latest.
+
+The full guide, with commands for each scenario, is in [`RELEASING.md`](RELEASING.md).
 
 Automatic merge rejects mixed infrastructure changes, including workflows, scripts,
 dependency manifests, and presentation assets. Those PRs retain ordinary CI and must be
