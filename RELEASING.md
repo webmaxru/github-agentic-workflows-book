@@ -289,11 +289,17 @@ If the run died within a second with no steps, see [Runs that fail without start
 
 ### 7. Tooling, docs and workflow changes
 
-A PR that touches only files outside the content allowlist (`scripts/`, `site/` generator code, `.github/`, `assets/`, `README.md`, `RELEASING.md`, tests) is **tooling-only**. It needs no version bump and never releases. Preflight passes, but the controller refuses to merge it (`PR does not change a chapter or TOC`). Merge it yourself when the checks are green. A push that touches a deploy path redeploys the website, but only while `main` has no unreleased content (scenario 9 explains the gate).
+A PR that touches only files outside the content allowlist (`scripts/`, `site/` generator code, `.github/`, `assets/`, `README.md`, `RELEASING.md`, tests) is **tooling-only**. It needs no version bump. When the owner clicks **Approve** on someone else's PR, comments `/release-book <head SHA>` on their own, or targets the PR in a manual controller run, the run finishes green with this warning in the log and step summary instead of merging or releasing it:
+
+`PR #N is tooling-only (no book content changed: <first up to 5 paths, comma-separated>); the release controller never merges or releases tooling PRs. Merge it yourself once its checks are green.`
+
+Only a current owner approval of the exact PR head counts as a targeted review. Other review signals, CI completions and scheduled scans log the refusal without a warning. The owner merges the tooling PR by hand once its checks are green. A push that touches a deploy path redeploys the website, but only while `main` has no unreleased content (see scenario 9).
 
 ### 8. Mixed content and tooling
 
-A PR that changes both content and tooling fails with `PR contains paths outside the content-only allowlist`. Split it into two PRs: tooling first (merged by you), then the content PR.
+A PR that changes both content and tooling is also skipped. A targeted run finishes green with this warning:
+
+`PR #N mixes book content with tooling (<first up to 5 non-allowlisted paths>); split it: merge the tooling PR yourself, then authorize the content PR.`
 
 ### 9. A manual merge by mistake
 

@@ -277,7 +277,7 @@ class ControllerEligibility(Rehearsal):
         self.fake.pr["head"] = pushed
         self.fake.check(pushed)
         self.fake.review(OWNER, "APPROVED", pushed)
-        self.not_selected("content-only allowlist")
+        self.not_selected(r"mixes book content with tooling \(scripts/release_content\.py\)")
 
 
 class ControllerMerge(Rehearsal):
