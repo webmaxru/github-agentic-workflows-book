@@ -83,6 +83,7 @@ jobs:
     with:
       source-ref: ${{ needs.published-source.outputs.sha }}
       artifact-name: validated-pages
+      upload-staging: true
 
   deploy:
     needs: [published-source, validate]
@@ -153,3 +154,21 @@ jobs:
         run: |
           DOMAIN="$(tr -d '[:space:]' < artifact/site/CNAME)"
           python scripts/deploy_gate.py smoke --url "https://${DOMAIN}" --version "$VERSION"
+
+  cleanup:
+    needs: [published-source, validate, deploy]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Remove consumed Pages staging after deployment and smoke test
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.published-source.outputs.tag }}
+        run: python scripts/artifact_storage.py staging --run-id "$GITHUB_RUN_ID" --kind pages --tag "$TAG"

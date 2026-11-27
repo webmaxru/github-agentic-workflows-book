@@ -136,6 +136,7 @@ jobs:
       comparison-base: ${{ needs.plan.outputs.comparison }}
       artifact-name: validated-release
       require-content-change: true
+      upload-staging: true
 
   release:
     needs: [plan, validate]
@@ -143,6 +144,7 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       latest: ${{ steps.publish.outputs.latest }}
+      digest: ${{ steps.integrity.outputs.digest }}
     permissions:
       contents: write
       pull-requests: read
@@ -212,12 +214,42 @@ jobs:
           gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest="$latest"
           echo "latest=$latest" >> "$GITHUB_OUTPUT"
 
+      - name: Verify published PDF integrity
+        id: integrity
+        run: |
+          python scripts/artifact_storage.py verify --tag "$TAG" --sha "$MERGE_SHA" --asset-file "$ASSET" >> "$GITHUB_OUTPUT"
+
   pages:
     needs: [plan, release]
     if: github.ref == 'refs/heads/main' && needs.release.result == 'success' && needs.release.outputs.latest == 'true'
     permissions:
       contents: write
       pages: write
+      # Permission ceiling for the reusable workflow; only its cleanup job receives this token.
+      actions: write
     uses: ./.github/workflows/deploy-pages.yml
     with:
       published-tag: ${{ needs.plan.outputs.tag }}
+
+  cleanup:
+    needs: [plan, validate, release, pages]
+    if: >-
+      always() && github.ref == 'refs/heads/main' &&
+      needs.validate.result == 'success' && needs.release.result == 'success' &&
+      (needs.pages.result == 'success' || (needs.pages.result == 'skipped' && needs.release.outputs.latest == 'false'))
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Remove consumed release staging only after verified publication and Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.plan.outputs.tag }}
+          SOURCE_SHA: ${{ inputs.merge_sha }}
+          DIGEST: ${{ needs.release.outputs.digest }}
+        run: python scripts/artifact_storage.py staging --run-id "$GITHUB_RUN_ID" --kind release --tag "$TAG" --sha "$SOURCE_SHA" --digest "$DIGEST"

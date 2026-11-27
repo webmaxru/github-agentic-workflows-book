@@ -107,6 +107,53 @@ The repository has no branch protection or ruleset, so nothing enforces this gat
 
 ## Recovery and corrections
 
+### Build artifact storage and previews
+
+All push, pull-request and approval preflight builds still compile examples, validate the
+edition, run tests and build the HTML/PDF. They no longer automatically upload full books.
+To download a preview, explicitly request it on the source branch (or tag):
+
+```sh
+gh workflow run ci.yml --ref <branch-or-tag> -f upload_preview=true
+```
+
+The boolean `upload_preview` defaults to false. Preview bundles expire after **one day**.
+Their versioned `book-preview-v1` names bind the repository, encoded **full source ref**,
+producing run ID and attempt. After a successful upload and completed producer, a
+default-branch `workflow_run` cleanup uses the API artifact ID and run metadata to remove
+only older previews for that book/ref/workflow. It serializes same-ref cleanup without
+cancelling it, rechecks producers before deletion, and preserves the replacement, newer
+uploads, active runs, other refs, diagnostics and publisher staging. Reversed completions
+cannot delete newer previews. Active runs (or GitHub's pending-job concurrency coalescing)
+can leave temporary overlap; one-day expiry is the backstop. A failed/missing replacement
+never deletes the previous preview. Non-main previews gain automatic cleanup after this
+workflow exists on the default branch. Cleanup never runs producing-branch code with a
+write token, and cleanup errors fail visibly.
+
+The authoritative builder is `.github/workflows/ci.yml`; there is no external workflow
+template/generator for the release flow. `release.yml` and `deploy-pages.yml` explicitly
+request staging bundles from that builder; the approval preflight does not.
+Release staging transfers the validated site/PDF, release notes and validation reports to
+the publisher with **seven-day** recovery retention. Pages independently rebuilds from its
+gated source (including PDF validation), but transfers only the site and validation metadata
+to the deploy job, with **one-day** retention. The PDF, release notes and duplicate compiler
+report are removed from the Pages payload before upload. After publication, the published PDF's state, size, SHA-256 digest and
+tag source are checked against the validated PDF. Only after every downstream deployment
+consumer has finished successfully (including the smoke test when required) is release
+staging deleted. Pages staging is deleted after successful deploy and smoke test, with a
+fresh published-release/asset integrity check. Missing integrity metadata or any failed,
+skipped-required or uncertain publication/consumer retains staging for recovery until
+expiry. Existing immutable-publication retry rules below are unchanged. The small
+compiler diagnostic reports have an explicit three-day expiration. The generated
+gh-aw scouting workflow only transfers agent state/diagnostics; it uploads no full books
+and is unchanged.
+
+Retention changes **do not retroactively shorten existing artifacts**, including older
+seven- or fourteen-day artifacts. No legacy purge is performed. The account's included
+500 MB Actions artifact-storage allowance is shared: other repositories can still consume
+it, and storage accounting can lag expiration/deletion. No releases, release assets, tags
+or deployed content are deleted by these cleanups.
+
 Pushing a tag never publishes. If the merge succeeded but publication failed, run the controller for that PR number; it recovers the exact merged revision, re-derives the five release inputs and never overwrites anything:
 
 ```sh

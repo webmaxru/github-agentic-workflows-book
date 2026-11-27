@@ -1,0 +1,32 @@
+name: Clean book previews
+
+# workflow_run uses trusted default-branch code, including for manual builds of other refs.
+# No checkout or execution of the producing run's code or artifacts with this write token.
+on:
+  workflow_run:
+    workflows: ["Book CI"]
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  cleanup:
+    if: github.event.workflow_run.event == 'workflow_dispatch' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-24.04
+    concurrency:
+      group: book-preview-cleanup-${{ github.repository_id }}-${{ github.event.workflow_run.head_branch }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Retire only older completed previews for the same source ref
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        run: python scripts/artifact_storage.py previews --run-id "$RUN_ID" --attempt "$RUN_ATTEMPT"
