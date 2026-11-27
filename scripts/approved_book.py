@@ -40,6 +40,10 @@ class PolicyError(ValueError):
     pass
 
 
+class StaleBaseError(PolicyError):
+    """An approved, green PR must be updated from main and approved on its new head."""
+
+
 class GitHubError(RuntimeError):
     def __init__(self, message, status=None):
         super().__init__(message)
@@ -216,12 +220,12 @@ class GitHub:
         """The head must already contain the current tip of main (never merge a stale head)."""
         main = self.get("git/ref/heads/main")["object"]["sha"]
         if main != base:
-            raise PolicyError("main moved since the pull request was last evaluated; "
-                              "update the branch and approve again.")
+            raise StaleBaseError(f"approved, but its base {base[:12]} is behind main {main[:12]}; "
+                                 "update the branch from main, then approve the new head.")
         status = self.get(f"compare/{main}...{head}?per_page=1").get("status")
         if status not in {"ahead", "identical"}:
-            raise PolicyError("The head does not contain the current main; "
-                              "update the branch and approve again.")
+            raise StaleBaseError("The head does not contain the current main; "
+                                 "update the branch from main, then approve the new head.")
 
     def edition_at(self, ref):
         blob = self.get(f"contents/content/VERSION?ref={ref}")
@@ -267,6 +271,16 @@ class GitHub:
         return previous[-1][1]
 
 
+def report_stale_base(number, error):
+    message = f"PR #{number}: {error}"
+    # Workflows redirect stdout to JSON; annotations must stay on stderr.
+    print(f"::warning::{message}", file=sys.stderr, flush=True)
+    summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if summary:
+        with open(summary, "a", encoding="utf-8") as output:
+            output.write(message + "\n\n")
+
+
 def select(api, number=None):
     """Return the first eligible PR (empty dict if none). With ``number`` a merged PR is a recovery."""
     numbers = [number] if number else [pr["number"] for pr in api.pages("pulls?state=open&base=main")]
@@ -280,6 +294,10 @@ def select(api, number=None):
             selected["comparison"] = api.previous_edition(selected["head"], bool(selected.get("merge_sha")))
             selected["tag"] = f"content-v{api.edition_at(selected['head'])}"
             return selected
+        except StaleBaseError as exc:
+            if number:
+                raise
+            report_stale_base(candidate, exc)
         except PolicyError as exc:
             if number:
                 raise
@@ -359,6 +377,9 @@ def main():
         else:
             result = verify_merged(api, args.number, args.head, args.base, args.merge_sha, args.tag)
         print(json.dumps(result))
+    except StaleBaseError as exc:
+        report_stale_base(args.number, exc)
+        return 1
     except (KeyError, PolicyError, GitHubError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1

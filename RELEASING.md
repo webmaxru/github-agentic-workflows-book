@@ -265,7 +265,9 @@ After a push, authorize the new head. After a **Request changes** review or a di
 
 ### 5. The branch is behind `main`
 
-A head that does not contain the current `main` is not eligible and is never merged. The controller logs `The head does not contain the current main; update the branch and approve again.` (or `main moved since the pull request was last evaluated` when `main` moved a moment ago). Update the branch, wait for preflight on the new head, then authorize the new head:
+A head that does not contain the current `main` is not eligible and is never merged. This can happen when another PR merges just after you approve. After checking current-head approval and green preflight, the controller compares the PR base with live `main` **before** the expensive rebuild. A stale base produces a workflow warning and step summary: `PR #N: approved, but its base <base> is behind main <main>; update the branch from main, then approve the new head.` If GitHub has refreshed the PR base but the head still lacks it, the warning instead starts `The head does not contain the current main`.
+
+The scheduled scan skips that PR and may finish green, but the warning and summary remain visible on every run until it is fixed. A targeted run with `pr=N` fails rather than silently skipping. The same current-main gate still runs after validation, before merging, so a move during the rebuild also blocks the merge. Update the branch, wait for preflight on the new head, then authorize the new head:
 
 ```sh
 gh pr update-branch N          # or: git merge origin/main && git push
@@ -277,7 +279,7 @@ Updating the branch changes the head, so an earlier approval no longer counts. I
 
 ### 6. Approved, but the PR is still open
 
-Look at the latest **Release approved book** run for the reason. The scan prints one line per open PR, `PR #N: <reason>`, in the `select` job log. Typical causes: failing preflight, a head that moved after approval, a head behind `main`, a conflict with `main`, or a run that never started. Fix that, or run the controller for this PR:
+Look at the latest **Release approved book** run for the reason. The scan prints one line per rejected PR, `PR #N: <reason>`, in the `select` job log; an approved, green PR left behind `main` also appears as a warning and in the step summary (scenario 5). Typical causes: failing preflight, a head that moved after approval, a head behind `main`, a conflict with `main`, or a run that never started. Fix that, or run the controller for this PR:
 
 ```sh
 gh workflow run approved-book.yml -f pr=N
