@@ -29,6 +29,8 @@ ROOT = Path(__file__).resolve().parents[1]
 FRAMEWORK_PATH = "content/FRAMEWORK_VERSION"
 REVIEW_PATH = "content/release-review.json"
 TOC_PATH = "content/toc.yml"
+# The command that talks to GitHub; the end-to-end rehearsal swaps in a shim for it.
+GH = ["gh"]
 EXAMPLE_TEXT_SUFFIXES = {".md", ".json", ".yaml", ".yml", ".txt"}
 EXAMPLE_ARTIFACT_DIRS = {"build", "dist", "node_modules", "__pycache__", ".git"}
 
@@ -431,10 +433,10 @@ def check(
     }
 
 
-def github_get(endpoint: str, *, allow_not_found: bool = False) -> dict[str, Any] | None:
+def github_get(endpoint: str, *, allow_not_found: bool = False, shape: type = dict) -> Any:
     """Only an explicit HTTP 404 can be treated as absent; other failures stop."""
     result = subprocess.run(
-        ["gh", "api", "--include", endpoint], capture_output=True, text=True,
+        [*GH, "api", "--include", endpoint], capture_output=True, text=True,
         encoding="utf-8", errors="replace",
     )
     headers = list(re.finditer(r"^HTTP/\S+\s+([0-9]{3})\b", result.stdout, re.MULTILINE))
@@ -451,7 +453,7 @@ def github_get(endpoint: str, *, allow_not_found: bool = False) -> dict[str, Any
         data = json.loads(payload[1])
     except (IndexError, ValueError) as exc:
         raise ReleaseError("GitHub API returned an invalid JSON response.") from exc
-    if not isinstance(data, dict):
+    if not isinstance(data, shape):
         raise ReleaseError("GitHub API returned an unexpected response shape.")
     return data
 
@@ -464,6 +466,15 @@ def github_release(repository: str, tag: str) -> dict[str, Any] | None:
         repo = github_get(f"repos/{repository}")
         if repo.get("full_name", "").lower() != repository.lower():
             raise ReleaseError("Cannot confirm access to the requested release repository.")
+        # releases/tags/<tag> never returns a draft. Look for one, so that a half-finished release
+        # resumes instead of a second draft being created for the same tag.
+        for page in range(1, 51):
+            batch = github_get(f"repos/{repository}/releases?per_page=100&page={page}", shape=list)
+            for item in batch:
+                if isinstance(item, dict) and item.get("tag_name") == tag:
+                    return item
+            if len(batch) < 100:
+                break
     return release
 
 
@@ -516,6 +527,11 @@ def release_plan(
                     "exact-tag repair. No asset was deleted or overwritten."
                 )
         else:
+            if not metadata.get("draft"):
+                raise ReleaseError(
+                    f"Release {tag} is published without its PDF asset ({asset}). A published "
+                    "release is never modified; nothing was changed. Ship the fix as a new version."
+                )
             has_asset = False
     if metadata is not None and not tag_exists:
         raise ReleaseError(f"Release {tag} exists but its tag is unavailable; fetch tags before repair.")

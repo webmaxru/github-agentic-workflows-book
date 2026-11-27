@@ -31,11 +31,30 @@ class ApiTests(unittest.TestCase):
         run.side_effect = [
             self.response(404, "{}", 1),
             self.response(200, '{"full_name":"owner/book"}'),
+            self.response(200, "[]"),
         ]
         self.assertIsNone(release.github_release("owner/book", "content-v1.1"))
-        self.assertEqual(run.call_count, 2)
+        self.assertEqual(run.call_count, 3)
         run.side_effect = [self.response(404, "{}", 1), self.response(404, "{}", 1)]
         with self.assertRaisesRegex(release.ReleaseError, "failed"):
+            release.github_release("owner/book", "content-v1.1")
+
+    @patch.object(release.subprocess, "run")
+    def test_a_draft_is_found_although_the_tag_lookup_hides_it(self, run):
+        draft = '{"tag_name":"content-v1.1","draft":true,"assets":[]}'
+        run.side_effect = [
+            self.response(404, "{}", 1),
+            self.response(200, '{"full_name":"owner/book"}'),
+            self.response(200, f'[{{"tag_name":"content-v1.0","draft":false}},{draft}]'),
+        ]
+        found = release.github_release("owner/book", "content-v1.1")
+        self.assertTrue(found["draft"])
+        run.side_effect = [
+            self.response(404, "{}", 1),
+            self.response(200, '{"full_name":"owner/book"}'),
+            self.response(200, '{"not":"a list"}'),
+        ]
+        with self.assertRaisesRegex(release.ReleaseError, "unexpected response shape"):
             release.github_release("owner/book", "content-v1.1")
 
     @patch.object(release.subprocess, "run")
@@ -46,9 +65,10 @@ class ApiTests(unittest.TestCase):
 
 
 class ReleasePlanTests(RepositoryTest):
-    def metadata(self, assets=()):
+    def metadata(self, assets=(), draft=False):
         return {
             "tag_name": "content-v1.1",
+            "draft": draft,
             "assets": [
                 {"id": number, "name": name, "state": "uploaded", "size": 524288,
                  "content_type": "application/pdf",
@@ -102,9 +122,20 @@ class ReleasePlanTests(RepositoryTest):
     def test_legacy_source_cannot_be_repaired_with_current_metadata(self, api):
         self.accept()
         self.commit()
-        api.return_value = self.metadata()
+        api.return_value = self.metadata(draft=True)
         with self.assertRaisesRegex(release.ReleaseError, "Legacy tags are never rebuilt"):
             release.release_plan(self.root, "owner/book", env={})
+
+    @patch.object(release, "github_release")
+    def test_published_release_missing_its_pdf_fails_and_a_draft_resumes(self, api):
+        self.accept()
+        self.commit()
+        self.git("tag", "--force", "content-v1.1")
+        api.return_value = self.metadata(["unrelated-upload.txt"])
+        with self.assertRaisesRegex(release.ReleaseError, "published without its PDF.*new version"):
+            release.release_plan(self.root, "owner/book", env={})
+        api.return_value = self.metadata(["unrelated-upload.txt"], draft=True)
+        self.assertEqual(release.release_plan(self.root, "owner/book", env={})["action"], "upload")
 
     @patch.object(release, "github_release")
     def test_tag_without_edition_metadata_cannot_borrow_current_build_inputs(self, api):
@@ -117,7 +148,7 @@ class ReleasePlanTests(RepositoryTest):
         self.put("content/FRAMEWORK_VERSION", "v0.88.7\n")
         self.accept()
         self.commit()
-        api.return_value = self.metadata()
+        api.return_value = self.metadata(draft=True)
 
         with self.assertRaisesRegex(release.ReleaseError, "Legacy tags are never rebuilt"):
             release.release_plan(self.root, "owner/book", env={})
@@ -131,7 +162,7 @@ class ReleasePlanTests(RepositoryTest):
         self.put("content/FRAMEWORK_VERSION", "v0.88.7\n")
         self.put("content/chapters/one.html", "<p>Unreleased, different source.</p>")
         self.commit()
-        api.return_value = self.metadata(["unrelated-upload.txt"])
+        api.return_value = self.metadata(["unrelated-upload.txt"], draft=True)
         api.return_value["assets"][0].update(state="starter", size=0)
         plan = release.release_plan(self.root, "owner/book", env={})
         self.assertEqual(plan["action"], "upload")
@@ -165,7 +196,7 @@ class ReleasePlanTests(RepositoryTest):
         self.commit()
         self.git("tag", "--force", "content-v1.1")
         self.put("content/VERSION", "1.1\n")
-        api.return_value = self.metadata()
+        api.return_value = self.metadata(draft=True)
         with self.assertRaisesRegex(release.ReleaseError, "selected source contains 1.0"):
             release.release_plan(self.root, "owner/book", env={})
 

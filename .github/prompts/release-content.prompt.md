@@ -92,9 +92,9 @@ refresh, first run `.github/prompts/update-book.prompt.md`.
 
 The owner reviews a non-owner-authored PR, or comments `/release-book <full-40-character-head-sha>`
 on their own PR (GitHub does not allow self-approval). The controller rechecks the exact
-head and content-only scope, validates and merges it, then explicitly validates the merge
-and publishes the online site without the gated PDF. `release-content.yml` creates
-`content-v<edition>` with the matching
+head and content-only scope, validates and squash-merges it, then dispatches `release.yml`,
+which validates the merge and publishes the online site without the gated PDF. `release.yml`
+creates `content-v<edition>` with the matching
 `gh-aw-book-v<edition>.pdf` and changelog notes. Verify both workflow outcomes, the release
 asset, and the live version-history page before calling the edition published.
 

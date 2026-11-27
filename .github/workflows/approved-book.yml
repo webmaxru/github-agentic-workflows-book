@@ -1,27 +1,28 @@
 name: Release approved book
 
+# The controller. It never trusts pull request code: every job runs from main, and the
+# validators (scripts/approved_book.py, ci.yml) are read from main. It authorizes, squash-merges
+# the approved head and dispatches release.yml (a merge made with GITHUB_TOKEN triggers no workflows).
+
 on:
   issue_comment:
     types: [created, edited, deleted]
   workflow_run:
-    workflows: ["Book review signal", "Check book update"]
+    workflows: ["Book approval signal", "Book CI"]
     types: [completed]
   workflow_dispatch:
     inputs:
-      pull-request:
-        description: "Content PR number for an explicit retry"
+      pr:
+        description: "Content PR number: retry, or recover after the merge"
         required: true
         type: number
   schedule:
-    - cron: "17 */6 * * *"
+    - cron: "17,47 * * * *"
 
-permissions:
-  contents: read
-  pull-requests: read
-  checks: read
+permissions: {}
 
 concurrency:
-  group: release-approved-book
+  group: approved-book
   cancel-in-progress: false
 
 jobs:
@@ -31,15 +32,21 @@ jobs:
       (github.event_name != 'issue_comment' ||
        (github.event.issue.pull_request && github.event.comment.user.login == 'webmaxru' &&
         github.event.action != 'deleted' && startsWith(github.event.comment.body, '/release-book ')))
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: read
+      checks: read
+      statuses: read
     outputs:
       number: ${{ steps.select.outputs.number }}
       head: ${{ steps.select.outputs.head }}
       base: ${{ steps.select.outputs.base }}
       comparison: ${{ steps.select.outputs.comparison }}
       merge-sha: ${{ steps.select.outputs.merge_sha }}
+      tag: ${{ steps.select.outputs.tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: main
           fetch-depth: 0
@@ -49,7 +56,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           EVENT_NAME: ${{ github.event_name }}
           COMMENT_PR: ${{ github.event.issue.pull_request.url && github.event.issue.number || '' }}
-          INPUT_PR: ${{ inputs.pull-request }}
+          INPUT_PR: ${{ inputs.pr }}
         run: |
           args=()
           if [[ "$EVENT_NAME" == "issue_comment" ]]; then
@@ -66,7 +73,7 @@ jobs:
               comparison = data["comparison"]
               subprocess.run(["git", "merge-base", "--is-ancestor", comparison, data["base"]], check=True)
               with open(os.environ["GITHUB_OUTPUT"], "a") as out:
-                  for key in ("number", "head", "base"):
+                  for key in ("number", "head", "base", "tag"):
                       print(f"{key}={data[key]}", file=out)
                   print(f"comparison={comparison}", file=out)
                   print(f"merge_sha={data.get('merge_sha', '')}", file=out)
@@ -74,8 +81,10 @@ jobs:
 
   preflight:
     needs: select
-    if: needs.select.outputs.number != '' && needs.select.outputs.merge-sha == ''
-    uses: ./.github/workflows/validate-book.yml
+    if: github.ref == 'refs/heads/main' && needs.select.outputs.number != '' && needs.select.outputs.merge-sha == ''
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yml
     with:
       source-ref: ${{ needs.select.outputs.head }}
       comparison-base: ${{ needs.select.outputs.comparison }}
@@ -84,16 +93,17 @@ jobs:
 
   merge:
     needs: [select, preflight]
-    if: needs.select.outputs.number != '' && needs.select.outputs.merge-sha == '' && needs.preflight.outputs.source-sha == needs.select.outputs.head
-    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && needs.select.outputs.number != '' && needs.select.outputs.merge-sha == '' && needs.preflight.outputs.source-sha == needs.select.outputs.head
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
       pull-requests: write
       checks: read
+      statuses: read
     outputs:
       merge-sha: ${{ steps.merge.outputs.merge_sha }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: main
           persist-credentials: false
@@ -108,17 +118,28 @@ jobs:
           python scripts/approved_book.py merge --number "$NUMBER" --head "$HEAD" --base "$BASE" --comparison "$COMPARISON" > merged.json
           python -c 'import json,os; print("merge_sha="+json.load(open("merged.json"))["merge_sha"], file=open(os.environ["GITHUB_OUTPUT"],"a"))'
 
-  publish:
+  dispatch:
     needs: [select, merge]
-    if: always() && needs.select.result == 'success' && needs.select.outputs.number != '' && (needs.merge.result == 'success' || needs.select.outputs.merge-sha != '')
-    uses: ./.github/workflows/release-content.yml
+    if: always() && github.ref == 'refs/heads/main' && needs.select.result == 'success' && needs.select.outputs.number != '' && (needs.merge.result == 'success' || needs.select.outputs.merge-sha != '')
+    runs-on: ubuntu-24.04
     permissions:
-      contents: write
+      contents: read
+      actions: write
       pull-requests: read
       checks: read
-      pages: write
-    with:
-      pull-request: ${{ needs.select.outputs.number }}
-      source-sha: ${{ needs.merge.outputs.merge-sha || needs.select.outputs.merge-sha }}
-      merge-base: ${{ needs.select.outputs.base }}
-      comparison-base: ${{ needs.select.outputs.comparison }}
+      statuses: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Start the release of the merged edition
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ needs.select.outputs.number }}
+          HEAD: ${{ needs.select.outputs.head }}
+          BASE: ${{ needs.select.outputs.base }}
+          MERGE_SHA: ${{ needs.merge.outputs.merge-sha || needs.select.outputs.merge-sha }}
+          TAG: ${{ needs.select.outputs.tag }}
+        run: |
+          python scripts/approved_book.py dispatch --number "$NUMBER" --head "$HEAD" --base "$BASE" --merge-sha "$MERGE_SHA" --tag "$TAG"

@@ -132,8 +132,11 @@ not committed sources.
 
 ## CI and publication boundary
 
-`validate-book.yml` runs on PRs and is reused by both publishing workflows. It checks the
-helpers, release/evidence contract, pinned whole-corpus compilation, and HTML/PDF generation.
+`ci.yml` (**Book CI**, whose aggregate job is **Book release preflight**) runs on PRs and on
+pushes to `main`, and is reused by the controller, `release.yml` and `deploy-pages.yml`. It
+checks the helpers, release/evidence contract, pinned whole-corpus compilation, and HTML/PDF
+generation. [`RELEASING.md`](../RELEASING.md) states the shared release flow contract and the
+scenarios.
 The hosted Linux runner supplies browser system libraries; CI installs only Chromium,
 without an APT refresh. Browser installation and PDF rendering are separate, bounded
 steps so a download or renderer failure is reported distinctly. Other Linux environments
@@ -143,24 +146,32 @@ The PR still needs explicit owner approval; these workflows do not configure bra
 For a same-repository, content-only PR, webmaxru approves the current head with a GitHub
 review. Since GitHub prevents self-approval, a webmaxru-authored PR instead requires an
 owner comment `/release-book <full-40-character-head-sha>`. The trusted controller
-rechecks the approval, scope and checks, validates the head, merges with a SHA precondition,
-and explicitly chains a second validation and publication of the exact merge commit.
-`release-content.yml` creates a draft with the PDF before publishing, then deploys the
-same validated site without the gated PDF. A direct content push never releases.
+rechecks the approval (any later push, `CHANGES_REQUESTED` review, dismissal or edited
+comment revokes it), the scope, that the head contains the current `main`, and the checks,
+validates the head, squash-merges with a SHA precondition, and then dispatches `release.yml`
+(a merge made with `GITHUB_TOKEN` triggers no workflows) with `pr`, `head_sha`, `base_sha`,
+`merge_sha` and `tag`. `release.yml` verifies the squash is the approved head, validates the
+exact merge commit, creates an annotated tag, a draft with the PDF, publishes, then deploys
+that tag through `deploy-pages.yml` without the gated PDF. A direct content push never releases.
 Because a `GITHUB_TOKEN` push does not itself trigger a branch-source Pages build,
 the publisher requests a legacy Pages build through GitHub's API and fails unless that
 build reports the exact generated `gh-pages` commit. It needs `pages: write`; check the
 workflow result if the repository or token cannot request that build.
 To retry a failed merge/publication, dispatch `Release approved book` on `main` with the PR
-number; authorization and source are rechecked. A complete release is a no-op and repair
-never substitutes a newer source. A failed/empty asset requires manual recovery. Legacy
-tags without build/version metadata require explicit historical recovery. Historical
-repairs do not replace the current site or mark an older release as latest.
+number (`gh workflow run approved-book.yml -f pr=N`); authorization and source are rechecked.
+A complete release is a no-op and repair never substitutes a newer source. A draft release
+resumes (missing PDF uploaded, never overwritten); a published release without its PDF, a
+tag at another commit, or a merge that is not the approved head fails with nothing written,
+and the fix is a new version. Legacy tags without build/version metadata require explicit
+historical recovery. A release older than the newest published one is never deployed over
+the current site or marked Latest.
 
 The controller rejects workflow, script, dependency, presentation and other infrastructure
 changes even if they accompany content; prepare those separately. `deploy-pages.yml`
-continues to deploy infrastructure changes only while book content matches the last
-published edition.
+(gate: `scripts/deploy_gate.py`) deploys a push to `main` only while the book content equals
+the latest published edition, and a manual dispatch with `-f ref=content-vX.Y` redeploys a
+released edition (rollback). Other scripts: `publish_release.py` decides Latest and creates the
+annotated tag (never moving one); `approved_book.py` holds the controller policy.
 
 ## Resume an interrupted update
 

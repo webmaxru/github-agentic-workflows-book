@@ -1,7 +1,13 @@
-name: Check book update
+name: Book CI
+
+# The aggregate job "Book release preflight" is the check the approval controller requires on the
+# exact head of a content pull request. The same workflow is reused (workflow_call) by the
+# controller preflight, by release.yml and by deploy-pages.yml to build exactly one source.
 
 on:
   pull_request:
+    branches: [main]
+  push:
     branches: [main]
   workflow_dispatch:
   workflow_call:
@@ -34,7 +40,7 @@ permissions:
 jobs:
   validate:
     name: Book release preflight
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     outputs:
       source-sha: ${{ steps.meta.outputs.source_sha }}
@@ -42,13 +48,13 @@ jobs:
       framework-version: ${{ steps.meta.outputs.framework_version }}
     steps:
       - name: Checkout validation tooling
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: tooling
           persist-credentials: false
 
       - name: Checkout the exact book source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ inputs.source-ref || github.sha }}
           path: source
@@ -56,7 +62,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -105,7 +111,7 @@ jobs:
 
       - name: Preserve compiler diagnostics
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ inputs.artifact-name || 'validated-book' }}-diagnostics
           path: verification.json
@@ -162,7 +168,7 @@ jobs:
           PY
 
       - name: Upload the exact validated site and PDF
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ inputs.artifact-name || 'validated-book' }}
           path: artifact/

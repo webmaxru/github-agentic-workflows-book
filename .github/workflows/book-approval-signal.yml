@@ -1,4 +1,7 @@
-name: Book review signal
+name: Book approval signal
+
+# Review events cannot start the controller directly (a workflow_run needs a completed run).
+# This run only relays them; the controller independently re-checks every approval.
 
 on:
   pull_request_review:
@@ -8,6 +11,6 @@ permissions: {}
 
 jobs:
   signal:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - run: echo "Review event received; trusted controller independently checks authorization."
