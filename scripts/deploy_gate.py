@@ -59,12 +59,18 @@ def tag_commit(root, tag, git=run_git):
     return sha
 
 
-def gate(api, root, ref=None, git=run_git):
+def gate(api, root, ref=None, git=run_git, *, require_latest=False):
     published = published_tags(api)
     if not published:
         raise PolicyError("No published content release exists; nothing may be deployed.")
     if ref:
-        return released_ref(published, root, ref, git)
+        source = released_ref(published, root, ref, git)
+        if require_latest and source["tag"] != published[-1]:
+            raise PolicyError(f"{source['tag']} is not the highest published stable edition "
+                              f"({published[-1]}); use manual deployment for a rollback.")
+        return source
+    if require_latest:
+        raise PolicyError("Automatic release deployment requires an explicit released ref.")
     latest = published[-1]
     release_sha = tag_commit(root, latest, git)
     code, _ = git(root, "diff", "--quiet", release_sha, "HEAD", "--", *CONTENT_PATHSPECS)
@@ -133,6 +139,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("action", choices=("gate", "smoke"))
     parser.add_argument("--ref", default="")
+    parser.add_argument("--require-latest", action="store_true")
     parser.add_argument("--root", default=".")
     parser.add_argument("--url")
     parser.add_argument("--version")
@@ -140,7 +147,7 @@ def main():
     try:
         if args.action == "gate":
             api = GitHub(os.environ["GITHUB_REPOSITORY"], os.environ["GH_TOKEN"])
-            result = gate(api, args.root, args.ref.strip() or None)
+            result = gate(api, args.root, args.ref.strip() or None, require_latest=args.require_latest)
         else:
             result = smoke(args.url, args.version)
         print(json.dumps(result))

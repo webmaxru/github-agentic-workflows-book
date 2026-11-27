@@ -119,16 +119,31 @@ class WorkflowTests(unittest.TestCase):
                                                 "gh release upload", "--draft=false")]
         self.assertEqual(order, sorted(order), "tag, draft, upload, publish must run in that order")
 
-    def test_latest_is_decided_by_the_script_and_only_a_latest_release_deploys(self):
+    def test_complete_recovery_skips_build_publication_and_pages(self):
         jobs = load("release.yml")["jobs"]
-        self.assertIn("publish_release.py latest", commands(jobs["plan"]))
-        self.assertIn("--latest=", commands(jobs["release"]))
-        self.assertIn("needs.plan.outputs.latest == 'true'", jobs["pages"]["if"])
+        for name in ("validate", "release"):
+            self.assertEqual(jobs[name]["if"], MAIN + " && needs.plan.outputs.action == 'create'")
+        self.assertIn("release", jobs["pages"]["needs"])
+        self.assertEqual(jobs["pages"]["if"], MAIN + " && needs.release.result == 'success' "
+                         "&& needs.release.outputs.latest == 'true'")
+
+    def test_pages_uses_the_latest_decision_of_the_successful_publish_step(self):
+        jobs = load("release.yml")["jobs"]
+        self.assertNotIn("latest", jobs["plan"]["outputs"])
+        self.assertEqual(jobs["release"]["outputs"]["latest"], "${{ steps.publish.outputs.latest }}")
+        steps = jobs["release"]["steps"]
+        publish = next(step["run"] for step in steps if step.get("id") == "publish")
+        self.assertLess(publish.index("publish_release.py latest"), publish.index('gh release edit'))
+        self.assertLess(publish.index('--latest="$latest"'), publish.index('"latest=$latest" >> "$GITHUB_OUTPUT"'))
+        for step in steps:
+            if "gh release " in step.get("run", ""):
+                self.assertNotIn("if", step, "a new publication must create the draft, upload, then publish")
+                self.assertNotIn("continue-on-error", step)
 
     def test_release_deploys_its_own_tag_through_the_gated_deploy_workflow(self):
         pages = load("release.yml")["jobs"]["pages"]
         self.assertEqual(pages["uses"], "./.github/workflows/deploy-pages.yml")
-        self.assertEqual(pages["with"]["ref"], "${{ needs.plan.outputs.tag }}")
+        self.assertEqual(pages["with"], {"published-tag": "${{ needs.plan.outputs.tag }}"})
         self.assertEqual(pages["permissions"], {"contents": "write", "pages": "write"})
 
     def test_controller_triggers_permissions_and_concurrency(self):
@@ -225,8 +240,11 @@ class WorkflowTests(unittest.TestCase):
         triggers = workflow["on"]
         self.assertEqual(list(triggers["workflow_dispatch"]["inputs"]), ["ref"])
         self.assertEqual(triggers["workflow_dispatch"]["inputs"]["ref"]["required"], "false")
-        self.assertIn("ref", triggers["workflow_call"]["inputs"])
+        self.assertEqual(list(triggers["workflow_call"]["inputs"]), ["published-tag"])
+        self.assertEqual(triggers["workflow_call"]["inputs"]["published-tag"]["required"], "true")
         self.assertIn('--ref "$REF"', commands(workflow["jobs"]["published-source"]))
+        self.assertIn('--require-latest', commands(workflow["jobs"]["published-source"]))
+        self.assertIn('--ref "$RELEASE_TAG" --require-latest', commands(workflow["jobs"]["deploy"]))
 
     def test_main_tip_is_asserted_only_when_deploying_main(self):
         run = commands(load("deploy-pages.yml")["jobs"]["deploy"])

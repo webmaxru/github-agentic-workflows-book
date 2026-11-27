@@ -153,8 +153,11 @@ class Rehearsal(helpers.RepositoryTest):
     LABEL = f"{PDF}#GitHub Agentic Workflows — v1.2 (PDF)"
 
     def create_draft(self):
-        return self.gh("release", "create", "content-v1.2", self.LABEL, "--repo", REPOSITORY, "--verify-tag",
+        return self.gh("release", "create", "content-v1.2", "--repo", REPOSITORY, "--verify-tag",
                        "--draft", "--title", "Content v1.2", "--notes-file", "release-notes.md")
+
+    def upload(self):
+        return self.gh("release", "upload", "content-v1.2", self.LABEL, "--repo", REPOSITORY)
 
     def publish(self, latest="true"):
         return self.gh("release", "edit", "content-v1.2", "--repo", REPOSITORY, "--draft=false",
@@ -332,8 +335,7 @@ class ReleaseFlow(Rehearsal):
         self.assertEqual(checked.returncode, 0, checked.stderr)
 
         plan = json.loads(self.plan(inputs).stdout)
-        self.assertEqual((plan["action"], plan["tag"], plan["asset"], plan["tag_exists"], plan["draft"]),
-                         ("create", "content-v1.2", PDF, False, False))
+        self.assertEqual((plan["action"], plan["tag"], plan["asset"]), ("create", "content-v1.2", PDF))
         self.assertEqual(plan["source_sha"], inputs["merge_sha"])
         self.assertTrue(self.latest("content-v1.2", plan["action"]))
 
@@ -341,25 +343,23 @@ class ReleaseFlow(Rehearsal):
         self.assertEqual(created["created"], True)
         self.assertEqual(self.git("cat-file", "-t", "refs/tags/content-v1.2"), "tag")
         self.assertEqual(self.git("rev-parse", "refs/tags/content-v1.2^{commit}"), inputs["merge_sha"])
-        self.assertFalse(self.json_of(self.tag(inputs))["created"])
-
         self.prepare_assets(inputs)
         self.assertEqual(self.create_draft().returncode, 0)
-        # The draft is invisible to releases/tags/<tag>; the plan must still find it and resume.
-        resumed = json.loads(self.plan(inputs).stdout)
-        self.assertEqual((resumed["action"], resumed["draft"], resumed["tag_exists"]), ("publish", True, True))
+        self.assertEqual(self.upload().returncode, 0)
         self.refused(self.gate("--ref", "content-v1.2"), "not a published release")
 
-        self.assertEqual(self.publish().returncode, 0)
+        latest = self.latest(inputs["tag"], plan["action"])
+        self.assertEqual(self.publish(str(latest).lower()).returncode, 0)
         self.assertEqual(self.fake.latest_tag, "content-v1.2")
         writes = list(self.fake.writes)
         again = json.loads(self.plan(inputs).stdout)
         self.assertEqual(again["action"], "skip")
+        self.assertFalse(self.latest(inputs["tag"], again["action"]))
         self.assertEqual(self.fake.writes, writes)
         self.assertNotIn("CLOBBER", " ".join(self.fake.writes))
 
         # The release deploys its own tag; afterwards main may deploy while it equals the release.
-        deployed = self.json_of(self.gate("--ref", "content-v1.2"))
+        deployed = self.json_of(self.gate("--ref", "content-v1.2", "--require-latest"))
         self.assertEqual(deployed, {"mode": "tag", "tag": "content-v1.2", "sha": inputs["merge_sha"]})
         self.assertEqual(self.json_of(self.gate()), {"mode": "main", "tag": "content-v1.2",
                                                      "sha": inputs["merge_sha"]})
@@ -373,6 +373,7 @@ class ReleaseFlow(Rehearsal):
         # Rollback takes a released tag or its commit, never a branch or an unreleased commit.
         self.assertEqual(self.json_of(self.gate("--ref", "content-v1.1"))["tag"], "content-v1.1")
         self.assertEqual(self.json_of(self.gate("--ref", self.base))["tag"], "content-v1.1")
+        self.refused(self.gate("--ref", "content-v1.1", "--require-latest"), "not the highest published")
         for ref, reason in (("main", "not a release tag or commit"), (self.head, "not the commit of a published release"),
                             ("content-v9.9", "not a published release")):
             with self.subTest(ref=ref):
@@ -412,25 +413,21 @@ class ReleaseFlow(Rehearsal):
         self.assertIn("different source", planned.stderr)
         self.assertEqual(self.fake.writes, [f"squash-merge #7 at {self.head}", "dispatch release.yml"])
 
-    def test_a_partial_release_resumes_and_never_clobbers_an_asset(self):
+    def test_tag_only_and_every_draft_fail_without_writes(self):
         self.open_pr()
         inputs = self.controller()
         self.json_of(self.tag(inputs))
-        self.fake.publish("content-v1.2", draft=True)
-        self.prepare_assets(inputs)
-
-        planned = json.loads(self.plan(inputs).stdout)
-        self.assertEqual((planned["action"], planned["draft"]), ("upload", True))
-        self.assertTrue(self.latest("content-v1.2", planned["action"]))
-        self.assertNotEqual(self.create_draft().returncode, 0)  # never a second draft for the tag
-        self.assertEqual(self.gh("release", "upload", "content-v1.2", self.LABEL, "--repo", REPOSITORY).returncode, 0)
-        duplicate = self.gh("release", "upload", "content-v1.2", self.LABEL, "--repo", REPOSITORY)
-        self.assertNotEqual(duplicate.returncode, 0)
-        self.assertIn("already exists", duplicate.stderr)
-        self.assertEqual(json.loads(self.plan(inputs).stdout)["action"], "publish")
-        self.assertEqual(self.publish().returncode, 0)
-        self.assertEqual(json.loads(self.plan(inputs).stdout)["action"], "skip")
-        self.assertNotIn("CLOBBER", " ".join(self.fake.writes))
+        tag_object = self.git("rev-parse", "refs/tags/content-v1.2")
+        writes = list(self.fake.writes)
+        self.refused(self.plan(inputs), "exists without a release")
+        self.refused(self.tag(inputs), "refusing to reuse")
+        for assets in ([], [PDF]):
+            with self.subTest(assets=assets):
+                self.fake.publish("content-v1.2", assets, draft=True)
+                self.refused(self.plan(inputs), "draft")
+                self.fake.releases.pop()
+        self.assertEqual(self.git("rev-parse", "refs/tags/content-v1.2"), tag_object)
+        self.assertEqual(self.fake.writes, writes)
 
     def test_a_published_release_without_its_pdf_fails_with_no_writes(self):
         self.open_pr()
@@ -446,15 +443,32 @@ class ReleaseFlow(Rehearsal):
     def test_latest_goes_only_to_the_highest_stable_version(self):
         self.open_pr()
         inputs = self.controller()
+        self.git("tag", "content-v9.0", self.base)  # an unrelated bare tag never competes
         self.fake.publish("content-v2.0", draft=True)
         self.assertTrue(self.latest("content-v1.2", "create"))  # a draft never counts
         self.fake.releases[-1]["prerelease"], self.fake.releases[-1]["draft"] = True, False
         self.assertTrue(self.latest("content-v1.2", "create"))  # nor does a prerelease
         self.fake.releases[-1]["prerelease"] = False
-        self.refused(self.run_script("publish_release.py", "latest", "--tag", "content-v1.2",
-                                     "--plan-action", "create"), "older edition after a newer release")
-        self.assertFalse(self.latest("content-v1.2", "publish"))  # resuming an older edition is never Latest
-        self.assertEqual(inputs["tag"], "content-v1.2")
+        self.assertFalse(self.latest("content-v1.2", "create"))
+        writes = list(self.fake.writes)
+        self.refused(self.tag(inputs), "older edition after a newer release")
+        self.assertEqual(self.fake.writes, writes)
+
+    def test_newer_stable_edition_appearing_during_upload_stays_latest(self):
+        self.open_pr()
+        inputs = self.controller()
+        plan = self.json_of(self.plan(inputs))
+        self.json_of(self.tag(inputs))
+        self.prepare_assets(inputs)
+        self.assertEqual(self.create_draft().returncode, 0)
+        self.assertEqual(self.upload().returncode, 0)
+        self.fake.publish("content-v1.3")
+        latest = self.latest(inputs["tag"], plan["action"])
+        self.assertFalse(latest)
+        self.assertEqual(self.publish(str(latest).lower()).returncode, 0)
+        self.assertEqual(self.fake.latest_tag, "content-v1.3")
+        self.refused(self.gate("--ref", inputs["tag"], "--require-latest"), "not the highest published")
+        self.assertEqual(self.json_of(self.gate("--ref", inputs["tag"]))["tag"], inputs["tag"])
 
 
 if __name__ == "__main__":

@@ -466,8 +466,7 @@ def github_release(repository: str, tag: str) -> dict[str, Any] | None:
         repo = github_get(f"repos/{repository}")
         if repo.get("full_name", "").lower() != repository.lower():
             raise ReleaseError("Cannot confirm access to the requested release repository.")
-        # releases/tags/<tag> never returns a draft. Look for one, so that a half-finished release
-        # resumes instead of a second draft being created for the same tag.
+        # The tag lookup hides drafts. A draft, even without a tag ref, blocks creation.
         for page in range(1, 51):
             batch = github_get(f"repos/{repository}/releases?per_page=100&page={page}", shape=list)
             for item in batch:
@@ -475,6 +474,8 @@ def github_release(repository: str, tag: str) -> dict[str, Any] | None:
                     return item
             if len(batch) < 100:
                 break
+        else:
+            raise ReleaseError("Cannot rule out an existing draft: release pagination limit exceeded.")
     return release
 
 
@@ -482,7 +483,7 @@ def release_plan(
     root: Path, repository: str, base: str | None = None,
     env: Mapping[str, str] | None = None, expected_source: str | None = None,
 ) -> dict[str, Any]:
-    """Read-only publication planning; existing tags always select their own source."""
+    """Plan a new publication, skip a complete one or refuse a partial one without writes."""
     if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
         raise ReleaseError("Expected a repository in owner/name form.")
     version = content_version.read_version(root / "content" / "VERSION")
@@ -501,7 +502,10 @@ def release_plan(
             raise ReleaseError("The release API response does not match the requested tag/assets.")
         if metadata.get("prerelease"):
             raise ReleaseError(f"Release {tag} is a prerelease; explicit recovery is required.")
-        if expected_source is not None and not tag_exists:
+        if metadata.get("draft") is not False:
+            raise ReleaseError(f"Release {tag} is a draft or has unknown publication status. "
+                               "Nothing was changed. Ship the fix as a new version.")
+        if not tag_exists:
             raise ReleaseError(f"Release {tag} exists but its tag is unavailable.")
         matching = [item for item in metadata["assets"] if item.get("name") == asset]
         if matching:
@@ -511,36 +515,27 @@ def release_plan(
                 and type(matching[0].get("size")) is int
                 and matching[0]["size"] > 0
             ):
-                if not metadata.get("draft"):
-                    return {"action": "skip", "version": version, "tag": tag, "asset": asset}
-                has_asset = True
-            else:
-                details = "; ".join(
-                    f"id={item.get('id')!r}, state={item.get('state')!r}, size={item.get('size')!r}"
-                    for item in matching
-                )
-                raise ReleaseError(
-                    f"Release {tag} has an incomplete or ambiguous upload for {asset} ({details}). "
-                    "A completed asset must have state='uploaded' and a positive integer size. "
-                    f"Inspect https://github.com/{repository}/releases/tag/{tag}; have a maintainer "
-                    "restore the correct tagged PDF or remove the incomplete asset before retrying "
-                    "exact-tag repair. No asset was deleted or overwritten."
-                )
-        else:
-            if not metadata.get("draft"):
-                raise ReleaseError(
-                    f"Release {tag} is published without its PDF asset ({asset}). A published "
-                    "release is never modified; nothing was changed. Ship the fix as a new version."
-                )
-            has_asset = False
-    if metadata is not None and not tag_exists:
-        raise ReleaseError(f"Release {tag} exists but its tag is unavailable; fetch tags before repair.")
-    source = resolve_ref(root, tag if tag_exists else "HEAD")
+                return {"action": "skip", "version": version, "tag": tag, "asset": asset}
+            details = "; ".join(
+                f"id={item.get('id')!r}, state={item.get('state')!r}, size={item.get('size')!r}"
+                for item in matching
+            )
+            raise ReleaseError(
+                f"Release {tag} has an incomplete or ambiguous upload for {asset} ({details}). "
+                "A completed asset must have state='uploaded' and a positive integer size. "
+                "Nothing was changed. Ship the fix as a new version."
+            )
+        raise ReleaseError(f"Release {tag} is published without its PDF asset ({asset}). "
+                           "Nothing was changed. Ship the fix as a new version.")
+    if tag_exists:
+        raise ReleaseError(f"Tag {tag} exists without a release. Nothing was changed. "
+                           "Ship the fix as a new version.")
+    source = resolve_ref(root, "HEAD")
     files = _tree_files(root, source)
     missing = {"content/VERSION", FRAMEWORK_PATH, REVIEW_PATH} - files
     if missing:
         raise ReleaseError(
-            f"Cannot {'repair' if metadata is not None else 'publish'} {tag} from {source}: "
+            f"Cannot publish {tag} from {source}: "
             f"source lacks required release metadata ({', '.join(sorted(missing))}). "
             "Legacy tags are never rebuilt with fabricated versions or a different checkout."
         )
@@ -554,10 +549,9 @@ def release_plan(
     framework = validate_framework_version(
         git(root, "show", f"{source}:{FRAMEWORK_PATH}").decode("utf-8").strip()
     )
-    comparison, reason = (tag, "existing-tag-replay") if tag_exists else select_base(root, base, env)
+    comparison, reason = select_base(root, base, env)
     return {
-        "action": ("publish" if metadata is not None and has_asset else
-                   "upload" if metadata is not None else "create"),
+        "action": "create",
         "version": version,
         "tag": tag,
         "asset": asset,
@@ -565,8 +559,6 @@ def release_plan(
         "framework_version": framework,
         "comparison_base": comparison,
         "base_reason": reason,
-        "tag_exists": tag_exists,
-        "draft": bool(metadata and metadata.get("draft")),
     }
 
 
@@ -645,7 +637,7 @@ def main(argv: list[str] | None = None) -> int:
     commands.add_parser("framework-version", help="Print the validated exact framework tag.")
     commands.add_parser("notes", help="Print the validated current changelog entry.")
     commands.add_parser("check-generated", help="Check generated HTML version markers and PDF output.")
-    plan_parser = commands.add_parser("release-plan", help="Read-only create/repair/skip source selection.")
+    plan_parser = commands.add_parser("release-plan", help="Plan a new release or inspect an existing one.")
     plan_parser.add_argument("--repo", required=True)
     plan_parser.add_argument("--base")
     plan_parser.add_argument("--expected-source")

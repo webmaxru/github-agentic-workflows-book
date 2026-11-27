@@ -24,19 +24,15 @@ class LatestDecisionTests(unittest.TestCase):
     def test_only_the_highest_stable_version_becomes_latest(self):
         releases = [release("content-v1.0"), release("content-v1.1")]
         self.assertTrue(publish.latest_decision("content-v1.2", "create", releases))
-        self.assertTrue(publish.latest_decision("content-v1.1", "upload", releases))
-        self.assertFalse(publish.latest_decision("content-v1.0", "upload", releases))
+        self.assertFalse(publish.latest_decision("content-v1.1", "skip", releases))
         self.assertTrue(publish.latest_decision("content-v1.10", "create", releases + [release("content-v1.9")]))
-        self.assertFalse(publish.latest_decision("content-v1.9", "upload", releases + [release("content-v1.10")]))
+        self.assertFalse(publish.latest_decision("content-v1.9", "create", releases + [release("content-v1.10")]))
 
     def test_drafts_and_prereleases_never_count_against_or_for_latest(self):
         releases = [release("content-v1.1"), release("content-v2.0", prerelease=True),
                     release("content-v1.5", draft=True), release("nightly")]
         self.assertTrue(publish.latest_decision("content-v1.2", "create", releases))
-
-    def test_creating_an_older_edition_after_a_newer_one_is_refused(self):
-        with self.assertRaisesRegex(policy.PolicyError, "older edition"):
-            publish.latest_decision("content-v1.0", "create", [release("content-v1.1")])
+        self.assertFalse(publish.latest_decision("content-v2.0", "create", releases))
 
     def test_the_same_version_under_another_tag_is_a_duplicate(self):
         with self.assertRaisesRegex(policy.PolicyError, "already identifies"):
@@ -51,10 +47,16 @@ class LatestDecisionTests(unittest.TestCase):
 class FakeApi:
     repo = "owner/book"
 
-    def __init__(self, refs=None, tags=None):
+    def __init__(self, refs=None, tags=None, releases=()):
         self.refs = refs or {}
         self.tags = tags or {}
         self.writes = []
+        self.releases = releases
+
+    def pages(self, suffix):
+        if suffix != "releases":
+            raise AssertionError(suffix)
+        return list(self.releases)
 
     def get(self, suffix, missing=False):
         if suffix.startswith("git/ref/tags/"):
@@ -81,14 +83,22 @@ class EnsureTagTests(unittest.TestCase):
         self.assertIn("tagger", tag)
         self.assertEqual(ref, {"ref": "refs/tags/content-v1.2", "sha": TAG_OBJECT})
 
-    def test_an_existing_tag_at_the_same_commit_is_a_no_op(self):
+    def test_a_racing_tag_at_the_same_commit_cannot_be_reused(self):
         for refs, tags in (({"content-v1.2": {"object": {"type": "commit", "sha": SHA_A}}}, {}),
                            ({"content-v1.2": {"object": {"type": "tag", "sha": TAG_OBJECT}}},
                             {TAG_OBJECT: {"object": {"type": "commit", "sha": SHA_A}}})):
             api = FakeApi(refs, tags)
             with self.subTest(refs=refs):
-                self.assertFalse(publish.ensure_tag(api, "content-v1.2", SHA_A)["created"])
+                with self.assertRaisesRegex(policy.PolicyError, "refusing to reuse"):
+                    publish.ensure_tag(api, "content-v1.2", SHA_A)
                 self.assertEqual(api.writes, [])
+
+    def test_a_draft_without_a_tag_or_newer_publication_after_plan_prevents_any_write(self):
+        for item in (release("content-v1.2", draft=True), release("content-v1.3")):
+            api = FakeApi(releases=[item])
+            with self.subTest(item=item), self.assertRaises(policy.PolicyError):
+                publish.ensure_tag(api, "content-v1.2", SHA_A)
+            self.assertEqual(api.writes, [])
 
     def test_a_tag_is_never_moved(self):
         api = FakeApi({"content-v1.2": {"object": {"type": "commit", "sha": SHA_B}}})
@@ -126,13 +136,12 @@ class CliTests(unittest.TestCase):
         code, out, _ = self.cli("latest", "--tag", "content-v1.2", "--plan-action", "create",
                                 releases=[release("content-v1.1")])
         self.assertEqual((code, json.loads(out)), (0, {"latest": True}))
-        code, out, _ = self.cli("latest", "--tag", "content-v1.0", "--plan-action", "upload",
+        code, out, _ = self.cli("latest", "--tag", "content-v1.0",
                                 releases=[release("content-v1.1")])
         self.assertEqual((code, json.loads(out)), (0, {"latest": False}))
 
     def test_policy_failures_exit_non_zero_with_an_error_line(self):
-        code, out, err = self.cli("latest", "--tag", "content-v1.0", "--plan-action", "create",
-                                  releases=[release("content-v1.1")])
+        code, out, err = self.cli("latest", "--tag", "content-v1.0", releases=[release("content-v1.0.0")])
         self.assertEqual((code, out), (1, ""))
         self.assertIn("ERROR:", err)
 

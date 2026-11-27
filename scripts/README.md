@@ -156,20 +156,19 @@ rechecks the approval, the scope, that the head contains the current `main`, and
 validates the head, squash-merges with a SHA precondition, and then dispatches `release.yml`
 (a merge made with `GITHUB_TOKEN` triggers no workflows) with `pr`, `head_sha`, `base_sha`,
 `merge_sha` and `tag`. `release.yml` verifies the squash is the approved head, validates the
-exact merge commit, creates an annotated tag, a draft with the PDF, publishes, then deploys
-that tag through `deploy-pages.yml` without the gated PDF. A direct content push never releases.
+exact merge commit, creates an annotated tag and draft, uploads the PDF, then publishes.
+Only a new publication marked Latest runs `deploy-pages.yml` for its tag and waits for
+the deployment and live smoke test. A direct content push never releases.
 Because a `GITHUB_TOKEN` push does not itself trigger a branch-source Pages build,
 the publisher requests a legacy Pages build through GitHub's API and fails unless that
 build reports the exact generated `gh-pages` commit. It needs `pages: write`; check the
 workflow result if the repository or token cannot request that build.
 To retry a failed merge/publication, dispatch `Release approved book` on `main` with the PR
 number (`gh workflow run approved-book.yml -f pr=N`); authorization and source are rechecked.
-A complete release is a no-op and repair never substitutes a newer source. A draft release
-resumes (missing PDF uploaded, never overwritten); a published release without its PDF, a
-tag at another commit, or a merge that is not the approved head fails with nothing written,
-and the fix is a new version. Legacy tags without build/version metadata require explicit
-historical recovery. A release older than the newest published one is never deployed over
-the current site or marked Latest.
+A complete publication is a no-op, including no rebuild or redeployment. A tag without a
+release, any existing draft, an incomplete published PDF or a provenance mismatch fails
+without writes. Ship the fix as a new version. Only published stable editions count
+when deciding Latest; bare tags, drafts and prereleases do not compete.
 
 The controller rejects workflow, script, dependency, presentation and other infrastructure
 changes even if they accompany content; prepare those separately. `deploy-pages.yml`

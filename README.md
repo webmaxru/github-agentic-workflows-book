@@ -364,11 +364,11 @@ then validates and squash-merges it. It then dispatches
 [`Release book`](.github/workflows/release.yml) for the exact merge commit; a direct push does
 not release a book.
 The release gets an annotated tag, is created as a draft, receives its validated PDF, and is
-then published. That tag is deployed through
+then published. If that publication is the highest stable edition, its tag is deployed through
 [`deploy-pages.yml`](.github/workflows/deploy-pages.yml), which serves only released editions:
 the website, without its gated PDF, is built from the released tag. Existing complete
-releases are no-ops; repairs use only the original tag. Legacy tags without release
-metadata require explicit historical recovery.
+releases are no-ops, with no rebuild or redeployment. A tag without a release, an existing
+draft or an incomplete PDF must be left untouched; ship the fix as a new version.
 
 **To prepare a new version:**
 
@@ -389,8 +389,8 @@ metadata require explicit historical recovery.
    website and `content-v<edition>` PDF. Check **Release approved book** and **Release book**
    for errors. To retry an interrupted publication, run
    `gh workflow run approved-book.yml -f pr=N` on `main`; it rechecks the original
-   authorization. Historical repairs keep their original tag and never replace the current
-   website or mark an older release as latest.
+   authorization. If only the website failed, redeploy the published tag using the manual
+   Pages workflow rather than retrying publication.
 
 The full guide, with commands for each scenario, is in [`RELEASING.md`](RELEASING.md).
 

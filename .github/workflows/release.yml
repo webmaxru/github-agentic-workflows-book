@@ -11,14 +11,14 @@ name: Release book
 #
 #   plan      read-only: the merge is the approved PR's squash on main (one parent, the approved
 #             head's tree), the tag and edition match, and what is already published decides the
-#             action: create, upload, publish, or skip (a complete release is a no-op)
+#             action: create, skip a complete release, or fail without writes on partial state
 #   validate  build and check exactly the merge commit (site, examples, PDF)
 #   release   annotated tag at the merge (never moved), draft release, upload (never clobbered),
 #             publish; only the highest stable version becomes Latest
 #   pages     deploy the released tag through deploy-pages.yml (gate, build, publish, smoke test);
-#             skipped for an edition older than the newest published one
+#             only after a new publication was marked Latest
 #
-# A partial release (published without its PDF), a tag at another commit or a merge that is not the
+# A partial release (tag only, any draft, or incomplete PDF), a tag at another commit or a merge that is not the
 # approved head fails with nothing written. A fix is a new version. A tag push, a label or a branch
 # name never publishes.
 
@@ -66,10 +66,7 @@ jobs:
       version: ${{ steps.plan.outputs.version }}
       tag: ${{ steps.plan.outputs.tag }}
       asset: ${{ steps.plan.outputs.asset }}
-      draft: ${{ steps.plan.outputs.draft }}
-      tag-exists: ${{ steps.plan.outputs.tag_exists }}
       comparison: ${{ steps.verify.outputs.comparison }}
-      latest: ${{ steps.latest.outputs.latest }}
     steps:
       - name: Checkout trusted control code
         uses: actions/checkout@v7
@@ -119,29 +116,18 @@ jobs:
           data = json.load(open("plan.json"))
           if data["tag"] != os.environ["TAG"]:
               raise SystemExit(f"The planned tag {data['tag']} does not match the requested tag.")
-          if data["action"] != "skip" and not data.get("tag_exists"):
+          if data["action"] == "create":
               main = subprocess.check_output(["git", "-C", "tooling", "rev-parse", "HEAD"], text=True).strip()
               if main != os.environ["MERGE_SHA"]:
                   raise SystemExit("Cannot create a release for an outdated main commit.")
           with open(os.environ["GITHUB_OUTPUT"], "a") as out:
               for key, value in data.items():
-                  if isinstance(value, bool):
-                      value = str(value).lower()
                   print(f"{key}={value}", file=out)
           PY
-      - name: Decide whether this edition becomes Latest
-        id: latest
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TAG: ${{ steps.plan.outputs.tag }}
-          ACTION: ${{ steps.plan.outputs.action }}
-        run: |
-          python tooling/scripts/publish_release.py latest --tag "$TAG" --plan-action "$ACTION" > latest.json
-          python -c 'import json,os; print("latest="+str(json.load(open("latest.json"))["latest"]).lower(), file=open(os.environ["GITHUB_OUTPUT"],"a"))'
 
   validate:
     needs: plan
-    if: github.ref == 'refs/heads/main' && needs.plan.outputs.action != 'skip'
+    if: github.ref == 'refs/heads/main' && needs.plan.outputs.action == 'create'
     permissions:
       contents: read
     uses: ./.github/workflows/ci.yml
@@ -153,8 +139,10 @@ jobs:
 
   release:
     needs: [plan, validate]
-    if: github.ref == 'refs/heads/main' && needs.plan.outputs.action != 'skip'
+    if: github.ref == 'refs/heads/main' && needs.plan.outputs.action == 'create'
     runs-on: ubuntu-24.04
+    outputs:
+      latest: ${{ steps.publish.outputs.latest }}
     permissions:
       contents: write
       pull-requests: read
@@ -165,9 +153,6 @@ jobs:
       TAG: ${{ needs.plan.outputs.tag }}
       VERSION: ${{ needs.plan.outputs.version }}
       ASSET: ${{ needs.plan.outputs.asset }}
-      ACTION: ${{ needs.plan.outputs.action }}
-      DRAFT: ${{ needs.plan.outputs.draft }}
-      TAG_EXISTS: ${{ needs.plan.outputs.tag-exists }}
       MERGE_SHA: ${{ inputs.merge_sha }}
     steps:
       - name: Checkout trusted authorization code
@@ -182,15 +167,12 @@ jobs:
           BASE_SHA: ${{ inputs.base_sha }}
         run: |
           python scripts/approved_book.py verify-merged --number "$PR" --head "$HEAD_SHA" --base "$BASE_SHA" --merge-sha "$MERGE_SHA" --tag "$TAG" > /dev/null
-          if [[ "$TAG_EXISTS" != "true" ]]; then
-            test "$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" = "$MERGE_SHA"
-          fi
+          test "$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" = "$MERGE_SHA"
       - uses: actions/download-artifact@v8
         with:
           name: validated-release
           path: artifact
-      - name: Verify the artifact and decide Latest
-        id: versions
+      - name: Verify the artifact
         run: |
           python - <<'PY'
           import json, os
@@ -201,8 +183,6 @@ jobs:
           if data.get("status") != "PASS":
               raise SystemExit("Artifact did not pass validation.")
           PY
-          python scripts/publish_release.py latest --tag "$TAG" --plan-action "$ACTION" > latest.json
-          python -c 'import json,os; print("latest="+str(json.load(open("latest.json"))["latest"]).lower(), file=open(os.environ["GITHUB_OUTPUT"],"a"))'
           cp artifact/site/gh-aw-book.pdf "$ASSET"
           {
             echo "## GitHub Agentic Workflows — content $TAG"
@@ -215,32 +195,29 @@ jobs:
             echo
             echo "The single-file PDF for this version is attached below."
           } > release-notes.md
-      - name: Create or verify the annotated tag (never moved)
+      - name: Create a new annotated tag (never reused or moved)
         run: python scripts/publish_release.py tag --tag "$TAG" --sha "$MERGE_SHA"
-      - name: Create draft with the validated PDF
-        if: env.ACTION == 'create'
+      - name: Create a new draft
         run: |
-          gh release create "$TAG" "$ASSET#GitHub Agentic Workflows — v$VERSION (PDF)" \
+          gh release create "$TAG" \
             --repo "$GITHUB_REPOSITORY" --verify-tag --draft \
             --title "Content v$VERSION" --notes-file release-notes.md
-      - name: Upload the missing PDF to the draft without overwriting
-        if: env.ACTION == 'upload'
+      - name: Upload the validated PDF to the new draft
         run: gh release upload "$TAG" "$ASSET#GitHub Agentic Workflows — v$VERSION (PDF)" --repo "$GITHUB_REPOSITORY"
-      - name: Publish the completed draft
-        if: env.ACTION == 'create' || env.DRAFT == 'true'
-        env:
-          LATEST: ${{ steps.versions.outputs.latest }}
-        run: gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest="$LATEST"
+      - name: Publish and report whether this edition became Latest
+        id: publish
+        run: |
+          python scripts/publish_release.py latest --tag "$TAG" > latest.json
+          latest=$(jq -r '.latest' latest.json)
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest="$latest"
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
 
   pages:
     needs: [plan, release]
-    if: >-
-      always() && github.ref == 'refs/heads/main' && needs.plan.result == 'success' &&
-      needs.plan.outputs.latest == 'true' &&
-      (needs.release.result == 'success' || needs.plan.outputs.action == 'skip')
+    if: github.ref == 'refs/heads/main' && needs.release.result == 'success' && needs.release.outputs.latest == 'true'
     permissions:
       contents: write
       pages: write
     uses: ./.github/workflows/deploy-pages.yml
     with:
-      ref: ${{ needs.plan.outputs.tag }}
+      published-tag: ${{ needs.plan.outputs.tag }}

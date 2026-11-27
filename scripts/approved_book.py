@@ -250,16 +250,14 @@ class GitHub:
         match = pattern.fullmatch(version)
         key = tuple(int(part or 0) for part in match.groups())
         editions = []
-        drafts = []
         for release in self.pages("releases"):
             tag = release.get("tag_name", "")
             old = pattern.fullmatch(tag.removeprefix("content-v")) if tag.startswith("content-v") else None
-            if old and not release.get("prerelease"):
-                item = (tuple(int(part or 0) for part in old.groups()), tag)
-                (drafts if release.get("draft") else editions).append(item)
+            if old and not release.get("prerelease") and not release.get("draft"):
+                editions.append((tuple(int(part or 0) for part in old.groups()), tag))
         if not merged and any(old >= key for old, _ in editions):
             raise PolicyError("Proposed edition is not newer than the latest published edition.")
-        if merged and any(old > key for old, _ in editions) and (key, f"content-v{version}") not in editions + drafts:
+        if merged and any(old > key for old, _ in editions) and (key, f"content-v{version}") not in editions:
             raise PolicyError("Cannot create an older edition after a newer publication.")
         previous = sorted((old, tag) for old, tag in editions if old < key)
         if not previous:

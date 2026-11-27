@@ -6,7 +6,7 @@ name: Deploy book to GitHub Pages
 #
 #   push to main      deploys only when the book content equals the latest published release
 #                     (the published-source job); a content change deploys through release.yml
-#   release.yml       calls this workflow with the released tag, so a release deploys its own tag
+#   release.yml       waits on this workflow to deploy its newly published highest stable tag
 #   manual dispatch   takes a released tag or its commit; this is the rollback path:
 #                     gh workflow run deploy-pages.yml -f ref=content-vX.Y
 #
@@ -34,11 +34,10 @@ on:
         default: ""
   workflow_call:
     inputs:
-      ref:
-        description: "Released tag to deploy"
-        required: false
+      published-tag:
+        description: "Newly published tag to deploy"
+        required: true
         type: string
-        default: ""
 
 permissions: {}
 
@@ -61,9 +60,12 @@ jobs:
         id: gate
         env:
           GH_TOKEN: ${{ github.token }}
-          REF: ${{ inputs.ref }}
+          REF: ${{ inputs.published-tag || inputs.ref }}
+          REQUIRE_LATEST: ${{ inputs.published-tag != '' }}
         run: |
-          python scripts/deploy_gate.py gate --ref "$REF" > gate.json
+          args=()
+          if [[ "$REQUIRE_LATEST" == "true" ]]; then args+=(--require-latest); fi
+          python scripts/deploy_gate.py gate --ref "$REF" "${args[@]}" > gate.json
           cat gate.json
           python - <<'PY'
           import json, os
@@ -98,11 +100,13 @@ jobs:
       SOURCE_SHA: ${{ needs.published-source.outputs.sha }}
       RELEASE_TAG: ${{ needs.published-source.outputs.tag }}
       DEPLOY_MODE: ${{ needs.published-source.outputs.mode }}
+      REQUIRE_LATEST: ${{ inputs.published-tag != '' }}
     steps:
       - name: Checkout trusted Pages helper
         uses: actions/checkout@v7
         with:
           ref: main
+          fetch-depth: 0
           persist-credentials: false
       - name: Download the validated site and analytics beacon
         uses: actions/download-artifact@v8
@@ -118,6 +122,12 @@ jobs:
           if [[ "$DEPLOY_MODE" == "main" ]]; then
             # A push to main deploys only the tip of main; an older run must not overwrite a newer one.
             test "$(GH_TOKEN="$GITHUB_TOKEN" gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" = "$SOURCE_SHA"
+            GH_TOKEN="$GITHUB_TOKEN" python scripts/deploy_gate.py gate > gate.json
+            test "$(jq -r '.tag' gate.json)" = "$RELEASE_TAG"
+          elif [[ "$REQUIRE_LATEST" == "true" ]]; then
+            # A newer stable edition may have appeared while validation or the Pages lock was pending.
+            GH_TOKEN="$GITHUB_TOKEN" python scripts/deploy_gate.py gate --ref "$RELEASE_TAG" --require-latest > gate.json
+            test "$(jq -r '.sha' gate.json)" = "$SOURCE_SHA"
           fi
 
       - name: Remove the gated PDF from the public site
