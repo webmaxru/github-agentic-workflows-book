@@ -87,6 +87,8 @@ class ApiFixture(unittest.TestCase):
             return {"merged": True, "sha": MERGE} if route == "pulls/7/merge" else {}
         self.reads.append(route)
         payload = self.routes().get(route)
+        if payload is None and missing:
+            return None
         if payload is None:
             self.fail(f"unexpected route {route}")
         return deepcopy(payload)
@@ -106,8 +108,9 @@ class ApiFixture(unittest.TestCase):
         self.pr.update(state="closed", merged=True, merge_commit_sha=MERGE)
 
     def eligible(self):
-        return policy.eligibility(self.pr, self.files, self.review, self.comments, REPO,
-                                  timeline=self.timeline)
+        api = policy.GitHub(REPO, "fixture")
+        with patch.object(api, "request", self.api_request):
+            return api.inspect(self.pr["number"])
 
 
 class AuthorizationTests(ApiFixture):
@@ -243,8 +246,9 @@ class EligibilityTests(ApiFixture):
             self.eligible()
 
     def test_requires_an_open_non_draft_same_repo_mergeable_pr_against_main(self):
+        original_pr, original_files = self.pr, self.files
         for key in ("draft", "fork", "partial", "wrong_base", "closed", "conflicting", "unknown"):
-            pr, files = deepcopy(self.pr), deepcopy(self.files)
+            self.pr, self.files = pr, files = deepcopy(original_pr), deepcopy(original_files)
             if key == "draft":
                 pr["draft"] = True
             elif key == "fork":
@@ -259,15 +263,14 @@ class EligibilityTests(ApiFixture):
                 pr["mergeable"] = False
             else:
                 pr["mergeable"] = None
-            with self.subTest(key=key), self.assertRaises(policy.PolicyError):
-                policy.eligibility(pr, files, self.review, self.comments, REPO)
+            with self.subTest(key=key), patch.object(policy.time, "sleep"), self.assertRaises(policy.PolicyError):
+                self.eligible()
 
     def test_mergeability_is_retried_while_github_computes_it(self):
         self.pr["mergeable"] = None
-        api = policy.GitHub(REPO, "fixture")
-        answers = [dict(self.pr), dict(self.pr), {**self.pr, "mergeable": True}]
-        with patch.object(api, "get", side_effect=answers), patch.object(policy.time, "sleep"):
-            self.assertIs(api.pull(7)["mergeable"], True)
+        with patch.object(policy.time, "sleep", side_effect=lambda _: self.pr.update(mergeable=True)) as sleep:
+            self.assertEqual(self.eligible()["head"], HEAD)
+        sleep.assert_called_once_with(2)
 
     def test_checks_must_be_completed_successful_and_from_actions(self):
         policy.checks_pass([self.check], [])
@@ -385,6 +388,79 @@ class EligibilityTests(ApiFixture):
         self.assertEqual(code, 0, err)
         self.assertEqual(json.loads(out)["number"], 7)
         self.assertIn("PR #8", err)
+
+
+class ScopeSelectionTests(ApiFixture):
+    def assert_scope_skip(self, reason, *, targeted=True, signal=None, warn=None, signal_reads=()):
+        warn = targeted if warn is None else warn
+        self.pr["changed_files"] = len(self.files)
+        self.summary.write_text("Earlier step\n\n", encoding="utf-8")
+        with patch.dict(os.environ, {"OWNER_REVIEW_SIGNAL": signal or ""}):
+            result = self.cli("select", *(("--number", "7") if targeted else ()))
+        expected_log = f"::warning::{reason}" if warn else f"PR #7: {reason}"
+        self.assertEqual(result, (0, "{}\n", expected_log + "\n"))
+        self.assertEqual(self.summary.read_text(encoding="utf-8"),
+                         "Earlier step\n\n" + (reason + "\n\n" if warn else ""))
+        allowed_reads = {"pulls/7", "pulls/7/files", *signal_reads}
+        if not targeted and not warn:
+            allowed_reads.add("pulls")
+        if "pulls/7/reviews" in signal_reads:
+            self.assertLess(self.reads.index("pulls/7/files"), self.reads.index("pulls/7/reviews"))
+        self.assertEqual(set(self.reads), allowed_reads)
+        self.assertEqual(self.writes, [])
+
+    def test_explicit_tooling_only_is_a_warning_not_a_failure(self):
+        self.pr["mergeable"] = None
+        self.files = [{"filename": p} for p in
+                      ("RELEASING.md", "scripts/one.py", "scripts/two.py", "a", "b", "c")]
+        self.assert_scope_skip(
+            "PR #7 is tooling-only (no book content changed: RELEASING.md, scripts/one.py, scripts/two.py, a, b); "
+            "the release controller never merges or releases tooling PRs. Merge it yourself once its checks are green.")
+
+    def test_explicit_mixed_includes_non_allowlisted_side_of_rename(self):
+        self.pr["mergeable"] = False
+        self.files = [{"filename": "content/VERSION", "previous_filename": "scripts/old.py"}]
+        self.assert_scope_skip("PR #7 mixes book content with tooling (scripts/old.py); split it: "
+                               "merge the tooling PR yourself, then authorize the content PR.")
+
+    def test_scan_skips_tooling_only_quietly(self):
+        self.files = [{"filename": "RELEASING.md"}]
+        self.assert_scope_skip(
+            "PR #7 is tooling-only (no book content changed: RELEASING.md); the release controller never "
+            "merges or releases tooling PRs. Merge it yourself once its checks are green.", targeted=False)
+
+    def test_only_a_current_owner_approval_signal_warns(self):
+        self.pr["user"]["login"] = "book-bot"
+        self.files[1] = {"filename": "scripts/build.py"}
+        reason = ("PR #7 mixes book content with tooling (scripts/build.py); split it: "
+                  "merge the tooling PR yourself, then authorize the content PR.")
+        cases = (
+            ("Owner approval for PR 7 review 1", {}, True),
+            ("Owner approval for PR 7 review 1", {"commit_id": "f" * 40}, False),
+            ("Owner approval for PR 7 review 1", {"state": "DISMISSED"}, False),
+            ("Owner approval for PR 7 review 1", {"user": {"login": "contributor"}}, False),
+            ("Owner approval for PR 7 review 1", {"id": 2}, False),
+        )
+        for signal, review, warn in cases:
+            with self.subTest(signal=signal, review=review), patch.dict(self.review[0], review):
+                self.reads.clear()
+                self.assert_scope_skip(reason, targeted=False, signal=signal, warn=warn,
+                                       signal_reads=("pulls/7/reviews", "issues/7/timeline"))
+        for signal, reads in (("Owner approval for PR 8 review 1", ("pulls/8",)), ("Book review signal", ())):
+            with self.subTest(signal=signal):
+                self.reads.clear()
+                self.assert_scope_skip(reason, targeted=False, signal=signal, warn=False, signal_reads=reads)
+
+    def test_explicit_recovery_and_content_only_refusals_are_still_errors(self):
+        self.files = [{"filename": "site/index.html"}, {"filename": "content/VERSION"}]
+        self.assertEqual(self.cli("select", "--number", "7"),
+                         (1, "", "ERROR: PR does not change a chapter or TOC.\n"))
+        self.merged()
+        self.files = [{"filename": "README.md"}, {"filename": "RELEASING.md"}]
+        code, out, err = self.cli("select", "--number", "7")
+        self.assertEqual((code, out), (1, ""))
+        self.assertTrue(err.startswith("ERROR: "), err)
+        self.assertEqual(self.writes, [])
 
 
 class PublishedBaselineTests(ApiFixture):

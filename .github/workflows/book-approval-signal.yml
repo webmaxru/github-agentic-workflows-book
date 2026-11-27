@@ -1,4 +1,9 @@
 name: Book approval signal
+run-name: >-
+  ${{ github.event.action == 'submitted' && github.event.review.state == 'approved' &&
+      github.event.review.user.login == 'webmaxru' &&
+      format('Owner approval for PR {0} review {1}', github.event.pull_request.number, github.event.review.id)
+      || 'Book review signal' }}
 
 # Review events cannot start the controller directly (a workflow_run needs a completed run).
 # This run only relays them; the controller independently re-checks every approval.

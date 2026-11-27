@@ -256,6 +256,19 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("startsWith(github.event.comment.body, '/release-book ')", condition)
         self.assertIn("github.event.action != 'deleted'", condition)
 
+    def test_only_successful_owner_approval_signals_carry_a_review_hint(self):
+        title = load("book-approval-signal.yml")["run-name"]
+        for field in ("github.event.action == 'submitted'", "github.event.review.state == 'approved'",
+                      "github.event.review.user.login == 'webmaxru'", "github.event.review.id"):
+            self.assertIn(field, title)
+        select = next(step for step in load("approved-book.yml")["jobs"]["select"]["steps"]
+                      if step.get("id") == "select")
+        for field in ("github.event_name == 'workflow_run'", "workflow_run.event == 'pull_request_review'",
+                      "workflow_run.path == '.github/workflows/book-approval-signal.yml'",
+                      "workflow_run.actor.login == 'webmaxru'", "workflow_run.conclusion == 'success'",
+                      "workflow_run.head_repository.full_name == github.repository", "workflow_run.display_title"):
+            self.assertIn(field, select["env"]["OWNER_REVIEW_SIGNAL"])
+
     def test_every_job_runs_only_from_main(self):
         for name in ("approved-book.yml", "release.yml", "deploy-pages.yml"):
             jobs = load(name)["jobs"]

@@ -50,6 +50,10 @@ class GitHubError(RuntimeError):
         self.status = status
 
 
+class ScopeError(PolicyError):
+    """Tooling-only and mixed PRs are outside the release controller's scope."""
+
+
 def allowed_path(path):
     if path in OWNER_FILES:
         return True
@@ -72,10 +76,12 @@ def barrier(reviews, timeline):
     return max(moments, default="")
 
 
-def approved(pr, reviews, comments, timeline=()):
+def approved(pr, reviews, comments, timeline=(), *, review_id=None):
     head = pr["head"]["sha"]
     cutoff = barrier(reviews, timeline)
     if _login(pr) == OWNER:
+        if review_id is not None:
+            return False
         return any(_login(c) == OWNER and c.get("body") == f"/release-book {head}"
                    and (c.get("created_at") or "") > cutoff
                    and c.get("updated_at") == c.get("created_at") for c in comments)
@@ -83,10 +89,12 @@ def approved(pr, reviews, comments, timeline=()):
               and r.get("state") in {"APPROVED", "CHANGES_REQUESTED", "DISMISSED"})
     latest = max(formal, key=lambda r: (r.get("submitted_at") or "", r.get("id", 0)), default=None)
     return (latest is not None and latest.get("state") == "APPROVED" and latest.get("commit_id") == head
+            and (review_id is None or latest.get("id") == review_id)
             and (latest.get("submitted_at") or "") > cutoff)
 
 
-def eligibility(pr, files, reviews, comments, repository, merged=False, timeline=()):
+def eligibility(pr, files, repository, merged=False):
+    """Validate PR metadata and file scope before looking up approval or checks."""
     head = pr.get("head", {}).get("sha", "")
     base = pr.get("base", {})
     expected_state = "closed" if merged else "open"
@@ -95,8 +103,6 @@ def eligibility(pr, files, reviews, comments, repository, merged=False, timeline
             or head_repo.get("full_name", "").lower() != repository.lower()
             or not SHA.fullmatch(head) or (merged and not pr.get("merged"))):
         raise PolicyError("PR must be a non-draft same-repository content PR targeting main.")
-    if not merged and pr.get("mergeable") is not True:
-        raise PolicyError("PR is not mergeable (conflicts, or GitHub has not computed mergeability yet).")
     if len(files) != pr.get("changed_files") or not files:
         raise PolicyError("Changed file list is incomplete or empty.")
     paths = []
@@ -104,12 +110,18 @@ def eligibility(pr, files, reviews, comments, repository, merged=False, timeline
         paths.append(file["filename"])
         if file.get("previous_filename"):
             paths.append(file["previous_filename"])
-    if not all(allowed_path(path) for path in paths):
-        raise PolicyError("PR contains paths outside the content-only allowlist.")
+    tooling = [path for path in paths if not allowed_path(path)]
+    if tooling:
+        # Keep even multiline filenames on one log line.
+        sample = ", ".join(path.replace("\r", r"\r").replace("\n", r"\n") for path in tooling[:5])
+        if len(tooling) == len(paths):
+            raise ScopeError(f"PR #{pr['number']} is tooling-only (no book content changed: {sample}); "
+                             "the release controller never merges or releases tooling PRs. "
+                             "Merge it yourself once its checks are green.")
+        raise ScopeError(f"PR #{pr['number']} mixes book content with tooling ({sample}); split it: "
+                         "merge the tooling PR yourself, then authorize the content PR.")
     if not any(path.startswith("content/chapters/") or path == "content/toc.yml" for path in paths):
         raise PolicyError("PR does not change a chapter or TOC.")
-    if not approved(pr, reviews, comments, timeline):
-        raise PolicyError("Owner approval for the current head is missing or was revoked.")
     return {"number": pr["number"], "head": head, "base": base["sha"]}
 
 
@@ -184,22 +196,19 @@ class GitHub:
                 return result
         raise GitHubError(f"Pagination limit exceeded for {suffix}.")
 
-    def pull(self, number, merged=False):
-        pr = self.get(f"pulls/{number}")
-        # GitHub computes mergeability lazily; null means "ask again shortly".
-        for _ in range(3):
-            if merged or pr.get("state") != "open" or pr.get("mergeable") is not None:
-                break
-            time.sleep(2)
-            pr = self.get(f"pulls/{number}")
-        return pr
-
     def inspect(self, number, merged=False):
-        pr = self.pull(number, merged)
-        result = eligibility(pr, self.pages(f"pulls/{number}/files"),
-                             self.pages(f"pulls/{number}/reviews"),
-                             self.pages(f"issues/{number}/comments"), self.repo, merged,
-                             self.pages(f"issues/{number}/timeline"))
+        for attempt in range(4):
+            pr = self.get(f"pulls/{number}")
+            result = eligibility(pr, self.pages(f"pulls/{number}/files"), self.repo, merged)
+            if merged or pr.get("mergeable") is True:
+                break
+            # GitHub computes mergeability lazily; poll only for in-scope PRs.
+            if pr.get("mergeable") is not None or attempt == 3:
+                raise PolicyError("PR is not mergeable (conflicts, or GitHub has not computed mergeability yet).")
+            time.sleep(2)
+        if not approved(pr, self.pages(f"pulls/{number}/reviews"), self.pages(f"issues/{number}/comments"),
+                        self.pages(f"issues/{number}/timeline")):
+            raise PolicyError("Owner approval for the current head is missing or was revoked.")
         checks_pass(self.pages(f"commits/{result['head']}/check-runs", "check_runs"),
                     self.pages(f"commits/{result['head']}/statuses"))
         if not merged:
@@ -271,22 +280,44 @@ class GitHub:
         return previous[-1][1]
 
 
-def report_stale_base(number, error):
-    message = f"PR #{number}: {error}"
+def report_warning(message):
     # Workflows redirect stdout to JSON; annotations must stay on stderr.
-    print(f"::warning::{message}", file=sys.stderr, flush=True)
+    print(f"::warning::{message.replace('%', '%25')}", file=sys.stderr, flush=True)
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary, "a", encoding="utf-8") as output:
             output.write(message + "\n\n")
 
 
-def select(api, number=None):
+def review_target(api, signal):
+    """Resolve a review-run hint against live scope and approval; otherwise leave selection as a scan."""
+    match = re.fullmatch(r"Owner approval for PR ([1-9]\d*) review ([1-9]\d*)", signal)
+    if not match:
+        return None, None
+    number, review_id = map(int, match.groups())
+    pr = api.get(f"pulls/{number}", missing=True)
+    if not pr or pr.get("state") != "open" or _login(pr) == OWNER:
+        return None, None
+    refusal = None
+    try:
+        eligibility(pr, api.pages(f"pulls/{number}/files"), api.repo)
+    except PolicyError as exc:
+        refusal = exc
+    if approved(pr, api.pages(f"pulls/{number}/reviews"), [], api.pages(f"issues/{number}/timeline"),
+                review_id=review_id):
+        if refusal is not None and not isinstance(refusal, ScopeError):
+            raise refusal
+        return number, str(refusal) if refusal else None
+    return None, None
+
+
+def select(api, number=None, recover=True):
     """Return the first eligible PR (empty dict if none). With ``number`` a merged PR is a recovery."""
     numbers = [number] if number else [pr["number"] for pr in api.pages("pulls?state=open&base=main")]
     for candidate in numbers:
         try:
-            if number and api.get(f"pulls/{candidate}").get("merged"):
+            recovery = recover and number and api.get(f"pulls/{candidate}").get("merged")
+            if recovery:
                 selected = api.inspect(candidate, merged=True)
                 selected["base"] = api.provenance(selected["merge_sha"], selected["head"])
             else:
@@ -297,9 +328,12 @@ def select(api, number=None):
         except StaleBaseError as exc:
             if number:
                 raise
-            report_stale_base(candidate, exc)
+            report_warning(f"PR #{candidate}: {exc}")
         except PolicyError as exc:
             if number:
+                if isinstance(exc, ScopeError) and not recovery:
+                    report_warning(str(exc))
+                    return {}
                 raise
             print(f"PR #{candidate}: {exc}", file=sys.stderr)
     return {}
@@ -369,7 +403,15 @@ def main():
     try:
         api = GitHub(os.environ["GITHUB_REPOSITORY"], os.environ["GH_TOKEN"])
         if args.action == "select":
-            result = select(api, args.number)
+            recover = args.number is not None
+            refusal = None
+            if not recover:
+                args.number, refusal = review_target(api, os.environ.get("OWNER_REVIEW_SIGNAL", ""))
+            if refusal:
+                report_warning(refusal)
+                result = {}
+            else:
+                result = select(api, args.number, recover)
         elif args.action == "merge":
             result = merge(api, args.number, args.head, args.base, args.comparison)
         elif args.action == "dispatch":
@@ -378,7 +420,7 @@ def main():
             result = verify_merged(api, args.number, args.head, args.base, args.merge_sha, args.tag)
         print(json.dumps(result))
     except StaleBaseError as exc:
-        report_stale_base(args.number, exc)
+        report_warning(f"PR #{args.number}: {exc}")
         return 1
     except (KeyError, PolicyError, GitHubError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
