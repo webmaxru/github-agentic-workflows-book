@@ -51,8 +51,12 @@ class GateTests(unittest.TestCase):
         self.api = FakeApi([release("content-v1.0"), release("content-v1.1")])
 
     def git(self, *args):
+        # Annotated tags need a committer identity too, and hosted runners have no global one.
         result = subprocess.run(
-            ["git", "-c", "core.hooksPath=disabled-hooks", "-C", str(self.root), *args],
+            ["git", "-c", "core.hooksPath=disabled-hooks",
+             "-c", "user.name=Book Tests", "-c", "user.email=book-tests@example.invalid",
+             "-c", "commit.gpgsign=false", "-c", "tag.gpgsign=false",
+             "-C", str(self.root), *args],
             capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(result.returncode, 0, result.stderr)
         return result.stdout.strip()
@@ -64,8 +68,7 @@ class GateTests(unittest.TestCase):
 
     def commit(self, message):
         self.git("add", "--all")
-        self.git("-c", "user.name=Book Tests", "-c", "user.email=book-tests@example.invalid",
-                 "-c", "commit.gpgsign=false", "commit", "--quiet", "-m", message)
+        self.git("commit", "--quiet", "-m", message)
 
     def gate(self, ref=None):
         return gate.gate(self.api, self.root, ref)
