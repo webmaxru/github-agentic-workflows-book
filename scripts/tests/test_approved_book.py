@@ -102,8 +102,10 @@ class ApiFixture(unittest.TestCase):
 class AuthorizationTests(ApiFixture):
     def test_owner_command_must_be_exact_current_and_from_owner(self):
         self.assertEqual(self.eligible()["head"], HEAD)
+        command = self.comments[0]["body"]
         for body in ("/release-book " + "b" * 40, "/release-book " + HEAD[:12],
-                     "please /release-book " + HEAD, "/release-book " + HEAD + " now"):
+                     "/release-book " + HEAD.upper(), "please " + command, command + " now",
+                     " " + command, command + " ", command + "\n", "/release-book  " + HEAD):
             self.comments[0]["body"] = body
             with self.subTest(body=body), self.assertRaises(policy.PolicyError):
                 self.eligible()
@@ -112,11 +114,20 @@ class AuthorizationTests(ApiFixture):
         with self.assertRaises(policy.PolicyError):
             self.eligible()
 
-    def test_new_owner_command_supersedes_old_and_owner_cannot_self_review(self):
-        self.comments.append({"id": 2, "user": {"login": "webmaxru"}, "body": "/release-book " + "e" * 40,
-                              "created_at": "2026-01-03T00:00:00Z", "updated_at": "2026-01-03T00:00:00Z"})
+    def test_other_comments_do_not_revoke_an_independently_valid_command(self):
+        stamp = "2026-01-03T00:00:00Z"
+        later = {**self.comments[0], "id": 2, "created_at": stamp, "updated_at": stamp}
+        for body in ("Thanks!", "/release-book later", "/release-book " + "e" * 40):
+            with self.subTest(body=body):
+                self.comments[1:] = [{**later, "body": body}]
+                self.assertEqual(self.eligible()["head"], HEAD)
+        self.comments[1:] = [{**later, "updated_at": "2026-01-04T00:00:00Z"}]
+        self.assertEqual(self.eligible()["head"], HEAD)
+        del self.comments[0]
         with self.assertRaises(policy.PolicyError):
             self.eligible()
+
+    def test_owner_cannot_self_review(self):
         self.comments.clear()
         with self.assertRaises(policy.PolicyError):
             self.eligible()
@@ -158,15 +169,18 @@ class AuthorizationTests(ApiFixture):
         with self.assertRaises(policy.PolicyError):
             self.eligible()
 
-    def test_later_owner_review_replaces_the_approval(self):
+    def test_owner_comment_review_neither_revokes_nor_grants_approval(self):
         self.pr["user"]["login"] = "book-bot"
         self.review.append({**self.review[0], "id": 2, "state": "COMMENTED",
                             "submitted_at": "2026-01-03T00:00:00Z"})
+        self.assertEqual(self.eligible()["head"], HEAD)
+        for state in ("CHANGES_REQUESTED", "DISMISSED"):
+            self.review[0]["state"] = state
+            with self.subTest(state=state), self.assertRaises(policy.PolicyError):
+                self.eligible()
+        del self.review[0]
         with self.assertRaises(policy.PolicyError):
             self.eligible()
-        self.review.append({**self.review[0], "id": 3, "state": "APPROVED",
-                            "submitted_at": "2026-01-04T00:00:00Z"})
-        self.assertEqual(self.eligible()["head"], HEAD)
 
     def test_changes_requested_is_a_barrier_for_both_authorization_paths(self):
         later = {"id": 9, "user": {"login": "reviewer"}, "state": "CHANGES_REQUESTED",

@@ -21,7 +21,6 @@ from urllib.request import Request, urlopen
 
 OWNER = "webmaxru"
 SHA = re.compile(r"[0-9a-f]{40}\Z")
-COMMAND = re.compile(r"/release-book ([0-9a-f]{40})\Z")
 EDITION = re.compile(r"(0|[1-9]\d*)\.(0|[1-9]\d*)(?:\.(0|[1-9]\d*))?\Z")
 TAG = re.compile(r"content-v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:\.(?:0|[1-9]\d*))?\Z")
 RELEASE_WORKFLOW = "release.yml"
@@ -71,24 +70,16 @@ def barrier(reviews, timeline):
 
 def approved(pr, reviews, comments, timeline=()):
     head = pr["head"]["sha"]
+    cutoff = barrier(reviews, timeline)
     if _login(pr) == OWNER:
-        commands = [c for c in comments
-                    if _login(c) == OWNER and c.get("body", "").strip().startswith("/release-book")]
-        if not commands:
-            return False
-        latest = max(commands, key=lambda c: (c.get("created_at") or "", c["id"]))
-        match = COMMAND.fullmatch(latest["body"].strip())
-        # An edited command is never trusted: the owner must post a fresh one for this head.
-        edited = (latest.get("updated_at") or latest.get("created_at")) != latest.get("created_at")
-        newer = (latest.get("created_at") or "") > barrier(reviews, timeline)
-        return bool(match) and match[1] == head and not edited and newer
-    own = [r for r in reviews if _login(r) == OWNER]
-    if not own:
-        return False
-    # Any later owner review, even a plain comment, replaces the approval.
-    latest = max(own, key=lambda r: (r.get("submitted_at") or "", r.get("id", 0)))
-    return (latest.get("state") == "APPROVED" and latest.get("commit_id") == head
-            and (latest.get("submitted_at") or "") > barrier(reviews, timeline))
+        return any(_login(c) == OWNER and c.get("body") == f"/release-book {head}"
+                   and (c.get("created_at") or "") > cutoff
+                   and c.get("updated_at") == c.get("created_at") for c in comments)
+    formal = (r for r in reviews if _login(r) == OWNER
+              and r.get("state") in {"APPROVED", "CHANGES_REQUESTED", "DISMISSED"})
+    latest = max(formal, key=lambda r: (r.get("submitted_at") or "", r.get("id", 0)), default=None)
+    return (latest is not None and latest.get("state") == "APPROVED" and latest.get("commit_id") == head
+            and (latest.get("submitted_at") or "") > cutoff)
 
 
 def eligibility(pr, files, reviews, comments, repository, merged=False, timeline=()):

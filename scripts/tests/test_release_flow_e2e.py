@@ -280,12 +280,30 @@ class ControllerMerge(Rehearsal):
 
     def test_the_merge_is_a_squash_of_exactly_the_approved_head(self):
         self.open_pr()
+        self.fake.review(OWNER, "COMMENTED")
         inputs = self.controller()
         self.assertEqual(self.git("rev-parse", "main"), inputs["merge_sha"])
         self.assertEqual(self.git("rev-parse", f"{inputs['merge_sha']}^{{tree}}"),
                          self.git("rev-parse", f"{self.head}^{{tree}}"))
         self.assertEqual(self.git("rev-list", "--parents", "-n", "1", inputs["merge_sha"]).split()[1:],
                          [self.base])
+
+    def test_merge_rechecks_the_owner_command_after_selection(self):
+        self.open_pr(author=OWNER)
+        command = self.fake.comment(OWNER, f"/release-book {self.head}")
+        selected = self.select()
+        merge_args = ("approved_book.py", "merge", "--number", "7", "--head", selected["head"],
+                      "--base", selected["base"], "--comparison", selected["comparison"])
+        self.fake.comment(OWNER, "Ready for review")
+        self.fake.comment(OWNER, f"/release-book {self.head}\n")
+        command["updated_at"] = self.fake.now()
+        self.refused(self.run_script(*merge_args), "approval")
+        self.assertEqual(self.fake.writes, [])
+        self.assertEqual(self.git("rev-parse", "main"), self.base)
+
+        self.fake.comment(OWNER, f"/release-book {self.head}")
+        self.fake.comment(OWNER, "/release-book not-a-sha")
+        self.assertEqual(self.json_of(self.run_script(*merge_args))["head"], selected["head"])
 
     def test_the_controller_dispatches_release_yml_with_exactly_the_declared_inputs(self):
         self.open_pr()
