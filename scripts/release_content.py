@@ -479,6 +479,33 @@ def github_release(repository: str, tag: str) -> dict[str, Any] | None:
     return release
 
 
+def published_asset(metadata: dict[str, Any], tag: str, asset: str) -> dict[str, Any]:
+    """Require one complete published asset; shared by planning and staging cleanup."""
+    if metadata.get("tag_name") != tag or not isinstance(metadata.get("assets"), list):
+        raise ReleaseError("The release API response does not match the requested tag/assets.")
+    if metadata.get("prerelease"):
+        raise ReleaseError(f"Release {tag} is a prerelease; explicit recovery is required.")
+    if metadata.get("draft") is not False:
+        raise ReleaseError(f"Release {tag} is a draft or has unknown publication status. "
+                           "Nothing was changed. Ship the fix as a new version.")
+    matching = [item for item in metadata["assets"] if item.get("name") == asset]
+    if not matching:
+        raise ReleaseError(f"Release {tag} is published without its PDF asset ({asset}). "
+                           "Nothing was changed. Ship the fix as a new version.")
+    if (len(matching) == 1 and matching[0].get("state") == "uploaded"
+            and type(matching[0].get("size")) is int and matching[0]["size"] > 0):
+        return matching[0]
+    details = "; ".join(
+        f"id={item.get('id')!r}, state={item.get('state')!r}, size={item.get('size')!r}"
+        for item in matching
+    )
+    raise ReleaseError(
+        f"Release {tag} has an incomplete or ambiguous upload for {asset} ({details}). "
+        "A completed asset must have state='uploaded' and a positive integer size. "
+        "Nothing was changed. Ship the fix as a new version."
+    )
+
+
 def release_plan(
     root: Path, repository: str, base: str | None = None,
     env: Mapping[str, str] | None = None, expected_source: str | None = None,
@@ -498,35 +525,10 @@ def release_plan(
             raise ReleaseError(f"Existing tag {tag} points to a different source.")
     metadata = github_release(repository, tag)
     if metadata is not None:
-        if metadata.get("tag_name") != tag or not isinstance(metadata.get("assets"), list):
-            raise ReleaseError("The release API response does not match the requested tag/assets.")
-        if metadata.get("prerelease"):
-            raise ReleaseError(f"Release {tag} is a prerelease; explicit recovery is required.")
-        if metadata.get("draft") is not False:
-            raise ReleaseError(f"Release {tag} is a draft or has unknown publication status. "
-                               "Nothing was changed. Ship the fix as a new version.")
+        published_asset(metadata, tag, asset)
         if not tag_exists:
             raise ReleaseError(f"Release {tag} exists but its tag is unavailable.")
-        matching = [item for item in metadata["assets"] if item.get("name") == asset]
-        if matching:
-            if (
-                len(matching) == 1
-                and matching[0].get("state") == "uploaded"
-                and type(matching[0].get("size")) is int
-                and matching[0]["size"] > 0
-            ):
-                return {"action": "skip", "version": version, "tag": tag, "asset": asset}
-            details = "; ".join(
-                f"id={item.get('id')!r}, state={item.get('state')!r}, size={item.get('size')!r}"
-                for item in matching
-            )
-            raise ReleaseError(
-                f"Release {tag} has an incomplete or ambiguous upload for {asset} ({details}). "
-                "A completed asset must have state='uploaded' and a positive integer size. "
-                "Nothing was changed. Ship the fix as a new version."
-            )
-        raise ReleaseError(f"Release {tag} is published without its PDF asset ({asset}). "
-                           "Nothing was changed. Ship the fix as a new version.")
+        return {"action": "skip", "version": version, "tag": tag, "asset": asset}
     if tag_exists:
         raise ReleaseError(f"Tag {tag} exists without a release. Nothing was changed. "
                            "Ship the fix as a new version.")

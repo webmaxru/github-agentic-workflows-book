@@ -137,6 +137,13 @@ pushes to `main`, and is reused by the controller, `release.yml` and `deploy-pag
 checks the helpers, release/evidence contract, pinned whole-corpus compilation, and HTML/PDF
 generation. [`RELEASING.md`](../RELEASING.md) states the shared release flow contract and the
 scenarios.
+Full-book uploads are off for ordinary builds. Manual `upload_preview=true` dispatches
+produce one-day previews; only release/Pages callers opt into staging transfers (seven days
+for release recovery, one day for the PDF-free Pages site).
+`artifact_storage.py` implements scoped preview retirement and post-consumer staging cleanup,
+reusing the publication planner's asset validator. Its loopback API tests perform no live
+deletions. See [storage and previews](../RELEASING.md#build-artifact-storage-and-previews)
+for permissions, integrity gates, recovery retention and account-wide limitations.
 The hosted Linux runner supplies browser system libraries; CI installs only Chromium,
 without an APT refresh. Browser installation and PDF rendering are separate, bounded
 steps so a download or renderer failure is reported distinctly. Other Linux environments

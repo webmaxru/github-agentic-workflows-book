@@ -81,6 +81,74 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(render["timeout-minutes"], "5")
         self.assertEqual(render["working-directory"], "source")
 
+    def test_book_uploads_are_explicit_and_publishers_opt_in(self):
+        ci = load("ci.yml")
+        preview = ci["on"]["workflow_dispatch"]["inputs"]["upload_preview"]
+        self.assertEqual(preview["type"], "boolean")
+        self.assertEqual(preview["default"], "false")
+        self.assertEqual(ci["on"]["workflow_call"]["inputs"]["upload-staging"]["default"], "false")
+        uploads = [step for step in ci["jobs"]["validate"]["steps"]
+                   if step.get("uses", "").startswith("actions/upload-artifact@")]
+        self.assertEqual(len(uploads), 4)
+        for step in uploads:
+            if step["with"]["path"] == "verification.json":
+                self.assertEqual(step["with"]["retention-days"], "3")
+            elif step["name"] == "Upload book preview":
+                self.assertEqual(step["if"], "github.event_name == 'workflow_dispatch' && inputs.upload_preview")
+                self.assertEqual(step["with"]["retention-days"], "1")
+                self.assertEqual(step["with"]["if-no-files-found"], "error")
+            elif step["name"] == "Upload the validated Pages site (no PDF)":
+                self.assertEqual(step["if"], "inputs.upload-staging && inputs.artifact-name == 'validated-pages'")
+                self.assertEqual(step["with"]["retention-days"], "1")
+            else:
+                self.assertEqual(step["if"], "inputs.upload-staging && inputs.artifact-name != 'validated-pages'")
+                self.assertLessEqual(int(step["with"]["retention-days"]), 7)
+        steps = ci["jobs"]["validate"]["steps"]
+        prepare = next(step for step in steps if step["name"] == "Prepare the site-only Pages transfer")
+        for excluded in ("artifact/site/gh-aw-book.pdf", "artifact/release-notes.md", "artifact/verification.json"):
+            self.assertIn(excluded, prepare["run"])
+        self.assertLess(steps.index(prepare), next(i for i, step in enumerate(steps)
+                        if step["name"] == "Upload the validated Pages site (no PDF)"))
+        for name in ("release.yml", "deploy-pages.yml"):
+            self.assertEqual(load(name)["jobs"]["validate"]["with"]["upload-staging"], "true")
+        self.assertNotIn("upload-staging", load("approved-book.yml")["jobs"]["preflight"]["with"])
+
+    def test_preview_cleanup_is_serialized_trusted_and_not_a_privileged_pr_build(self):
+        workflow = load("cleanup-book-previews.yml")
+        self.assertEqual(workflow["permissions"], {})
+        self.assertEqual(workflow["on"]["workflow_run"]["workflows"], ["Book CI"])
+        job = workflow["jobs"]["cleanup"]
+        self.assertEqual(job["permissions"], {"contents": "read", "actions": "write"})
+        self.assertEqual(job["concurrency"]["cancel-in-progress"], "false")
+        self.assertIn("head_branch", job["concurrency"]["group"])
+        self.assertIn("conclusion == 'success'", job["if"])
+        self.assertIn("workflow_dispatch", job["if"])
+        self.assertIn("head_repository.full_name == github.repository", job["if"])
+        self.assertEqual(job["steps"][0]["with"], {"ref": "main", "persist-credentials": "false"})
+        self.assertNotIn("download-artifact", text("cleanup-book-previews.yml"))
+        self.assertNotIn("pull_request_target", text("cleanup-book-previews.yml"))
+
+    def test_cleanup_follows_all_consumers_and_failed_publication_retains_staging(self):
+        jobs = load("release.yml")["jobs"]
+        cleanup = jobs["cleanup"]
+        self.assertEqual(set(cleanup["needs"]), {"plan", "validate", "release", "pages"})
+        for condition in ("needs.release.result == 'success'", "needs.pages.result == 'success'",
+                          "needs.release.outputs.latest == 'false'"):
+            self.assertIn(condition, cleanup["if"])
+        self.assertIn('needs.release.outputs.digest', str(cleanup))
+        release_steps = jobs["release"]["steps"]
+        self.assertEqual(release_steps[-1]["id"], "integrity")
+        self.assertIn("artifact_storage.py verify", release_steps[-1]["run"])
+        pages = load("deploy-pages.yml")["jobs"]
+        self.assertEqual(set(pages["cleanup"]["needs"]), {"published-source", "validate", "deploy"})
+        self.assertNotIn("always()", pages["cleanup"]["if"])
+        for name in ("release.yml", "deploy-pages.yml"):
+            jobs = load(name)["jobs"]
+            self.assertEqual(jobs["cleanup"]["permissions"], {"contents": "read", "actions": "write"})
+            for job_name, job in jobs.items():
+                if job_name != "cleanup" and "uses" not in job:
+                    self.assertNotEqual(job.get("permissions", {}).get("actions"), "write")
+
     def test_both_publishers_require_validation_and_consume_its_artifact(self):
         for name, publisher in (("deploy-pages.yml", "deploy"), ("release.yml", "release")):
             with self.subTest(workflow=name):
@@ -144,7 +212,7 @@ class WorkflowTests(unittest.TestCase):
         pages = load("release.yml")["jobs"]["pages"]
         self.assertEqual(pages["uses"], "./.github/workflows/deploy-pages.yml")
         self.assertEqual(pages["with"], {"published-tag": "${{ needs.plan.outputs.tag }}"})
-        self.assertEqual(pages["permissions"], {"contents": "write", "pages": "write"})
+        self.assertEqual(pages["permissions"], {"contents": "write", "pages": "write", "actions": "write"})
 
     def test_controller_triggers_permissions_and_concurrency(self):
         controller = load("approved-book.yml")

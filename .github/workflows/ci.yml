@@ -10,6 +10,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      upload_preview:
+        description: "Upload a one-day book preview (replaces older previews for this ref)"
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       source-ref:
@@ -24,6 +29,10 @@ on:
         type: string
         default: validated-book
       require-content-change:
+        type: boolean
+        default: false
+      upload-staging:
+        description: "Transfer the validated build to a release or Pages consumer"
         type: boolean
         default: false
     outputs:
@@ -116,7 +125,7 @@ jobs:
           name: ${{ inputs.artifact-name || 'validated-book' }}-diagnostics
           path: verification.json
           if-no-files-found: ignore
-          retention-days: 7
+          retention-days: 3
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -167,7 +176,39 @@ jobs:
           Path("artifact/validation.json").write_text(json.dumps(data, indent=2) + "\n")
           PY
 
+      - name: Name the manual preview
+        if: github.event_name == 'workflow_dispatch' && inputs.upload_preview
+        id: preview
+        run: |
+          python tooling/scripts/artifact_storage.py name >> "$GITHUB_OUTPUT"
+
+      - name: Upload book preview
+        if: github.event_name == 'workflow_dispatch' && inputs.upload_preview
+        id: upload-preview
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.preview.outputs.name }}
+          path: artifact/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Prepare the site-only Pages transfer
+        if: inputs.upload-staging && inputs.artifact-name == 'validated-pages'
+        run: rm artifact/site/gh-aw-book.pdf artifact/release-notes.md artifact/verification.json
+
+      - name: Upload the validated Pages site (no PDF)
+        if: inputs.upload-staging && inputs.artifact-name == 'validated-pages'
+        uses: actions/upload-artifact@v7
+        with:
+          name: validated-pages
+          path: artifact/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Upload the exact validated site and PDF
+        if: inputs.upload-staging && inputs.artifact-name != 'validated-pages'
         uses: actions/upload-artifact@v7
         with:
           name: ${{ inputs.artifact-name || 'validated-book' }}
