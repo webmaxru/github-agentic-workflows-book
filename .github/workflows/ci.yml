@@ -134,6 +134,10 @@ jobs:
           cache: npm
           cache-dependency-path: source/package-lock.json
 
+      - name: Test AW Release Truth Canvas
+        working-directory: source
+        run: npm run test:canvas
+
       - name: Build analytics beacon
         working-directory: source
         run: |
