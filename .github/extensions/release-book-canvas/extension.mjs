@@ -21,7 +21,7 @@ const session = await joinSession({
     canvases: [
         createCanvas({
             id: "book-release-canvas",
-            displayName: "Book release canvas",
+            displayName: "AW Release Truth Canvas",
             description: "Track documentation drift, impacted chapters, demo rebuilds, proof, and human release gates.",
             inputSchema: {
                 type: "object",
@@ -216,4 +216,4 @@ async function startServer(instanceId) {
     return { server, url: `http://127.0.0.1:${port}/` };
 }
 
-session.log("Book release canvas is ready.", { level: "info", ephemeral: true });
+session.log("AW Release Truth Canvas is ready.", { level: "info", ephemeral: true });
